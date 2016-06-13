@@ -1,0 +1,31 @@
+{
+    "name": "sulu/community-bundle",
+    "description": "Sulu Bundle for building a community",
+    "type": "sulu-bundle",
+    "license": "MIT",
+    "require": {
+        "php": "^5.5 || ^7.0",
+        "sulu/sulu": "dev-develop",
+        "sulu/document-manager": "@dev"
+    },
+    "require-dev": {
+        "jackalope/jackalope-doctrine-dbal": "^1.2.5",
+        "phpunit/phpunit": ">=4.8"
+    },
+    "keywords": [
+        "registration",
+        "profile"
+    ],
+    "authors": [
+        {
+            "name": "Sulu Community",
+            "homepage": "https://github.com/sulu/SuluCommunityBundle/contributors"
+        }
+    ],
+    "homepage": "https://github.com/sulu/SuluCommunityBundle",
+    "autoload": {
+        "psr-4": {
+            "Sulu\\Bundle\\CommunityBundle\\": ""
+        }
+    }
+}
