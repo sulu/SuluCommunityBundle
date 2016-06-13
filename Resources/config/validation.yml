@@ -1,0 +1,25 @@
+Sulu\Bundle\SecurityBundle\Entity\BaseUser:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: username
+            groups: [registration]
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: email
+            groups: [registration]
+    properties:
+        username:
+            - NotBlank: { groups: [registration] }
+        email:
+            - Email: { groups: [registration] }
+
+Sulu\Bundle\SecurityBundle\Entity\ContactInterface:
+    properties:
+        first_name:
+            - NotBlank: { groups: [registration] }
+        last_name:
+            - NotBlank: { groups: [registration] }
+
+Sulu\Bundle\SecurityBundle\Entity\Address:
+    properties:
+        country:
+            - NotBlank: { groups: [registration] }
