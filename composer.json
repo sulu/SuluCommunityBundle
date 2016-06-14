@@ -1,0 +1,31 @@
+{
+    "name": "sulu/sulu-community-bundle",
+    "description": "Sulu Bundle a Community",
+    "type": "sulu-bundle",
+    "require": {
+        "php": "^5.5 || ^7.0",
+        "sulu/sulu": "dev-develop"
+    },
+    "keywords": [
+        "registration",
+        "login",
+        "password forget",
+        "password reset",
+        "double opt-in",
+        "single opt-in",
+        "profile"
+    ],
+    "authors": [
+        {
+            "name": "Sulu Community",
+            "homepage": "https://github.com/sulu/SuluCommunityBundle/contributors"
+        }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/sulu/SuluCommunityBundle",
+    "autoload": {
+        "psr-4": {
+            "Sulu\\Bundle\\CommunityBundle": ""
+        }
+    }
+}

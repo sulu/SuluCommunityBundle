@@ -16,12 +16,13 @@ class Configuration implements ConfigurationInterface
 {
     const WEBSPACES = 'webspaces';
 
-    // Basic Webspace Configuration
-    const MAIL_FROM = 'from';
-    const MAIL_TO = 'to';
+    // Basic Webspace configuration
+    const EMAIL_FROM = 'from';
+    const EMAIL_TO = 'to';
     const ROLE = 'role';
+    const FIREWALL = 'firewall';
 
-    // Form Types
+    // Form types
     const TYPE_LOGIN = 'login';
     const TYPE_REGISTRATION = 'registration';
     const TYPE_CONFIRMATION = 'confirmation';
@@ -32,10 +33,19 @@ class Configuration implements ConfigurationInterface
         self::TYPE_CONFIRMATION,
     ];
 
-    // Form Configuration
+    // Form configuration
     const FORM_TEMPLATE = 'template';
     const FORM_TYPE = 'type';
     const FORM_TYPE_OPTIONS = 'options';
+
+    // Other type configurations
+    const ACTIVATE_USER = 'activate_user';
+    const AUTO_LOGIN = 'auto_login';
+    const REDIRECT_TO = 'redirect_to';
+    const EMAIL = 'email';
+    const EMAIL_SUBJECT = 'subject';
+    const EMAIL_ADMIN_TEMPLATE = 'admin_template';
+    const EMAIL_USER_TEMPLATE = 'user_template';
 
     /**
      * {@inheritdoc}
@@ -51,9 +61,10 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             // Basic Webspace Configuration
-                            ->scalarNode(self::MAIL_FROM)->defaultValue(null)->end()
-                            ->scalarNode(self::MAIL_TO)->defaultValue(null)->end()
-                            ->scalarNode(self::ROLE)->defaultValue('Website')->end()
+                            ->scalarNode(self::EMAIL_FROM)->defaultValue(null)->end()
+                            ->scalarNode(self::EMAIL_TO)->defaultValue(null)->end()
+                            ->scalarNode(self::ROLE)->defaultValue(null)->end()
+                            ->scalarNode(self::FIREWALL)->defaultValue(null)->end()
                             // Login
                             ->arrayNode(self::TYPE_LOGIN)
                                 ->addDefaultsIfNotSet()
@@ -63,9 +74,6 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(LoginType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()
-                                        ->children()
-                                            ->scalarNode('validation_groups')->defaultValue('login')->end()
-                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -78,8 +86,16 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(RegistrationType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()
+                                    ->end()
+                                    ->scalarNode(self::ACTIVATE_USER)->defaultValue(true)->end()
+                                    ->scalarNode(self::AUTO_LOGIN)->defaultValue(true)->end()
+                                    ->scalarNode(self::REDIRECT_TO)->defaultValue('?send=true')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
                                         ->children()
-                                            ->scalarNode('validation_groups')->defaultValue('registration')->end()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('community/registration-email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()

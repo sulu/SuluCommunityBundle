@@ -26,6 +26,16 @@ class SuluCommunityExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         foreach ($config[Configuration::WEBSPACES] as $webspaceKey => $webspaceConfig) {
+            // Set firewall by webspace key
+            if ($webspaceConfig[Configuration::FIREWALL] === null) {
+                $webspaceConfig[Configuration::FIREWALL] = $webspaceKey;
+            }
+
+            // Set role by webspace key
+            if ($webspaceConfig[Configuration::ROLE] === null) {
+                $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';
+            }
+
             $container->setDefinition(
                 sprintf('sulu_community.%s.community_manager', $webspaceKey),
                 new Definition(
@@ -34,6 +44,14 @@ class SuluCommunityExtension extends Extension
                         $webspaceConfig,
                         $webspaceKey,
                         new Reference('doctrine.orm.entity_manager'),
+                        new Reference('event_dispatcher'),
+                        new Reference('security.authentication.manager'),
+                        new Reference('security.token_storage'),
+                        new Reference('sulu_security.token_generator'),
+                        new Reference('sulu_core.webspace.webspace_manager'),
+                        new Reference('sulu.repository.user'),
+                        new Reference('sulu.repository.role'),
+                        new Reference('sulu.repository.contact'),
                     ]
                 )
             );
