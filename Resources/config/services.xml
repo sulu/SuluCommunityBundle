@@ -4,13 +4,17 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+    <parameters>
+        <parameter type="constant" key="sulu_community.event.registered">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_REGISTERED</parameter>
+    </parameters>
+
     <services>
-        <service id="sulu_community.example" class="Sulu\Bundle\CommunityBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="sulu_community.mail_listener" class="Sulu\Bundle\CommunityBundle\EventListener\MailListener">
+            <argument type="service" id="mailer" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="templating" />
+
+            <tag name="kernel.event_listener" event="%sulu_community.event.registered%" method="sendRegistrationEmails" />
         </service>
     </services>
-    -->
 </container>

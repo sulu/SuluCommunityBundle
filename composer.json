@@ -14,6 +14,11 @@
     },
     "keywords": [
         "registration",
+        "login",
+        "password forget",
+        "password reset",
+        "double opt-in",
+        "single opt-in",
         "profile"
     ],
     "authors": [
