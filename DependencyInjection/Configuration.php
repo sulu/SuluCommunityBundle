@@ -35,6 +35,7 @@ class Configuration implements ConfigurationInterface
 
     // Type configurations
     const TEMPLATE = 'template';
+    const EMBED_TEMPLATE = 'embed_template';
     const FORM_TYPE = 'type';
     const FORM_TYPE_OPTIONS = 'options';
     const ACTIVATE_USER = 'activate_user';
@@ -69,6 +70,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     // Login configuration
                                     ->scalarNode(self::TEMPLATE)->defaultValue('community/login.html.twig')->end()
+                                    ->scalarNode(self::EMBED_TEMPLATE)->defaultValue('community/login-embed.html.twig')->end()
                                 ->end()
                             ->end()
                             // Registration

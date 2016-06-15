@@ -11,4 +11,10 @@
     <route id="sulu_community.confirmation" path="/confirmation/{token}">
         <default key="_controller">SuluCommunityBundle:Confirmation:index</default>
     </route>
+
+    <route id="sulu_community.login" path="/login">
+        <default key="_controller">SuluCommunityBundle:Login:index</default>
+    </route>
+
+    <route id="sulu_community.logout" path="/logout" />
 </routes>
