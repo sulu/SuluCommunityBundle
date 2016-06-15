@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
-use Sulu\Bundle\SecurityBundle\Entity\BaseRole;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
@@ -25,6 +24,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 class CommunityManager
 {
     const EVENT_REGISTERED = 'sulu.community.registered';
+    const EVENT_CONFIRMED = 'sulu.community.confirmed';
 
     /**
      * @var array
@@ -193,6 +193,10 @@ class CommunityManager
      */
     public function login(User $user, Request $request)
     {
+        if (!$user->getEnabled()) {
+            return;
+        }
+
         $token = new UsernamePasswordToken(
             $user,
             null,
@@ -206,6 +210,34 @@ class CommunityManager
         $this->eventDispatcher->dispatch('security.interactive_login', $event);
 
         return $token;
+    }
+
+    /**
+     * @param $token
+     *
+     * @return User
+     */
+    public function confirm($token)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy(['confirmationKey' => $token]);
+
+        if (!$user) {
+            return;
+        }
+
+        // Remove Confirmation Key
+
+        $user->setConfirmationKey(null);
+        $user->setEnabled($this->getConfigTypeProperty(Configuration::TYPE_CONFIRMATION, Configuration::ACTIVATE_USER));
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        // Event
+        $event = new CommunityEvent($user, $this->config);
+        $this->eventDispatcher->dispatch(self::EVENT_CONFIRMED, $event);
+
+        return $user;
     }
 
     /**
@@ -251,7 +283,7 @@ class CommunityManager
      */
     public function getConfigProperty($property)
     {
-        if (!isset($this->config[$property])) {
+        if (!array_key_exists($property, $this->config)) {
             throw new \Exception(
                 sprintf(
                     'Property "%s" not found for webspace "%s" in Community Manager.',
@@ -275,8 +307,8 @@ class CommunityManager
     public function getConfigTypeProperty($type, $property)
     {
         if (
-            !isset($this->config[$type])
-            || !isset($this->config[$type][$property])
+            !array_key_exists($type, $this->config)
+            || !array_key_exists($property, $this->config[$type])
         ) {
             throw new \Exception(
                 sprintf(

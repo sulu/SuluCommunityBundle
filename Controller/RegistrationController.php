@@ -30,21 +30,7 @@ class RegistrationController extends AbstractController
         );
 
         $form->handleRequest($request);
-
-        // TODO remove this is for testing
-        $user = $this->get('sulu.repository.user')->findOneBy(['username' => 'adsfasdf']);
-
-        $token = new UsernamePasswordToken($user, null, 'example', $user->getRoles());
-        $this->get('security.context')->setToken($token); //now the user is logged in
-
-        $session = $request->getSession();
-        $session->set('_security_'.'example', serialize($token));
-        $session->save();
-
-        //now dispatch the login event
-        $event = new InteractiveLoginEvent($request, $token);
-        $this->get('event_dispatcher')->dispatch('security.interactive_login', $event);
-        // End TOD
+        $success = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
@@ -63,26 +49,28 @@ class RegistrationController extends AbstractController
             }
 
             // Register User
-            $user = $communityManager->register($form->getData());
-
+            $user = $communityManager->register($user);
 
             // Login User
-            if ($user->getEnabled()
-                && $communityManager->getConfigTypeProperty(Configuration::TYPE_REGISTRATION, Configuration::AUTO_LOGIN)
-            ) {
+            if ($communityManager->getConfigTypeProperty(Configuration::TYPE_REGISTRATION, Configuration::AUTO_LOGIN)) {
                 $communityManager->login($user, $request);
             }
 
+            $success = true;
+
             // Redirect
-            return $this->redirect(
-                $communityManager->getConfigTypeProperty(self::TYPE, Configuration::REDIRECT_TO)
-            );
+            $redirectTo = $communityManager->getConfigTypeProperty(self::TYPE, Configuration::REDIRECT_TO);
+
+            if ($redirectTo) {
+                return $this->redirect($redirectTo);
+            }
         }
 
         return $this->render(
-            $communityManager->getConfigTypeProperty(self::TYPE, Configuration::FORM_TEMPLATE),
+            $communityManager->getConfigTypeProperty(self::TYPE, Configuration::TEMPLATE),
             [
                 'form' => $form->createView(),
+                'success' => $success,
             ]
         );
     }

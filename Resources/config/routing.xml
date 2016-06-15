@@ -7,4 +7,8 @@
     <route id="sulu_community.registration" path="/registration">
         <default key="_controller">SuluCommunityBundle:Registration:index</default>
     </route>
+
+    <route id="sulu_community.confirmation" path="/confirmation/{token}">
+        <default key="_controller">SuluCommunityBundle:Confirmation:index</default>
+    </route>
 </routes>
