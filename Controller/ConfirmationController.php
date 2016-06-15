@@ -11,6 +11,7 @@ class ConfirmationController extends AbstractController
 
     /**
      * @param Request $request
+     * @param string $token
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

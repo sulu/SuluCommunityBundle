@@ -67,19 +67,15 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode(self::TYPE_LOGIN)
                                 ->addDefaultsIfNotSet()
                                 ->children()
-                                    // Login Form Configuration
+                                    // Login configuration
                                     ->scalarNode(self::TEMPLATE)->defaultValue('community/login.html.twig')->end()
-                                    ->scalarNode(self::FORM_TYPE)->defaultValue(LoginType::class)->end()
-                                    ->arrayNode(self::FORM_TYPE_OPTIONS)
-                                        ->addDefaultsIfNotSet()
-                                    ->end()
                                 ->end()
                             ->end()
                             // Registration
                             ->arrayNode(self::TYPE_REGISTRATION)
                                 ->addDefaultsIfNotSet()
                                 ->children()
-                                    // Registration Form Configuration
+                                    // Registration configuration
                                     ->scalarNode(self::TEMPLATE)->defaultValue('community/registration.html.twig')->end()
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(RegistrationType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
@@ -102,6 +98,7 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode(self::TYPE_CONFIRMATION)
                                 ->addDefaultsIfNotSet()
                                 ->children()
+                                    // Confirmation configuration
                                     ->scalarNode(self::TEMPLATE)->defaultValue('community/confirmation.html.twig')->end()
                                     ->scalarNode(self::ACTIVATE_USER)->defaultValue(true)->end()
                                     ->scalarNode(self::AUTO_LOGIN)->defaultValue(true)->end()
