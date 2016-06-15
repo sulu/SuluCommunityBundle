@@ -4,7 +4,9 @@
     <h1>{{ 'Registration'|trans }}</h1>
 
     {% if app.request.get('send') == 'true' %}
-        {{ 'registration_finished'|trans }}
+        <p>
+            {{ 'registration_finished'|trans }}
+        </p>
     {% else %}
         {{ form(form) }}
     {% endif %}
