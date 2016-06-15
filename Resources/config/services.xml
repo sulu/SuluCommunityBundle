@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter type="constant" key="sulu_community.event.registered">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_REGISTERED</parameter>
+        <parameter type="constant" key="sulu_community.event.confirmed">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_CONFIRMED</parameter>
     </parameters>
 
     <services>
@@ -15,6 +16,7 @@
             <argument type="service" id="templating" />
 
             <tag name="kernel.event_listener" event="%sulu_community.event.registered%" method="sendRegistrationEmails" />
+            <tag name="kernel.event_listener" event="%sulu_community.event.confirmed%" method="sendConfirmationEmails" />
         </service>
     </services>
 </container>

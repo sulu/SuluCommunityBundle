@@ -33,12 +33,10 @@ class Configuration implements ConfigurationInterface
         self::TYPE_CONFIRMATION,
     ];
 
-    // Form configuration
-    const FORM_TEMPLATE = 'template';
+    // Type configurations
+    const TEMPLATE = 'template';
     const FORM_TYPE = 'type';
     const FORM_TYPE_OPTIONS = 'options';
-
-    // Other type configurations
     const ACTIVATE_USER = 'activate_user';
     const AUTO_LOGIN = 'auto_login';
     const REDIRECT_TO = 'redirect_to';
@@ -70,7 +68,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Login Form Configuration
-                                    ->scalarNode(self::FORM_TEMPLATE)->defaultValue('community/login.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('community/login.html.twig')->end()
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(LoginType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()
@@ -81,21 +79,39 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode(self::TYPE_REGISTRATION)
                                 ->addDefaultsIfNotSet()
                                 ->children()
-                                    // Login Form Configuration
-                                    ->scalarNode(self::FORM_TEMPLATE)->defaultValue('community/registration.html.twig')->end()
+                                    // Registration Form Configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('community/registration.html.twig')->end()
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(RegistrationType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()
                                     ->end()
-                                    ->scalarNode(self::ACTIVATE_USER)->defaultValue(true)->end()
+                                    ->scalarNode(self::ACTIVATE_USER)->defaultValue(false)->end()
                                     ->scalarNode(self::AUTO_LOGIN)->defaultValue(true)->end()
                                     ->scalarNode(self::REDIRECT_TO)->defaultValue('?send=true')->end()
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()
-                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Registration')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('community/registration-email.html.twig')->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Confirmation
+                            ->arrayNode(self::TYPE_CONFIRMATION)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('community/confirmation.html.twig')->end()
+                                    ->scalarNode(self::ACTIVATE_USER)->defaultValue(true)->end()
+                                    ->scalarNode(self::AUTO_LOGIN)->defaultValue(true)->end()
+                                    ->scalarNode(self::REDIRECT_TO)->defaultValue(null)->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Confirmation')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
                                         ->end()
                                     ->end()
                                 ->end()

@@ -48,7 +48,20 @@ class MailListener
     public function sendRegistrationEmails(CommunityEvent $event)
     {
         $mailSettings = $this->getMailSettings($event->getConfig(), Configuration::TYPE_REGISTRATION);
-        
+
+        $this->sendEmails(
+            $mailSettings,
+            $event->getUser()
+        );
+    }
+
+    /**
+     * @param CommunityEvent $event
+     */
+    public function sendConfirmationEmails(CommunityEvent $event)
+    {
+        $mailSettings = $this->getMailSettings($event->getConfig(), Configuration::TYPE_CONFIRMATION);
+
         $this->sendEmails(
             $mailSettings,
             $event->getUser()
@@ -114,8 +127,8 @@ class MailListener
     }
 
     /**
-     * @param $config
-     * @param $type
+     * @param array $config
+     * @param string $type
      *
      * @return array
      */
