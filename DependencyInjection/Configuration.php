@@ -2,7 +2,6 @@
 
 namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 
-use Sulu\Bundle\CommunityBundle\Form\Type\LoginType;
 use Sulu\Bundle\CommunityBundle\Form\Type\RegistrationType;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
