@@ -1,0 +1,5 @@
+{% set url = url('sulu_community.confirmation', { token: user.confirmationKey, host: app.request.host, prefix: '' }) %}
+
+<a href="{{ url }}">
+    {{ url }}
+</a>
