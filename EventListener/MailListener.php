@@ -138,10 +138,8 @@ class MailListener
             Configuration::EMAIL_FROM => $config[Configuration::EMAIL_FROM],
             Configuration::EMAIL_TO => $config[Configuration::EMAIL_TO],
             Configuration::EMAIL_SUBJECT => $config[$type][Configuration::EMAIL][Configuration::EMAIL_SUBJECT],
-            Configuration::EMAIL_USER_TEMPLATE =>
-                $config[$type][Configuration::EMAIL][Configuration::EMAIL_USER_TEMPLATE],
-            Configuration::EMAIL_ADMIN_TEMPLATE =>
-                $config[$type][Configuration::EMAIL][Configuration::EMAIL_ADMIN_TEMPLATE],
+            Configuration::EMAIL_USER_TEMPLATE => $config[$type][Configuration::EMAIL][Configuration::EMAIL_USER_TEMPLATE],
+            Configuration::EMAIL_ADMIN_TEMPLATE => $config[$type][Configuration::EMAIL][Configuration::EMAIL_ADMIN_TEMPLATE],
         ];
     }
 }
