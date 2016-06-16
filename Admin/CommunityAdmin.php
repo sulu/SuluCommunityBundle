@@ -35,7 +35,27 @@ class CommunityAdmin extends Admin
     {
         $this->securityChecker = $securityChecker;
 
-        $this->setNavigation(new Navigation(new NavigationItem($title)));
+        $rootNavigationItem = new NavigationItem($title);
+        $section = new NavigationItem('navigation.modules');
+        $section->setPosition(20);
+
+        $settings = new NavigationItem('navigation.settings');
+        $settings->setPosition(40);
+        $settings->setIcon('settings');
+
+        if ($this->securityChecker->hasPermission('sulu.community.blacklist', 'view')) {
+            $roles = new NavigationItem('navigation.settings.blacklist', $settings);
+            $roles->setPosition(30);
+            $roles->setAction('settings/blacklist');
+            $roles->setIcon('ban');
+        }
+
+        if ($settings->hasChildren()) {
+            $section->addChild($settings);
+            $rootNavigationItem->addChild($section);
+        }
+
+        $this->setNavigation(new Navigation($rootNavigationItem));
     }
 
     /**
