@@ -37,6 +37,9 @@ class ConfirmationController extends AbstractController
 
         // Confirm user by token
         if ($user = $communityManager->confirm($token)) {
+            // Save User
+            $this->saveEntities();
+
             // Login
             if ($this->checkAutoLogin(Configuration::TYPE_CONFIRMATION)) {
                 $communityManager->login($user, $request);

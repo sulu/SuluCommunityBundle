@@ -19,11 +19,17 @@
                  abstract="true">
             <argument/>
             <argument/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="sulu_security.token_generator"/>
+            <argument type="service" id="sulu_community.user_manager" />
+        </service>
+
+        <!-- User Manager -->
+        <service id="sulu_community.user_manager"
+                 class="Sulu\Bundle\CommunityBundle\Manager\UserManager">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument type="service" id="sulu_security.token_generator"/>
             <argument type="service" id="sulu.repository.user"/>
             <argument type="service" id="sulu.repository.role"/>
             <argument type="service" id="sulu.repository.contact"/>

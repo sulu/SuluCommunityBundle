@@ -29,7 +29,7 @@ abstract class AbstractController extends Controller
     private $communityManagers;
 
     /**
-     * @var
+     * @var string
      */
     private $webspaceKey;
 
@@ -86,6 +86,8 @@ abstract class AbstractController extends Controller
     }
 
     /**
+     * Check if user should be logged in.
+     *
      * @param string $type
      *
      * @return string
@@ -93,12 +95,14 @@ abstract class AbstractController extends Controller
     protected function checkAutoLogin($type)
     {
         return $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(
-            Configuration::TYPE_PASSWORD_RESET,
+            $type,
             Configuration::AUTO_LOGIN
         );
     }
 
     /**
+     * Render a specific type template.
+     *
      * @param string $type
      * @param array $data
      *
@@ -113,6 +117,14 @@ abstract class AbstractController extends Controller
             ),
             $data
         );
+    }
+
+    /**
+     * Save all persisted entities.
+     */
+    protected function saveEntities()
+    {
+        $this->get('doctrine.orm.entity_manager')->flush();
     }
 
     /**
