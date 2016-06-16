@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="
+        http://symfony.com/schema/dic/constraint-mapping
+        http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+    <!-- BaseUser -->
+    <class name="Sulu\Bundle\SecurityBundle\Entity\BaseUser">
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">username</option>
+            <option name="groups">
+                <value>registration</value>
+            </option>
+        </constraint>
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">email</option>
+            <option name="groups">
+                <value>registration</value>
+            </option>
+        </constraint>
+        <property name="username">
+            <constraint name="NotBlank">
+                <option name="groups">
+                    <value>registration</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="email">
+            <constraint name="Email">
+                <option name="groups">
+                    <value>registration</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
+    <!-- Contact -->
+    <class name="Sulu\Bundle\SecurityBundle\Entity\ContactInterface">
+        <property name="first_name">
+            <constraint name="NotBlank">
+                <option name="groups">
+                    <value>registration</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="last_name">
+            <constraint name="NotBlank">
+                <option name="groups">
+                    <value>registration</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
+    <!-- Address -->
+    <class name="Sulu\Bundle\SecurityBundle\Entity\Address">
+        <property name="country">
+            <constraint name="NotBlank">
+                <option name="groups">
+                    <value>registration</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+</constraint-mapping>
