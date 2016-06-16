@@ -30,6 +30,15 @@ sulu_community:
     resource: "@SuluCommunityBundle/Resources/config/routing.xml"
 ```
 
+**`app/config/admin/routing.yml`**:
+
+```yml
+sulu_community_api:
+    type: rest
+    resource: "@SuluCommunityBundle/Resources/config/routing_api.xml"
+    prefix: /admin/api
+```
+
 ### Webspace
 
 **`app/Resources/webspaces/<your_webspace>.xml`**:

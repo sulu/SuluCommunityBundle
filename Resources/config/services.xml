@@ -63,5 +63,13 @@
         <service id="sulu_community.build" class="Sulu\Bundle\CommunityBundle\Build\CommunityBuilder">
             <tag name="massive_build.builder"/>
         </service>
+
+        <!-- blacklisting -->
+        <service id="sulu_community.blacklisting.repository"
+                 class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository">
+            <factory service="doctrine.orm.entity_manager" method="getRepository"/>
+
+            <argument type="string">SuluCommunityBundle:BlacklistItem</argument>
+        </service>
     </services>
 </container>
