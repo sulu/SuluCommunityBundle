@@ -33,5 +33,10 @@
             <tag name="sulu.admin"/>
             <tag name="sulu.context" context="admin"/>
         </service>
+
+        <!-- builder -->
+        <service id="sulu_community.build" class="Sulu\Bundle\CommunityBundle\Build\CommunityBuilder">
+            <tag name="massive_build.builder"/>
+        </service>
     </services>
 </container>

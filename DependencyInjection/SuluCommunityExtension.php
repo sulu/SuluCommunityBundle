@@ -15,6 +15,7 @@ use Sulu\Bundle\CommunityBundle\Manager\CommunityManager;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
-class SuluCommunityExtension extends Extension
+class SuluCommunityExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -68,5 +69,36 @@ class SuluCommunityExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('validator.xml');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        if ($container->hasExtension('massive_build')) {
+            $container->prependExtensionConfig(
+                'massive_build',
+                [
+                    'targets' => [
+                        'prod' => [
+                            'dependencies' => [
+                                'community' => [],
+                            ],
+                        ],
+                        'dev' => [
+                            'dependencies' => [
+                                'community' => [],
+                            ],
+                        ],
+                        'maintain' => [
+                            'dependencies' => [
+                                'community' => [],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+        }
     }
 }

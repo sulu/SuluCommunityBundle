@@ -25,12 +25,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InitCommand extends ContainerAwareCommand
 {
+    const NAME = 'sulu:community:init';
+
     /**
      * {@inheritdoc}
      */
     public function configure()
     {
-        $this->setName('sulu:community:init')
+        $this->setName(self::NAME)
             ->setDescription('Create the user roles for the community.')
             ->addArgument('webspace', null, 'A specific webspace key.');
     }
