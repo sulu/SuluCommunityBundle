@@ -14,19 +14,25 @@ namespace Sulu\Bundle\CommunityBundle\Controller;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Handle registration page.
+ */
 class RegistrationController extends AbstractController
 {
     const TYPE = Configuration::TYPE_REGISTRATION;
 
     /**
+     * Handle registration form.
+     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request)
     {
-        $communityManager = $this->getCommunityManager();
+        $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 
         // Create Form
         $form = $this->createForm(
@@ -51,7 +57,7 @@ class RegistrationController extends AbstractController
             $user = $communityManager->register($user);
 
             // Login User
-            if ($communityManager->getConfigTypeProperty(Configuration::TYPE_REGISTRATION, Configuration::AUTO_LOGIN)) {
+            if ($this->checkAutoLogin(Configuration::TYPE_REGISTRATION)) {
                 $communityManager->login($user, $request);
             }
 
@@ -65,8 +71,8 @@ class RegistrationController extends AbstractController
             $success = true;
         }
 
-        return $this->render(
-            $communityManager->getConfigTypeProperty(self::TYPE, Configuration::TEMPLATE),
+        return $this->renderTemplate(
+            self::TYPE,
             [
                 'form' => $form->createView(),
                 'success' => $success,

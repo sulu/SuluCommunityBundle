@@ -13,20 +13,25 @@ namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Handles password forget and reset pages.
+ */
 class PasswordController extends AbstractController
 {
     /**
+     * Handles the forget form.
+     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Exception
+     * @return Response
      */
     public function forgetAction(Request $request)
     {
-        $communityManager = $this->getCommunityManager();
+        $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 
+        // Create Form
         $form = $this->createForm(
             $communityManager->getConfigTypeProperty(Configuration::TYPE_PASSWORD_FORGET, Configuration::FORM_TYPE),
             [],
@@ -40,8 +45,11 @@ class PasswordController extends AbstractController
         $success = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle form success
             $emailUsername = $form->get('email_username')->getData();
-            $user = $communityManager->passwordForget($emailUsername);
+
+            // Handle Password forget
+            $communityManager->passwordForget($emailUsername);
 
             $success = true;
 
@@ -56,8 +64,8 @@ class PasswordController extends AbstractController
             }
         }
 
-        return $this->render(
-            $communityManager->getConfigTypeProperty(Configuration::TYPE_PASSWORD_FORGET, Configuration::TEMPLATE),
+        return $this->renderTemplate(
+            Configuration::TYPE_PASSWORD_FORGET,
             [
                 'form' => $form->createView(),
                 'success' => $success,
@@ -69,18 +77,18 @@ class PasswordController extends AbstractController
      * @param Request $request
      * @param string $token
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function resetAction(Request $request, $token)
     {
-        $communityManager = $this->getCommunityManager();
+        $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 
         // Check valid token
         $user = $communityManager->loadUserByPasswordToken($token);
 
         if (!$user) {
-            return $this->render(
-                $communityManager->getConfigTypeProperty(Configuration::TYPE_PASSWORD_RESET, Configuration::TEMPLATE),
+            return $this->renderTemplate(
+                Configuration::TYPE_PASSWORD_RESET,
                 [
                     'form' => null,
                     'success' => false,
@@ -110,7 +118,7 @@ class PasswordController extends AbstractController
             $user = $communityManager->resetPassword($user);
 
             // Login
-            if ($communityManager->getConfigTypeProperty(Configuration::TYPE_PASSWORD_RESET, Configuration::AUTO_LOGIN)) {
+            if ($this->checkAutoLogin(Configuration::TYPE_PASSWORD_RESET)) {
                 $communityManager->login($user, $request);
             }
 
@@ -127,8 +135,8 @@ class PasswordController extends AbstractController
             $success = true;
         }
 
-        return $this->render(
-            $communityManager->getConfigTypeProperty(Configuration::TYPE_PASSWORD_RESET, Configuration::TEMPLATE),
+        return $this->renderTemplate(
+            Configuration::TYPE_PASSWORD_RESET,
             [
                 'form' => $form->createView(),
                 'success' => $success,

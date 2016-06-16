@@ -21,6 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Create the registration form type.
+ */
 class RegistrationType extends AbstractType
 {
     /**
@@ -30,9 +33,13 @@ class RegistrationType extends AbstractType
     {
         $builder->add('username', TextType::class);
         $builder->add('email', EmailType::class);
-        $builder->add('plainPassword', PasswordType::class, [
-            'mapped' => false,
-        ]);
+        $builder->add(
+            'plainPassword',
+            PasswordType::class,
+            [
+                'mapped' => false,
+            ]
+        );
 
         $builder->add(
             'contact',
@@ -40,10 +47,14 @@ class RegistrationType extends AbstractType
             $options['contact_type_options']
         );
 
-        $builder->add('terms', CheckboxType::class, [
-            'mapped' => false,
-            'required' => true,
-        ]);
+        $builder->add(
+            'terms',
+            CheckboxType::class,
+            [
+                'mapped' => false,
+                'required' => true,
+            ]
+        );
 
         $builder->add('submit', SubmitType::class);
     }
@@ -53,11 +64,13 @@ class RegistrationType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-            'contact_type' => RegistrationContactType::class,
-            'contact_type_options' => ['label' => false],
-            'validation_groups' => ['registration'],
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => User::class,
+                'contact_type' => RegistrationContactType::class,
+                'contact_type_options' => ['label' => false],
+                'validation_groups' => ['registration'],
+            ]
+        );
     }
 }

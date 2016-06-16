@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * This is the class that loads and manages your bundle configuration.
+ * This is the class that loads and manages community bundle configuration.
  *
  * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
@@ -54,7 +54,6 @@ class SuluCommunityExtension extends Extension
                         $webspaceKey,
                         new Reference('doctrine.orm.entity_manager'),
                         new Reference('event_dispatcher'),
-                        new Reference('security.authentication.manager'),
                         new Reference('security.token_storage'),
                         new Reference('sulu_security.token_generator'),
                         new Reference('sulu_core.webspace.webspace_manager'),

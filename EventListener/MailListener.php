@@ -17,6 +17,9 @@ use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * Send emails when specific events are thrown.
+ */
 class MailListener
 {
     /**
@@ -52,50 +55,54 @@ class MailListener
     }
 
     /**
+     * Send registration emails.
+     *
      * @param CommunityEvent $event
      */
     public function sendRegistrationEmails(CommunityEvent $event)
     {
-        $mailSettings = $this->getMailSettings($event->getConfig(), Configuration::TYPE_REGISTRATION);
-
-        $this->sendEmails(
-            $mailSettings,
-            $event->getUser()
-        );
+        $this->sendTypeEmails($event, Configuration::TYPE_REGISTRATION);
     }
 
     /**
+     * Send confirmation emails.
+     *
      * @param CommunityEvent $event
      */
     public function sendConfirmationEmails(CommunityEvent $event)
     {
-        $mailSettings = $this->getMailSettings($event->getConfig(), Configuration::TYPE_CONFIRMATION);
-
-        $this->sendEmails(
-            $mailSettings,
-            $event->getUser()
-        );
+        $this->sendTypeEmails($event, Configuration::TYPE_CONFIRMATION);
     }
 
     /**
+     * Send password forget emails.
+     *
      * @param CommunityEvent $event
      */
     public function sendPasswordForgetEmails(CommunityEvent $event)
     {
-        $mailSettings = $this->getMailSettings($event->getConfig(), Configuration::TYPE_PASSWORD_FORGET);
-
-        $this->sendEmails(
-            $mailSettings,
-            $event->getUser()
-        );
+        $this->sendTypeEmails($event, Configuration::TYPE_PASSWORD_FORGET);
     }
 
     /**
+     * Send password reset emails.
+     *
      * @param CommunityEvent $event
      */
     public function sendPasswordResetEmails(CommunityEvent $event)
     {
-        $mailSettings = $this->getMailSettings($event->getConfig(), Configuration::TYPE_PASSWORD_RESET);
+        $this->sendTypeEmails($event, Configuration::TYPE_PASSWORD_RESET);
+    }
+
+    /**
+     * Send emails for specific type.
+     *
+     * @param CommunityEvent $event
+     * @param string $type
+     */
+    protected function sendTypeEmails(CommunityEvent $event, $type)
+    {
+        $mailSettings = $this->getMailSettings($event->getConfig(), $type);
 
         $this->sendEmails(
             $mailSettings,
@@ -104,6 +111,8 @@ class MailListener
     }
 
     /**
+     * Send emails by specific settings.
+     *
      * @param $mailSettings
      * @param BaseUser $user
      */
@@ -142,6 +151,8 @@ class MailListener
     }
 
     /**
+     * Create and send email.
+     *
      * @param string|array $from
      * @param string|array $to
      * @param string $subject
@@ -162,6 +173,8 @@ class MailListener
     }
 
     /**
+     * Get mail settings for specific type.
+     *
      * @param array $config
      * @param string $type
      *
@@ -169,12 +182,14 @@ class MailListener
      */
     protected static function getMailSettings($config, $type)
     {
+        $emailSettings = $config[$type][Configuration::EMAIL];
+
         return [
             Configuration::EMAIL_FROM => $config[Configuration::EMAIL_FROM],
             Configuration::EMAIL_TO => $config[Configuration::EMAIL_TO],
-            Configuration::EMAIL_SUBJECT => $config[$type][Configuration::EMAIL][Configuration::EMAIL_SUBJECT],
-            Configuration::EMAIL_USER_TEMPLATE => $config[$type][Configuration::EMAIL][Configuration::EMAIL_USER_TEMPLATE],
-            Configuration::EMAIL_ADMIN_TEMPLATE => $config[$type][Configuration::EMAIL][Configuration::EMAIL_ADMIN_TEMPLATE],
+            Configuration::EMAIL_SUBJECT => $emailSettings[Configuration::EMAIL_SUBJECT],
+            Configuration::EMAIL_USER_TEMPLATE => $emailSettings[Configuration::EMAIL_USER_TEMPLATE],
+            Configuration::EMAIL_ADMIN_TEMPLATE => $emailSettings[Configuration::EMAIL_ADMIN_TEMPLATE],
         ];
     }
 }

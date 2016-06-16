@@ -30,6 +30,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
+/**
+ * Handles registration, confirmation, password reset and forget.
+ */
 class CommunityManager
 {
     const EVENT_REGISTERED = 'sulu.community.registered';
@@ -56,11 +59,6 @@ class CommunityManager
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
-
-    /**
-     * @var AuthenticationManagerInterface
-     */
-    protected $authenticationManager;
 
     /**
      * @var TokenStorageInterface
@@ -99,7 +97,6 @@ class CommunityManager
      * @param string $webspaceKey
      * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
-     * @param AuthenticationManagerInterface $authenticationManager
      * @param TokenStorageInterface $tokenStorage
      * @param TokenGeneratorInterface $tokenGenerator
      * @param WebspaceManagerInterface $webspaceManager
@@ -112,7 +109,6 @@ class CommunityManager
         $webspaceKey,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
-        AuthenticationManagerInterface $authenticationManager,
         TokenStorageInterface $tokenStorage,
         TokenGeneratorInterface $tokenGenerator,
         WebspaceManagerInterface $webspaceManager,
@@ -124,7 +120,6 @@ class CommunityManager
         $this->webspaceKey = $webspaceKey;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->authenticationManager = $authenticationManager;
         $this->tokenStorage = $tokenStorage;
         $this->tokenGenerator = $tokenGenerator;
         $this->webspaceManager = $webspaceManager;
@@ -378,10 +373,7 @@ class CommunityManager
      */
     public function getConfigTypeProperty($type, $property)
     {
-        if (
-            !array_key_exists($type, $this->config)
-            || !array_key_exists($property, $this->config[$type])
-        ) {
+        if (!array_key_exists($type, $this->config) || !array_key_exists($property, $this->config[$type])) {
             throw new \Exception(
                 sprintf(
                     'Property "%s" from type "%s" not found for webspace "%s" in Community Manager.',

@@ -16,6 +16,9 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * A validator to check if a value exist in a database column.
+ */
 class ExistValidator extends ConstraintValidator
 {
     /**
@@ -38,12 +41,15 @@ class ExistValidator extends ConstraintValidator
             /** @var EntityRepository $repository */
             $repository = $this->entityManager->getRepository($constraint->entity);
             $qb = $repository->createQueryBuilder('u');
+
             foreach ($constraint->columns as $column) {
                 $qb->orWhere($qb->expr()->like('u.' . $column, ':value'));
             }
+
             $qb->setParameter('value', $value);
             $qb->setMaxResults(1);
             $result = $qb->getQuery()->getScalarResult();
+
             if (empty($result)) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('%string%', $value)

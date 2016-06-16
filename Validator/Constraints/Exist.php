@@ -13,6 +13,9 @@ namespace Sulu\Bundle\CommunityBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
+/**
+ * Constraint for the ExistValidator.
+ */
 class Exist extends Constraint
 {
     /**

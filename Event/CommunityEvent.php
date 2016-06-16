@@ -14,6 +14,9 @@ namespace Sulu\Bundle\CommunityBundle\Event;
 use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ *
+ */
 class CommunityEvent extends Event
 {
     /**
@@ -37,6 +40,8 @@ class CommunityEvent extends Event
     }
 
     /**
+     * Get user.
+     *
      * @return BaseUser
      */
     public function getUser()
@@ -45,6 +50,8 @@ class CommunityEvent extends Event
     }
 
     /**
+     * Get config.
+     *
      * @return array
      */
     public function getConfig()
@@ -53,6 +60,8 @@ class CommunityEvent extends Event
     }
 
     /**
+     * Get config property.
+     *
      * @param string $property
      *
      * @return mixed
@@ -63,6 +72,8 @@ class CommunityEvent extends Event
     }
 
     /**
+     * Get config type property.
+     *
      * @param string $property
      *
      * @return mixed

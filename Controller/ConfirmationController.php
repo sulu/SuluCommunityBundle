@@ -13,26 +13,32 @@ namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Handles the confirmation page.
+ */
 class ConfirmationController extends AbstractController
 {
     const TYPE = Configuration::TYPE_CONFIRMATION;
 
     /**
+     * Confirm user email address by token.
+     *
      * @param Request $request
      * @param string $token
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request, $token)
     {
-        $communityManager = $this->getCommunityManager();
-
+        $communityManager = $this->getCommunityManager($this->getWebspaceKey());
         $success = false;
 
+        // Confirm user by token
         if ($user = $communityManager->confirm($token)) {
             // Login
-            if ($communityManager->getConfigTypeProperty(Configuration::TYPE_REGISTRATION, Configuration::AUTO_LOGIN)) {
+            if ($this->checkAutoLogin(Configuration::TYPE_CONFIRMATION)) {
                 $communityManager->login($user, $request);
             }
 
@@ -46,11 +52,6 @@ class ConfirmationController extends AbstractController
             $success = true;
         }
 
-        return $this->render(
-            $communityManager->getConfigTypeProperty(self::TYPE, Configuration::TEMPLATE),
-            [
-                'success' => $success,
-            ]
-        );
+        return $this->renderTemplate(Configuration::TYPE_CONFIRMATION, ['success' => $success]);
     }
 }
