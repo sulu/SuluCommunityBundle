@@ -15,7 +15,7 @@ use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- *
+ * Event for community actions with config and the user which throw the event.
  */
 class CommunityEvent extends Event
 {

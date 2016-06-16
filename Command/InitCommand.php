@@ -11,7 +11,6 @@
 
 namespace Sulu\Bundle\CommunityBundle\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManager;
 use Sulu\Bundle\SecurityBundle\Entity\Role;

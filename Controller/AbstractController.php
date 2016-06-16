@@ -19,7 +19,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Contains
+ * Contains helper function for all controllers.
  */
 abstract class AbstractController extends Controller
 {
