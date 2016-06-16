@@ -1,0 +1,3 @@
+sulu_community:
+    type: portal
+    resource: "@SuluCommunityBundle/Resources/config/routing.xml"

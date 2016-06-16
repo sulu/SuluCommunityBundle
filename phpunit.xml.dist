@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="vendor/autoload.php">
+<phpunit colors="true" bootstrap="Tests/bootstrap.php">
    <testsuites>
         <testsuite name="Sulu Community Bundle">
             <directory>./Tests</directory>
@@ -16,4 +16,8 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <php>
+        <server name="KERNEL_DIR" value="Tests/app"/>
+    </php>
 </phpunit>
