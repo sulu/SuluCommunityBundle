@@ -69,6 +69,32 @@ class MailListener
     }
 
     /**
+     * @param CommunityEvent $event
+     */
+    public function sendPasswordForgetEmails(CommunityEvent $event)
+    {
+        $mailSettings = $this->getMailSettings($event->getConfig(), Configuration::TYPE_PASSWORD_FORGET);
+
+        $this->sendEmails(
+            $mailSettings,
+            $event->getUser()
+        );
+    }
+
+    /**
+     * @param CommunityEvent $event
+     */
+    public function sendPasswordResetEmails(CommunityEvent $event)
+    {
+        $mailSettings = $this->getMailSettings($event->getConfig(), Configuration::TYPE_PASSWORD_RESET);
+
+        $this->sendEmails(
+            $mailSettings,
+            $event->getUser()
+        );
+    }
+
+    /**
      * @param $mailSettings
      * @param BaseUser $user
      */

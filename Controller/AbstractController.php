@@ -3,7 +3,9 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManager;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractController extends Controller
@@ -29,6 +31,24 @@ abstract class AbstractController extends Controller
         }
 
         return $this->communityManager;
+    }
+
+    /**
+     * @param User $user
+     * @param Form $form
+     *
+     * @return User
+     */
+    public function setUserPasswordAndSalt(User $user, Form $form)
+    {
+        $salt = $this->get('sulu_security.salt_generator')->getRandomSalt();
+        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+        $password = $encoder->encodePassword($form->get('plainPassword')->getData(), $salt);
+
+        $user->setPassword($password);
+        $user->setSalt($salt);
+
+        return $user;
     }
 
     /**

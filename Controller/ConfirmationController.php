@@ -22,8 +22,6 @@ class ConfirmationController extends AbstractController
         $success = false;
 
         if ($user = $communityManager->confirm($token)) {
-            $success = true;
-
             // Login
             if ($communityManager->getConfigTypeProperty(Configuration::TYPE_REGISTRATION, Configuration::AUTO_LOGIN)) {
                 $communityManager->login($user, $request);
@@ -35,6 +33,8 @@ class ConfirmationController extends AbstractController
             if ($redirectTo) {
                 return $this->redirect($redirectTo);
             }
+            
+            $success = true;
         }
 
         return $this->render(

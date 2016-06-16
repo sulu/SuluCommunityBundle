@@ -2,6 +2,8 @@
 
 namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 
+use Sulu\Bundle\CommunityBundle\Form\Type\PasswordForgetType;
+use Sulu\Bundle\CommunityBundle\Form\Type\PasswordResetType;
 use Sulu\Bundle\CommunityBundle\Form\Type\RegistrationType;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -25,6 +27,8 @@ class Configuration implements ConfigurationInterface
     const TYPE_LOGIN = 'login';
     const TYPE_REGISTRATION = 'registration';
     const TYPE_CONFIRMATION = 'confirmation';
+    const TYPE_PASSWORD_FORGET = 'password_forget';
+    const TYPE_PASSWORD_RESET = 'password_reset';
 
     public static $TYPES = [
         self::TYPE_LOGIN,
@@ -110,6 +114,49 @@ class Configuration implements ConfigurationInterface
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Confirmation')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Password Forget
+                            ->arrayNode(self::TYPE_PASSWORD_FORGET)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Password Forget configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('community/password-forget.html.twig')->end()
+                                    ->scalarNode(self::FORM_TYPE)->defaultValue(PasswordForgetType::class)->end()
+                                    ->arrayNode(self::FORM_TYPE_OPTIONS)
+                                        ->addDefaultsIfNotSet()
+                                    ->end()
+                                    ->scalarNode(self::REDIRECT_TO)->defaultValue('?send=true')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Password Forget')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('community/password-forget-email.html.twig')->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Password Forget
+                            ->arrayNode(self::TYPE_PASSWORD_RESET)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Password Forget configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('community/password-reset.html.twig')->end()
+                                    ->scalarNode(self::FORM_TYPE)->defaultValue(PasswordResetType::class)->end()
+                                    ->arrayNode(self::FORM_TYPE_OPTIONS)
+                                        ->addDefaultsIfNotSet()
+                                    ->end()
+                                    ->scalarNode(self::AUTO_LOGIN)->defaultValue(true)->end()
+                                    ->scalarNode(self::REDIRECT_TO)->defaultValue('?send=true')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Password Reset')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('community/password-reset-email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()

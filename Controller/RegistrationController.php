@@ -14,13 +14,12 @@ class RegistrationController extends AbstractController
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Exception
      */
     public function indexAction(Request $request)
     {
         $communityManager = $this->getCommunityManager();
 
+        // Create Form
         $form = $this->createForm(
             $communityManager->getConfigTypeProperty(self::TYPE, Configuration::FORM_TYPE),
             $this->get('sulu.repository.user')->createNew(),
@@ -30,17 +29,10 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
         $success = false;
 
+        // Handle Form Success
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
-            $user = $form->getData();
-
             // Set Password and Salt
-            $encoder = $this->get('security.encoder_factory')->getEncoder($user);
-            $salt = $this->get('sulu_security.salt_generator')->getRandomSalt();
-            $password = $encoder->encodePassword($form->get('plainPassword')->getData(), $salt);
-
-            $user->setPassword($password);
-            $user->setSalt($salt);
+            $user = $this->setUserPasswordAndSalt($form->getData(), $form);
 
             if (!$user->getLocale()) {
                 $user->setLocale($request->getLocale());
@@ -54,14 +46,14 @@ class RegistrationController extends AbstractController
                 $communityManager->login($user, $request);
             }
 
-            $success = true;
-
             // Redirect
             $redirectTo = $communityManager->getConfigTypeProperty(self::TYPE, Configuration::REDIRECT_TO);
 
             if ($redirectTo) {
                 return $this->redirect($redirectTo);
             }
+
+            $success = true;
         }
 
         return $this->render(

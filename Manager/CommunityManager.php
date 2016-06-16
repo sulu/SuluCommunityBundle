@@ -25,6 +25,8 @@ class CommunityManager
 {
     const EVENT_REGISTERED = 'sulu.community.registered';
     const EVENT_CONFIRMED = 'sulu.community.confirmed';
+    const EVENT_PASSWORD_FORGOT = 'sulu.community.password_forgot';
+    const EVENT_PASSWORD_RESETED = 'sulu.community.password_reseted';
 
     /**
      * @var array
@@ -148,7 +150,7 @@ class CommunityManager
         );
 
         // Create Confirmation Key
-        $user->setConfirmationKey($this->getUniqueConfirmationKey());
+        $user->setConfirmationKey($this->getUniqueKey('confirmationKey'));
 
         // User needs contact
         $contact = $user->getContact();
@@ -227,7 +229,6 @@ class CommunityManager
         }
 
         // Remove Confirmation Key
-
         $user->setConfirmationKey(null);
         $user->setEnabled($this->getConfigTypeProperty(Configuration::TYPE_CONFIRMATION, Configuration::ACTIVATE_USER));
         $this->entityManager->persist($user);
@@ -236,6 +237,68 @@ class CommunityManager
         // Event
         $event = new CommunityEvent($user, $this->config);
         $this->eventDispatcher->dispatch(self::EVENT_CONFIRMED, $event);
+
+        return $user;
+    }
+
+    public function passwordForget($emailUsername)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findUserByIdentifier($emailUsername);
+
+        if (!$user) {
+            return;
+        }
+
+        $user->setPasswordResetToken($this->getUniqueKey('passwordResetToken'));
+        $expireDateTime = (new \DateTime())->add(new \DateInterval('PT24H'));
+        $user->setPasswordResetTokenExpiresAt($expireDateTime);
+        $user->setPasswordResetTokenEmailsSent(
+            $user->getPasswordResetTokenEmailsSent() + 1
+        );
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        // Event
+        $event = new CommunityEvent($user, $this->config);
+        $this->eventDispatcher->dispatch(self::EVENT_PASSWORD_FORGOT, $event);
+
+        return $user;
+    }
+
+    /**
+     * @param $token
+     *
+     * @return User
+     */
+    public function loadUserByPasswordToken($token)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
+        if (!$user || $user->getPasswordResetTokenExpiresAt() < new \DateTime()) {
+            return;
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return User
+     */
+    public function resetPassword(User $user)
+    {
+        $user->setPasswordResetTokenExpiresAt(null);
+        $user->setPasswordResetToken(null);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        // Event
+        $event = new CommunityEvent($user, $this->config);
+        $this->eventDispatcher->dispatch(self::EVENT_PASSWORD_RESETED, $event);
 
         return $user;
     }
@@ -326,13 +389,13 @@ class CommunityManager
     /**
      * @return string
      */
-    protected function getUniqueConfirmationKey()
+    protected function getUniqueKey($field)
     {
         $token = $this->tokenGenerator->generateToken();
-        $user = $this->userRepository->findOneBy(['confirmationKey' => $token]);
+        $user = $this->userRepository->findOneBy([$field => $token]);
 
         if ($user) {
-            return $this->getUniqueConfirmationKey();
+            return $this->getUniqueKey($field);
         }
 
         return $token;

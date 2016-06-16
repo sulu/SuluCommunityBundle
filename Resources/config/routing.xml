@@ -12,6 +12,14 @@
         <default key="_controller">SuluCommunityBundle:Confirmation:index</default>
     </route>
 
+    <route id="sulu_community.password_forget" path="/password-forget">
+        <default key="_controller">SuluCommunityBundle:Password:forget</default>
+    </route>
+
+    <route id="sulu_community.password_reset" path="/password-reset/{token}">
+        <default key="_controller">SuluCommunityBundle:Password:reset</default>
+    </route>
+
     <route id="sulu_community.login" path="/login">
         <default key="_controller">SuluCommunityBundle:Login:index</default>
     </route>
