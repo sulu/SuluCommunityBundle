@@ -24,5 +24,14 @@
             <tag name="kernel.event_listener" event="%sulu_community.event.password_forgot%" method="sendPasswordForgetEmails" />
             <tag name="kernel.event_listener" event="%sulu_community.event.password_reseted%" method="sendPasswordResetEmails" />
         </service>
+
+        <!-- sulu-admin -->
+        <service id="sulu_community.admin" class="Sulu\Bundle\CommunityBundle\Admin\CommunityAdmin">
+            <argument type="service" id="sulu_security.security_checker"/>
+            <argument>%sulu_admin.name%</argument>
+
+            <tag name="sulu.admin"/>
+            <tag name="sulu.context" context="admin"/>
+        </service>
     </services>
 </container>
