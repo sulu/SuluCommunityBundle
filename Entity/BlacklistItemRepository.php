@@ -18,4 +18,17 @@ use Sulu\Component\Persistence\Repository\ORM\EntityRepository;
  */
 class BlacklistItemRepository extends EntityRepository
 {
+    /**
+     * @param string $email
+     *
+     * @return BlacklistItem[]
+     */
+    public function findBySender($email)
+    {
+        $queryBuilder = $this->createQueryBuilder('entity')
+            ->where('REGEXP(:email, entity.regexp) = true')
+            ->setParameter('email', $email);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

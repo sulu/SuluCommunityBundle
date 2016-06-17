@@ -11,6 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 
+use DoctrineExtensions\Query\Mysql\Regexp;
 use Sulu\Bundle\CommunityBundle\Entity\InvalidTypeException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -92,6 +93,21 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
                             [
                                 'path' => __DIR__ . '/../Resources/config/serializer',
                                 'namespace_prefix' => 'Sulu\Bundle\CommunityBundle\Entity',
+                            ],
+                        ],
+                    ],
+                ]
+            );
+        }
+
+        if ($container->hasExtension('doctrine')) {
+            $container->prependExtensionConfig(
+                'doctrine',
+                [
+                    'orm' => [
+                        'dql' => [
+                            'string_functions' => [
+                                'regexp' => RegExp::class,
                             ],
                         ],
                     ],
