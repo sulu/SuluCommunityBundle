@@ -17,6 +17,8 @@ before_install:
 install:
   - travis_retry composer install --no-interaction
   - composer info -i
+  - ./Tests/app/console doctrine:database:create
+  - ./Tests/app/console doctrine:schema:update --force
 
 script:
   - ./vendor/bin/phpunit
