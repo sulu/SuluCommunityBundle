@@ -1,0 +1,50 @@
+parameters:
+    secret: test
+
+framework:
+    router: { resource: "%kernel.root_dir%/config/routing_website.yml" }
+
+sulu_community:
+    webspaces:
+        sulu_io: ~
+
+security:
+    session_fixation_strategy: none
+
+    access_decision_manager:
+        strategy: affirmative
+
+    acl:
+        connection: default
+
+    encoders:
+        Sulu\Bundle\SecurityBundle\Entity\User:
+            algorithm: sha512
+            iterations: 5000
+            encode_as_base64: false
+
+    providers:
+        sulu:
+            id: sulu_security.user_provider
+
+    access_control:
+       - { path: /profile, roles: ROLE_USER }
+
+    firewalls:
+        sulu_io:
+            pattern: ^/
+            anonymous: ~
+            form_login:
+                login_path: sulu_community.login
+                check_path: sulu_community.login
+            logout:
+                path: sulu_community.logout
+                target: sulu_community.login
+            remember_me:
+                secret:   '%secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+
+sulu_security:
+    checker:
+        enabled: true

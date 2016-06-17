@@ -2,16 +2,14 @@
 /app/phpunit.xml
 /phpunit.xml
 
-# Composer PHAR
+# composer
 /composer.phar
+/composer.lock
 /auth.json
+/vendor
 
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
-
-# composer
-/composer.phar
-/vendor
 
 # IDEs
 .idea/*
@@ -27,3 +25,8 @@ bower_components/
 .sass-cache/
 node_modules/
 npm-debug.log
+
+# tests
+Tests/app/cache
+Tests/app/logs
+
