@@ -50,10 +50,10 @@ class MailFactory implements MailFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function sendEmails(Mail $mail, BaseUser $user)
+    public function sendEmails(Mail $mail, BaseUser $user, $parameters = [])
     {
         $email = $user->getEmail();
-        $data = ['user' => $user];
+        $data = array_merge($parameters, ['user' => $user]);
 
         // Send User Email
         if (null !== $mail->getUserTemplate()) {

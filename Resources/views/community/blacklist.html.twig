@@ -1,0 +1,5 @@
+{% extends "master.html.twig" %}
+
+{% block content %}
+    User "{{ user.email }}" {% if confirmed %}confirmed{% else %}denied{% endif %}
+{% endblock %}

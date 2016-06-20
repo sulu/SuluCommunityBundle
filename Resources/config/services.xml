@@ -42,12 +42,21 @@
             <argument type="service" id="sulu_community.mail_factory"/>
 
             <tag name="kernel.event_listener" event="%sulu_community.event.registered%"
-                 method="sendRegistrationEmails"/>
+                 method="sendRegistrationEmails" priority="50"/>
             <tag name="kernel.event_listener" event="%sulu_community.event.confirmed%" method="sendConfirmationEmails"/>
             <tag name="kernel.event_listener" event="%sulu_community.event.password_forgot%"
                  method="sendPasswordForgetEmails"/>
             <tag name="kernel.event_listener" event="%sulu_community.event.password_reseted%"
                  method="sendPasswordResetEmails"/>
+        </service>
+        <service id="sulu_community.black_listener" class="Sulu\Bundle\CommunityBundle\EventListener\BlacklistListener">
+            <argument type="service" id="sulu_community.blacklisting.item_repository"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="sulu_security.token_generator"/>
+            <argument type="service" id="sulu_community.mail_factory"/>
+
+            <tag name="kernel.event_listener" event="%sulu_community.event.registered%" method="validateEmail"
+                 priority="51"/>
         </service>
 
         <!-- sulu-admin -->
@@ -65,11 +74,17 @@
         </service>
 
         <!-- blacklisting -->
-        <service id="sulu_community.blacklisting.repository"
+        <service id="sulu_community.blacklisting.item_repository"
                  class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
             <argument type="string">SuluCommunityBundle:BlacklistItem</argument>
+        </service>
+        <service id="sulu_community.blacklisting.user_repository"
+                 class="Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository">
+            <factory service="doctrine.orm.entity_manager" method="getRepository"/>
+
+            <argument type="string">SuluCommunityBundle:BlacklistUser</argument>
         </service>
 
         <!-- mailing -->

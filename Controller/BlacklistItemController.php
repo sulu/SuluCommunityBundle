@@ -24,6 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Provides admin-api for blacklist-items.
+ *
  * @RouteResource("blacklist-item")
  */
 class BlacklistItemController extends RestController implements ClassResourceInterface
@@ -82,7 +84,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      */
     public function getAction($id)
     {
-        $repository = $this->get('sulu_community.blacklisting.repository');
+        $repository = $this->get('sulu_community.blacklisting.item_repository');
 
         return $this->handleView($this->view($repository->find($id)));
     }
@@ -96,7 +98,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      */
     public function postAction(Request $request)
     {
-        $repository = $this->get('sulu_community.blacklisting.repository');
+        $repository = $this->get('sulu_community.blacklisting.item_repository');
         $entityManager = $this->get('doctrine.orm.entity_manager');
 
         $item = $repository->createNew()
@@ -148,7 +150,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
     }
 
     /**
-     * Creates a new item.
+     * Updates given item.
      *
      * @param int $id
      * @param Request $request
@@ -157,7 +159,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      */
     public function putAction($id, Request $request)
     {
-        $repository = $this->get('sulu_community.blacklisting.repository');
+        $repository = $this->get('sulu_community.blacklisting.item_repository');
         $entityManager = $this->get('doctrine.orm.entity_manager');
 
         $item = $repository->find($id)

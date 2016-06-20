@@ -38,6 +38,8 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             if ($webspaceConfig[Configuration::ROLE] === null) {
                 $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';
             }
+            
+            $webspaceConfig[Configuration::WEBSPACE_KEY] = $webspaceKey;
 
             $definition = new DefinitionDecorator('sulu_community.community_manager');
             $definition->replaceArgument(0, $webspaceConfig);

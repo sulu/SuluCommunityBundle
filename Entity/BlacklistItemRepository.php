@@ -19,6 +19,8 @@ use Sulu\Component\Persistence\Repository\ORM\EntityRepository;
 class BlacklistItemRepository extends EntityRepository
 {
     /**
+     * Returns items which matches given email.
+     *
      * @param string $email
      *
      * @return BlacklistItem[]
