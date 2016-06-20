@@ -10,18 +10,21 @@
             <option name="fields">username</option>
             <option name="groups">
                 <value>registration</value>
+                <value>completion</value>
             </option>
         </constraint>
         <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
             <option name="fields">email</option>
             <option name="groups">
                 <value>registration</value>
+                <value>completion</value>
             </option>
         </constraint>
         <property name="username">
             <constraint name="NotBlank">
                 <option name="groups">
                     <value>registration</value>
+                    <value>completion</value>
                 </option>
             </constraint>
         </property>
@@ -29,6 +32,7 @@
             <constraint name="Email">
                 <option name="groups">
                     <value>registration</value>
+                    <value>completion</value>
                 </option>
             </constraint>
             <constraint name="Sulu\Bundle\CommunityBundle\Validator\Constraints\Blocked">
@@ -45,6 +49,7 @@
             <constraint name="NotBlank">
                 <option name="groups">
                     <value>registration</value>
+                    <value>completion</value>
                 </option>
             </constraint>
         </property>
@@ -52,6 +57,7 @@
             <constraint name="NotBlank">
                 <option name="groups">
                     <value>registration</value>
+                    <value>completion</value>
                 </option>
             </constraint>
         </property>

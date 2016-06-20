@@ -59,6 +59,16 @@
                  priority="51"/>
         </service>
 
+        <!-- Completion Listener -->
+        <service id="sulu_community.completion_listener.abstract"
+                 class="Sulu\Bundle\CommunityBundle\EventListener\CompletionListener"
+                 abstract="true">
+            <argument type="service" id="sulu_core.webspace.request_analyzer" />
+            <argument type="service" id="router" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="collection" />
+        </service>
+
         <!-- sulu-admin -->
         <service id="sulu_community.admin" class="Sulu\Bundle\CommunityBundle\Admin\CommunityAdmin">
             <argument type="service" id="sulu_security.security_checker"/>
