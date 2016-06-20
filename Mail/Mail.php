@@ -1,0 +1,131 @@
+<?php
+
+/*
+ * This file is part of Sulu.
+ *
+ * (c) MASSIVE ART WebServices GmbH
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Sulu\Bundle\CommunityBundle\Mail;
+
+use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
+
+/**
+ * Contains information for sending emails.
+ */
+class Mail
+{
+    /**
+     * Get mail settings for specific type.
+     *
+     * @param string $from
+     * @param string $to
+     * @param array $config
+     *
+     * @return Mail
+     */
+    public static function create($from, $to, $config)
+    {
+        return new self(
+            $from,
+            $to,
+            $config[Configuration::EMAIL_SUBJECT],
+            $config[Configuration::EMAIL_USER_TEMPLATE],
+            $config[Configuration::EMAIL_ADMIN_TEMPLATE]
+        );
+    }
+
+    /**
+     * @var string
+     */
+    private $from;
+
+    /**
+     * @var string
+     */
+    private $to;
+
+    /**
+     * @var string
+     */
+    private $subject;
+
+    /**
+     * @var string|null
+     */
+    private $userTemplate;
+
+    /**
+     * @var string|null
+     */
+    private $adminTemplate;
+
+    /**
+     * @param string $from
+     * @param string $to
+     * @param string $subject
+     * @param null|string $userTemplate
+     * @param null|string $adminTemplate
+     */
+    public function __construct($from, $to, $subject, $userTemplate = null, $adminTemplate = null)
+    {
+        $this->from = $from;
+        $this->to = $to;
+        $this->subject = $subject;
+        $this->userTemplate = $userTemplate;
+        $this->adminTemplate = $adminTemplate;
+    }
+
+    /**
+     * Returns from.
+     *
+     * @return string
+     */
+    public function getFrom()
+    {
+        return $this->from;
+    }
+
+    /**
+     * Returns to.
+     *
+     * @return string
+     */
+    public function getTo()
+    {
+        return $this->to;
+    }
+
+    /**
+     * Returns subject.
+     *
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * Returns user-template.
+     *
+     * @return null|string
+     */
+    public function getUserTemplate()
+    {
+        return $this->userTemplate;
+    }
+
+    /**
+     * Returns admin-template.
+     *
+     * @return null|string
+     */
+    public function getAdminTemplate()
+    {
+        return $this->adminTemplate;
+    }
+}

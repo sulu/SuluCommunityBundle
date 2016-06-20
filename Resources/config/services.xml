@@ -22,6 +22,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="security.token_storage"/>
             <argument type="service" id="sulu_community.user_manager" />
+            <argument type="service" id="sulu_community.mail_factory" />
         </service>
 
         <!-- User Manager -->
@@ -33,13 +34,12 @@
             <argument type="service" id="sulu.repository.user"/>
             <argument type="service" id="sulu.repository.role"/>
             <argument type="service" id="sulu.repository.contact"/>
+            <argument type="service" id="sulu_community.mail_factory"/>
         </service>
 
-        <!-- Mail Listener -->
+        <!-- event-listener -->
         <service id="sulu_community.mail_listener" class="Sulu\Bundle\CommunityBundle\EventListener\MailListener">
-            <argument type="service" id="mailer"/>
-            <argument type="service" id="translator"/>
-            <argument type="service" id="templating"/>
+            <argument type="service" id="sulu_community.mail_factory"/>
 
             <tag name="kernel.event_listener" event="%sulu_community.event.registered%"
                  method="sendRegistrationEmails"/>
@@ -70,6 +70,13 @@
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
             <argument type="string">SuluCommunityBundle:BlacklistItem</argument>
+        </service>
+
+        <!-- mailing -->
+        <service id="sulu_community.mail_factory" class="Sulu\Bundle\CommunityBundle\Mail\MailFactory">
+            <argument type="service" id="mailer" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="translator" />
         </service>
     </services>
 </container>

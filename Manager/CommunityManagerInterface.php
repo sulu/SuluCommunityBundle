@@ -11,6 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
+use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -102,4 +103,12 @@ interface CommunityManagerInterface
      * @throws \Exception
      */
     public function getConfigTypeProperty($type, $property);
+
+    /**
+     * Send email to user and admin by type.
+     *
+     * @param $type
+     * @param BaseUser $user
+     */
+    public function sendEmails($type, BaseUser $user);
 }

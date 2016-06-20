@@ -13,6 +13,11 @@ namespace Sulu\Bundle\CommunityBundle\Manager;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Mail\Mail;
+use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
+use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
+use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -62,26 +67,42 @@ class CommunityManager implements CommunityManagerInterface
     protected $userRepository;
 
     /**
-     * CommunityManager constructor.
-     *
+     * @var RoleRepository
+     */
+    protected $roleRepository;
+
+    /**
+     * @var ContactRepository
+     */
+    protected $contactRepository;
+
+    /**
+     * @var MailFactoryInterface
+     */
+    protected $mailFactory;
+
+    /**
      * @param array $config
      * @param string $webspaceKey
      * @param EventDispatcherInterface $eventDispatcher
      * @param TokenStorageInterface $tokenStorage
      * @param UserManagerInterface $userManager
+     * @param MailFactoryInterface $mailFactory
      */
     public function __construct(
         array $config,
         $webspaceKey,
         EventDispatcherInterface $eventDispatcher,
         TokenStorageInterface $tokenStorage,
-        UserManagerInterface $userManager
+        UserManagerInterface $userManager,
+        MailFactoryInterface $mailFactory
     ) {
         $this->config = $config;
         $this->webspaceKey = $webspaceKey;
         $this->eventDispatcher = $eventDispatcher;
         $this->tokenStorage = $tokenStorage;
         $this->userManager = $userManager;
+        $this->mailFactory = $mailFactory;
     }
 
     /**
@@ -207,7 +228,25 @@ class CommunityManager implements CommunityManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Send email to user and admin by type.
+     *
+     * @param $type
+     * @param BaseUser $user
+     */
+    public function sendEmails($type, BaseUser $user)
+    {
+        $this->mailFactory->sendEmails(
+            Mail::create(
+                $this->getConfigProperty(Configuration::EMAIL_FROM),
+                $this->getConfigProperty(Configuration::EMAIL_FROM),
+                $this->getConfigTypeProperty($type, Configuration::EMAIL)
+            ),
+            $user
+        );
+    }
+
+    /**
+     * @return array
      */
     public function getConfig()
     {
