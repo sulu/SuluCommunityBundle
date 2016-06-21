@@ -61,13 +61,15 @@
         </service>
 
         <!-- Completion Listener -->
-        <service id="sulu_community.completion_listener.abstract"
-                 class="Sulu\Bundle\CommunityBundle\EventListener\CompletionListener"
-                 abstract="true">
+        <service id="sulu_community.completion_listener"
+                 class="Sulu\Bundle\CommunityBundle\EventListener\CompletionListener">
             <argument type="service" id="sulu_core.webspace.request_analyzer" />
             <argument type="service" id="router" />
             <argument type="service" id="security.token_storage" />
             <argument type="collection" />
+
+            <tag name="kernel.event_listener" event="kernel.request" method="onRequest" />
+            <tag name="sulu.context" context="website" />
         </service>
 
         <!-- sulu-admin -->

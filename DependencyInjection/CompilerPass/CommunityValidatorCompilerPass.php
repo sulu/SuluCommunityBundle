@@ -14,7 +14,6 @@ namespace Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -22,11 +21,19 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class CommunityValidatorCompilerPass implements CompilerPassInterface
 {
+    const COMPLETION_LISTENER_SERVICE_ID = 'sulu_community.completion_listener';
+
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
+        // If no listener exists do nothing
+        if (!$container->hasDefinition(self::COMPLETION_LISTENER_SERVICE_ID)) {
+            return;
+        }
+
+        // Create Validator References
         $config = $container->getParameter('sulu_community.config');
 
         foreach ($config[Configuration::WEBSPACES] as $webspaceKey => $webspaceConfig) {
@@ -40,13 +47,10 @@ class CommunityValidatorCompilerPass implements CompilerPassInterface
 
         // Register request listener only when validator exists.
         if (!empty($validators)) {
-            $definition = new DefinitionDecorator('sulu_community.completion_listener.abstract');
+            $definition = $container->getDefinition(self::COMPLETION_LISTENER_SERVICE_ID);
             $definition->replaceArgument(3, $validators);
-            $definition->addTag('kernel.event_listener', ['event' => 'kernel.request', 'method' => 'onRequest']);
-            $container->setDefinition(
-                sprintf('sulu_community.completion_listener', $validators),
-                $definition
-            );
+        } else {
+            $container->removeDefinition(self::COMPLETION_LISTENER_SERVICE_ID);
         }
     }
 }

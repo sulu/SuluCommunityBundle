@@ -58,6 +58,9 @@ class CompletionController extends AbstractController
             // Completion User
             $communityManager->completion($user);
 
+            // Save User
+            $this->saveEntities();
+
             // Redirect
             $session = $request->getSession();
             $redirectTo = $session->get(CompletionListener::SESSION_STORE);
