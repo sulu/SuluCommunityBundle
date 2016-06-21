@@ -12,7 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Manager\CommunityManager;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class AbstractController extends Controller
 {
     /**
-     * @var CommunityManager
+     * @var CommunityManagerInterface[]
      */
     private $communityManagers;
 
@@ -38,7 +38,7 @@ abstract class AbstractController extends Controller
      *
      * @param string $webspaceKey
      *
-     * @return CommunityManager
+     * @return CommunityManagerInterface
      */
     protected function getCommunityManager($webspaceKey)
     {

@@ -12,7 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Command;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Manager\CommunityManager;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Component\Webspace\Webspace;
@@ -79,7 +79,7 @@ class InitCommand extends ContainerAwareCommand
             return;
         }
 
-        /** @var CommunityManager $communityManager */
+        /** @var CommunityManagerInterface $communityManager */
         $communityManager = $this->getContainer()->get($communityServiceName);
         $roleName = $communityManager->getConfigProperty(Configuration::ROLE);
         $system = $webspace->getSecurity()->getSystem();

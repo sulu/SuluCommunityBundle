@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 /**
  * Handles registration, confirmation, password reset and forget.
  */
-class CommunityManager
+class CommunityManager implements CommunityManagerInterface
 {
     const EVENT_REGISTERED = 'sulu.community.registered';
     const EVENT_CONFIRMED = 'sulu.community.confirmed';
@@ -49,10 +49,10 @@ class CommunityManager
     /**
      * @var TokenStorageInterface
      */
-    private $tokenStorage;
+    protected $tokenStorage;
 
     /**
-     * @var UserManager
+     * @var UserManagerInterface
      */
     protected $userManager;
 
@@ -68,14 +68,14 @@ class CommunityManager
      * @param string $webspaceKey
      * @param EventDispatcherInterface $eventDispatcher
      * @param TokenStorageInterface $tokenStorage
-     * @param UserManager $userManager
+     * @param UserManagerInterface $userManager
      */
     public function __construct(
         array $config,
         $webspaceKey,
         EventDispatcherInterface $eventDispatcher,
         TokenStorageInterface $tokenStorage,
-        UserManager $userManager
+        UserManagerInterface $userManager
     ) {
         $this->config = $config;
         $this->webspaceKey = $webspaceKey;
@@ -85,9 +85,7 @@ class CommunityManager
     }
 
     /**
-     * Return the webspace key.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getWebspaceKey()
     {
@@ -95,11 +93,7 @@ class CommunityManager
     }
 
     /**
-     * Register user for the system.
-     *
-     * @param User $user
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function register(User $user)
     {
@@ -127,12 +121,7 @@ class CommunityManager
     }
 
     /**
-     * Login user into the system.
-     *
-     * @param User $user
-     * @param Request $request
-     *
-     * @return UsernamePasswordToken
+     * {@inheritdoc}
      */
     public function login(User $user, Request $request)
     {
@@ -156,11 +145,7 @@ class CommunityManager
     }
 
     /**
-     * Confirm the user registration.
-     *
-     * @param string $token
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function confirm($token)
     {
@@ -182,11 +167,7 @@ class CommunityManager
     }
 
     /**
-     * Generate password reset token and save.
-     *
-     * @param string $emailUsername
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function passwordForget($emailUsername)
     {
@@ -211,11 +192,7 @@ class CommunityManager
     }
 
     /**
-     * Reset user password token.
-     *
-     * @param User $user
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function passwordReset(User $user)
     {
@@ -230,9 +207,7 @@ class CommunityManager
     }
 
     /**
-     * Get community webspace config.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getConfig()
     {
@@ -240,13 +215,7 @@ class CommunityManager
     }
 
     /**
-     * Get community webspace config property.
-     *
-     * @param string $property
-     *
-     * @return string
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function getConfigProperty($property)
     {
@@ -264,14 +233,7 @@ class CommunityManager
     }
 
     /**
-     * Get community webspace config type property.
-     *
-     * @param string $type
-     * @param string $property
-     *
-     * @return string
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function getConfigTypeProperty($type, $property)
     {

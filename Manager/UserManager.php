@@ -24,7 +24,7 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 /**
  * Manage the community user entities.
  */
-class UserManager
+class UserManager implements UserManagerInterface
 {
     /**
      * @var EntityManagerInterface
@@ -83,13 +83,7 @@ class UserManager
     }
 
     /**
-     * Create a new User entity.
-     *
-     * @param User $user
-     * @param string $webspaceKey
-     * @param string $roleName
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function createUser(User $user, $webspaceKey, $roleName)
     {
@@ -122,11 +116,7 @@ class UserManager
     }
 
     /**
-     * Generates a unique token.
-     *
-     * @param string $field
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getUniqueToken($field)
     {
@@ -169,11 +159,7 @@ class UserManager
     }
 
     /**
-     * Find a user by the password reset token.
-     *
-     * @param string $token
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function findByPasswordResetToken($token)
     {
@@ -187,11 +173,7 @@ class UserManager
     }
 
     /**
-     * Find a user by a the confirmation key.
-     *
-     * @param string $token
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function findByConfirmationKey($token)
     {
@@ -199,11 +181,7 @@ class UserManager
     }
 
     /**
-     * Find a user by username or email.
-     *
-     * @param string $identifier
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function findUser($identifier)
     {
