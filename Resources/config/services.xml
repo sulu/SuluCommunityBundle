@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
         <!-- Event Constants -->
@@ -14,15 +14,34 @@
 
     <services>
         <!-- Community Manager -->
-        <service id="sulu_community.mail_listener" class="Sulu\Bundle\CommunityBundle\EventListener\MailListener">
-            <argument type="service" id="mailer" />
-            <argument type="service" id="translator" />
-            <argument type="service" id="templating" />
+        <service id="sulu_community.community_manager"
+                 class="Sulu\Bundle\CommunityBundle\Manager\CommunityManager"
+                 abstract="true">
+            <argument/>
+            <argument/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="sulu_security.token_generator"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument type="service" id="sulu.repository.user"/>
+            <argument type="service" id="sulu.repository.role"/>
+            <argument type="service" id="sulu.repository.contact"/>
+        </service>
 
-            <tag name="kernel.event_listener" event="%sulu_community.event.registered%" method="sendRegistrationEmails" />
-            <tag name="kernel.event_listener" event="%sulu_community.event.confirmed%" method="sendConfirmationEmails" />
-            <tag name="kernel.event_listener" event="%sulu_community.event.password_forgot%" method="sendPasswordForgetEmails" />
-            <tag name="kernel.event_listener" event="%sulu_community.event.password_reseted%" method="sendPasswordResetEmails" />
+        <!-- Mail Listener -->
+        <service id="sulu_community.mail_listener" class="Sulu\Bundle\CommunityBundle\EventListener\MailListener">
+            <argument type="service" id="mailer"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="templating"/>
+
+            <tag name="kernel.event_listener" event="%sulu_community.event.registered%"
+                 method="sendRegistrationEmails"/>
+            <tag name="kernel.event_listener" event="%sulu_community.event.confirmed%" method="sendConfirmationEmails"/>
+            <tag name="kernel.event_listener" event="%sulu_community.event.password_forgot%"
+                 method="sendPasswordForgetEmails"/>
+            <tag name="kernel.event_listener" event="%sulu_community.event.password_reseted%"
+                 method="sendPasswordResetEmails"/>
         </service>
 
         <!-- sulu-admin -->
