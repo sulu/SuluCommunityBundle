@@ -14,6 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 use Sulu\Bundle\CommunityBundle\Form\Type\CompletionType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordForgetType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordResetType;
+use Sulu\Bundle\CommunityBundle\Form\Type\ProfileType;
 use Sulu\Bundle\CommunityBundle\Form\Type\RegistrationType;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -44,6 +45,7 @@ class Configuration implements ConfigurationInterface
     const TYPE_BLACKLISTED = 'blacklisted';
     const TYPE_BLACKLIST_CONFIRMED = 'blacklist_confirmed';
     const TYPE_BLACKLIST_DENIED = 'blacklist_denied';
+    const TYPE_PROFILE = 'profile';
 
     public static $TYPES = [
         self::TYPE_LOGIN,
@@ -112,6 +114,27 @@ class Configuration implements ConfigurationInterface
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Registration')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:registration-email.html.twig')->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Registration
+                            ->arrayNode(self::TYPE_PROFILE)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Registration configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:profile.html.twig')->end()
+                                    ->scalarNode(self::FORM_TYPE)->defaultValue(ProfileType::class)->end()
+                                    ->arrayNode(self::FORM_TYPE_OPTIONS)
+                                        ->addDefaultsIfNotSet()
+                                    ->end()
+                                    ->scalarNode(self::REDIRECT_TO)->defaultValue(null)->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
                                         ->end()
                                     ->end()
                                 ->end()

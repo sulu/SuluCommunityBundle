@@ -40,5 +40,9 @@
         <default key="_controller">SuluCommunityBundle:Login:index</default>
     </route>
 
+    <route id="sulu_community.profile" path="/profile">
+        <default key="_controller">SuluCommunityBundle:Profile:index</default>
+    </route>
+
     <route id="sulu_community.logout" path="/logout"/>
 </routes>

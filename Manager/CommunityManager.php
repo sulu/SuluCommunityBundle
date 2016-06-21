@@ -36,6 +36,7 @@ class CommunityManager implements CommunityManagerInterface
     const EVENT_PASSWORD_FORGOT = 'sulu.community.password_forgot';
     const EVENT_PASSWORD_RESETED = 'sulu.community.password_reseted';
     const EVENT_COMPLETED = 'sulu.community.completed';
+    const EVENT_SAVE_PROFILE = 'sulu.community.save_profile';
 
     /**
      * @var array
@@ -241,10 +242,7 @@ class CommunityManager implements CommunityManagerInterface
     }
 
     /**
-     * Send email to user and admin by type.
-     *
-     * @param $type
-     * @param BaseUser $user
+     * {@inheritdoc}
      */
     public function sendEmails($type, BaseUser $user)
     {
@@ -259,7 +257,19 @@ class CommunityManager implements CommunityManagerInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
+     */
+    public function saveProfile(BaseUser $user)
+    {
+        // Event
+        $event = new CommunityEvent($user, $this->config);
+        $this->eventDispatcher->dispatch(self::EVENT_SAVE_PROFILE, $event);
+
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getConfig()
     {

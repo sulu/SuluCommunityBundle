@@ -11,24 +11,20 @@
 
 namespace Sulu\Bundle\CommunityBundle\Form\Type;
 
-use Sulu\Bundle\ContactBundle\Entity\Contact;
+use Sulu\Bundle\ContactBundle\Entity\Note;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Create the contact registration form type.
- */
-class RegistrationContactType extends AbstractType
+class ProfileNoteType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('first_name', TextType::class);
-        $builder->add('last_name', TextType::class);
+        $builder->add('value', TextType::class, ['required' => false, 'label' => 'Note']);
     }
 
     /**
@@ -36,9 +32,6 @@ class RegistrationContactType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Contact::class,
-            'validation_groups' => ['registration'],
-        ]);
+        $resolver->setDefaults(['data_class' => Note::class]);
     }
 }

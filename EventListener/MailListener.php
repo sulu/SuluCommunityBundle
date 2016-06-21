@@ -85,6 +85,16 @@ class MailListener
     }
 
     /**
+     * Send notification email for profile save.
+     *
+     * @param CommunityEvent $event
+     */
+    public function sendNotificationSaveProfile(CommunityEvent $event)
+    {
+        $this->sendTypeEmails($event, Configuration::TYPE_PROFILE);
+    }
+
+    /**
      * Send emails for specific type.
      *
      * @param CommunityEvent $event
