@@ -75,6 +75,16 @@ class MailListener
     }
 
     /**
+     * Send password reset emails.
+     *
+     * @param CommunityEvent $event
+     */
+    public function sendCompletionEmails(CommunityEvent $event)
+    {
+        $this->sendTypeEmails($event, Configuration::TYPE_COMPLETION);
+    }
+
+    /**
      * Send emails for specific type.
      *
      * @param CommunityEvent $event

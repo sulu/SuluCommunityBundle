@@ -25,6 +25,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 class CompletionListener
 {
     /**
+     * @var string
+     */
+    const SESSION_STORE = 'sulu_community/completion/redirect_to';
+
+    /**
      * @var RequestAnalyzerInterface
      */
     protected $requestAnalyzer;
@@ -83,8 +88,13 @@ class CompletionListener
             return;
         }
 
+        if ($request->isXmlHttpRequest()) {
+            // don't do anything if it's a ajax request
+            return;
+        }
+
         $completionUrl = $this->router->generate('sulu_community.completion');
-        if ($request->getUri() === $completionUrl) {
+        if ($request->getPathInfo() === $completionUrl) {
             // don't do anything if it's the completion url
             return;
         }
@@ -94,10 +104,13 @@ class CompletionListener
         /** @var User $user */
         $user = $token->getUser();
 
-        if (!$user) {
+        if (!$user instanceof User) {
             // don't do anything if no user is login
             return;
         }
+
+        $session = $request->getSession();
+        $session->set(self::SESSION_STORE, $request->getUri());
 
         $webspaceKey = $this->requestAnalyzer->getWebspace()->getKey();
         $validator = $this->getValidator($webspaceKey);

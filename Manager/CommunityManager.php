@@ -35,6 +35,7 @@ class CommunityManager implements CommunityManagerInterface
     const EVENT_CONFIRMED = 'sulu.community.confirmed';
     const EVENT_PASSWORD_FORGOT = 'sulu.community.password_forgot';
     const EVENT_PASSWORD_RESETED = 'sulu.community.password_reseted';
+    const EVENT_COMPLETED = 'sulu.community.completed';
 
     /**
      * @var array
@@ -137,6 +138,18 @@ class CommunityManager implements CommunityManagerInterface
         // Event
         $event = new CommunityEvent($user, $this->config);
         $this->eventDispatcher->dispatch(self::EVENT_REGISTERED, $event);
+
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function completion(User $user)
+    {
+        // Event
+        $event = new CommunityEvent($user, $this->config);
+        $this->eventDispatcher->dispatch(self::EVENT_COMPLETED, $event);
 
         return $user;
     }
