@@ -14,6 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\Controller;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Handles user confirmations for administrators.
@@ -35,18 +36,18 @@ class BlacklistConfirmationController extends AbstractController
         $blacklistUser = $repository->findByToken($request->get('token'));
 
         if (null === $blacklistUser) {
-            return new Response(null, 404);
+            throw new NotFoundHttpException();
         }
 
         $blacklistUser->confirm();
         $entityManager->flush();
 
         $communityManager = $this->getCommunityManager($blacklistUser->getWebspaceKey());
-        $communityManager->sendEmails(Configuration::TYPE_REGISTRATION, $blacklistUser->getUser());
+        $communityManager->sendEmails(Configuration::TYPE_BLACKLIST_CONFIRMED, $blacklistUser->getUser());
 
         return $this->renderTemplate(
-            Configuration::TYPE_BLACKLISTED,
-            ['user' => $blacklistUser->getUser(), 'confirmed' => true]
+            Configuration::TYPE_BLACKLIST_CONFIRMED,
+            ['user' => $blacklistUser->getUser()]
         );
     }
 
@@ -65,24 +66,28 @@ class BlacklistConfirmationController extends AbstractController
         $blacklistUser = $repository->findByToken($request->get('token'));
 
         if (null === $blacklistUser) {
-            return new Response(null, 404);
+            throw new NotFoundHttpException();
         }
 
         $blacklistUser->deny();
 
         $communityManager = $this->getCommunityManager($blacklistUser->getWebspaceKey());
-        if (true === $communityManager->getConfigTypeProperty(Configuration::TYPE_DENIED, Configuration::DELETE_USER)) {
+        if (true === $communityManager->getConfigTypeProperty(
+                Configuration::TYPE_BLACKLIST_DENIED,
+                Configuration::DELETE_USER
+            )
+        ) {
             $entityManager->remove($blacklistUser->getUser());
             $entityManager->remove($blacklistUser);
         }
 
         $entityManager->flush();
 
-        $communityManager->sendEmails(Configuration::TYPE_DENIED, $blacklistUser->getUser());
+        $communityManager->sendEmails(Configuration::TYPE_BLACKLIST_DENIED, $blacklistUser->getUser());
 
         return $this->renderTemplate(
-            Configuration::TYPE_BLACKLISTED,
-            ['user' => $blacklistUser->getUser(), 'confirmed' => true]
+            Configuration::TYPE_BLACKLIST_DENIED,
+            ['user' => $blacklistUser->getUser()]
         );
     }
 }

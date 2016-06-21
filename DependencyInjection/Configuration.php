@@ -30,7 +30,7 @@ class Configuration implements ConfigurationInterface
     const EMAIL_FROM = 'from';
     const EMAIL_TO = 'to';
     const ROLE = 'role';
-    const WEBSPACE_KEY = 'webspaceKey';
+    const WEBSPACE_KEY = 'webspace_key';
     const FIREWALL = 'firewall';
 
     // Form types
@@ -40,7 +40,8 @@ class Configuration implements ConfigurationInterface
     const TYPE_PASSWORD_FORGET = 'password_forget';
     const TYPE_PASSWORD_RESET = 'password_reset';
     const TYPE_BLACKLISTED = 'blacklisted';
-    const TYPE_DENIED = 'denied';
+    const TYPE_BLACKLIST_CONFIRMED = 'blacklist_confirmed';
+    const TYPE_BLACKLIST_DENIED = 'blacklist_denied';
 
     public static $TYPES = [
         self::TYPE_LOGIN,
@@ -147,18 +148,35 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            // Denied
-                            ->arrayNode(self::TYPE_DENIED)
+                            // Blacklist denied
+                            ->arrayNode(self::TYPE_BLACKLIST_DENIED)
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Denied configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklist-denied.html.twig')->end()
                                     ->scalarNode(self::DELETE_USER)->defaultTrue()->end()
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Denied')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
-                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:denied-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Blacklist confirmed
+                            ->arrayNode(self::TYPE_BLACKLIST_CONFIRMED)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Confirmed configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklist-confirmed.html.twig')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Registration')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:registration-email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()

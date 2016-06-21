@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
@@ -26,6 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Provides admin-api for blacklist-items.
  *
+ * @NamePrefix("sulu_community.")
  * @RouteResource("blacklist-item")
  */
 class BlacklistItemController extends RestController implements ClassResourceInterface
@@ -65,7 +67,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
                 new ListRepresentation(
                     $listResponse,
                     self::$entityKey,
-                    'get_blacklist-items',
+                    'sulu_community.get_blacklist-items',
                     $request->query->all(),
                     $listBuilder->getCurrentPage(),
                     $listBuilder->getLimit(),
@@ -84,9 +86,9 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      */
     public function getAction($id)
     {
-        $repository = $this->get('sulu_community.blacklisting.item_repository');
+        $manager = $this->get('sulu_community.blacklisting.item_manager');
 
-        return $this->handleView($this->view($repository->find($id)));
+        return $this->handleView($this->view($manager->find($id)));
     }
 
     /**
@@ -98,14 +100,13 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      */
     public function postAction(Request $request)
     {
-        $repository = $this->get('sulu_community.blacklisting.item_repository');
+        $manager = $this->get('sulu_community.blacklisting.item_manager');
         $entityManager = $this->get('doctrine.orm.entity_manager');
 
-        $item = $repository->createNew()
+        $item = $manager->create()
             ->setPattern($this->getRequestParameter($request, 'pattern', true))
             ->setType($this->getRequestParameter($request, 'type', true));
 
-        $entityManager->persist($item);
         $entityManager->flush();
 
         return $this->handleView($this->view($item));
@@ -122,8 +123,9 @@ class BlacklistItemController extends RestController implements ClassResourceInt
     {
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
+        $manager = $this->get('sulu_community.blacklisting.item_manager');
 
-        $entityManager->remove($entityManager->getReference('SuluCommunityBundle:BlacklistItem', $id));
+        $manager->delete($id);
         $entityManager->flush();
 
         return $this->handleView($this->view(null));
@@ -140,10 +142,9 @@ class BlacklistItemController extends RestController implements ClassResourceInt
     {
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
+        $manager = $this->get('sulu_community.blacklisting.item_manager');
 
-        foreach (array_filter(explode(',', $request->get('ids', ''))) as $id) {
-            $entityManager->remove($entityManager->getReference('SuluCommunityBundle:BlacklistItem', $id));
-        }
+        $manager->delete(array_filter(explode(',', $request->get('ids', ''))));
         $entityManager->flush();
 
         return $this->handleView($this->view(null));
@@ -159,10 +160,11 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      */
     public function putAction($id, Request $request)
     {
-        $repository = $this->get('sulu_community.blacklisting.item_repository');
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
+        $manager = $this->get('sulu_community.blacklisting.item_manager');
 
-        $item = $repository->find($id)
+        $item = $manager->find($id)
             ->setPattern($this->getRequestParameter($request, 'pattern', true))
             ->setType($this->getRequestParameter($request, 'type', true));
 

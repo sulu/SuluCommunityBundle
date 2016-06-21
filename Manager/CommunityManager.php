@@ -238,7 +238,7 @@ class CommunityManager implements CommunityManagerInterface
         $this->mailFactory->sendEmails(
             Mail::create(
                 $this->getConfigProperty(Configuration::EMAIL_FROM),
-                $this->getConfigProperty(Configuration::EMAIL_FROM),
+                $this->getConfigProperty(Configuration::EMAIL_TO),
                 $this->getConfigTypeProperty($type, Configuration::EMAIL)
             ),
             $user

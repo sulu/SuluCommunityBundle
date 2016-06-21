@@ -8,7 +8,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="token" type="string" column="token"/>
+        <field name="token" type="string" column="token" unique="true"/>
         <field name="type" type="integer" column="type"/>
         <field name="webspaceKey" type="string" column="webspaceKey"/>
 

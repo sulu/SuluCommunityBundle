@@ -74,6 +74,11 @@
         </service>
 
         <!-- blacklisting -->
+        <service id="sulu_community.blacklisting.item_manager"
+                 class="Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="sulu_community.blacklisting.item_repository"/>
+        </service>
         <service id="sulu_community.blacklisting.item_repository"
                  class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>

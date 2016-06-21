@@ -85,8 +85,8 @@ class BlacklistListener
 
         $this->mailFactory->sendEmails(
             Mail::create(
-                $event->getConfigProperty(Configuration::EMAIL_TO),
                 $event->getConfigProperty(Configuration::EMAIL_FROM),
+                $event->getConfigProperty(Configuration::EMAIL_TO),
                 $event->getConfigTypeProperty(Configuration::TYPE_BLACKLISTED, Configuration::EMAIL)
             ),
             $event->getUser(),
