@@ -20,7 +20,7 @@ class BlacklistItemTest extends \PHPUnit_Framework_TestCase
     {
         $item = new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_REQUEST);
         $this->assertEquals('*@sulu.io', $item->getPattern());
-        $this->assertEquals('[^@]*@sulu.io', $item->getRegexp());
+        $this->assertEquals('[^@]*@sulu\.io', $item->getRegexp());
         $this->assertEquals(BlacklistItem::TYPE_REQUEST, $item->getType());
     }
 
@@ -38,7 +38,7 @@ class BlacklistItemTest extends \PHPUnit_Framework_TestCase
         $item->setPattern('*@sulu.io');
 
         $this->assertEquals('*@sulu.io', $item->getPattern());
-        $this->assertEquals('[^@]*@sulu.io', $item->getRegexp());
+        $this->assertEquals('[^@]*@sulu\.io', $item->getRegexp());
     }
 
     public function testSetPatternNoWildcard()
@@ -47,7 +47,7 @@ class BlacklistItemTest extends \PHPUnit_Framework_TestCase
         $item->setPattern('test@sulu.io');
 
         $this->assertEquals('test@sulu.io', $item->getPattern());
-        $this->assertEquals('test@sulu.io', $item->getRegexp());
+        $this->assertEquals('test@sulu\.io', $item->getRegexp());
     }
 
     public function setTypeRequest()

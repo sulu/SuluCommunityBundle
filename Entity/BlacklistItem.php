@@ -87,7 +87,7 @@ class BlacklistItem
     public function setPattern($pattern)
     {
         $this->pattern = $pattern;
-        $this->regexp = str_replace('*', '[^@]*', $pattern);
+        $this->regexp = str_replace('\*', '[^@]*', preg_quote($pattern));
 
         return $this;
     }
