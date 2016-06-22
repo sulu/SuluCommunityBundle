@@ -186,7 +186,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             // Password Forget
                             ->arrayNode(self::TYPE_PASSWORD_FORGET)
-                                 ->addDefaultsIfNotSet()
+                                ->addDefaultsIfNotSet()
                                 ->children()
                                     // Password Forget configuration
                                     ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:password-forget.html.twig')->end()

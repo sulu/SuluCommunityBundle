@@ -76,26 +76,14 @@ class CompletionListener
      */
     public function onRequest(GetResponseEvent $event)
     {
-        if (!$event->isMasterRequest()) {
-            // don't do anything if it's not the master request
-            return;
-        }
-
         $request = $event->getRequest();
-
-        if ($request->isMethod('post')) {
-            // don't do anything if it's not a post request
-            return;
-        }
-
-        if ($request->isXmlHttpRequest()) {
-            // don't do anything if it's a ajax request
-            return;
-        }
-
         $completionUrl = $this->router->generate('sulu_community.completion');
-        if ($request->getPathInfo() === $completionUrl) {
-            // don't do anything if it's the completion url
+
+        if (!$event->isMasterRequest()
+            || $request->isMethod('post')
+            || $request->isXmlHttpRequest()
+            || $request->getPathInfo() === $completionUrl
+        ) {
             return;
         }
 
@@ -109,8 +97,10 @@ class CompletionListener
             return;
         }
 
-        $session = $request->getSession();
-        $session->set(self::SESSION_STORE, $request->getUri());
+        if ($request->attributes->get('_route') !== 'sulu_community.confirmation') {
+            $session = $request->getSession();
+            $session->set(self::SESSION_STORE, $request->getUri());
+        }
 
         $webspaceKey = $this->requestAnalyzer->getWebspace()->getKey();
         $validator = $this->getValidator($webspaceKey);
