@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
     const EMAIL_FROM = 'from';
     const EMAIL_TO = 'to';
     const ROLE = 'role';
+    const WEBSPACE_KEY = 'webspace_key';
     const FIREWALL = 'firewall';
 
     // Form types
@@ -38,6 +39,9 @@ class Configuration implements ConfigurationInterface
     const TYPE_CONFIRMATION = 'confirmation';
     const TYPE_PASSWORD_FORGET = 'password_forget';
     const TYPE_PASSWORD_RESET = 'password_reset';
+    const TYPE_BLACKLISTED = 'blacklisted';
+    const TYPE_BLACKLIST_CONFIRMED = 'blacklist_confirmed';
+    const TYPE_BLACKLIST_DENIED = 'blacklist_denied';
 
     public static $TYPES = [
         self::TYPE_LOGIN,
@@ -57,6 +61,7 @@ class Configuration implements ConfigurationInterface
     const EMAIL_SUBJECT = 'subject';
     const EMAIL_ADMIN_TEMPLATE = 'admin_template';
     const EMAIL_USER_TEMPLATE = 'user_template';
+    const DELETE_USER = 'delete_user';
 
     /**
      * {@inheritdoc}
@@ -123,6 +128,55 @@ class Configuration implements ConfigurationInterface
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Confirmation')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Blacklisted
+                            ->arrayNode(self::TYPE_BLACKLISTED)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Blacklisted configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklist.html.twig')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Blacklisted')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklisted-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Blacklist denied
+                            ->arrayNode(self::TYPE_BLACKLIST_DENIED)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Denied configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklist-denied.html.twig')->end()
+                                    ->scalarNode(self::DELETE_USER)->defaultTrue()->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Denied')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Blacklist confirmed
+                            ->arrayNode(self::TYPE_BLACKLIST_CONFIRMED)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Confirmed configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklist-confirmed.html.twig')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Registration')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:registration-email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()

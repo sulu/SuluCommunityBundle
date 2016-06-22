@@ -27,7 +27,16 @@ new Sulu\Bundle\CommunityBundle\SuluCommunityBundle(),
 ```yml
 sulu_community:
     type: portal
-    resource: "@SuluCommunityBundle/Resources/config/routing.xml"
+    resource: "@SuluCommunityBundle/Resources/config/routing_admin.xml"
+```
+
+**`app/config/admin/routing.yml`**:
+
+```yml
+sulu_community_api:
+    type: rest
+    resource: "@SuluCommunityBundle/Resources/config/routing_api.xml"
+    prefix: /admin/api
 ```
 
 ### Webspace

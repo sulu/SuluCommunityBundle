@@ -19,6 +19,16 @@ class AppKernel extends SuluTestKernel
     /**
      * {@inheritdoc}
      */
+    public function __construct($environment, $debug, $suluContext = self::CONTEXT_ADMIN)
+    {
+        $this->name = $suluContext;
+
+        parent::__construct($environment, $debug, $suluContext);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function registerBundles()
     {
         return array_merge(

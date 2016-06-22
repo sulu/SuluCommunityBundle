@@ -3,10 +3,18 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <!-- Exist Validator -->
-        <service id="sulu_community.validator.exist" class="Sulu\Bundle\CommunityBundle\Validator\Constraints\ExistValidator">
-            <argument type="service" id="doctrine.orm.entity_manager" />
+        <service id="sulu_community.validator.exist"
+                 class="Sulu\Bundle\CommunityBundle\Validator\Constraints\ExistValidator">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
 
-            <tag name="validator.constraint_validator" alias="exist_validator" />
+            <tag name="validator.constraint_validator" alias="exist_validator"/>
+        </service>
+        <!-- Blocked Validator -->
+        <service id="sulu_community.validator.blocked"
+                 class="Sulu\Bundle\CommunityBundle\Validator\Constraints\BlockedValidator">
+            <argument type="service" id="sulu_community.blacklisting.item_repository"/>
+
+            <tag name="validator.constraint_validator" alias="blocked_validator"/>
         </service>
     </services>
 </container>

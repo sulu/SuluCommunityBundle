@@ -31,6 +31,11 @@
                     <value>registration</value>
                 </option>
             </constraint>
+            <constraint name="Sulu\Bundle\CommunityBundle\Validator\Constraints\Blocked">
+                <option name="groups">
+                    <value>registration</value>
+                </option>
+            </constraint>
         </property>
     </class>
 
