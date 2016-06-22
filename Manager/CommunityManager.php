@@ -11,18 +11,10 @@
 
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
-use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
-use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
-use Sulu\Bundle\SecurityBundle\Entity\UserRole;
-use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
-use Sulu\Component\Security\Authentication\RoleInterface;
-use Sulu\Component\Security\Authentication\UserInterface;
-use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -32,7 +24,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 /**
  * Handles registration, confirmation, password reset and forget.
  */
-class CommunityManager
+class CommunityManager implements CommunityManagerInterface
 {
     const EVENT_REGISTERED = 'sulu.community.registered';
     const EVENT_CONFIRMED = 'sulu.community.confirmed';
@@ -50,11 +42,6 @@ class CommunityManager
     protected $webspaceKey;
 
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
@@ -62,17 +49,12 @@ class CommunityManager
     /**
      * @var TokenStorageInterface
      */
-    private $tokenStorage;
+    protected $tokenStorage;
 
     /**
-     * @var TokenGeneratorInterface
+     * @var UserManagerInterface
      */
-    protected $tokenGenerator;
-
-    /**
-     * @var WebspaceManagerInterface
-     */
-    protected $webspaceManager;
+    protected $userManager;
 
     /**
      * @var UserRepository
@@ -80,55 +62,30 @@ class CommunityManager
     protected $userRepository;
 
     /**
-     * @var RoleRepository
-     */
-    protected $roleRepository;
-
-    /**
-     * @var ContactRepository
-     */
-    protected $contactRepository;
-
-    /**
      * CommunityManager constructor.
      *
      * @param array $config
      * @param string $webspaceKey
-     * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
      * @param TokenStorageInterface $tokenStorage
-     * @param TokenGeneratorInterface $tokenGenerator
-     * @param WebspaceManagerInterface $webspaceManager
-     * @param UserRepository $userRepository
-     * @param RoleRepository $roleRepository
-     * @param ContactRepository $contactRepository
+     * @param UserManagerInterface $userManager
      */
     public function __construct(
         array $config,
         $webspaceKey,
-        EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
         TokenStorageInterface $tokenStorage,
-        TokenGeneratorInterface $tokenGenerator,
-        WebspaceManagerInterface $webspaceManager,
-        UserRepository $userRepository,
-        RoleRepository $roleRepository,
-        ContactRepository $contactRepository
+        UserManagerInterface $userManager
     ) {
         $this->config = $config;
         $this->webspaceKey = $webspaceKey;
-        $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->tokenStorage = $tokenStorage;
-        $this->tokenGenerator = $tokenGenerator;
-        $this->webspaceManager = $webspaceManager;
-        $this->userRepository = $userRepository;
-        $this->roleRepository = $roleRepository;
-        $this->contactRepository = $contactRepository;
+        $this->userManager = $userManager;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getWebspaceKey()
     {
@@ -136,9 +93,7 @@ class CommunityManager
     }
 
     /**
-     * @param User $user
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function register(User $user)
     {
@@ -153,33 +108,10 @@ class CommunityManager
         );
 
         // Create Confirmation Key
-        $user->setConfirmationKey($this->getUniqueKey('confirmationKey'));
+        $user->setConfirmationKey($this->userManager->getUniqueToken('confirmationKey'));
 
-        // User needs contact
-        $contact = $user->getContact();
-
-        if (!$contact) {
-            $contact = $this->contactRepository->createNew();
-            $user->setContact($contact);
-        }
-
-        if ($contact->getFirstName() === null) {
-            $contact->setFirstName('');
-        }
-
-        if ($contact->getLastName() === null) {
-            $contact->setLastName('');
-        }
-
-        // Create and Add User Role
-        $userRole = $this->createUserRole($user);
-        $user->addUserRole($userRole);
-
-        // Save Entity
-        $this->entityManager->persist($userRole);
-        $this->entityManager->persist($contact);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        // Create User
+        $this->userManager->createUser($user, $this->webspaceKey, $this->getConfigProperty(Configuration::ROLE));
 
         // Event
         $event = new CommunityEvent($user, $this->config);
@@ -189,12 +121,7 @@ class CommunityManager
     }
 
     /**
-     * @param User $user
-     * @param Request $request
-     *
-     * @return UsernamePasswordToken
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function login(User $user, Request $request)
     {
@@ -218,14 +145,11 @@ class CommunityManager
     }
 
     /**
-     * @param $token
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function confirm($token)
     {
-        /** @var User $user */
-        $user = $this->userRepository->findOneBy(['confirmationKey' => $token]);
+        $user = $this->userManager->findByConfirmationKey($token);
 
         if (!$user) {
             return;
@@ -234,8 +158,6 @@ class CommunityManager
         // Remove Confirmation Key
         $user->setConfirmationKey(null);
         $user->setEnabled($this->getConfigTypeProperty(Configuration::TYPE_CONFIRMATION, Configuration::ACTIVATE_USER));
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
 
         // Event
         $event = new CommunityEvent($user, $this->config);
@@ -244,24 +166,23 @@ class CommunityManager
         return $user;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function passwordForget($emailUsername)
     {
-        /** @var User $user */
-        $user = $this->userRepository->findUserByIdentifier($emailUsername);
+        $user = $this->userManager->findUser($emailUsername);
 
         if (!$user) {
             return;
         }
 
-        $user->setPasswordResetToken($this->getUniqueKey('passwordResetToken'));
+        $user->setPasswordResetToken($this->userManager->getUniqueToken('passwordResetToken'));
         $expireDateTime = (new \DateTime())->add(new \DateInterval('PT24H'));
         $user->setPasswordResetTokenExpiresAt($expireDateTime);
         $user->setPasswordResetTokenEmailsSent(
             $user->getPasswordResetTokenEmailsSent() + 1
         );
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
 
         // Event
         $event = new CommunityEvent($user, $this->config);
@@ -271,33 +192,12 @@ class CommunityManager
     }
 
     /**
-     * @param $token
-     *
-     * @return User
+     * {@inheritdoc}
      */
-    public function loadUserByPasswordToken($token)
-    {
-        /** @var User $user */
-        $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
-        if (!$user || $user->getPasswordResetTokenExpiresAt() < new \DateTime()) {
-            return;
-        }
-
-        return $user;
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return User
-     */
-    public function resetPassword(User $user)
+    public function passwordReset(User $user)
     {
         $user->setPasswordResetTokenExpiresAt(null);
         $user->setPasswordResetToken(null);
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
 
         // Event
         $event = new CommunityEvent($user, $this->config);
@@ -307,33 +207,7 @@ class CommunityManager
     }
 
     /**
-     * @param UserInterface $user
-     *
-     * @return UserRole
-     *
-     * @throws \Exception
-     */
-    protected function createUserRole(UserInterface $user)
-    {
-        /** @var RoleInterface $role */
-        $role = $this->roleRepository->findOneBy(['name' => $this->getConfigProperty(Configuration::ROLE)]);
-        $userRole = new UserRole();
-
-        $locales = [];
-
-        foreach ($this->webspaceManager->findWebspaceByKey($this->webspaceKey)->getLocalizations() as $localization) {
-            $locales[] = $localization->getLocale();
-        }
-
-        $userRole->setLocale(json_encode($locales));
-        $userRole->setRole($role);
-        $userRole->setUser($user);
-
-        return $userRole;
-    }
-
-    /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getConfig()
     {
@@ -341,11 +215,7 @@ class CommunityManager
     }
 
     /**
-     * @param string $property
-     *
-     * @return string
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function getConfigProperty($property)
     {
@@ -363,12 +233,7 @@ class CommunityManager
     }
 
     /**
-     * @param string $type
-     * @param string $property
-     *
-     * @return string
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function getConfigTypeProperty($type, $property)
     {
@@ -384,20 +249,5 @@ class CommunityManager
         }
 
         return $this->config[$type][$property];
-    }
-
-    /**
-     * @return string
-     */
-    protected function getUniqueKey($field)
-    {
-        $token = $this->tokenGenerator->generateToken();
-        $user = $this->userRepository->findOneBy([$field => $token]);
-
-        if ($user) {
-            return $this->getUniqueKey($field);
-        }
-
-        return $token;
     }
 }

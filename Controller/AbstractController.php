@@ -12,7 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Manager\CommunityManager;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -24,12 +24,12 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class AbstractController extends Controller
 {
     /**
-     * @var CommunityManager
+     * @var CommunityManagerInterface[]
      */
     private $communityManagers;
 
     /**
-     * @var
+     * @var string
      */
     private $webspaceKey;
 
@@ -38,7 +38,7 @@ abstract class AbstractController extends Controller
      *
      * @param string $webspaceKey
      *
-     * @return CommunityManager
+     * @return CommunityManagerInterface
      */
     protected function getCommunityManager($webspaceKey)
     {
@@ -86,6 +86,8 @@ abstract class AbstractController extends Controller
     }
 
     /**
+     * Check if user should be logged in.
+     *
      * @param string $type
      *
      * @return string
@@ -93,12 +95,14 @@ abstract class AbstractController extends Controller
     protected function checkAutoLogin($type)
     {
         return $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(
-            Configuration::TYPE_PASSWORD_RESET,
+            $type,
             Configuration::AUTO_LOGIN
         );
     }
 
     /**
+     * Render a specific type template.
+     *
      * @param string $type
      * @param array $data
      *
@@ -113,6 +117,14 @@ abstract class AbstractController extends Controller
             ),
             $data
         );
+    }
+
+    /**
+     * Save all persisted entities.
+     */
+    protected function saveEntities()
+    {
+        $this->get('doctrine.orm.entity_manager')->flush();
     }
 
     /**

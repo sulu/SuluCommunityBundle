@@ -30,6 +30,8 @@ class CommunityEvent extends Event
     protected $config;
 
     /**
+     * CommunityEvent constructor.
+     *
      * @param BaseUser $user
      * @param array $config
      */

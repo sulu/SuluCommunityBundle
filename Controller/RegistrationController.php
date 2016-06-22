@@ -56,6 +56,9 @@ class RegistrationController extends AbstractController
             // Register User
             $user = $communityManager->register($user);
 
+            // Save User
+            $this->saveEntities();
+
             // Login User
             if ($this->checkAutoLogin(Configuration::TYPE_REGISTRATION)) {
                 $communityManager->login($user, $request);

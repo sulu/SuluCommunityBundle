@@ -51,7 +51,8 @@ class PasswordController extends AbstractController
             // Handle Password forget
             $communityManager->passwordForget($emailUsername);
 
-            $success = true;
+            // Save User
+            $this->saveEntities();
 
             // Redirect
             $redirectTo = $communityManager->getConfigTypeProperty(
@@ -62,6 +63,8 @@ class PasswordController extends AbstractController
             if ($redirectTo) {
                 return $this->redirect($redirectTo);
             }
+
+            $success = true;
         }
 
         return $this->renderTemplate(
@@ -74,6 +77,8 @@ class PasswordController extends AbstractController
     }
 
     /**
+     * Handles the reset password form.
+     *
      * @param Request $request
      * @param string $token
      *
@@ -84,7 +89,7 @@ class PasswordController extends AbstractController
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 
         // Check valid token
-        $user = $communityManager->loadUserByPasswordToken($token);
+        $user = $this->get('sulu_community.user_manager')->findByPasswordResetToken($token);
 
         if (!$user) {
             return $this->renderTemplate(
@@ -115,7 +120,10 @@ class PasswordController extends AbstractController
             $user = $this->setUserPasswordAndSalt($form->getData(), $form);
 
             // Save User with new Password
-            $user = $communityManager->resetPassword($user);
+            $user = $communityManager->passwordReset($user);
+
+            // Save User
+            $this->saveEntities();
 
             // Login
             if ($this->checkAutoLogin(Configuration::TYPE_PASSWORD_RESET)) {
