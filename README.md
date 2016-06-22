@@ -86,6 +86,7 @@ security:
 
     access_control:
        - { path: /profile, roles: ROLE_USER }
+       - { path: /completion, roles: ROLE_USER }
 
     firewalls:
         <webspace_key>:
@@ -113,7 +114,9 @@ sulu_security:
 app/console sulu:community:init
 ```
 
-## Embedded Login
+## Additional Features
+
+### Embedded Login
 
 Activate ESI to use the `login-embed.html.twig`.
 
@@ -130,3 +133,103 @@ framework:
 {{ render_esi(controller('SuluCommunityBundle:Login:embed')) }}
 ```
 
+### Completion Form
+
+You can add an additional completion form to complete the user registration after confirmation.
+
+**Create Service**
+
+```php
+<?php
+
+namespace AppBundle\Validator;
+
+use Sulu\Bundle\CommunityBundle\Validator\User\CompletionInterface;
+use Sulu\Bundle\SecurityBundle\Entity\User;
+
+/**
+ * Validates the user before he can access pages.
+ */
+class CompletionValidator implements CompletionInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function validate(User $user, $webspaceKey)
+    {
+        $contact = $user->getContact();
+
+        if (!$contact
+            || !$contact->getFirstName()
+            || !$contact->getLastName()
+            || !$user->getUsername()
+            || !$user->getEmail()
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+}
+```
+
+**Register Service**
+
+```xml
+<service id="app.completion_validator" class="AppBundle\Validator\CompletionValidator" />
+```
+
+**Create Form**
+
+```php
+<?php
+
+namespace AppBundle\Form\Type\CompletionType;
+
+use Sulu\Bundle\SecurityBundle\Entity\User;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+/**
+ * Create the registration form type.
+ */
+class CompletionType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        // Create your form
+
+        $builder->add('submit', SubmitType::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => User::class,
+                'validation_groups' => ['completion'],
+            ]
+        );
+    }
+}
+```
+
+**Configuration**
+
+```yml
+# Community Configuration
+sulu_community:
+    webspaces:
+        <webspace_key>:
+            completion:
+                form: AppBundle\Form\Type\CompletionType
+                service: app.completion_validator
+```

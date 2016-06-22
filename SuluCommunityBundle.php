@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\CommunityManagerCompilerPass;
+use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\CommunityValidatorCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -28,5 +29,6 @@ class SuluCommunityBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new CommunityManagerCompilerPass());
+        $container->addCompilerPass(new CommunityValidatorCompilerPass());
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <routes xmlns="http://symfony.com/schema/routing"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="sulu_community.registration" path="/registration">
         <default key="_controller">SuluCommunityBundle:Registration:index</default>
@@ -10,6 +10,10 @@
 
     <route id="sulu_community.confirmation" path="/confirmation/{token}">
         <default key="_controller">SuluCommunityBundle:Confirmation:index</default>
+    </route>
+
+    <route id="sulu_community.completion" path="/completion">
+        <default key="_controller">SuluCommunityBundle:Completion:index</default>
     </route>
 
     <route id="sulu_community.password_forget" path="/password-forget">
@@ -20,10 +24,6 @@
         <default key="_controller">SuluCommunityBundle:Password:reset</default>
     </route>
 
-    <route id="sulu_community.login" path="/login">
-        <default key="_controller">SuluCommunityBundle:Login:index</default>
-    </route>
-
     <route id="sulu_community.user_confirm" path="/_community/confirm">
         <default key="_controller">SuluCommunityBundle:BlacklistConfirmation:confirm</default>
     </route>
@@ -32,5 +32,13 @@
         <default key="_controller">SuluCommunityBundle:BlacklistConfirmation:deny</default>
     </route>
 
-    <route id="sulu_community.logout" path="/logout" />
+    <route id="sulu_community.login" path="/login">
+        <default key="_controller">SuluCommunityBundle:Login:index</default>
+    </route>
+
+    <route id="sulu_community.login" path="/login">
+        <default key="_controller">SuluCommunityBundle:Login:index</default>
+    </route>
+
+    <route id="sulu_community.logout" path="/logout"/>
 </routes>

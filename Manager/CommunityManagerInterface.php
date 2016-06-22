@@ -38,6 +38,15 @@ interface CommunityManagerInterface
     public function register(User $user);
 
     /**
+     * Complete the user registration.
+     *
+     * @param User $user
+     *
+     * @return User
+     */
+    public function completion(User $user);
+
+    /**
      * Login user into the system.
      *
      * @param User $user

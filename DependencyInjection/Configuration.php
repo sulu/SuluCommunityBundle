@@ -11,6 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 
+use Sulu\Bundle\CommunityBundle\Form\Type\CompletionType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordForgetType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordResetType;
 use Sulu\Bundle\CommunityBundle\Form\Type\RegistrationType;
@@ -36,6 +37,7 @@ class Configuration implements ConfigurationInterface
     // Form types
     const TYPE_LOGIN = 'login';
     const TYPE_REGISTRATION = 'registration';
+    const TYPE_COMPLETION = 'completion';
     const TYPE_CONFIRMATION = 'confirmation';
     const TYPE_PASSWORD_FORGET = 'password_forget';
     const TYPE_PASSWORD_RESET = 'password_reset';
@@ -51,6 +53,7 @@ class Configuration implements ConfigurationInterface
 
     // Type configurations
     const TEMPLATE = 'template';
+    const SERVICE = 'service';
     const EMBED_TEMPLATE = 'embed_template';
     const FORM_TYPE = 'type';
     const FORM_TYPE_OPTIONS = 'options';
@@ -220,6 +223,28 @@ class Configuration implements ConfigurationInterface
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Password Reset')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:password-reset-email.html.twig')->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Completion
+                            ->arrayNode(self::TYPE_COMPLETION)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Completion Configuration
+                                    ->scalarNode(self::SERVICE)->defaultValue(null)->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:completion.html.twig')->end()
+                                    ->scalarNode(self::FORM_TYPE)->defaultValue(CompletionType::class)->end()
+                                    ->arrayNode(self::FORM_TYPE_OPTIONS)
+                                        ->addDefaultsIfNotSet()
+                                    ->end()
+                                    ->scalarNode(self::REDIRECT_TO)->defaultValue('/')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Completion')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
                                         ->end()
                                     ->end()
                                 ->end()
