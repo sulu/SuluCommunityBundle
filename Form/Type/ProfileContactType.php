@@ -15,6 +15,7 @@ use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,6 +46,7 @@ class ProfileContactType extends AbstractType
 
         $builder->add('first_name', TextType::class);
         $builder->add('last_name', TextType::class);
+        $builder->add('main_email', EmailType::class);
         $builder->add('avatar', FileType::class, ['mapped' => false, 'required' => false]);
 
         $builder->add(

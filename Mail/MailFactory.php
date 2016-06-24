@@ -53,6 +53,9 @@ class MailFactory implements MailFactoryInterface
     public function sendEmails(Mail $mail, BaseUser $user, $parameters = [])
     {
         $email = $user->getEmail();
+        if ($mail->getUserEmail()) {
+            $email = $mail->getUserEmail();
+        }
         $data = array_merge($parameters, ['user' => $user]);
 
         // Send User Email

@@ -39,7 +39,7 @@
             <argument type="service" id="sulu_community.mail_factory"/>
         </service>
 
-        <!-- event-listener -->
+        <!-- mail-listener -->
         <service id="sulu_community.mail_listener" class="Sulu\Bundle\CommunityBundle\EventListener\MailListener">
             <argument type="service" id="sulu_community.mail_factory"/>
 
@@ -68,7 +68,7 @@
                  priority="51"/>
         </service>
 
-        <!-- Completion Listener -->
+        <!-- completion-istener -->
         <service id="sulu_community.completion_listener"
                  class="Sulu\Bundle\CommunityBundle\EventListener\CompletionListener">
             <argument type="service" id="sulu_core.webspace.request_analyzer"/>
@@ -111,6 +111,24 @@
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
             <argument type="string">SuluCommunityBundle:BlacklistUser</argument>
+        </service>
+
+        <!-- email-confirmation -->
+        <service id="sulu_community.email_confirmation.listener"
+                 class="Sulu\Bundle\CommunityBundle\EventListener\EmailConfirmationListener">
+            <argument type="service" id="sulu_community.mail_factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="sulu_community.email_confirmation.repository"/>
+            <argument type="service" id="sulu_security.token_generator"/>
+
+            <tag name="kernel.event_listener" event="%sulu_community.event.save_profile%"
+                 method="sendConfirmationOnEmailChange"/>
+        </service>
+        <service id="sulu_community.email_confirmation.repository"
+                 class="Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository">
+            <factory service="doctrine.orm.entity_manager" method="getRepository"/>
+
+            <argument type="string">SuluCommunityBundle:EmailConfirmationToken</argument>
         </service>
 
         <!-- mailing -->

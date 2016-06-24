@@ -113,7 +113,7 @@ abstract class AbstractController extends Controller
      *
      * @return Response
      */
-    protected function renderTemplate($type, $data)
+    protected function renderTemplate($type, $data = [])
     {
         return $this->render(
             $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(

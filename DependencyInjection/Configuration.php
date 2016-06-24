@@ -46,6 +46,7 @@ class Configuration implements ConfigurationInterface
     const TYPE_BLACKLIST_CONFIRMED = 'blacklist_confirmed';
     const TYPE_BLACKLIST_DENIED = 'blacklist_denied';
     const TYPE_PROFILE = 'profile';
+    const TYPE_EMAIL_CONFIRMATION = 'email_confirmation';
 
     public static $TYPES = [
         self::TYPE_LOGIN,
@@ -135,6 +136,22 @@ class Configuration implements ConfigurationInterface
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Email change
+                            ->arrayNode(self::TYPE_EMAIL_CONFIRMATION)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Email change configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:EmailConfirmation:success.html.twig')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('E-Mail change')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:EmailConfirmation:email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()
