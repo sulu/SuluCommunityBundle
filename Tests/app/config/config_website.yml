@@ -9,41 +9,26 @@ sulu_community:
         sulu_io: ~
 
 security:
-    session_fixation_strategy: none
+    acl:
+        connection: default
 
     access_decision_manager:
         strategy: affirmative
 
-    acl:
-        connection: default
-
     encoders:
-        Sulu\Bundle\SecurityBundle\Entity\User:
-            algorithm: sha512
-            iterations: 5000
-            encode_as_base64: false
+        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
 
     providers:
-        sulu:
-            id: sulu_security.user_provider
+        testprovider:
+            id: test_user_provider
 
     access_control:
-       - { path: /profile, roles: ROLE_USER }
+       - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
     firewalls:
-        sulu_io:
-            pattern: ^/
+        test:
+            http_basic: ~
             anonymous: ~
-            form_login:
-                login_path: sulu_community.login
-                check_path: sulu_community.login
-            logout:
-                path: sulu_community.logout
-                target: sulu_community.login
-            remember_me:
-                secret:   '%secret%'
-                lifetime: 604800 # 1 week in seconds
-                path:     /
 
 sulu_security:
     checker:

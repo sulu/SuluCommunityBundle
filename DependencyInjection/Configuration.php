@@ -14,6 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 use Sulu\Bundle\CommunityBundle\Form\Type\CompletionType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordForgetType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordResetType;
+use Sulu\Bundle\CommunityBundle\Form\Type\ProfileType;
 use Sulu\Bundle\CommunityBundle\Form\Type\RegistrationType;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -44,6 +45,8 @@ class Configuration implements ConfigurationInterface
     const TYPE_BLACKLISTED = 'blacklisted';
     const TYPE_BLACKLIST_CONFIRMED = 'blacklist_confirmed';
     const TYPE_BLACKLIST_DENIED = 'blacklist_denied';
+    const TYPE_PROFILE = 'profile';
+    const TYPE_EMAIL_CONFIRMATION = 'email_confirmation';
 
     public static $TYPES = [
         self::TYPE_LOGIN,
@@ -89,8 +92,8 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Login configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:login.html.twig')->end()
-                                    ->scalarNode(self::EMBED_TEMPLATE)->defaultValue('SuluCommunityBundle:community:login-embed.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Login:login.html.twig')->end()
+                                    ->scalarNode(self::EMBED_TEMPLATE)->defaultValue('SuluCommunityBundle:Login:login-embed.html.twig')->end()
                                 ->end()
                             ->end()
                             // Registration
@@ -98,7 +101,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Registration configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:registration.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Registration:form.html.twig')->end()
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(RegistrationType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()
@@ -111,7 +114,44 @@ class Configuration implements ConfigurationInterface
                                         ->children()
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Registration')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
-                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:registration-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:Registration:email.html.twig')->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Registration
+                            ->arrayNode(self::TYPE_PROFILE)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Registration configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Profile:form.html.twig')->end()
+                                    ->scalarNode(self::FORM_TYPE)->defaultValue(ProfileType::class)->end()
+                                    ->arrayNode(self::FORM_TYPE_OPTIONS)
+                                        ->addDefaultsIfNotSet()
+                                    ->end()
+                                    ->scalarNode(self::REDIRECT_TO)->defaultValue(null)->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            // Email change
+                            ->arrayNode(self::TYPE_EMAIL_CONFIRMATION)
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    // Email change configuration
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:EmailConfirmation:success.html.twig')->end()
+                                    ->arrayNode(self::EMAIL)
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('E-Mail change')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:EmailConfirmation:email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()
@@ -121,7 +161,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Confirmation configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:confirmation.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Confirmation:message.html.twig')->end()
                                     ->scalarNode(self::ACTIVATE_USER)->defaultValue(true)->end()
                                     ->scalarNode(self::AUTO_LOGIN)->defaultValue(true)->end()
                                     ->scalarNode(self::REDIRECT_TO)->defaultValue(null)->end()
@@ -140,12 +180,11 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Blacklisted configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklist.html.twig')->end()
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Blacklisted')->end()
-                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklisted-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue('SuluCommunityBundle:Blacklist:email.html.twig')->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
                                         ->end()
                                     ->end()
@@ -156,7 +195,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Denied configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklist-denied.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Blacklist:denied.html.twig')->end()
                                     ->scalarNode(self::DELETE_USER)->defaultTrue()->end()
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
@@ -173,13 +212,13 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Confirmed configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:blacklist-confirmed.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Blacklist:confirmed.html.twig')->end()
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Registration')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
-                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:registration-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:Password:email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()
@@ -189,7 +228,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Password Forget configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:password-forget.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Password:forget.html.twig')->end()
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(PasswordForgetType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()
@@ -200,7 +239,7 @@ class Configuration implements ConfigurationInterface
                                         ->children()
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Password Forget')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
-                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:password-forget-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:Password:forget-email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()
@@ -210,7 +249,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Password Forget configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:password-reset.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Password:reset.html.twig')->end()
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(PasswordResetType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()
@@ -222,7 +261,7 @@ class Configuration implements ConfigurationInterface
                                         ->children()
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Password Reset')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
-                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:community:password-reset-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:Password:reset-email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()
@@ -233,7 +272,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     // Completion Configuration
                                     ->scalarNode(self::SERVICE)->defaultValue(null)->end()
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:community:completion.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Completion:form.html.twig')->end()
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(CompletionType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()

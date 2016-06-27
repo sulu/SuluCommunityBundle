@@ -11,6 +11,7 @@
         <parameter type="constant" key="sulu_community.event.password_forgot">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_PASSWORD_FORGOT</parameter>
         <parameter type="constant" key="sulu_community.event.password_reseted">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_PASSWORD_RESETED</parameter>
         <parameter type="constant" key="sulu_community.event.completed">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_COMPLETED</parameter>
+        <parameter type="constant" key="sulu_community.event.save_profile">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_SAVE_PROFILE</parameter>
     </parameters>
 
     <services>
@@ -22,8 +23,8 @@
             <argument/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="sulu_community.user_manager" />
-            <argument type="service" id="sulu_community.mail_factory" />
+            <argument type="service" id="sulu_community.user_manager"/>
+            <argument type="service" id="sulu_community.mail_factory"/>
         </service>
 
         <!-- User Manager -->
@@ -38,15 +39,22 @@
             <argument type="service" id="sulu_community.mail_factory"/>
         </service>
 
-        <!-- event-listener -->
+        <!-- mail-listener -->
         <service id="sulu_community.mail_listener" class="Sulu\Bundle\CommunityBundle\EventListener\MailListener">
             <argument type="service" id="sulu_community.mail_factory"/>
 
-            <tag name="kernel.event_listener" event="%sulu_community.event.registered%" method="sendRegistrationEmails" />
-            <tag name="kernel.event_listener" event="%sulu_community.event.confirmed%" method="sendConfirmationEmails" />
-            <tag name="kernel.event_listener" event="%sulu_community.event.password_forgot%" method="sendPasswordForgetEmails" />
-            <tag name="kernel.event_listener" event="%sulu_community.event.password_reseted%" method="sendPasswordResetEmails" />
-            <tag name="kernel.event_listener" event="%sulu_community.event.completed%" method="sendCompletionEmails" />
+            <tag name="kernel.event_listener" event="%sulu_community.event.registered%"
+                 method="sendRegistrationEmails" priority="50"/>
+            <tag name="kernel.event_listener" event="%sulu_community.event.confirmed%"
+                 method="sendConfirmationEmails"/>
+            <tag name="kernel.event_listener" event="%sulu_community.event.password_forgot%"
+                 method="sendPasswordForgetEmails"/>
+            <tag name="kernel.event_listener" event="%sulu_community.event.password_reseted%"
+                 method="sendPasswordResetEmails"/>
+            <tag name="kernel.event_listener" event="%sulu_community.event.completed%"
+                 method="sendCompletionEmails"/>
+            <tag name="kernel.event_listener" event="%sulu_community.event.save_profile%"
+                 method="sendNotificationSaveProfile"/>
         </service>
 
         <!-- black-listener -->
@@ -60,16 +68,16 @@
                  priority="51"/>
         </service>
 
-        <!-- Completion Listener -->
+        <!-- completion-istener -->
         <service id="sulu_community.completion_listener"
                  class="Sulu\Bundle\CommunityBundle\EventListener\CompletionListener">
-            <argument type="service" id="sulu_core.webspace.request_analyzer" />
-            <argument type="service" id="router" />
-            <argument type="service" id="security.token_storage" />
-            <argument type="collection" />
+            <argument type="service" id="sulu_core.webspace.request_analyzer"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="collection"/>
 
-            <tag name="kernel.event_listener" event="kernel.request" method="onRequest" />
-            <tag name="sulu.context" context="website" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onRequest"/>
+            <tag name="sulu.context" context="website"/>
         </service>
 
         <!-- sulu-admin -->
@@ -105,11 +113,29 @@
             <argument type="string">SuluCommunityBundle:BlacklistUser</argument>
         </service>
 
+        <!-- email-confirmation -->
+        <service id="sulu_community.email_confirmation.listener"
+                 class="Sulu\Bundle\CommunityBundle\EventListener\EmailConfirmationListener">
+            <argument type="service" id="sulu_community.mail_factory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="sulu_community.email_confirmation.repository"/>
+            <argument type="service" id="sulu_security.token_generator"/>
+
+            <tag name="kernel.event_listener" event="%sulu_community.event.save_profile%"
+                 method="sendConfirmationOnEmailChange"/>
+        </service>
+        <service id="sulu_community.email_confirmation.repository"
+                 class="Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository">
+            <factory service="doctrine.orm.entity_manager" method="getRepository"/>
+
+            <argument type="string">SuluCommunityBundle:EmailConfirmationToken</argument>
+        </service>
+
         <!-- mailing -->
         <service id="sulu_community.mail_factory" class="Sulu\Bundle\CommunityBundle\Mail\MailFactory">
-            <argument type="service" id="mailer" />
-            <argument type="service" id="templating" />
-            <argument type="service" id="translator" />
+            <argument type="service" id="mailer"/>
+            <argument type="service" id="templating"/>
+            <argument type="service" id="translator"/>
         </service>
     </services>
 </container>

@@ -75,9 +75,14 @@ abstract class AbstractController extends Controller
      */
     protected function setUserPasswordAndSalt(User $user, Form $form)
     {
+        $plainPassword = $form->get('plainPassword')->getData();
+        if (null === $plainPassword) {
+            return $user;
+        }
+
         $salt = $this->get('sulu_security.salt_generator')->getRandomSalt();
         $encoder = $this->get('security.encoder_factory')->getEncoder($user);
-        $password = $encoder->encodePassword($form->get('plainPassword')->getData(), $salt);
+        $password = $encoder->encodePassword($plainPassword, $salt);
 
         $user->setPassword($password);
         $user->setSalt($salt);
@@ -108,7 +113,7 @@ abstract class AbstractController extends Controller
      *
      * @return Response
      */
-    protected function renderTemplate($type, $data)
+    protected function renderTemplate($type, $data = [])
     {
         return $this->render(
             $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(

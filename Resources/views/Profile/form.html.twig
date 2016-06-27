@@ -1,0 +1,25 @@
+{% extends "master.html.twig" %}
+
+{% form_theme form _self %}
+
+{% block email_widget %}
+    {% spaceless %}
+
+        {{ dump() }}
+
+        {{ block('form_widget') }}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ 'Profile'|trans }}</h1>
+
+    {% if success %}
+        <p class="success">
+            {{ 'save_profile_finished'|trans }}
+        </p>
+    {% endif %}
+
+    {{ form(form) }}
+{% endblock %}

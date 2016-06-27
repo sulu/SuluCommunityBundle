@@ -51,6 +51,11 @@ class Mail
     /**
      * @var string
      */
+    private $userEmail;
+
+    /**
+     * @var string
+     */
     private $subject;
 
     /**
@@ -127,5 +132,30 @@ class Mail
     public function getAdminTemplate()
     {
         return $this->adminTemplate;
+    }
+
+    /**
+     * Returns user-email.
+     *
+     * @return string
+     */
+    public function getUserEmail()
+    {
+        return $this->userEmail;
+    }
+
+    /**
+     * Set user-email.
+     * This setting overwrite the user-email.
+     *
+     * @param string $userEmail
+     *
+     * @return $this
+     */
+    public function setUserEmail($userEmail)
+    {
+        $this->userEmail = $userEmail;
+
+        return $this;
     }
 }

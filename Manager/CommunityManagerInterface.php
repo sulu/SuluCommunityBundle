@@ -120,4 +120,13 @@ interface CommunityManagerInterface
      * @param BaseUser $user
      */
     public function sendEmails($type, BaseUser $user);
+
+    /**
+     * Save profile for given user.
+     *
+     * @param BaseUser $user
+     *
+     * @return BaseUser
+     */
+    public function saveProfile(BaseUser $user);
 }

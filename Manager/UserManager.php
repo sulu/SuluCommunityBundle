@@ -103,6 +103,8 @@ class UserManager implements UserManagerInterface
             $contact->setLastName('');
         }
 
+        $contact->setMainEmail($user->getEmail());
+
         // Create and Add User Role
         $userRole = $this->createUserRole($user, $webspaceKey, $roleName);
         $user->addUserRole($userRole);
