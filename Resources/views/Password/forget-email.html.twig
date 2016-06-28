@@ -1,5 +1,9 @@
-{% set url = url('sulu_community.password_reset', { token: user.passwordResetToken }) %}
+{% extends "SuluCommunityBundle::master-email.html.twig" %}
 
-<a href="{{ url }}">
-    {{ url }}
-</a>
+{% block content %}
+    {% set url = url('sulu_community.password_reset', { token: user.passwordResetToken }) %}
+
+    <a href="{{ url }}">
+        {{ url }}
+    </a>
+{% endblock %}

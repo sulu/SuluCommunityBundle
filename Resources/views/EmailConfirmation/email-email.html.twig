@@ -1,2 +1,6 @@
-{% set confirmUrl = url('sulu_community.email_confirmation', { token: token }) %}
-<a href="{{ confirmUrl }}">{{ confirmUrl }}</a>
+{% extends "SuluCommunityBundle::master-email.html.twig" %}
+
+{% block content %}
+    {% set confirmUrl = url('sulu_community.email_confirmation', { token: token }) %}
+    <a href="{{ confirmUrl }}">{{ confirmUrl }}</a>
+{% endblock %}
