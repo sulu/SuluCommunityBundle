@@ -47,4 +47,12 @@ class CompletionContactType extends AbstractType
             'validation_groups' => ['completion'],
         ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'contact';
+    }
 }
