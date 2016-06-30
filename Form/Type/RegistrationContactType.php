@@ -41,4 +41,12 @@ class RegistrationContactType extends AbstractType
             'validation_groups' => ['registration'],
         ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'contact';
+    }
 }

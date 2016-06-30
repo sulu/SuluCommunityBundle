@@ -50,4 +50,12 @@ class ProfileAddressType extends AbstractType
             ]
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'address';
+    }
 }

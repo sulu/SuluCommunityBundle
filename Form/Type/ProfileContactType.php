@@ -85,4 +85,12 @@ class ProfileContactType extends AbstractType
             ]
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'contact';
+    }
 }
