@@ -1,0 +1,9 @@
+{% extends "SuluCommunityBundle::master-email.html.twig" %}
+
+{% block content %}
+    {% set confirmUrl = url('sulu_community.user_confirm', { token: token }) %}
+    <p>Confirm: <a href="{{ confirmUrl }}">{{ confirmUrl }}</a></p>
+
+    {% set denyUrl = url('sulu_community.user_deny', { token: token }) %}
+    <p>Deny: <a href="{{ denyUrl }}">{{ denyUrl }}</a></p>
+{% endblock %}

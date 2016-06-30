@@ -1,7 +1,7 @@
 {% extends "SuluCommunityBundle::master-email.html.twig" %}
 
 {% block content %}
-    {% set url = url('sulu_community.password_reset', { token: user.passwordResetToken }) %}
+    {% set url = url('sulu_community.confirmation', { token: user.confirmationKey }) %}
 
     <a href="{{ url }}">
         {{ url }}
