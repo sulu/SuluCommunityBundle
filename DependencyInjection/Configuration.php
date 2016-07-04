@@ -101,7 +101,7 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Registration configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Registration:profile-form.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Registration:registration-form.html.twig')->end()
                                     ->scalarNode(self::FORM_TYPE)->defaultValue(RegistrationType::class)->end()
                                     ->arrayNode(self::FORM_TYPE_OPTIONS)
                                         ->addDefaultsIfNotSet()
