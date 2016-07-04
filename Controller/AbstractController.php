@@ -161,52 +161,6 @@ abstract class AbstractController extends Controller
      */
     private function getTemplateAttributes($custom = [])
     {
-        $defaults = [
-            'isCommunityTemplate' => true,
-            'extension' => [
-                'excerpt' => [
-                ],
-                'seo' => [
-                ],
-            ],
-            'content' => [],
-            'shadowBaseLocale' => null,
-        ];
-
-        $requestAnalyzer = $this->get('sulu_core.webspace.request_analyzer');
-
-        $default = array_merge(
-            $defaults,
-            $this->get('sulu_website.resolver.request_analyzer')->resolve($requestAnalyzer)
-        );
-
-        if (!isset($custom['urls'])) {
-            $router = $this->get('router');
-            $request = $this->get('request_stack')->getCurrentRequest();
-            $urls = [];
-
-            if ($request->get('_route')) {
-                foreach ($requestAnalyzer->getWebspace()->getLocalizations() as $localization) {
-                    $url = $router->generate(
-                        $request->get('_route'),
-                        $request->get('_route_params')
-                    );
-
-                    // will remove locale because it will be added automatically
-                    if (preg_match('/^\/[a-z]{2}(-[a-z]{2})?+\/(.*)/', $url)) {
-                        $url = substr($url, strlen($localization->getLocale()) + 1);
-                    }
-
-                    $urls[$localization->getLocale()] = $url;
-                }
-            }
-
-            $custom['urls'] = $urls;
-        }
-
-        return array_merge(
-            $default,
-            $custom
-        );
+        return $this->get('sulu_website.resolver.template_attribute')->resolve($custom);
     }
 }
