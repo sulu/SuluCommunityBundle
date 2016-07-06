@@ -52,6 +52,7 @@ class ProfileNoteType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => Note::class]);
     }
+
     /**
      * {@inheritdoc}
      */
