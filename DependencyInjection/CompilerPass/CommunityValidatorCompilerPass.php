@@ -48,7 +48,7 @@ class CommunityValidatorCompilerPass implements CompilerPassInterface
         // Register request listener only when validator exists.
         if (!empty($validators)) {
             $definition = $container->getDefinition(self::COMPLETION_LISTENER_SERVICE_ID);
-            $definition->replaceArgument(3, $validators);
+            $definition->replaceArgument(4, $validators);
         } else {
             $container->removeDefinition(self::COMPLETION_LISTENER_SERVICE_ID);
         }

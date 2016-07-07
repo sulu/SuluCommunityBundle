@@ -25,11 +25,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 class CompletionListener
 {
     /**
-     * @var string
-     */
-    const SESSION_STORE = 'sulu_community/completion/redirect_to';
-
-    /**
      * @var RequestAnalyzerInterface
      */
     protected $requestAnalyzer;
@@ -45,6 +40,11 @@ class CompletionListener
     protected $tokenStorage;
 
     /**
+     * @var string
+     */
+    protected $fragmentPath;
+
+    /**
      * @var CompletionInterface[]
      */
     protected $validators;
@@ -55,18 +55,21 @@ class CompletionListener
      * @param RequestAnalyzerInterface $requestAnalyzer
      * @param RouterInterface $router
      * @param TokenStorage $tokenStorage
+     * @param string $fragmentPath
      * @param array $validators
      */
     public function __construct(
         RequestAnalyzerInterface $requestAnalyzer,
         RouterInterface $router,
         TokenStorage $tokenStorage,
+        $fragmentPath,
         array $validators
     ) {
         $this->requestAnalyzer = $requestAnalyzer;
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
         $this->validators = $validators;
+        $this->fragmentPath = $fragmentPath;
     }
 
     /**
@@ -83,6 +86,7 @@ class CompletionListener
             || $request->isMethod('post')
             || $request->isXmlHttpRequest()
             || $request->getPathInfo() === $completionUrl
+            || $request->getPathInfo() === $this->fragmentPath
         ) {
             return;
         }
@@ -97,15 +101,17 @@ class CompletionListener
             return;
         }
 
+        $uriParameters = [];
         if ($request->attributes->get('_route') !== 'sulu_community.confirmation') {
-            $session = $request->getSession();
-            $session->set(self::SESSION_STORE, $request->getUri());
+            $uriParameters['re'] = $request->getRequestUri();
         }
 
         $webspaceKey = $this->requestAnalyzer->getWebspace()->getKey();
         $validator = $this->getValidator($webspaceKey);
 
         if ($validator && !$validator->validate($user, $webspaceKey)) {
+            $completionUrl = $this->router->generate('sulu_community.completion', $uriParameters);
+
             $response = new RedirectResponse($completionUrl);
             $event->setResponse($response);
         }
