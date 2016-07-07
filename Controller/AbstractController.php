@@ -80,7 +80,11 @@ abstract class AbstractController extends Controller
             return $user;
         }
 
-        $salt = $this->get('sulu_security.salt_generator')->getRandomSalt();
+        $salt = $user->getSalt();
+        if (!$salt) {
+            $salt = $this->get('sulu_security.salt_generator')->getRandomSalt();
+        }
+
         $encoder = $this->get('security.encoder_factory')->getEncoder($user);
         $password = $encoder->encodePassword($plainPassword, $salt);
 
