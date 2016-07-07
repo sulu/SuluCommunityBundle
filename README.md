@@ -10,11 +10,6 @@ composer require sulu/community-bundle
 
 ```php
 new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-```
-
-**Add to `app/WebsiteKernel.php`**
-
-```php
 new Sulu\Bundle\CommunityBundle\SuluCommunityBundle(),
 ```
 
