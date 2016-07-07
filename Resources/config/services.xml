@@ -74,6 +74,7 @@
             <argument type="service" id="sulu_core.webspace.request_analyzer"/>
             <argument type="service" id="router"/>
             <argument type="service" id="security.token_storage"/>
+            <argument>%fragment.path%</argument>
             <argument type="collection"/>
 
             <tag name="kernel.event_listener" event="kernel.request" method="onRequest"/>

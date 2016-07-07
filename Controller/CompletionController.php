@@ -12,7 +12,6 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\EventListener\CompletionListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -62,13 +61,10 @@ class CompletionController extends AbstractController
             $this->saveEntities();
 
             // Redirect
-            $session = $request->getSession();
-            $redirectTo = $session->get(CompletionListener::SESSION_STORE);
+            $redirectTo = $request->query->get('re');
 
             if (!$redirectTo) {
                 $redirectTo = $communityManager->getConfigTypeProperty(self::TYPE, Configuration::REDIRECT_TO);
-            } else {
-                $session->remove(CompletionListener::SESSION_STORE);
             }
 
             if ($redirectTo) {
