@@ -22,7 +22,7 @@ new Sulu\Bundle\CommunityBundle\SuluCommunityBundle(),
 ```yml
 sulu_community:
     type: portal
-    resource: "@SuluCommunityBundle/Resources/config/routing_admin.xml"
+    resource: "@SuluCommunityBundle/Resources/config/routing_website.xml"
 ```
 
 **`app/config/admin/routing.yml`**:
