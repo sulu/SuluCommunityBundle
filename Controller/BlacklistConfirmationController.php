@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
+use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -62,6 +63,8 @@ class BlacklistConfirmationController extends AbstractController
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $repository = $this->get('sulu_community.blacklisting.user_repository');
+        $itemRepository = $this->get('sulu_community.blacklisting.item_repository');
+        $itemManager = $this->get('sulu_community.blacklisting.item_manager');
 
         $blacklistUser = $repository->findByToken($request->get('token'));
 
@@ -69,6 +72,7 @@ class BlacklistConfirmationController extends AbstractController
             throw new NotFoundHttpException();
         }
 
+        $user = $blacklistUser->getUser();
         $blacklistUser->deny();
 
         $communityManager = $this->getCommunityManager($blacklistUser->getWebspaceKey());
@@ -77,9 +81,18 @@ class BlacklistConfirmationController extends AbstractController
                 Configuration::DELETE_USER
             )
         ) {
-            $entityManager->remove($blacklistUser->getUser());
+            $entityManager->remove($user);
             $entityManager->remove($blacklistUser);
         }
+
+        $item = $itemRepository->findOneByPattern($user->getEmail());
+
+        if (!$item) {
+            $item = $itemManager->create();
+        }
+
+        $item->setType(BlacklistItem::TYPE_BLOCK)
+            ->setPattern($user->getEmail());
 
         $entityManager->flush();
 
