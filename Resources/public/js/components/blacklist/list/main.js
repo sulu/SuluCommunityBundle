@@ -96,7 +96,7 @@ define(['jquery', 'underscore'], function($, _) {
 
             // delete clicked
             this.sandbox.on('sulu.toolbar.delete', function() {
-                this.sandbox.emit('husky.datagrid.blacklist-item.items.get-selected', this.remove.bind(this));
+                this.sandbox.emit('husky.datagrid.blacklist-item.items.get-selected', this.deleteItems.bind(this));
             }, this);
 
             // checkbox clicked
@@ -114,7 +114,7 @@ define(['jquery', 'underscore'], function($, _) {
             });
         },
 
-        remove: function(ids) {
+        deleteItems: function(ids) {
             $.ajax(this.templates.url(), {method: 'DELETE', data: {ids: ids.join(',')}}).then(function() {
                 _.each(ids, function(id) {
                     this.sandbox.emit('husky.datagrid.blacklist-item.record.remove', id);
