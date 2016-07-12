@@ -218,7 +218,7 @@ class Configuration implements ConfigurationInterface
                                         ->children()
                                             ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Registration')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
-                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:Password:blacklist-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue('SuluCommunityBundle:Registration:registration-email.html.twig')->end()
                                         ->end()
                                     ->end()
                                 ->end()
