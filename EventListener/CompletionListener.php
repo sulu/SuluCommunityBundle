@@ -113,6 +113,7 @@ class CompletionListener
             $completionUrl = $this->router->generate('sulu_community.completion', $uriParameters);
 
             $response = new RedirectResponse($completionUrl);
+            $response->setPrivate();
             $event->setResponse($response);
         }
     }
