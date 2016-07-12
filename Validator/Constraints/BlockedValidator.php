@@ -43,11 +43,9 @@ class BlockedValidator extends ConstraintValidator
         $items = $this->blacklistItemRepository->findBySender($value);
 
         foreach ($items as $item) {
-            if (BlacklistItem::TYPE_BLOCK !== $item->getType()) {
-                return;
+            if (BlacklistItem::TYPE_BLOCK === $item->getType()) {
+                return $this->context->addViolation($constraint->message, ['%email%' => $value]);
             }
-
-            return $this->context->addViolation($constraint->message, ['%email%' => $value]);
         }
     }
 }

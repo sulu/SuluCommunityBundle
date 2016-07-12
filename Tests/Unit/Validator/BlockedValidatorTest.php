@@ -27,7 +27,12 @@ class BlockedValidatorTest extends \PHPUnit_Framework_TestCase
 
         $validator->initialize($context->reveal());
         $repository->findBySender('test@sulu.io')
-            ->willReturn([new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_BLOCK)]);
+            ->willReturn(
+                [
+                    new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_REQUEST),
+                    new BlacklistItem('test@sulu.io', BlacklistItem::TYPE_BLOCK),
+                ]
+            );
 
         $validator->validate('test@sulu.io', new Blocked());
 
