@@ -81,6 +81,7 @@ class BlacklistConfirmationController extends AbstractController
                 Configuration::DELETE_USER
             )
         ) {
+            $entityManager->remove($user->getContact());
             $entityManager->remove($user);
             $entityManager->remove($blacklistUser);
         }
