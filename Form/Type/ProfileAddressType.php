@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -35,7 +36,16 @@ class ProfileAddressType extends AbstractType
         $builder->add('number', TextType::class, ['required' => false]);
         $builder->add('zip', TextType::class, ['required' => false]);
         $builder->add('city', TextType::class, ['required' => false]);
-        $builder->add('country', EntityType::class, ['class' => Country::class, 'property' => 'name']);
+        $builder->add(
+            'country',
+            EntityType::class,
+            [
+                'class' => Country::class,
+                'property' => function (Country $country) {
+                    return Intl::getRegionBundle()->getCountryName($country->getCode());
+                },
+            ]
+        );
     }
 
     /**
