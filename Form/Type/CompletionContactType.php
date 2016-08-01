@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Form\Type;
 
 use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,11 +30,11 @@ class CompletionContactType extends AbstractType
         $contact = $builder->getData();
 
         if (!$contact->getFirstName()) {
-            $builder->add('first_name', 'text');
+            $builder->add('firstName', TextType::class);
         }
 
         if (!$contact->getLastName()) {
-            $builder->add('last_name', 'text');
+            $builder->add('lastName', TextType::class);
         }
     }
 

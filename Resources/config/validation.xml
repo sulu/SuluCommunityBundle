@@ -47,9 +47,16 @@
         </property>
     </class>
 
+    <!-- User -->
+    <class name="Sulu\Bundle\SecurityBundle\Entity\User">
+        <property name="contact">
+            <constraint name="Valid" />
+        </property>
+    </class>
+
     <!-- Contact -->
-    <class name="Sulu\Bundle\SecurityBundle\Entity\ContactInterface">
-        <property name="first_name">
+    <class name="Sulu\Bundle\ContactBundle\Entity\Contact">
+        <property name="firstName">
             <constraint name="NotBlank">
                 <option name="groups">
                     <value>registration</value>
@@ -58,7 +65,7 @@
                 </option>
             </constraint>
         </property>
-        <property name="last_name">
+        <property name="lastName">
             <constraint name="NotBlank">
                 <option name="groups">
                     <value>registration</value>
@@ -66,11 +73,21 @@
                     <value>profile</value>
                 </option>
             </constraint>
+        </property>
+        <property name="addresses">
+            <constraint name="Valid" />
+        </property>
+    </class>
+
+    <!-- ContactAddress -->
+    <class name="Sulu\Bundle\ContactBundle\Entity\ContactAddress">
+        <property name="address">
+            <constraint name="Valid" />
         </property>
     </class>
 
     <!-- Address -->
-    <class name="Sulu\Bundle\SecurityBundle\Entity\Address">
+    <class name="Sulu\Bundle\ContactBundle\Entity\Address">
         <property name="country">
             <constraint name="NotBlank">
                 <option name="groups">

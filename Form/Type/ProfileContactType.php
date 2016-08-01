@@ -44,9 +44,9 @@ class ProfileContactType extends AbstractType
             ]
         );
 
-        $builder->add('first_name', TextType::class);
-        $builder->add('last_name', TextType::class);
-        $builder->add('main_email', EmailType::class);
+        $builder->add('firstName', TextType::class);
+        $builder->add('lastName', TextType::class);
+        $builder->add('mainEmail', EmailType::class);
         $builder->add('avatar', FileType::class, ['mapped' => false, 'required' => false]);
 
         $builder->add(

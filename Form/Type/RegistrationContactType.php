@@ -27,8 +27,8 @@ class RegistrationContactType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('first_name', TextType::class);
-        $builder->add('last_name', TextType::class);
+        $builder->add('firstName', TextType::class);
+        $builder->add('lastName', TextType::class);
     }
 
     /**
