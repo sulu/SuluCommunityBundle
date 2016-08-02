@@ -66,8 +66,8 @@ class ProfileControllerTest extends SuluTestCase
         $crawler = $client->request('GET', '/profile');
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $this->assertCount(1, $crawler->filter('#profile_contact_first_name'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_last_name'));
+        $this->assertCount(1, $crawler->filter('#profile_contact_firstName'));
+        $this->assertCount(1, $crawler->filter('#profile_contact_lastName'));
         $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_street'));
         $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_number'));
         $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_zip'));
@@ -78,8 +78,8 @@ class ProfileControllerTest extends SuluTestCase
         $form = $crawler->selectButton('profile[submit]')->form(
             [
                 'profile[contact][formOfAddress]' => 0,
-                'profile[contact][first_name]' => 'Hikaru',
-                'profile[contact][last_name]' => 'Sulu',
+                'profile[contact][firstName]' => 'Hikaru',
+                'profile[contact][lastName]' => 'Sulu',
                 'profile[contact][contactAddresses][0][address][street]' => 'Rathausstraße',
                 'profile[contact][contactAddresses][0][address][number]' => 16,
                 'profile[contact][contactAddresses][0][address][zip]' => 12351,
