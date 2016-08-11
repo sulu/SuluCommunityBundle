@@ -33,6 +33,7 @@ class ConfirmationController extends AbstractController
     public function indexAction(Request $request, $token)
     {
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
+
         $success = false;
 
         // Confirm user by token
@@ -49,7 +50,13 @@ class ConfirmationController extends AbstractController
             $redirectTo = $communityManager->getConfigTypeProperty(self::TYPE, Configuration::REDIRECT_TO);
 
             if ($redirectTo) {
-                return $this->redirect($redirectTo);
+                if (strpos($redirectTo, '/') === 0) {
+                    $url = str_replace('{localization}', $request->getLocale(), $redirectTo);
+                } else {
+                    $url = $this->get('router')->generate($redirectTo);
+                }
+
+                return $this->redirect($url);
             }
 
             $success = true;
