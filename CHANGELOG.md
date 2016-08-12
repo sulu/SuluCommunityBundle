@@ -2,6 +2,7 @@
 
 ## dev-develop
 
+ - FEATURE     #34    support for sulu 1.3
  - FEATURE     #33    allow route name and add locale replacer in confirmation redirect 
  - BUGFIX      #31    fix completion listener listen on none safe methods.
  - ENHANCEMENT #29    translate country names with Symfony Intl.
