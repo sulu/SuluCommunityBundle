@@ -114,6 +114,7 @@ class CompletionListener
 
             $response = new RedirectResponse($completionUrl);
             $response->setPrivate();
+            $response->setMaxAge(0);
             $event->setResponse($response);
         }
     }
