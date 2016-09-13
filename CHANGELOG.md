@@ -2,6 +2,7 @@
 
 ## dev-develop
 
+ - BUGFIX      ---    fixed get correct encoder for new salt
  - ENHANCEMENT ---    fixed the caching of completion redirect
  - FEATURE     #34    support for sulu 1.3
  - FEATURE     #33    allow route name and add locale replacer in confirmation redirect 
