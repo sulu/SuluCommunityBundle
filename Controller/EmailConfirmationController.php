@@ -42,7 +42,7 @@ class EmailConfirmationController extends AbstractController
             $user->setEmail($user->getContact()->getMainEmail());
             $userContact = $user->getContact();
             if (count($userContact->getEmails() === 0) {
-                $emailType = $this->entityManager->getReference(EmailType::class, 1);
+                $emailType = $entityManager->getReference(EmailType::class, 1);
 
                 $contactEmail = new Email();
                 $contactEmail->setEmail($user->getContact()->getMainEmail());
