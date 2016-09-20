@@ -3,10 +3,10 @@
 ## dev-develop
 
  - BUGFIX      #43    fix setting of email for user on registration and profile change.
- - BUGFIX      #39    fixed get correct encoder for new salt
- - ENHANCEMENT ---    fixed the caching of completion redirect
+ - BUGFIX      #39    fixed get correct encoder for new salt.
+ - ENHANCEMENT ---    fixed the caching of completion redirect.
  - FEATURE     #34    support for sulu 1.3
- - FEATURE     #33    allow route name and add locale replacer in confirmation redirec
+ - FEATURE     #33    allow route name and add locale replacer in confirmation redirect.
  - BUGFIX      #31    fix completion listener listen on none safe methods.
  - ENHANCEMENT #29    translate country names with Symfony Intl.
  - BUGFIX      #30    fix validation for subforms.
