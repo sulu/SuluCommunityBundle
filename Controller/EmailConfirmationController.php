@@ -39,6 +39,8 @@ class EmailConfirmationController extends AbstractController
         if ($token !== null) {
             $user = $token->getUser();
             $user->setEmail($user->getContact()->getMainEmail());
+            $userContact = $user->getContact();
+            $userContact->getEmails()[0]->setEmail($userContact->getMainEmail());
             $this->get('doctrine.orm.entity_manager')->remove($token);
             $this->saveEntities();
 
