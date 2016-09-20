@@ -29,8 +29,6 @@ use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
  */
 class UserManager implements UserManagerInterface
 {
-    protected static $emailTypeEntityName = 'SuluContactBundle:EmailType';
-
     /**
      * @var EntityManagerInterface
      */
@@ -117,7 +115,7 @@ class UserManager implements UserManagerInterface
         }
 
         $emailType = $this->entityManager
-            ->getRepository(self::$emailTypeEntityName)
+            ->getRepository($this->entityManager->getReference(EmailType::class, 1))
             ->findAll();
 
         $contactEmail = new Email();

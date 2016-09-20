@@ -31,6 +31,7 @@ class EmailConfirmationController extends AbstractController
      */
     public function indexAction(Request $request)
     {
+        $entityManager = $this->get('doctrine.orm.entity_manager');
         $repository = $this->get('sulu_community.email_confirmation.repository');
 
         $success = false;
@@ -40,8 +41,18 @@ class EmailConfirmationController extends AbstractController
             $user = $token->getUser();
             $user->setEmail($user->getContact()->getMainEmail());
             $userContact = $user->getContact();
+            if (count($userContact->getEmails() === 0) {
+                $emailType = $entityManager
+                    ->getRepository(self::$emailTypeEntityName)
+                    ->findAll();
+
+                $contactEmail = new Email();
+                $contactEmail->setEmail($user->getContact()->getMainEmail());
+                $contactEmail->setEmailType($emailType[0]);
+                $userContact->addEmail($contactEmail);
+            }
             $userContact->getEmails()->first()->setEmail($userContact->getMainEmail());
-            $this->get('doctrine.orm.entity_manager')->remove($token);
+            $entityManager->remove($token);
             $this->saveEntities();
 
             $success = true;
