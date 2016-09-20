@@ -2,7 +2,7 @@
 
 ## dev-develop
 
- - BUGFIX      #37    fix setting of email for user on registration.
+ - BUGFIX      #43    fix setting of email for user on registration and profile change.
  - BUGFIX      #39    fixed get correct encoder for new salt
  - ENHANCEMENT ---    fixed the caching of completion redirect
  - FEATURE     #34    support for sulu 1.3
