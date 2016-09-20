@@ -83,7 +83,7 @@ class CompletionListener
         $completionUrl = $this->router->generate('sulu_community.completion');
 
         if (!$event->isMasterRequest()
-            || $request->isMethod('post')
+            || !$request->isMethodSafe()
             || $request->isXmlHttpRequest()
             || $request->getPathInfo() === $completionUrl
             || $request->getPathInfo() === $this->fragmentPath
@@ -114,6 +114,7 @@ class CompletionListener
 
             $response = new RedirectResponse($completionUrl);
             $response->setPrivate();
+            $response->setMaxAge(0);
             $event->setResponse($response);
         }
     }
