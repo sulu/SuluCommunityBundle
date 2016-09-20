@@ -2,6 +2,7 @@
 
 ## dev-develop
 
+ - BUGFIX      #37    fix setting of email for user on registration.
  - ENHANCEMENT #29    translate country names with Symfony Intl.
  - BUGFIX      #30    fix validation for subforms.
  - BUGFIX      #26    remove contact when user is denied.
