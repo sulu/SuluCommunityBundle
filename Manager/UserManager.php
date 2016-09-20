@@ -114,13 +114,11 @@ class UserManager implements UserManagerInterface
             $contact->setLastName('');
         }
 
-        $emailType = $this->entityManager
-            ->getRepository($this->entityManager->getReference(EmailType::class, 1))
-            ->findAll();
+        $emailType = $this->entityManager->getReference(EmailType::class, 1);
 
         $contactEmail = new Email();
         $contactEmail->setEmail($user->getEmail());
-        $contactEmail->setEmailType($emailType[0]);
+        $contactEmail->setEmailType($emailType);
         $contact->addEmail($contactEmail);
         $contact->setMainEmail($user->getEmail());
 
