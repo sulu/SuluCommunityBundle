@@ -36,12 +36,12 @@ class EmailConfirmationControllerTest extends SuluTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getEntityManager();
 
-        $contactTypes = new LoadDefaultTypes();
-        $contactTypes->load($entityManager);
-
         $mainEmailAddress = 'new@sulu.io';
 
-        $emailType = $entityManager->getReference(EmailType::class, 1);
+        $emailType = new EmailType();
+        $emailType->setName('email.work');
+        $emailType->setId(1);
+        $entityManager->persist($emailType);
 
         $contactEmail = new Email();
         $contactEmail->setEmail($mainEmailAddress);
@@ -52,7 +52,6 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $contact->setFirstName('Hikaru');
         $contact->setLastName('Sulu');
         $contact->addEmail($contactEmail);
-
 
         $entityManager->persist($contact);
         $entityManager->flush();
