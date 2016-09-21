@@ -47,7 +47,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
         $contactEmail = new Email();
         $contactEmail->setEmail($mainEmailAddress);
-        $contactEmail->setEmailType($emailType);
+        $contactEmail->setEmailType($emailType[0]);
 
         $contact = new Contact();
         $contact->setMainEmail($mainEmailAddress);
