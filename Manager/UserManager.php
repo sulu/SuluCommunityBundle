@@ -12,7 +12,10 @@
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Sulu\Bundle\ContactBundle\Contact\ContactManager;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
+use Sulu\Bundle\ContactBundle\Entity\Email;
+use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
@@ -57,6 +60,11 @@ class UserManager implements UserManagerInterface
     protected $contactRepository;
 
     /**
+     * @var ContactRepository
+     */
+    protected $contactManager;
+
+    /**
      * UserManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -65,6 +73,7 @@ class UserManager implements UserManagerInterface
      * @param UserRepository $userRepository
      * @param RoleRepository $roleRepository
      * @param ContactRepository $contactRepository
+     * @param ContactManger $contactManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -72,7 +81,8 @@ class UserManager implements UserManagerInterface
         TokenGeneratorInterface $tokenGenerator,
         UserRepository $userRepository,
         RoleRepository $roleRepository,
-        ContactRepository $contactRepository
+        ContactRepository $contactRepository,
+        ContactManager $contactManager
     ) {
         $this->entityManager = $entityManager;
         $this->webspaceManager = $webspaceManager;
@@ -80,6 +90,7 @@ class UserManager implements UserManagerInterface
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
         $this->contactRepository = $contactRepository;
+        $this->contactManager = $contactManager;
     }
 
     /**
@@ -103,6 +114,12 @@ class UserManager implements UserManagerInterface
             $contact->setLastName('');
         }
 
+        $emailType = $this->entityManager->getReference(EmailType::class, 1);
+
+        $contactEmail = new Email();
+        $contactEmail->setEmail($user->getEmail());
+        $contactEmail->setEmailType($emailType);
+        $contact->addEmail($contactEmail);
         $contact->setMainEmail($user->getEmail());
 
         // Create and Add User Role
@@ -111,6 +128,7 @@ class UserManager implements UserManagerInterface
 
         // Save Entity
         $this->entityManager->persist($userRole);
+        $this->entityManager->persist($contactEmail);
         $this->entityManager->persist($contact);
         $this->entityManager->persist($user);
 

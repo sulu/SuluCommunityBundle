@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
+use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,6 +32,7 @@ class EmailConfirmationController extends AbstractController
      */
     public function indexAction(Request $request)
     {
+        $entityManager = $this->get('doctrine.orm.entity_manager');
         $repository = $this->get('sulu_community.email_confirmation.repository');
 
         $success = false;
@@ -39,7 +41,17 @@ class EmailConfirmationController extends AbstractController
         if ($token !== null) {
             $user = $token->getUser();
             $user->setEmail($user->getContact()->getMainEmail());
-            $this->get('doctrine.orm.entity_manager')->remove($token);
+            $userContact = $user->getContact();
+            if (count($userContact->getEmails()) === 0) {
+                $emailType = $entityManager->getReference(EmailType::class, 1);
+
+                $contactEmail = new Email();
+                $contactEmail->setEmail($user->getContact()->getMainEmail());
+                $contactEmail->setEmailType($emailType);
+                $userContact->addEmail($contactEmail);
+            }
+            $userContact->getEmails()->first()->setEmail($userContact->getMainEmail());
+            $entityManager->remove($token);
             $this->saveEntities();
 
             $success = true;

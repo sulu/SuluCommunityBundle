@@ -14,6 +14,8 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
+use Sulu\Bundle\ContactBundle\Entity\Email;
+use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
@@ -33,16 +35,28 @@ class EmailConfirmationControllerTest extends SuluTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getEntityManager();
 
+        $mainEmailAddress = 'new@sulu.io';
+
+        $emailType = new EmailType();
+        $emailType->setName('email.work');
+        $emailType->setId(1);
+        $entityManager->persist($emailType);
+
+        $contactEmail = new Email();
+        $contactEmail->setEmail($mainEmailAddress);
+        $contactEmail->setEmailType($emailType);
+
         $contact = new Contact();
-        $contact->setMainEmail('new@sulu.io');
+        $contact->setMainEmail($mainEmailAddress);
         $contact->setFirstName('Hikaru');
         $contact->setLastName('Sulu');
+        $contact->addEmail($contactEmail);
 
         $entityManager->persist($contact);
         $entityManager->flush();
 
         $this->user = new User();
-        $this->user->setEmail('test@sulu.io');
+        $this->user->setEmail($mainEmailAddress);
         $this->user->setUsername('test');
         $this->user->setPassword('test');
         $this->user->setSalt('test');
