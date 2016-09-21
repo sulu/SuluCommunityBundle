@@ -22,8 +22,6 @@ use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class EmailConfirmationControllerTest extends SuluTestCase
 {
-    protected static $emailTypeEntityName = 'SuluContactBundle:EmailType';
-
     /**
      * @var User
      */
@@ -43,7 +41,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
         $mainEmailAddress = 'new@sulu.io';
 
-        $emailType = $entityManager->getReference(EmailType::class, 1);
+        $emailType = $this->entityManager->getReference(EmailType::class, 1);
 
         $contactEmail = new Email();
         $contactEmail->setEmail($mainEmailAddress);
