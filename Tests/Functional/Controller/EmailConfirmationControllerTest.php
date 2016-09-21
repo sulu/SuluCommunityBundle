@@ -39,7 +39,11 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
         $mainEmailAddress = 'new@sulu.io';
 
-        $emailType = $entityManager->getReference(EmailType::class, 1);
+        // $emailType = $entityManager->getReference(EmailType::class, 1);
+
+        $emailType = $entityManager
+            ->getRepository(self::$emailTypeEntityName)
+            ->findAll();
 
         $contactEmail = new Email();
         $contactEmail->setEmail($mainEmailAddress);
