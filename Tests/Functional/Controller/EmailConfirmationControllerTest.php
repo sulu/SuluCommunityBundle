@@ -33,15 +33,15 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
         $this->purgeDatabase();
 
-        $contactTypes = new LoadDefaultTypes();
-        $contactTypes->load($this->entityManager);
-
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getEntityManager();
 
+        $contactTypes = new LoadDefaultTypes();
+        $contactTypes->load($entityManager);
+
         $mainEmailAddress = 'new@sulu.io';
 
-        $emailType = $this->entityManager->getReference(EmailType::class, 1);
+        $emailType = $entityManager->getReference(EmailType::class, 1);
 
         $contactEmail = new Email();
         $contactEmail->setEmail($mainEmailAddress);
