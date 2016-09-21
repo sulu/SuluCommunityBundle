@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
+use Sulu\Bundle\ContactBundle\DataFixtures\ORM\LoadDefaultTypes;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
