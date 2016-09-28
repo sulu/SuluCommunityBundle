@@ -12,6 +12,8 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Id\AssignedGenerator;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Sulu\Bundle\ContactBundle\Entity\Email;
@@ -36,6 +38,10 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $entityManager = $this->getEntityManager();
 
         $mainEmailAddress = 'new@sulu.io';
+
+        $metadata = $entityManager->getClassMetaData(EmailType::class);
+        $metadata->setIdGenerator(new AssignedGenerator());
+        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $emailType = new EmailType();
         $emailType->setName('email.work');
@@ -96,6 +102,8 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $contact = $user->getContact();
 
         $this->assertEquals($user->getEmail(), $contact->getMainEmail());
+
+        return $user;
     }
 
     public function testConfirmWrongToken()
@@ -117,5 +125,18 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $entityManager = $this->getEntityManager();
 
         $this->assertNotNull($entityManager->getRepository(EmailConfirmationToken::class)->findByToken('123-123-123'));
+    }
+
+    public function testConfirmWithoutEmail()
+    {
+        $this->getEntityManager()->remove($this->user->getContact()->getEmails()->first());
+        $this->user->getContact()->getEmails()->clear();
+        $this->getEntityManager()->flush();
+
+        /** @var User $user */
+        $user = $this->testConfirm();
+
+        $this->assertCount(1, $user->getContact()->getEmails());
+        $this->assertEquals($user->getEmail(), $user->getContact()->getEmails()->first()->getEmail());
     }
 }
