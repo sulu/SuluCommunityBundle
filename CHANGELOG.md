@@ -2,6 +2,7 @@
 
 ## dev-develop
 
+ - BUGFIX      #44    added use statement to fix email-confirmation controller
  - BUGFIX      #43    fix setting of email for user on registration and profile change.
  - BUGFIX      #39    fixed get correct encoder for new salt.
  - ENHANCEMENT ---    fixed the caching of completion redirect.
