@@ -16,6 +16,7 @@ use Sulu\Bundle\ContactBundle\Entity\Address;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
 use Sulu\Bundle\ContactBundle\Entity\ContactAddress;
 use Sulu\Bundle\ContactBundle\Entity\Note;
+use Sulu\Bundle\MediaBundle\Api\Media;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,8 +92,10 @@ class ProfileController extends AbstractController
      * @param Form $form
      * @param User $user
      * @param string $locale
+     *
+     * @return Media
      */
-    private function saveAvatar(Form $form, User $user, $locale)
+    protected function saveAvatar(Form $form, User $user, $locale)
     {
         $uploadedFile = $form->get('contact')->get('avatar')->getData();
         if (null === $uploadedFile) {
@@ -117,6 +120,8 @@ class ProfileController extends AbstractController
         );
 
         $user->getContact()->setAvatar($apiMedia->getEntity());
+
+        return $apiMedia;
     }
 
     /**
