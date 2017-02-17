@@ -119,7 +119,7 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            // Registration
+                            // Profile
                             ->arrayNode(self::TYPE_PROFILE)
                                 ->addDefaultsIfNotSet()
                                 ->children()

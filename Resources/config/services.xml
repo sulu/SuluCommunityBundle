@@ -68,7 +68,7 @@
                  priority="51"/>
         </service>
 
-        <!-- completion-istener -->
+        <!-- completion-listener -->
         <service id="sulu_community.completion_listener"
                  class="Sulu\Bundle\CommunityBundle\EventListener\CompletionListener">
             <argument type="service" id="sulu_core.webspace.request_analyzer"/>
