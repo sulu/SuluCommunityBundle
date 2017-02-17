@@ -32,8 +32,8 @@ sulu_community:
 To enable the blacklisting feature add the permissions for blacklisting to your role.  
 For this go to `Settings -> Roles -> YourRole` in the sulu backend and add the permissions.  
   
-When you successfully enabled it you can `denied` or set a email to `request` under `Settings -> Blacklist`. 
-It is possible to use wildcard e.g.: `*@test.com` to set the type for a whole domain.
+When you successfully enabled it email addresses can be set to `block` or on `request` under `Settings -> Blacklist`. 
+It is possible to use wildcards e.g. `*@test.com` to set the state for a whole domain.
 
 ## blacklist.email
 
@@ -59,7 +59,7 @@ The admin of the page will receive the blacklisted email when a user email addre
 
 ## blacklist_denied.template / blacklist_confirmed.template
 
-When the admin click on the link a template is rendered which can show specific content:
+When the admin clicks on the link a template is rendered which can show specific content:
 
 **Example Template**:
 
@@ -75,7 +75,7 @@ When the admin click on the link a template is rendered which can show specific 
 
 ## blacklist_confirmed.email
 
-If the user is confirmed he will receive a email with the confirmation link:
+If the user is confirmed he will receive an email with the confirmation link:
 
 ```twig
 {# AppBundle:templates:community/Registration/registration-form.html.twig #}

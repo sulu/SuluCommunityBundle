@@ -20,7 +20,7 @@ sulu_community:
 
 ## email
 
-The registration email mostly contains the confirmationKey.
+The registration email contains the confirmation link.
 
 **Example Template**:
 
@@ -40,7 +40,7 @@ The registration email mostly contains the confirmationKey.
 
 ## template
 
-The template contains the form and mostly the success message.
+The template contains the form and the success message.
 
 **Example Template**:
 
@@ -64,7 +64,7 @@ The template contains the form and mostly the success message.
 
 ## type
 
-You can create your own form by set your own RegistrationType
+You can create your own form by setting your own RegistrationType.
 
 **Example Class**:
 

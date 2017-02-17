@@ -26,6 +26,10 @@ public function registerBundles()
 }
 ```
 
+To avoid the trying to register two bundles with the same name error remove
+the SecurityBundle from `app/AdminKernel.php`.
+
+
 ## Register Routes
 
 Register the website routes:

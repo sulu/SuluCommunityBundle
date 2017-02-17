@@ -138,7 +138,7 @@ If not set it will generate it by webspace key and add 'User' as postfix.
 Type: `string`
 Example: website
 
-Set the firewall for the current webspace else the firewall name need to be the same as the webspace key.
+Set the firewall for the current webspace else the default value is the webspace key.
 
 ### Type Options
 
@@ -147,56 +147,57 @@ Set the firewall for the current webspace else the firewall name need to be the 
 Type: `bool`
 Example: true
 
-When set to true the user can login after successfully form submit.
+When set to true the user can login after successfully submitting the form.
 
 #### auto_login
 
 Type: `bool`
 Example: true
 
-The user will be automatically login after successfully form submit.
+The user will be automatically logged in after successfully submitting the form.
 
 #### embed_template
 
 Type: `string`
 Example: AppBundle:templates:community/Login/login-embed.html.twig
 
-The template which when use `render_esi` to render a login.
+The template which is used to render an uncached esi login form with `render_esi`.
 
 #### email.subject
 
 Type: `string`
 Example: Registration
 
-The subject of the send emails.
+The subject of the emails.
 
 #### email.admin_template
 
 Type: `string`
 Example: AppBundle:templates:community/Blacklist/blacklist-email.html.twig
 
-The template used to render the admin email if null no email is sent.
+The template used to render the admin email, set to null to deactivate it.
 
 #### email.user_template
 
 Type: `string`
 Example: AppBundle:templates:community/Registration/registration-email.html.twig
 
-The template used to render the user email if null no email is sent.
+The template used to render the user email, set to null to deactivate it.
 
 #### redirect_to
 
 Type: `string`
 Example: ?send=true, app.redirect_route
 
-Redirect to can be a url or a route_name. When contain `{localization}` it will be replaced with the current locale.
+redirect_to can be a url or a route_name. When containing `{localization}` 
+it will be replaced with the current locale.
 
 #### service
 
 Type: `string`
 Example: app.completion_validator
 
-Service from interface `CompletionInterface` to validate if a user need to add additional information before using your application. 
+Service from interface `CompletionInterface` to validate if a user needs to add additional information before using your application. 
 
 #### template
 

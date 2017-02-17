@@ -14,7 +14,7 @@ Add a security system to your webspace:
 
 ## Activate Community Features
 
-Enable community features for webspace:
+Enable community features for your webspace:
 
 ```yml
 # app/config/config.yml
@@ -35,9 +35,6 @@ security:
 
     access_decision_manager:
         strategy: affirmative
-
-    acl:
-        connection: default
 
     encoders:
         Sulu\Bundle\SecurityBundle\Entity\User:

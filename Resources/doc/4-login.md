@@ -15,7 +15,8 @@ sulu_community:
 
 ## embed_template
 
-The embed template can be used to display on every page a login or logout button based if a user is logged in or not.  
+The embed template can be used to display on every page a login or logout 
+button based on the login state of the user.  
   
 When using the embed template make sure esi is enabled:
 

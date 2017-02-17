@@ -2,7 +2,6 @@
 
 ## Config
 
-
 ```yml
 # app/config/config.yml
 
@@ -37,11 +36,9 @@ The email with the url to confirm the new email address.
 
 ## template
 
-Template which is render after successfully confirmed the email address.
+Template which is rendered after the email address has been successfully confirmed.
 
 **Example Template**:
-
-
 
 ```twig
 {# AppBundle:templates:community/EmailConfirmation/email-confirmation-success.html.twig #}

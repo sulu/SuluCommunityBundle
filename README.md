@@ -4,8 +4,7 @@ The SuluCommunityBundle adds following features to a webspace:
 
  - Login
  - Registration
- - Password Forget
- - Password Reset
+ - Password Forget/Reset
  - Profile
  - Blacklisting
 

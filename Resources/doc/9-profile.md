@@ -21,7 +21,7 @@ sulu_community:
 
 ## email
 
-Its possible that an email is also sent when a profile is changed.
+It is possible that an email is also sent when a profile is changed.
 
 **Example Template**:
 
@@ -59,7 +59,7 @@ The profile edit template.
 
 ## type
 
-Set a new type to overwrite the exist form.
+Set a new type to overwrite the existing form.
 
 **Example Class**:
 

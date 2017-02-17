@@ -42,7 +42,7 @@ that a user has registered.
 
 ## template
 
-When the user click on the confirmation link the following template will be render:
+When the user clicks on the confirmation link the following template will be rendered:
 
 **Example Template**:
 

@@ -1,6 +1,6 @@
 # Completion
 
-You can add an additional completion form to complete the user registration after confirmation.
+You can add an additional form to complete the user registration after confirmation.
 
 ## Config
 
@@ -23,7 +23,7 @@ sulu_community:
 
 ## email
 
-Its possible that an email is also sent after the completion.
+It is possible that an email is also sent after the completion.
 
 ```
 {# AppBundle:templates:community/Completion/completion-email.html.twig #}
@@ -37,7 +37,7 @@ Its possible that an email is also sent after the completion.
 
 ## service
 
-The service which validates the user data and check if a completion form should be displayed.
+The service which validates the user data and checks if a completion form should be displayed.
 
 ```php
 // src/AppBundle/Validator/CompletionValidator.php

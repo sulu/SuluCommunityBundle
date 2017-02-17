@@ -21,7 +21,7 @@ sulu_community:
 
 ## email
 
-After the user submitted the password reset form he will receive a email.
+After the user submitted the password reset form he will receive an email.
 
 **Example Template**:
 
@@ -65,7 +65,7 @@ The password reset template.
 
 ## type
 
-Set a new type to overwrite the exist form.
+Set a new type to overwrite the existing form.
 
 **Example Class**:
 

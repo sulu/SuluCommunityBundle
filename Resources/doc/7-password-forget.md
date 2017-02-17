@@ -65,7 +65,7 @@ The password forget template.
 
 ## type
 
-Set a new type to overwrite the exist form.
+Set a new type to overwrite the existing form.
 
 **Example Class**:
 

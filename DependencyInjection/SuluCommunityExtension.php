@@ -21,8 +21,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages community bundle configuration.
- *
- * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
 class SuluCommunityExtension extends Extension implements PrependExtensionInterface
 {
