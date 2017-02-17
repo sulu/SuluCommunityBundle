@@ -30,7 +30,7 @@ class ProfileController extends AbstractController
     const TYPE = Configuration::TYPE_PROFILE;
 
     /**
-     * Handle registration form.
+     * Handle profile form.
      *
      * @param Request $request
      *

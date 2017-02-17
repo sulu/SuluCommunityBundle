@@ -47,7 +47,6 @@ class AppKernel extends SuluTestKernel
     {
         parent::registerContainerConfiguration($loader);
 
-        $context = $this->getContext();
-        $loader->load(__DIR__ . '/config/config_' . $context . '.yml');
+        $loader->load(__DIR__ . '/config/config_' . $this->getContext() . '_' . $this->getEnvironment() . '.yml');
     }
 }

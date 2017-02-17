@@ -50,7 +50,7 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->flush();
     }
 
-    public function testForm()
+    public function testProfile()
     {
         $client = $this->createClient(
             [

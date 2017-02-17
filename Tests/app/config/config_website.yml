@@ -2,34 +2,17 @@ parameters:
     secret: test
 
 framework:
-    router: { resource: "%kernel.root_dir%/config/routing_website.yml" }
+    router: { resource: '%kernel.root_dir%/config/routing_website.yml' }
+    profiler: { only_exceptions: false }
 
 sulu_community:
     webspaces:
-        sulu_io: ~
-
-security:
-    acl:
-        connection: default
-
-    access_decision_manager:
-        strategy: affirmative
-
-    encoders:
-        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
-
-    providers:
-        testprovider:
-            id: test_user_provider
-
-    access_control:
-       - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-
-    firewalls:
-        test:
-            http_basic: ~
-            anonymous: ~
+        sulu_io:
+            to: 'admin@sulu.io'
 
 sulu_security:
     checker:
         enabled: true
+
+swiftmailer:
+    disable_delivery:  true
