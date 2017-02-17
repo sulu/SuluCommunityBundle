@@ -1,0 +1,29 @@
+imports:
+    - { resource: config_website.yml }
+
+security:
+    acl:
+        connection: default
+
+    access_decision_manager:
+        strategy: affirmative
+
+    encoders:
+        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
+
+    providers:
+        testprovider:
+            id: sulu_security.user_provider
+
+    access_control:
+       - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: /profile, roles: ROLE_USER }
+
+    firewalls:
+        test:
+            form_login:
+                login_path: /login
+                check_path: /login
+                default_target_path: sulu_community.profile
+            http_basic: ~
+            anonymous: ~
