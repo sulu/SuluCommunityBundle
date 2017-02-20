@@ -73,7 +73,7 @@ class UserManager implements UserManagerInterface
      * @param UserRepository $userRepository
      * @param RoleRepository $roleRepository
      * @param ContactRepository $contactRepository
-     * @param ContactManger $contactManager
+     * @param ContactManager $contactManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
