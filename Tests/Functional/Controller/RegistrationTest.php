@@ -13,11 +13,11 @@ namespace Functional\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\NoResultException;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -85,24 +85,12 @@ class RegistrationTest extends SuluTestCase
         );
         $client->submit($form);
         $this->assertHttpStatusCode(302, $client->getResponse());
-
-        /** @var UserRepository $repository */
-        $repository = $this->getEntityManager()->getRepository(User::class);
-        /** @var User $user */
-        $user = $repository->findOneBy(['username' => 'sulu']);
-
-        $this->assertEquals('Hikaru Sulu', $user->getFullname());
-        $this->assertEquals('hikaru@sulu.io', $user->getEmail());
-        $this->assertEquals('hikaru@sulu.io', $user->getContact()->getMainEmail());
-        $this->assertNotNull($user->getConfirmationKey());
-
-        return $user;
     }
 
     public function testConfirmation()
     {
-        /** @var User $user */
-        $user = $this->testRegister();
+        $this->testRegister();
+        $user = $this->findUser();
 
         $confirmationKey = $user->getConfirmationKey();
 
@@ -116,13 +104,7 @@ class RegistrationTest extends SuluTestCase
         $client->request('GET', '/confirmation/' . $confirmationKey);
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $this->getEntityManager()->clear();
-
-        /** @var UserRepository $repository */
-        $repository = $this->getEntityManager()->getRepository(User::class);
-        /** @var User $user */
-        $user = $repository->findOneBy(['username' => 'sulu']);
-
+        $user = $this->findUser();
         $this->assertNull($user->getConfirmationKey());
 
         return $user;
@@ -221,10 +203,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertHttpStatusCode(200, $client->getResponse());
 
         $this->assertContains('is blocked', $client->getResponse()->getContent());
-
-        /** @var UserRepository $repository */
-        $repository = $this->getEntityManager()->getRepository(User::class);
-        $this->assertNull($repository->findOneBy(['username' => 'sulu']));
+        $this->assertNull($this->findUser());
     }
 
     public function testRegistrationBlacklistedRequested()
@@ -259,9 +238,7 @@ class RegistrationTest extends SuluTestCase
         $client->submit($form);
         $this->assertHttpStatusCode(302, $client->getResponse());
 
-        // check user is created
-        $repository = $this->getEntityManager()->getRepository(User::class);
-        $this->assertNotNull($repository->findOneBy(['username' => 'sulu']));
+        $this->assertNotNull($this->findUser());
 
         // check email to admin
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
@@ -370,11 +347,27 @@ class RegistrationTest extends SuluTestCase
 
         $this->getEntityManager()->clear();
 
-        /** @var UserRepository $repository */
-        $repository = $this->getEntityManager()->getRepository(User::class);
-        /** @var User $user */
-        $user = $repository->findOneBy(['username' => 'sulu']);
+        $this->assertStringStartsWith('my-new-password', $this->findUser()->getPassword());
+    }
 
-        $this->assertStringStartsWith('my-new-password', $user->getPassword());
+    /**
+     * Find user by username.
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    private function findUser($username = 'sulu')
+    {
+        // clear entity-manager to ensure newest user
+        $this->getEntityManager()->clear();
+
+        $repository = $this->getEntityManager()->getRepository(User::class);
+
+        try {
+            return $repository->findUserByUsername($username);
+        } catch (NoResultException $exception) {
+            return;
+        }
     }
 }
