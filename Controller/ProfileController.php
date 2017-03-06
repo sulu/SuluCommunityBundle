@@ -113,7 +113,7 @@ class ProfileController extends AbstractController
             [
                 'id' => (null !== $avatar ? $avatar->getId() : null),
                 'locale' => $locale,
-                'title' => $user->getFullName(),
+                'title' => $user->getUsername(),
                 'collection' => $collection,
             ],
             $user->getId()
