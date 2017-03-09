@@ -22,7 +22,9 @@ Enable community features for your webspace:
 sulu_community:
     webspaces:
         <webspace_key>:
-            from: %from_email%
+            from:
+                name: 'Website'
+                email: %from_email%
 ```
 
 ## Enable Security

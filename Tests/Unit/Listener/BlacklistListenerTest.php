@@ -77,8 +77,8 @@ class BlacklistListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = $this->prophesize(CommunityEvent::class);
         $event->getConfigProperty(Configuration::WEBSPACE_KEY)->willReturn('sulu_io');
-        $event->getConfigProperty(Configuration::EMAIL_TO)->willReturn('admin@sulu.io');
-        $event->getConfigProperty(Configuration::EMAIL_FROM)->willReturn('from@sulu.io');
+        $event->getConfigProperty(Configuration::EMAIL_TO)->willReturn(['admin@sulu.io' => 'admin@sulu.io']);
+        $event->getConfigProperty(Configuration::EMAIL_FROM)->willReturn(['from@sulu.io' => 'from@sulu.io']);
         $event->getConfigTypeProperty(Configuration::TYPE_BLACKLISTED, Configuration::EMAIL)->willReturn(
             [
                 Configuration::EMAIL_SUBJECT => 'subject',

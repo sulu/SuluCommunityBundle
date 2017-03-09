@@ -39,6 +39,24 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
                 $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';
             }
 
+            if (isset($webspaceConfig[Configuration::EMAIL_FROM])) {
+                $webspaceConfig[Configuration::EMAIL_FROM] = [
+                    $webspaceConfig[Configuration::EMAIL_FROM][Configuration::EMAIL_FROM_EMAIL] => $webspaceConfig[Configuration::EMAIL_FROM][Configuration::EMAIL_FROM_NAME]
+                ];
+            }
+            else {
+                $webspaceConfig[Configuration::EMAIL_FROM] = null;
+            }
+
+            if (isset($webspaceConfig[Configuration::EMAIL_TO])) {
+                $webspaceConfig[Configuration::EMAIL_TO] = [
+                    $webspaceConfig[Configuration::EMAIL_TO][Configuration::EMAIL_TO_EMAIL] => $webspaceConfig[Configuration::EMAIL_TO][Configuration::EMAIL_TO_NAME]
+                ];
+            }
+            else {
+                $webspaceConfig[Configuration::EMAIL_TO] = null;
+            }
+
             $webspaceConfig[Configuration::WEBSPACE_KEY] = $webspaceKey;
 
             $definition = new DefinitionDecorator('sulu_community.community_manager');
