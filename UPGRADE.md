@@ -1,5 +1,12 @@
 # Upgrade
 
+## 0.3.0
+
+### Parameter `sulu_community.config` was removed
+
+The whole config as parameter is not longer available the webspaces config
+you can get over the `sulu_community.webspaces` parameter.
+
 ## 0.2.0
 
 ### Avatar title will use username instead of fullname
