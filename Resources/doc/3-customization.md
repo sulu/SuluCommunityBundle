@@ -6,6 +6,9 @@
 # app/config/config.yml
 
 sulu_community:
+    last_login:
+        enabled: false
+        refresh_interval: 600
     webspaces:
         <webspace_key>:
             from: %sulu_admin.email%
@@ -110,6 +113,16 @@ sulu_community:
 ```
 
 ### Basic Options
+
+#### last_login.refresh_interval
+
+Type: `integer`
+Example: 600
+
+When used cookie based login the last login timestamp will never 
+be refreshed you can activate the last login refresh interval
+which will refresh every given seconds the last login timestamp
+to show example active users in your application.
 
 #### from
 
