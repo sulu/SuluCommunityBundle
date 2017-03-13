@@ -84,9 +84,9 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode(self::LAST_LOGIN)
-                    ->addDefaultsIfNotSet()
+                    ->canBeEnabled()
                     ->children()
-                        ->scalarNode(self::REFRESH_INTERVAL)->defaultValue(null)->end()
+                        ->integerNode(self::REFRESH_INTERVAL)->defaultValue(600)->end()
                     ->end()
                 ->end()
                 ->arrayNode('webspaces')

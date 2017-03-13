@@ -13,9 +13,12 @@ namespace Sulu\Bundle\CommunityBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * Last login listener to refresh the users last login timestamp.
+ */
 class LastLoginListener
 {
     /**
@@ -53,9 +56,9 @@ class LastLoginListener
     /**
      * Update the last login in specific interval.
      *
-     * @param FilterControllerEvent $event
+     * @param GetResponseEvent $event
      */
-    public function onCoreController(FilterControllerEvent $event)
+    public function onRequest(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -69,7 +72,7 @@ class LastLoginListener
         if ($this->tokenStorage->getToken()) {
             $user = $this->tokenStorage->getToken()->getUser();
 
-            if (($user instanceof BaseUser) && !($this->isActiveNow($user))) {
+            if ($user instanceof BaseUser && !$this->isActiveNow($user)) {
                 $user->setLastLogin(new \DateTime());
                 $this->entityManager->flush($user);
             }
@@ -83,9 +86,9 @@ class LastLoginListener
      *
      * @return bool
      */
-    public function isActiveNow(BaseUser $user)
+    private function isActiveNow(BaseUser $user)
     {
-        $delay = new \DateTime($this->interval . ' minutes ago');
+        $delay = new \DateTime($this->interval . ' seconds ago');
 
         return $user->getLastLogin() > $delay;
     }

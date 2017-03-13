@@ -34,18 +34,21 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
 
         $container->setParameter('sulu_community.webspaces', $config[Configuration::WEBSPACES]);
 
-        $lastLoginRefreshInterval = $config[Configuration::LAST_LOGIN][Configuration::REFRESH_INTERVAL];
-        $container->setParameter(
-            'sulu_community.last_login.refresh_interval',
-            $lastLoginRefreshInterval
-        );
+        $lastLoginEnabled = $config[Configuration::LAST_LOGIN]['enabled'];
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
         $loader->load('validator.xml');
 
-        if ($lastLoginRefreshInterval) {
-            $loader->load('last-login-refresh.xml');
+        if ($lastLoginEnabled) {
+            $lastLoginRefreshInterval = $config[Configuration::LAST_LOGIN][Configuration::REFRESH_INTERVAL];
+
+            $container->setParameter(
+                'sulu_community.last_login.refresh_interval',
+                $lastLoginRefreshInterval
+            );
+
+            $loader->load('last-login.xml');
         }
     }
 
