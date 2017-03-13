@@ -69,6 +69,10 @@ class Configuration implements ConfigurationInterface
     const EMAIL_USER_TEMPLATE = 'user_template';
     const DELETE_USER = 'delete_user';
 
+    // Other configurations
+    const LAST_LOGIN = 'last_login';
+    const REFRESH_INTERVAL = 'refresh_interval';
+
     /**
      * {@inheritdoc}
      */
@@ -79,6 +83,12 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode(self::LAST_LOGIN)
+                    ->canBeEnabled()
+                    ->children()
+                        ->integerNode(self::REFRESH_INTERVAL)->defaultValue(600)->end()
+                    ->end()
+                ->end()
                 ->arrayNode('webspaces')
                     ->prototype('array')
                         ->children()

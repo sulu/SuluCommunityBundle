@@ -26,9 +26,9 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $config = $container->getParameter('sulu_community.config');
+        $webspacesConfig = $container->getParameter('sulu_community.webspaces_config');
 
-        foreach ($config[Configuration::WEBSPACES] as $webspaceKey => $webspaceConfig) {
+        foreach ($webspacesConfig as $webspaceKey => $webspaceConfig) {
             // Set firewall by webspace key
             if ($webspaceConfig[Configuration::FIREWALL] === null) {
                 $webspaceConfig[Configuration::FIREWALL] = $webspaceKey;
