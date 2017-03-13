@@ -32,7 +32,7 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('sulu_community.webspaces', $config[Configuration::WEBSPACES]);
+        $container->setParameter('sulu_community.webspaces_config', $config[Configuration::WEBSPACES]);
 
         $lastLoginEnabled = $config[Configuration::LAST_LOGIN]['enabled'];
 

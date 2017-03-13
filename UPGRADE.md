@@ -5,7 +5,7 @@
 ### Parameter `sulu_community.config` was removed
 
 The whole config as parameter is not longer available the webspaces config
-you can get over the `sulu_community.webspaces` parameter.
+you can get over the `sulu_community.webspaces_config` parameter.
 
 ## 0.2.0
 

@@ -34,7 +34,7 @@ class CommunityValidatorCompilerPass implements CompilerPassInterface
         }
 
         // Create Validator References
-        $webspacesConfig = $container->getParameter('sulu_community.webspaces');
+        $webspacesConfig = $container->getParameter('sulu_community.webspaces_config');
 
         foreach ($webspacesConfig as $webspaceKey => $webspaceConfig) {
             // Get Completion Validator
