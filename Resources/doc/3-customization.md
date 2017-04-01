@@ -11,8 +11,12 @@ sulu_community:
         refresh_interval: 600
     webspaces:
         <webspace_key>:
-            from: %sulu_admin.email%
-            to: %sulu_admin.email%
+            from:
+                name: 'Website'
+                email: %sulu_admin.email%
+            to:
+                name: 'Admin'
+                email: %sulu_admin.email%
             role: CustomRoleName
             firewall: CustomFirewallName
 

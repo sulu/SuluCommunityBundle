@@ -21,8 +21,8 @@ class Mail
     /**
      * Get mail settings for specific type.
      *
-     * @param string $from
-     * @param string $to
+     * @param string|array $from
+     * @param string|array $to
      * @param array $config
      *
      * @return Mail
@@ -39,12 +39,12 @@ class Mail
     }
 
     /**
-     * @var string
+     * @var string|array
      */
     private $from;
 
     /**
-     * @var string
+     * @var string|array
      */
     private $to;
 
@@ -69,8 +69,8 @@ class Mail
     private $adminTemplate;
 
     /**
-     * @param string $from
-     * @param string $to
+     * @param string|array $from
+     * @param string|array $to
      * @param string $subject
      * @param null|string $userTemplate
      * @param null|string $adminTemplate
@@ -87,7 +87,7 @@ class Mail
     /**
      * Returns from.
      *
-     * @return string
+     * @return string|array
      */
     public function getFrom()
     {
@@ -97,7 +97,7 @@ class Mail
     /**
      * Returns to.
      *
-     * @return string
+     * @return string|array
      */
     public function getTo()
     {

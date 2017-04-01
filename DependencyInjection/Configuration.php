@@ -30,7 +30,11 @@ class Configuration implements ConfigurationInterface
 
     // Basic Webspace configuration
     const EMAIL_FROM = 'from';
+    const EMAIL_FROM_NAME = 'name';
+    const EMAIL_FROM_EMAIL = 'email';
     const EMAIL_TO = 'to';
+    const EMAIL_TO_NAME = 'name';
+    const EMAIL_TO_EMAIL = 'email';
     const ROLE = 'role';
     const WEBSPACE_KEY = 'webspace_key';
     const FIREWALL = 'firewall';
@@ -93,8 +97,36 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             // Basic Webspace Configuration
-                            ->scalarNode(self::EMAIL_FROM)->defaultValue(null)->end()
-                            ->scalarNode(self::EMAIL_TO)->defaultValue(null)->end()
+                            ->arrayNode(self::EMAIL_FROM)
+                                ->children()
+                                    ->scalarNode(self::EMAIL_FROM_NAME)->defaultValue(null)->end()
+                                    ->scalarNode(self::EMAIL_FROM_EMAIL)->defaultValue(null)->end()
+                                ->end()
+                                ->beforeNormalization()
+                                ->ifString()
+                                    ->then(function($value) {
+                                        return [
+                                            self::EMAIL_FROM_NAME => $value,
+                                            self::EMAIL_FROM_EMAIL => $value,
+                                        ];
+                                    })
+                                ->end()
+                            ->end()
+                            ->arrayNode(self::EMAIL_TO)
+                                ->children()
+                                    ->scalarNode(self::EMAIL_TO_NAME)->defaultValue(null)->end()
+                                    ->scalarNode(self::EMAIL_TO_EMAIL)->defaultValue(null)->end()
+                                ->end()
+                                ->beforeNormalization()
+                                ->ifString()
+                                    ->then(function($value) {
+                                        return [
+                                            self::EMAIL_TO_NAME => $value,
+                                            self::EMAIL_TO_EMAIL => $value,
+                                        ];
+                                    })
+                                ->end()
+                            ->end()
                             ->scalarNode(self::ROLE)->defaultValue(null)->end()
                             ->scalarNode(self::FIREWALL)->defaultValue(null)->end()
                             // Login
