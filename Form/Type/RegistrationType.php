@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Create the registration form type.
@@ -39,7 +40,7 @@ class RegistrationType extends AbstractType
             [
                 'mapped' => false,
                 'constraints' => new NotBlank([
-                    'groups' => ['registration']
+                    'groups' => ['registration'],
                 ]),
             ]
         );
@@ -57,7 +58,7 @@ class RegistrationType extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'constraints' => new NotBlank([
-                    'groups' => ['registration']
+                    'groups' => ['registration'],
                 ]),
             ]
         );

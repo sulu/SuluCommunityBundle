@@ -36,7 +36,6 @@
                 <option name="groups">
                     <value>registration</value>
                     <value>completion</value>
-                    <value>profile</value>
                 </option>
             </constraint>
             <constraint name="Email">
