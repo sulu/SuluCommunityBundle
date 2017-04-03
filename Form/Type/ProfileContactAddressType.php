@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Form\Type;
 
 use Sulu\Bundle\ContactBundle\Entity\ContactAddress;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,7 +25,7 @@ class ProfileContactAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('address', new $options['address_type'](), $options['address_type_options']);
-        $builder->add('main', 'hidden', [
+        $builder->add('main', HiddenType::class, [
             'required' => false,
             'data' => 1,
         ]);

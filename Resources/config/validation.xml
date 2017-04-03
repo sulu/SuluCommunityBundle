@@ -32,6 +32,12 @@
             </constraint>
         </property>
         <property name="email">
+            <constraint name="NotBlank">
+                <option name="groups">
+                    <value>registration</value>
+                    <value>completion</value>
+                </option>
+            </constraint>
             <constraint name="Email">
                 <option name="groups">
                     <value>registration</value>
