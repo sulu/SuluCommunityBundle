@@ -24,7 +24,7 @@ sulu_community:
         <webspace_key>:
             from:
                 name: 'Website'
-                email: %from_email%
+                email: %sulu_admin.email%
 ```
 
 ## Enable Security
