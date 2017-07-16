@@ -47,7 +47,7 @@ class RegistrationType extends AbstractType
 
         $builder->add(
             'contact',
-            new $options['contact_type'](),
+            RegistrationContactType::class,
             $options['contact_type_options']
         );
 
