@@ -131,7 +131,7 @@ class CompletionType extends AbstractType
 
         $builder->add(
             'contact',
-            new $options['contact_type'](),
+            $options['contact_type'],
             array_merge(
                 $options['contact_type_options'],
                 [
