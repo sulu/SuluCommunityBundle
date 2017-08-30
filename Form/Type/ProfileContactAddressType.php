@@ -24,7 +24,7 @@ class ProfileContactAddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', new $options['address_type'](), $options['address_type_options']);
+        $builder->add('address', $options['address_type'], $options['address_type_options']);
         $builder->add('main', HiddenType::class, [
             'required' => false,
             'data' => 1,
