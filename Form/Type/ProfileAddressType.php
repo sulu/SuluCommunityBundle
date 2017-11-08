@@ -42,7 +42,7 @@ class ProfileAddressType extends AbstractType
             EntityType::class,
             [
                 'class' => Country::class,
-                'property' => function (Country $country) {
+                'choice_label' => function (Country $country) {
                     return Intl::getRegionBundle()->getCountryName($country->getCode());
                 },
             ]
