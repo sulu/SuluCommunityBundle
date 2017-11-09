@@ -106,11 +106,11 @@ class UserManager implements UserManagerInterface
             $user->setContact($contact);
         }
 
-        if ($contact->getFirstName() === null) {
+        if (null === $contact->getFirstName()) {
             $contact->setFirstName('');
         }
 
-        if ($contact->getLastName() === null) {
+        if (null === $contact->getLastName()) {
             $contact->setLastName('');
         }
 

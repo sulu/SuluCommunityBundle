@@ -107,7 +107,7 @@ class BlacklistListener
     {
         $items = $this->blacklistItemRepository->findBySender($email);
 
-        if (count($items) === 0) {
+        if (0 === count($items)) {
             return;
         }
 

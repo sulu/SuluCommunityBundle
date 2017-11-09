@@ -58,7 +58,7 @@ abstract class AbstractController extends Controller
      */
     protected function getWebspaceKey()
     {
-        if ($this->webspaceKey === null) {
+        if (null === $this->webspaceKey) {
             return $this->get('sulu_core.webspace.request_analyzer')->getWebspace()->getKey();
         }
 
