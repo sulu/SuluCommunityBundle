@@ -39,11 +39,11 @@ class EmailConfirmationController extends AbstractController
         $success = false;
         $token = $repository->findByToken($request->get('token'));
 
-        if ($token !== null) {
+        if (null !== $token) {
             $user = $token->getUser();
             $user->setEmail($user->getContact()->getMainEmail());
             $userContact = $user->getContact();
-            if (count($userContact->getEmails()) === 0) {
+            if (0 === count($userContact->getEmails())) {
                 $emailType = $entityManager->getReference(EmailType::class, 1);
 
                 $contactEmail = new Email();

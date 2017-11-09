@@ -50,7 +50,7 @@ class ConfirmationController extends AbstractController
             $redirectTo = $communityManager->getConfigTypeProperty(self::TYPE, Configuration::REDIRECT_TO);
 
             if ($redirectTo) {
-                if (strpos($redirectTo, '/') === 0) {
+                if (0 === strpos($redirectTo, '/')) {
                     $url = str_replace('{localization}', $request->getLocale(), $redirectTo);
                 } else {
                     $url = $this->get('router')->generate($redirectTo);

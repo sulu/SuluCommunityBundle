@@ -69,7 +69,7 @@ class MailFactoryTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send(
             Argument::that(
                 function (\Swift_Message $message) {
-                    return $message->getBody() === 'User-Template'
+                    return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
                 }
@@ -78,7 +78,7 @@ class MailFactoryTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send(
             Argument::that(
                 function (\Swift_Message $message) {
-                    return $message->getBody() === 'Admin-Template'
+                    return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];
                 }
@@ -97,7 +97,7 @@ class MailFactoryTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send(
             Argument::that(
                 function (\Swift_Message $message) {
-                    return $message->getBody() === 'User-Template'
+                    return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
                 }
@@ -106,7 +106,7 @@ class MailFactoryTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send(
             Argument::that(
                 function (\Swift_Message $message) {
-                    return $message->getBody() === 'Admin-Template'
+                    return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];
                 }
@@ -125,7 +125,7 @@ class MailFactoryTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send(
             Argument::that(
                 function (\Swift_Message $message) {
-                    return $message->getBody() === 'User-Template'
+                    return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
                 }
@@ -134,7 +134,7 @@ class MailFactoryTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send(
             Argument::that(
                 function (\Swift_Message $message) {
-                    return $message->getBody() === 'Admin-Template'
+                    return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];
                 }

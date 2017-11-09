@@ -226,11 +226,11 @@ class BlacklistItemController extends RestController implements ClassResourceInt
     {
         $idsParameter = $request->get('ids');
         $ids = array_filter(explode(',', $idsParameter));
-        if ($idsParameter !== null && count($ids) === 0) {
+        if (null !== $idsParameter && 0 === count($ids)) {
             return [];
         }
 
-        if ($idsParameter !== null) {
+        if (null !== $idsParameter) {
             $listBuilder->in($fieldDescriptors['id'], $ids);
         }
 
