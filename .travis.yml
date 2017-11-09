@@ -17,6 +17,7 @@ matrix:
         - CODE_COVERAGE=true
 
 before_install:
+  - phpenv config-add Tests/travis.php.ini
   - composer self-update
 
 install:
