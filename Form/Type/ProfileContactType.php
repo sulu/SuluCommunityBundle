@@ -36,9 +36,10 @@ class ProfileContactType extends AbstractType
             ChoiceType::class,
             [
                 'choices' => [
-                    'contact.contacts.formOfAddress.male',
-                    'contact.contacts.formOfAddress.female',
+                    'contact.contacts.formOfAddress.male' => 0,
+                    'contact.contacts.formOfAddress.female' => 1,
                 ],
+                'choices_as_values' => true,
                 'translation_domain' => 'backend',
                 'expanded' => true,
             ]

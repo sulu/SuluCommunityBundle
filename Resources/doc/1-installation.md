@@ -52,3 +52,13 @@ sulu_community_api:
     resource: "@SuluCommunityBundle/Resources/config/routing_api.xml"
     prefix: /admin/api
 ```
+
+## Create database tables
+
+Execute the following command to get the sqls to update your database.
+
+```bash
+php bin/console doctrine:schema:update --dump-sql
+``` 
+
+You can use `--force` to run the sqls but be carefully which other sql statements are executed.
