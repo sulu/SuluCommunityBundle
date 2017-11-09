@@ -12,11 +12,11 @@ sulu_community:
     webspaces:
         <webspace_key>:
             from:
-                name: 'Website'
-                email: %sulu_admin.email%
+                name: "Website"
+                email: "%sulu_admin.email%"
             to:
-                name: 'Admin'
-                email: %sulu_admin.email%
+                name: "Admin"
+                email: "%sulu_admin.email%"
             role: CustomRoleName
             firewall: CustomFirewallName
 

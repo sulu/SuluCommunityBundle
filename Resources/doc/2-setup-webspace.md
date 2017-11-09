@@ -23,8 +23,8 @@ sulu_community:
     webspaces:
         <webspace_key>:
             from:
-                name: 'Website'
-                email: %sulu_admin.email%
+                name: "Website"
+                email: "%sulu_admin.email%"
 ```
 
 ## Enable Security
@@ -63,7 +63,7 @@ security:
                 path: /logout
                 target: /
             remember_me:
-                secret:   '%secret%'
+                secret:   "%secret%"
                 lifetime: 604800 # 1 week in seconds
                 path:     /
 
@@ -77,5 +77,6 @@ sulu_security:
 Create user roles with the following command:
 
 ```bash
-app/console sulu:community:init
+php bin/console sulu:community:init
 ```
+
