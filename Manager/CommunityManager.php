@@ -121,7 +121,7 @@ class CommunityManager implements CommunityManagerInterface
     public function register(User $user)
     {
         // User need locale
-        if ($user->getLocale() === null) {
+        if (null === $user->getLocale()) {
             $user->setLocale('en');
         }
 

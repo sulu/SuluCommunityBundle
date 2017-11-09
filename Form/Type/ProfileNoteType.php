@@ -35,7 +35,7 @@ class ProfileNoteType extends AbstractType
                     return $value;
                 },
                 function ($value) {
-                    if ($value === null) {
+                    if (null === $value) {
                         return '';
                     }
 

@@ -116,7 +116,7 @@ class EmailConfirmationListenerTest extends \PHPUnit_Framework_TestCase
         $this->entityManager->persist(
             Argument::that(
                 function (EmailConfirmationToken $token) {
-                    return $token->getToken() === '123-123-123' && $token->getUser() === $this->user->reveal();
+                    return '123-123-123' === $token->getToken() && $token->getUser() === $this->user->reveal();
                 }
             )
         );
