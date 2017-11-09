@@ -30,12 +30,12 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
 
         foreach ($webspacesConfig as $webspaceKey => $webspaceConfig) {
             // Set firewall by webspace key
-            if ($webspaceConfig[Configuration::FIREWALL] === null) {
+            if (null === $webspaceConfig[Configuration::FIREWALL]) {
                 $webspaceConfig[Configuration::FIREWALL] = $webspaceKey;
             }
 
             // Set role by webspace key
-            if ($webspaceConfig[Configuration::ROLE] === null) {
+            if (null === $webspaceConfig[Configuration::ROLE]) {
                 $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';
             }
 

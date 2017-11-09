@@ -91,8 +91,8 @@ class BlacklistListenerTest extends \PHPUnit_Framework_TestCase
         $this->entityManager->persist(
             Argument::that(
                 function (BlacklistUser $item) use ($user) {
-                    return $item->getToken() === '123-123-123'
-                    && $item->getWebspaceKey() === 'sulu_io'
+                    return '123-123-123' === $item->getToken()
+                    && 'sulu_io' === $item->getWebspaceKey()
                     && $item->getUser() === $user->reveal();
                 }
             )

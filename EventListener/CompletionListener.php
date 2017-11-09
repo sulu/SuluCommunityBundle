@@ -102,7 +102,7 @@ class CompletionListener
         }
 
         $uriParameters = [];
-        if ($request->attributes->get('_route') !== 'sulu_community.confirmation') {
+        if ('sulu_community.confirmation' !== $request->attributes->get('_route')) {
             $uriParameters['re'] = $request->getRequestUri();
         }
 
