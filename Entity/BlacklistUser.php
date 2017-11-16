@@ -28,7 +28,7 @@ class BlacklistUser
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $token;
 
@@ -74,7 +74,7 @@ class BlacklistUser
     /**
      * Returns token.
      *
-     * @return string
+     * @return string|null
      */
     public function getToken()
     {

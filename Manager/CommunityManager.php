@@ -161,7 +161,7 @@ class CommunityManager implements CommunityManagerInterface
     public function login(User $user, Request $request)
     {
         if (!$user->getEnabled()) {
-            return;
+            return null;
         }
 
         $token = new UsernamePasswordToken(
@@ -187,7 +187,7 @@ class CommunityManager implements CommunityManagerInterface
         $user = $this->userManager->findByConfirmationKey($token);
 
         if (!$user) {
-            return;
+            return null;
         }
 
         // Remove Confirmation Key
@@ -209,7 +209,7 @@ class CommunityManager implements CommunityManagerInterface
         $user = $this->userManager->findUser($emailUsername);
 
         if (!$user) {
-            return;
+            return null;
         }
 
         $user->setPasswordResetToken($this->userManager->getUniqueToken('passwordResetToken'));

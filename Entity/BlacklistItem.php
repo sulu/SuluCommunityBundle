@@ -30,17 +30,17 @@ class BlacklistItem
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $pattern;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $regexp;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $type;
 
@@ -70,7 +70,7 @@ class BlacklistItem
     /**
      * Get pattern.
      *
-     * @return string
+     * @return string|null
      */
     public function getPattern()
     {
@@ -95,7 +95,7 @@ class BlacklistItem
     /**
      * Get regexp.
      *
-     * @return string
+     * @return string|null
      */
     public function getRegexp()
     {
@@ -105,7 +105,7 @@ class BlacklistItem
     /**
      * Get type.
      *
-     * @return string
+     * @return string|null
      */
     public function getType()
     {

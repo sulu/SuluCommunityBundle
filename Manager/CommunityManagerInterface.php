@@ -52,7 +52,7 @@ interface CommunityManagerInterface
      * @param User $user
      * @param Request $request
      *
-     * @return UsernamePasswordToken
+     * @return UsernamePasswordToken|null
      */
     public function login(User $user, Request $request);
 
@@ -61,7 +61,7 @@ interface CommunityManagerInterface
      *
      * @param string $token
      *
-     * @return User
+     * @return User|null
      */
     public function confirm($token);
 
@@ -70,14 +70,14 @@ interface CommunityManagerInterface
      *
      * @param string $emailUsername
      *
-     * @return User
+     * @return User|null
      */
     public function passwordForget($emailUsername);
 
     /**
      * Reset user password token.
      *
-     * @param User $user
+     * @param User $user|null
      *
      * @return User
      */
@@ -107,7 +107,7 @@ interface CommunityManagerInterface
      * @param string $type
      * @param string $property
      *
-     * @return string
+     * @return mixed
      *
      * @throws \Exception
      */
