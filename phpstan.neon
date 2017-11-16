@@ -1,4 +1,5 @@
 parameters:
     excludes_analyse:
         - %currentWorkingDirectory%/vendor/*
+        - %currentWorkingDirectory%/Tests/*
 

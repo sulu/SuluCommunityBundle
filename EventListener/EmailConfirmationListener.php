@@ -18,6 +18,7 @@ use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
 use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 /**
@@ -72,6 +73,11 @@ class EmailConfirmationListener
     public function sendConfirmationOnEmailChange(CommunityEvent $event)
     {
         $user = $event->getUser();
+
+        if (!$user instanceof User) {
+            throw new \RuntimeException('Community bundle user need to be instance uf Sulu User');
+        }
+
         if ($user->getEmail() === $user->getContact()->getMainEmail()) {
             return;
         }

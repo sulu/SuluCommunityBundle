@@ -15,6 +15,7 @@
         "jackalope/jackalope-doctrine-dbal": "^1.2.5",
         "symfony/monolog-bundle": "^2.8.7 || ^3.0",
         "massive/search-bundle": "@dev",
+        "massive/build-bundle": "^0.2",
         "zendframework/zend-stdlib": "~2.3",
         "zendframework/zendsearch": "@dev",
         "phpunit/phpunit": ">=4.8, <6.0"
