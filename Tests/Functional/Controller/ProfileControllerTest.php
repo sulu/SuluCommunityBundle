@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Functional\Controller;
+namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -88,7 +88,9 @@ class ProfileControllerTest extends SuluTestCase
                 'profile[contact][notes][0][value]' => 'Test',
                 'profile[contact][contactAddresses][0][main]' => 1,
                 'profile[_token]' => $crawler->filter('#profile__token')->first()->attr('value'),
-        ]);
+            ]
+        );
+
         $crawler = $client->submit($form);
         $this->assertHttpStatusCode(200, $client->getResponse());
 

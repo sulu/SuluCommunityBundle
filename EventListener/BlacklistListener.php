@@ -101,14 +101,14 @@ class BlacklistListener
      *
      * @param string $email
      *
-     * @return string
+     * @return string|null
      */
     private function getType($email)
     {
         $items = $this->blacklistItemRepository->findBySender($email);
 
         if (0 === count($items)) {
-            return;
+            return null;
         }
 
         foreach ($items as $item) {

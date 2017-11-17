@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -37,7 +38,9 @@ class ConfirmationController extends AbstractController
         $success = false;
 
         // Confirm user by token
-        if ($user = $communityManager->confirm($token)) {
+        $user = $communityManager->confirm($token);
+
+        if ($user instanceof User) {
             // Save User
             $this->saveEntities();
 

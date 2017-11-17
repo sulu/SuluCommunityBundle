@@ -12,16 +12,16 @@
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sulu\Bundle\ContactBundle\Contact\ContactManager;
-use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
+use Sulu\Bundle\ContactBundle\Contact\ContactManagerInterface;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
-use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
+use Sulu\Component\Contact\Model\ContactRepositoryInterface;
 use Sulu\Component\Security\Authentication\RoleInterface;
+use Sulu\Component\Security\Authentication\RoleRepositoryInterface;
+use Sulu\Component\Security\Authentication\UserRepositoryInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 
 /**
@@ -45,22 +45,22 @@ class UserManager implements UserManagerInterface
     protected $tokenGenerator;
 
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
     protected $userRepository;
 
     /**
-     * @var RoleRepository
+     * @var RoleRepositoryInterface
      */
     protected $roleRepository;
 
     /**
-     * @var ContactRepository
+     * @var ContactRepositoryInterface
      */
     protected $contactRepository;
 
     /**
-     * @var ContactRepository
+     * @var ContactManagerInterface
      */
     protected $contactManager;
 
@@ -70,19 +70,19 @@ class UserManager implements UserManagerInterface
      * @param EntityManagerInterface $entityManager
      * @param WebspaceManagerInterface $webspaceManager
      * @param TokenGeneratorInterface $tokenGenerator
-     * @param UserRepository $userRepository
-     * @param RoleRepository $roleRepository
-     * @param ContactRepository $contactRepository
-     * @param ContactManager $contactManager
+     * @param UserRepositoryInterface $userRepository
+     * @param RoleRepositoryInterface $roleRepository
+     * @param ContactRepositoryInterface $contactRepository
+     * @param ContactManagerInterface $contactManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         WebspaceManagerInterface $webspaceManager,
         TokenGeneratorInterface $tokenGenerator,
-        UserRepository $userRepository,
-        RoleRepository $roleRepository,
-        ContactRepository $contactRepository,
-        ContactManager $contactManager
+        UserRepositoryInterface $userRepository,
+        RoleRepositoryInterface $roleRepository,
+        ContactRepositoryInterface $contactRepository,
+        ContactManagerInterface $contactManager
     ) {
         $this->entityManager = $entityManager;
         $this->webspaceManager = $webspaceManager;
@@ -186,7 +186,7 @@ class UserManager implements UserManagerInterface
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
 
         if (!$user || $user->getPasswordResetTokenExpiresAt() < new \DateTime()) {
-            return;
+            return null;
         }
 
         return $user;
@@ -205,6 +205,12 @@ class UserManager implements UserManagerInterface
      */
     public function findUser($identifier)
     {
-        return $this->userRepository->findUserByIdentifier($identifier);
+        $user = $this->userRepository->findUserByIdentifier($identifier);
+
+        if (!$user instanceof User) {
+            return null;
+        }
+
+        return $user;
     }
 }

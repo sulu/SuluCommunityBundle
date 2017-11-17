@@ -26,16 +26,16 @@ class EmailConfirmationTokenRepository extends EntityRepository
      *
      * @param string $token
      *
-     * @return EmailConfirmationToken
+     * @return EmailConfirmationToken|null
      */
     public function findByToken($token)
     {
         try {
             return $this->findOneBy(['token' => $token]);
         } catch (NonUniqueResultException $e) {
-            return;
+            return null;
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 
@@ -44,16 +44,16 @@ class EmailConfirmationTokenRepository extends EntityRepository
      *
      * @param UserInterface $user
      *
-     * @return EmailConfirmationToken
+     * @return EmailConfirmationToken|null
      */
     public function findByUser($user)
     {
         try {
             return $this->findOneBy(['user' => $user]);
         } catch (NonUniqueResultException $e) {
-            return;
+            return null;
         } catch (NoResultException $e) {
-            return;
+            return null;
         }
     }
 }

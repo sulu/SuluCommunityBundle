@@ -93,13 +93,13 @@ class ProfileController extends AbstractController
      * @param User $user
      * @param string $locale
      *
-     * @return Media
+     * @return Media|null
      */
     protected function saveAvatar(Form $form, User $user, $locale)
     {
         $uploadedFile = $form->get('contact')->get('avatar')->getData();
         if (null === $uploadedFile) {
-            return;
+            return null;
         }
 
         $systemCollectionManager = $this->get('sulu_media.system_collections.manager');

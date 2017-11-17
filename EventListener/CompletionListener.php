@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * Validates the current user entity.
@@ -93,6 +94,10 @@ class CompletionListener
 
         $token = $this->tokenStorage->getToken();
 
+        if (!$token instanceof TokenInterface) {
+            return;
+        }
+
         /** @var User $user */
         $user = $token->getUser();
 
@@ -131,12 +136,12 @@ class CompletionListener
     /**
      * @param string $webspaceKey
      *
-     * @return CompletionInterface
+     * @return CompletionInterface|null
      */
     protected function getValidator($webspaceKey)
     {
         if (!isset($this->validators[$webspaceKey])) {
-            return;
+            return null;
         }
 
         return $this->validators[$webspaceKey];

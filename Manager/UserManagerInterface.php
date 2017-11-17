@@ -43,7 +43,7 @@ interface UserManagerInterface
      *
      * @param string $token
      *
-     * @return User
+     * @return User|null
      */
     public function findByPasswordResetToken($token);
 
@@ -52,7 +52,7 @@ interface UserManagerInterface
      *
      * @param string $token
      *
-     * @return User
+     * @return User|null
      */
     public function findByConfirmationKey($token);
 
@@ -61,7 +61,7 @@ interface UserManagerInterface
      *
      * @param string $identifier
      *
-     * @return User
+     * @return User|null
      */
     public function findUser($identifier);
 }
