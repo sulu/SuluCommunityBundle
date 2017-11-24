@@ -30,7 +30,10 @@ framework:
 **Insert following in your twig file**:
 
 ```twig
-{{ render_esi(controller('SuluCommunityBundle:Login:embed')) }}
+{{ render_esi(controller('SuluCommunityBundle:Login:embed', {
+    '_portal' : request.portalKey|default('default_portal_key'),
+    '_locale' : app.request.locale
+})) }}
 ```
 
 **Example Template**:
