@@ -233,6 +233,7 @@ class CommunityManager implements CommunityManagerInterface
     {
         $user->setPasswordResetTokenExpiresAt(null);
         $user->setPasswordResetToken(null);
+        $user->setEnabled(true);
 
         // Event
         $event = new CommunityEvent($user, $this->config);
