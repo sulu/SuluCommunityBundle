@@ -56,6 +56,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             }
 
             $webspaceConfig[Configuration::WEBSPACE_KEY] = $webspaceKey;
+            $webspacesConfig[$webspaceKey] = $webspaceConfig;
 
             $definition = new DefinitionDecorator('sulu_community.community_manager');
             $definition->replaceArgument(0, $webspaceConfig);
@@ -66,5 +67,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
                 $definition
             );
         }
+
+        $container->setParameter('sulu_community.webspaces_config', $webspacesConfig);
     }
 }
