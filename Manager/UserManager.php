@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\ContactBundle\Contact\ContactManagerInterface;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
+use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
@@ -204,6 +205,7 @@ class UserManager implements UserManagerInterface
      */
     public function findByPasswordResetToken($token)
     {
+        /** @var BaseUser $user */
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
 
         if (!$user || $user->getPasswordResetTokenExpiresAt() < new \DateTime()) {

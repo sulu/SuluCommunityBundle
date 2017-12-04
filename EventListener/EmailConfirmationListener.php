@@ -84,7 +84,7 @@ class EmailConfirmationListener
 
         $entity = $this->emailConformationRepository->findByUser($user);
         $token = $this->tokenGenerator->generateToken();
-        if (null === $entity) {
+        if (!$entity instanceof EmailConfirmationToken) {
             $entity = new EmailConfirmationToken($user);
             $this->entityManager->persist($entity);
         }
