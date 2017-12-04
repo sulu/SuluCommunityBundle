@@ -22,7 +22,7 @@ class BlacklistUserRepository extends EntityRepository
      *
      * @param string $token
      *
-     * @return BlacklistUser|null
+     * @return BlacklistUser|object|null
      */
     public function findByToken($token)
     {

@@ -11,10 +11,12 @@
 
 namespace Sulu\Bundle\CommunityBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
+use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 use Sulu\Component\Webspace\Webspace;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,13 +44,16 @@ class InitCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var WebspaceManagerInterface $webspaceManager */
         $webspaceManager = $this->getContainer()->get('sulu_core.webspace.webspace_manager');
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $webspaceKey = $input->getArgument('webspace');
 
         if (null !== $webspaceKey) {
             $this->initWebspace($webspaceManager->findWebspaceByKey($webspaceKey), $output);
-            $this->getContainer()->get('doctrine.orm.entity_manager')->flush();
+            $entityManager->flush();
 
             return;
         }
@@ -58,7 +63,7 @@ class InitCommand extends ContainerAwareCommand
             $this->initWebspace($webspace, $output);
         }
 
-        $this->getContainer()->get('doctrine.orm.entity_manager')->flush();
+        $entityManager->flush();
     }
 
     /**
@@ -97,8 +102,8 @@ class InitCommand extends ContainerAwareCommand
     /**
      * Create a role for a specific system if not exists.
      *
-     * @param $roleName
-     * @param $system
+     * @param string $roleName
+     * @param string $system
      *
      * @return string
      */
@@ -123,7 +128,9 @@ class InitCommand extends ContainerAwareCommand
         $role->setSystem($system);
         $role->setName($roleName);
 
-        $this->getContainer()->get('doctrine.orm.entity_manager')->persist($role);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $entityManager->persist($role);
 
         return $outputMessage;
     }

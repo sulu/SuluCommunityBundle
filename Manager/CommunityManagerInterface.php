@@ -116,7 +116,7 @@ interface CommunityManagerInterface
     /**
      * Send email to user and admin by type.
      *
-     * @param $type
+     * @param string $type
      * @param BaseUser $user
      */
     public function sendEmails($type, BaseUser $user);
