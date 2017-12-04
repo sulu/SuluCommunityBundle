@@ -114,13 +114,8 @@ class UserManager implements UserManagerInterface
             $contact->setLastName('');
         }
 
-        $emailType = $this->entityManager->getReference(EmailType::class, 1);
-
-        $contactEmail = new Email();
-        $contactEmail->setEmail($user->getEmail());
-        $contactEmail->setEmailType($emailType);
-        $contact->addEmail($contactEmail);
         $contact->setMainEmail($user->getEmail());
+        $user = $this->updateUser($user);
 
         // Create and Add User Role
         $userRole = $this->createUserRole($user, $webspaceKey, $roleName);
@@ -128,9 +123,35 @@ class UserManager implements UserManagerInterface
 
         // Save Entity
         $this->entityManager->persist($userRole);
-        $this->entityManager->persist($contactEmail);
         $this->entityManager->persist($contact);
         $this->entityManager->persist($user);
+
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateUser(User $user)
+    {
+        $contact = $user->getContact();
+
+        if (!$contact->getEmails()->isEmpty()) {
+            /** @var Email $email */
+            $email = $contact->getEmails()->first();
+            $email->setEmail($contact->getMainEmail());
+
+            return $user;
+        }
+
+        /** @var EmailType $emailType */
+        $emailType = $this->entityManager->getReference(EmailType::class, 1);
+        $contactEmail = new Email();
+        $contactEmail->setEmail($contact->getMainEmail());
+        $contactEmail->setEmailType($emailType);
+        $contact->addEmail($contactEmail);
+
+        $this->entityManager->persist($contactEmail);
 
         return $user;
     }
