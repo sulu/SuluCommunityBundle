@@ -26,7 +26,7 @@ class EmailConfirmationTokenRepository extends EntityRepository
      *
      * @param string $token
      *
-     * @return EmailConfirmationToken|null
+     * @return EmailConfirmationToken|object|null
      */
     public function findByToken($token)
     {
@@ -44,7 +44,7 @@ class EmailConfirmationTokenRepository extends EntityRepository
      *
      * @param UserInterface $user
      *
-     * @return EmailConfirmationToken|null
+     * @return EmailConfirmationToken|object|null
      */
     public function findByUser($user)
     {

@@ -30,6 +30,15 @@ interface UserManagerInterface
     public function createUser(User $user, $webspaceKey, $roleName);
 
     /**
+     * Update User entity.
+     *
+     * @param User $user
+     *
+     * @return User
+     */
+    public function updateUser(User $user);
+
+    /**
      * Generates a unique token.
      *
      * @param string $field

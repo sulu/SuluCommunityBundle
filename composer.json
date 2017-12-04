@@ -8,6 +8,7 @@
         "symfony/symfony": "^2.8.7 || ^3.0",
         "symfony/security-acl": "~2.7|~3.0.0",
         "sulu/sulu": "^1.3",
+        "massive/build-bundle": "^0.2 || ^0.3",
         "symfony/swiftmailer-bundle": "~2.3",
         "beberlei/DoctrineExtensions": "^1.0"
     },
@@ -15,7 +16,6 @@
         "jackalope/jackalope-doctrine-dbal": "^1.2.5",
         "symfony/monolog-bundle": "^2.8.7 || ^3.0",
         "massive/search-bundle": "@dev",
-        "massive/build-bundle": "^0.2",
         "zendframework/zend-stdlib": "~2.3",
         "zendframework/zendsearch": "@dev",
         "phpunit/phpunit": ">=4.8, <6.0"

@@ -10,7 +10,7 @@ matrix:
   include:
     - php: 5.5
       env:
-         - COMPOSER_FLAGS="--prefer-dist --no-interaction" # --prefer-lowest not possible in sulu 1.3
+        - COMPOSER_FLAGS="--prefer-dist --no-interaction" # --prefer-lowest not possible in sulu 1.3
     - php: 7.0
       env:
         - COMPOSER_FLAGS="--prefer-dist --no-interaction"
@@ -29,7 +29,7 @@ install:
 
 script:
   - ./vendor/bin/phpunit --coverage-clover=coverage.clover
-  - if [[ $PHPSTAN == 'true' ]]; then ./vendor/bin/phpstan analyse ./ --level 4 -c phpstan.neon ; fi
+  - if [[ $PHPSTAN == 'true' ]]; then ./vendor/bin/phpstan analyse ./ --level 2 -c phpstan.neon ; fi
 
 after_script:
   - if [[ $CODE_COVERAGE == 'true' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
