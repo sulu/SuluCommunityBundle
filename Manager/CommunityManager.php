@@ -262,6 +262,8 @@ class CommunityManager implements CommunityManagerInterface
      */
     public function saveProfile(BaseUser $user)
     {
+        $this->userManager->updateUser($user);
+
         // Event
         $event = new CommunityEvent($user, $this->config);
         $this->eventDispatcher->dispatch(self::EVENT_SAVE_PROFILE, $event);

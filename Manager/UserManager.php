@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\ContactBundle\Contact\ContactManagerInterface;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
+use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
@@ -114,13 +115,8 @@ class UserManager implements UserManagerInterface
             $contact->setLastName('');
         }
 
-        $emailType = $this->entityManager->getReference(EmailType::class, 1);
-
-        $contactEmail = new Email();
-        $contactEmail->setEmail($user->getEmail());
-        $contactEmail->setEmailType($emailType);
-        $contact->addEmail($contactEmail);
         $contact->setMainEmail($user->getEmail());
+        $user = $this->updateUser($user);
 
         // Create and Add User Role
         $userRole = $this->createUserRole($user, $webspaceKey, $roleName);
@@ -128,9 +124,35 @@ class UserManager implements UserManagerInterface
 
         // Save Entity
         $this->entityManager->persist($userRole);
-        $this->entityManager->persist($contactEmail);
         $this->entityManager->persist($contact);
         $this->entityManager->persist($user);
+
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateUser(User $user)
+    {
+        $contact = $user->getContact();
+
+        if (!$contact->getEmails()->isEmpty()) {
+            /** @var Email $email */
+            $email = $contact->getEmails()->first();
+            $email->setEmail($contact->getMainEmail());
+
+            return $user;
+        }
+
+        /** @var EmailType $emailType */
+        $emailType = $this->entityManager->getReference(EmailType::class, 1);
+        $contactEmail = new Email();
+        $contactEmail->setEmail($contact->getMainEmail());
+        $contactEmail->setEmailType($emailType);
+        $contact->addEmail($contactEmail);
+
+        $this->entityManager->persist($contactEmail);
 
         return $user;
     }
@@ -183,6 +205,7 @@ class UserManager implements UserManagerInterface
      */
     public function findByPasswordResetToken($token)
     {
+        /** @var BaseUser $user */
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
 
         if (!$user || $user->getPasswordResetTokenExpiresAt() < new \DateTime()) {

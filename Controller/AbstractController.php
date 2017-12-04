@@ -15,7 +15,7 @@ use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -69,11 +69,11 @@ abstract class AbstractController extends Controller
      * Set Password and Salt by a Symfony Form.
      *
      * @param User $user
-     * @param Form $form
+     * @param FormInterface $form
      *
      * @return User
      */
-    protected function setUserPasswordAndSalt(User $user, Form $form)
+    protected function setUserPasswordAndSalt(User $user, FormInterface $form)
     {
         $plainPassword = $form->get('plainPassword')->getData();
         if (null === $plainPassword) {

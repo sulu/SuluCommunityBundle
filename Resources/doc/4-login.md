@@ -36,6 +36,18 @@ framework:
 })) }}
 ```
 
+Sulu sets by default the cache control header to 240 seconds. So it could happen
+that the browser cache the page and show an incorrect status. For this you can
+decrease or deactivate the browser cache lifetime in `app/config/config.yml`:
+
+```yml
+sulu_http_cache:
+    handlers:
+        public:
+            max_age: 0
+            shared_max_age: 0
+```
+
 **Example Template**:
 
 ```twig
