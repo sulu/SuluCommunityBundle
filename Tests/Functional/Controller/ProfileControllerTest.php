@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
 use Sulu\Bundle\ContactBundle\Entity\Country;
+use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
@@ -45,8 +46,16 @@ class ProfileControllerTest extends SuluTestCase
         $metadata = $entityManager->getClassMetadata(get_class($country));
         $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
+        $emailType = new EmailType();
+        $emailType->setName('work');
+        $emailType->setId(1);
+
+        $metadata = $entityManager->getClassMetadata(get_class($emailType));
+        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+
         $entityManager->persist($addressType);
         $entityManager->persist($country);
+        $entityManager->persist($emailType);
         $entityManager->flush();
     }
 
@@ -66,8 +75,11 @@ class ProfileControllerTest extends SuluTestCase
         $crawler = $client->request('GET', '/profile');
         $this->assertHttpStatusCode(200, $client->getResponse());
 
+        $this->assertCount(1, $crawler->filter('#profile_contact_formOfAddress'));
         $this->assertCount(1, $crawler->filter('#profile_contact_firstName'));
         $this->assertCount(1, $crawler->filter('#profile_contact_lastName'));
+        $this->assertCount(1, $crawler->filter('#profile_contact_mainEmail'));
+        $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_main'));
         $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_street'));
         $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_number'));
         $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_zip'));
@@ -80,6 +92,7 @@ class ProfileControllerTest extends SuluTestCase
                 'profile[contact][formOfAddress]' => 0,
                 'profile[contact][firstName]' => 'Hikaru',
                 'profile[contact][lastName]' => 'Sulu',
+                'profile[contact][mainEmail]' => 'sulu@example.org',
                 'profile[contact][contactAddresses][0][address][street]' => 'Rathausstraße',
                 'profile[contact][contactAddresses][0][address][number]' => 16,
                 'profile[contact][contactAddresses][0][address][zip]' => 12351,
