@@ -16,6 +16,7 @@ use Sulu\Bundle\AdminBundle\Navigation\Navigation;
 use Sulu\Bundle\AdminBundle\Navigation\NavigationItem;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
+use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 
 /**
  * Integrates community into sulu-admin.
@@ -28,12 +29,30 @@ class CommunityAdmin extends Admin
     private $securityChecker;
 
     /**
+     * @var WebspaceManagerInterface
+     */
+    private $webspaceManager;
+
+    /**
+     * @var array
+     */
+    private $webspacesConfiguration;
+
+    /**
      * @param SecurityCheckerInterface $securityChecker
+     * @param WebspaceManagerInterface $webspaceManager
+     * @param array $webspacesConfiguration
      * @param string $title
      */
-    public function __construct(SecurityCheckerInterface $securityChecker, $title)
-    {
+    public function __construct(
+        SecurityCheckerInterface $securityChecker,
+        WebspaceManagerInterface $webspaceManager,
+        array $webspacesConfiguration,
+        $title
+    ) {
         $this->securityChecker = $securityChecker;
+        $this->webspaceManager = $webspaceManager;
+        $this->webspacesConfiguration = $webspacesConfiguration;
 
         $rootNavigationItem = new NavigationItem($title);
         $section = new NavigationItem('navigation.modules');
@@ -63,18 +82,29 @@ class CommunityAdmin extends Admin
      */
     public function getSecurityContexts()
     {
-        return [
-            'Sulu' => [
-                'Settings' => [
-                    'sulu.community.blacklist' => [
-                        PermissionTypes::VIEW,
-                        PermissionTypes::ADD,
-                        PermissionTypes::EDIT,
-                        PermissionTypes::DELETE,
+        $systems = [];
+
+        foreach ($this->webspacesConfiguration as $webspaceKey => $webspaceConfig) {
+            $webspace = $this->webspaceManager->getWebspaceCollection()->getWebspace($webspaceKey);
+            $system = $webspace->getSecurity()->getSystem();
+            $systems[$system] = [];
+        }
+
+        return array_merge(
+            $systems,
+            [
+                'Sulu' => [
+                    'Settings' => [
+                        'sulu.community.blacklist' => [
+                            PermissionTypes::VIEW,
+                            PermissionTypes::ADD,
+                            PermissionTypes::EDIT,
+                            PermissionTypes::DELETE,
+                        ],
                     ],
                 ],
-            ],
-        ];
+            ]
+        );
     }
 
     /**

@@ -84,6 +84,8 @@
         <!-- sulu-admin -->
         <service id="sulu_community.admin" class="Sulu\Bundle\CommunityBundle\Admin\CommunityAdmin">
             <argument type="service" id="sulu_security.security_checker"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument>%sulu_community.webspaces_config%</argument>
             <argument>%sulu_admin.name%</argument>
 
             <tag name="sulu.admin"/>
