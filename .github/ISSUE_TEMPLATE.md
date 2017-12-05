@@ -2,6 +2,7 @@
 | --- | ---
 | Bug? | no
 | New Feature? | no
+| Community Bundle Version | Specific version or SHA of commit
 | Sulu Version | Specific version or SHA of a commit
 | Browser Version | Browser name and version
 
