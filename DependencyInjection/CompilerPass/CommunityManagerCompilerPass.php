@@ -29,41 +29,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
         $webspacesConfig = $container->getParameter('sulu_community.webspaces_config');
 
         foreach ($webspacesConfig as $webspaceKey => $webspaceConfig) {
-            // Set firewall by webspace key
-            if (null === $webspaceConfig[Configuration::FIREWALL]) {
-                $webspaceConfig[Configuration::FIREWALL] = $webspaceKey;
-            }
-
-            // Set role by webspace key
-            if (null === $webspaceConfig[Configuration::ROLE]) {
-                $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';
-            }
-
-            if (isset($webspaceConfig[Configuration::EMAIL_FROM])) {
-                $webspaceConfig[Configuration::EMAIL_FROM] = [
-                    $webspaceConfig[Configuration::EMAIL_FROM][Configuration::EMAIL_FROM_EMAIL] => $webspaceConfig[Configuration::EMAIL_FROM][Configuration::EMAIL_FROM_NAME],
-                ];
-            } else {
-                $webspaceConfig[Configuration::EMAIL_FROM] = null;
-            }
-
-            if (isset($webspaceConfig[Configuration::EMAIL_TO])) {
-                $webspaceConfig[Configuration::EMAIL_TO] = [
-                    $webspaceConfig[Configuration::EMAIL_TO][Configuration::EMAIL_TO_EMAIL] => $webspaceConfig[Configuration::EMAIL_TO][Configuration::EMAIL_TO_NAME],
-                ];
-            } else {
-                $webspaceConfig[Configuration::EMAIL_TO] = null;
-            }
-
-            if ($webspaceConfig[Configuration::MAINTENANCE][Configuration::ENABLED]) {
-                foreach (Configuration::$TYPES as $type) {
-                    if (isset($webspaceConfig[$type][Configuration::TEMPLATE])) {
-                        $webspaceConfig[$type][Configuration::TEMPLATE] = $webspaceConfig[Configuration::MAINTENANCE][Configuration::TEMPLATE];
-                    }
-                }
-            }
-
-            $webspaceConfig[Configuration::WEBSPACE_KEY] = $webspaceKey;
+            $webspaceConfig = $this->updateWebspaceConfig($webspaceKey, $webspaceConfig);
             $webspacesConfig[$webspaceKey] = $webspaceConfig;
 
             $definition = new DefinitionDecorator('sulu_community.community_manager');
@@ -77,5 +43,71 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
         }
 
         $container->setParameter('sulu_community.webspaces_config', $webspacesConfig);
+    }
+
+    /**
+     * Update webspace config.
+     *
+     * @param string $webspaceKey
+     * @param array $webspaceConfig
+     *
+     * @return array
+     */
+    private function updateWebspaceConfig($webspaceKey, array $webspaceConfig)
+    {
+        // Set firewall by webspace key
+        if (null === $webspaceConfig[Configuration::FIREWALL]) {
+            $webspaceConfig[Configuration::FIREWALL] = $webspaceKey;
+        }
+
+        // Set role by webspace key
+        if (null === $webspaceConfig[Configuration::ROLE]) {
+            $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';
+        }
+
+        // Set email from
+        if (isset($webspaceConfig[Configuration::EMAIL_FROM])) {
+            $webspaceConfig[Configuration::EMAIL_FROM] = [
+                $webspaceConfig[Configuration::EMAIL_FROM][Configuration::EMAIL_FROM_EMAIL] => $webspaceConfig[Configuration::EMAIL_FROM][Configuration::EMAIL_FROM_NAME],
+            ];
+        } else {
+            $webspaceConfig[Configuration::EMAIL_FROM] = null;
+        }
+
+        // Set email to
+        if (isset($webspaceConfig[Configuration::EMAIL_TO])) {
+            $webspaceConfig[Configuration::EMAIL_TO] = [
+                $webspaceConfig[Configuration::EMAIL_TO][Configuration::EMAIL_TO_EMAIL] => $webspaceConfig[Configuration::EMAIL_TO][Configuration::EMAIL_TO_NAME],
+            ];
+        } else {
+            $webspaceConfig[Configuration::EMAIL_TO] = null;
+        }
+
+        // Set maintenance mode
+        if ($webspaceConfig[Configuration::MAINTENANCE][Configuration::ENABLED]) {
+            $webspaceConfig = $this->activateMaintenanceMode($webspaceConfig);
+        }
+
+        $webspaceConfig[Configuration::WEBSPACE_KEY] = $webspaceKey;
+
+        return $webspaceConfig;
+    }
+
+    /**
+     * Activate Maintenance mode.
+     *
+     * @param array $webspaceConfig
+     *
+     * @return array
+     */
+    private function activateMaintenanceMode(array $webspaceConfig)
+    {
+        foreach (Configuration::$TYPES as $type) {
+            if (isset($webspaceConfig[$type][Configuration::TEMPLATE])) {
+                $webspaceConfig[$type][Configuration::TEMPLATE] = $webspaceConfig[Configuration::MAINTENANCE][Configuration::TEMPLATE];
+            }
+        }
+
+        return $webspaceConfig;
     }
 }
