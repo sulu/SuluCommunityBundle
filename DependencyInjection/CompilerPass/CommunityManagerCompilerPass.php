@@ -55,6 +55,14 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
                 $webspaceConfig[Configuration::EMAIL_TO] = null;
             }
 
+            if ($webspaceConfig[Configuration::MAINTENANCE][Configuration::ENABLED]) {
+                foreach (Configuration::$TYPES as $type) {
+                    if (isset($webspaceConfig[$type][Configuration::TEMPLATE])) {
+                        $webspaceConfig[$type][Configuration::TEMPLATE] = $webspaceConfig[Configuration::MAINTENANCE][Configuration::TEMPLATE];
+                    }
+                }
+            }
+
             $webspaceConfig[Configuration::WEBSPACE_KEY] = $webspaceKey;
             $webspacesConfig[$webspaceKey] = $webspaceConfig;
 
