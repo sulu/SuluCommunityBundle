@@ -19,7 +19,10 @@ sulu_community:
                 email: "%sulu_admin.email%"
             role: CustomRoleName
             firewall: CustomFirewallName
-
+            # Maintenance
+            maintenance:
+                enabled: false
+                template: AppBundle:template:community/Maintenance/maintenance.html.twig
             # Login
             login:
                 embed_template: AppBundle:templates:community/Login/login-embed.html.twig

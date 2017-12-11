@@ -57,7 +57,14 @@ class LoginController extends AbstractController
     {
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 
-        $response = $this->render($communityManager->getConfigTypeProperty(self::TYPE, Configuration::EMBED_TEMPLATE));
+        $maintenance = $communityManager->getConfigTypeProperty(Configuration::MAINTENANCE, Configuration::ENABLED);
+
+        $response = $this->render(
+            $communityManager->getConfigTypeProperty(self::TYPE, Configuration::EMBED_TEMPLATE),
+            [
+                'maintenanceMode' => $maintenance,
+            ]
+        );
 
         $response->setPrivate();
         $response->setMaxAge(0);

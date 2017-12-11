@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
     const ROLE = 'role';
     const WEBSPACE_KEY = 'webspace_key';
     const FIREWALL = 'firewall';
+    const MAINTENANCE = 'maintenance';
 
     // Form types
     const TYPE_LOGIN = 'login';
@@ -54,11 +55,20 @@ class Configuration implements ConfigurationInterface
 
     public static $TYPES = [
         self::TYPE_LOGIN,
-        self::TYPE_REGISTRATION,
+        self::TYPE_COMPLETION,
         self::TYPE_CONFIRMATION,
+        self::TYPE_REGISTRATION,
+        self::TYPE_PASSWORD_FORGET,
+        self::TYPE_PASSWORD_RESET,
+        self::TYPE_BLACKLISTED,
+        self::TYPE_BLACKLIST_CONFIRMED,
+        self::TYPE_BLACKLIST_DENIED,
+        self::TYPE_PROFILE,
+        self::TYPE_EMAIL_CONFIRMATION,
     ];
 
     // Type configurations
+    const ENABLED = 'enabled';
     const TEMPLATE = 'template';
     const SERVICE = 'service';
     const EMBED_TEMPLATE = 'embed_template';
@@ -129,6 +139,13 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->scalarNode(self::ROLE)->defaultValue(null)->end()
                             ->scalarNode(self::FIREWALL)->defaultValue(null)->end()
+                            // Maintenance
+                            ->arrayNode(self::MAINTENANCE)
+                                ->canBeEnabled()
+                                ->children()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Maintenance:maintenance.html.twig')->end()
+                                ->end()
+                            ->end()
                             // Login
                             ->arrayNode(self::TYPE_LOGIN)
                                 ->addDefaultsIfNotSet()
