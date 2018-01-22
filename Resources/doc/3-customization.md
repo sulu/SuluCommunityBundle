@@ -144,6 +144,7 @@ Type: `string`
 Example: test@test.com
 
 Will be used as receiver of the admin emails.
+If not configured it will fallback to the from configuration.
 
 #### role
 

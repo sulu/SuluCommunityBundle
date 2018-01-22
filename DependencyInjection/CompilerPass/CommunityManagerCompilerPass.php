@@ -80,7 +80,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
                 $webspaceConfig[Configuration::EMAIL_TO][Configuration::EMAIL_TO_EMAIL] => $webspaceConfig[Configuration::EMAIL_TO][Configuration::EMAIL_TO_NAME],
             ];
         } else {
-            $webspaceConfig[Configuration::EMAIL_TO] = null;
+            $webspaceConfig[Configuration::EMAIL_TO] = $webspaceConfig[Configuration::EMAIL_FROM];
         }
 
         // Set maintenance mode
