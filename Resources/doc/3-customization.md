@@ -1,6 +1,11 @@
 # Customization
 
+The sulu community bundle can be configured in many ways to match your workflow.
+
 ## Full Configuration
+
+This is just an example configuration with all options.
+At first state you should just use the basic configuration from [here](2-setup-webspace.md#activate-community-features).
 
 ```yml
 # app/config/config.yml
