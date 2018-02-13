@@ -104,6 +104,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->arrayNode('webspaces')
+                    ->normalizeKeys(false)
                     ->prototype('array')
                         ->children()
                             // Basic Webspace Configuration
