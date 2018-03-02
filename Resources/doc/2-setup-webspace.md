@@ -57,10 +57,10 @@ security:
             pattern: ^/
             anonymous: ~
             form_login:
-                login_path: /login
-                check_path: /login
+                login_path: sulu_community.login
+                check_path: sulu_community.login
             logout:
-                path: /logout
+                path: sulu_community.logout
                 target: /
             remember_me:
                 secret:   "%secret%"
