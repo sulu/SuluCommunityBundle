@@ -60,6 +60,9 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             $webspaceConfig[Configuration::FIREWALL] = $webspaceKey;
         }
 
+        // TODO currently symfony normalize the security firewalls key which will replace "-" with "_".
+        $webspaceConfig[Configuration::FIREWALL] = str_replace('-', '_', $webspaceConfig[Configuration::FIREWALL]);
+
         // Set role by webspace key
         if (null === $webspaceConfig[Configuration::ROLE]) {
             $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';

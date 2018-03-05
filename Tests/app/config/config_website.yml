@@ -7,7 +7,7 @@ framework:
 
 sulu_community:
     webspaces:
-        sulu_io:
+        sulu-io:
             to: 'admin@sulu.io'
 
 sulu_security:

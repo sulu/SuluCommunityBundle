@@ -37,7 +37,7 @@ class RegistrationTest extends SuluTestCase
         $entityManager = $this->getEntityManager();
 
         $role = new Role();
-        $role->setName('Sulu_ioUser');
+        $role->setName('Sulu-ioUser');
         $role->setSystem('Sulu');
 
         $emailType = new EmailType();
