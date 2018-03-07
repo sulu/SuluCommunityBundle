@@ -38,7 +38,7 @@ class RegistrationTest extends SuluTestCase
 
         $role = new Role();
         $role->setName('Sulu-ioUser');
-        $role->setSystem('Sulu');
+        $role->setSystem('Website');
 
         $emailType = new EmailType();
         $emailType->setName('private');
