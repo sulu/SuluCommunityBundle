@@ -3,3 +3,8 @@ parameters:
 
 framework:
     router: { resource: "%kernel.root_dir%/config/routing_admin.yml" }
+
+sulu_community:
+    webspaces:
+        sulu-io:
+            from: 'admin@sulu.io'
