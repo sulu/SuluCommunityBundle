@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\Normalizer;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
@@ -78,7 +79,7 @@ class InitCommand extends ContainerAwareCommand
     {
         $webspaceKey = $webspace->getKey();
 
-        $communityServiceName = sprintf('sulu_community.%s.community_manager', $webspaceKey);
+        $communityServiceName = sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey));
 
         if (!$webspace->getSecurity() || !$this->getContainer()->has($communityServiceName)) {
             return;

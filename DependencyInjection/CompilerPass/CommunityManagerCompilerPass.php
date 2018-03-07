@@ -37,9 +37,16 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             $definition->replaceArgument(1, $webspaceKey);
 
             $container->setDefinition(
-                sprintf('sulu_community.%s.community_manager', $webspaceKey),
+                sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey)),
                 $definition
             );
+
+            if (false !== strpos($webspaceKey, '-')) {
+                $container->setAlias(
+                    sprintf('sulu_community.%s.community_manager', $webspaceKey),
+                    sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey))
+                );
+            }
         }
 
         $container->setParameter('sulu_community.webspaces_config', $webspacesConfig);
@@ -61,7 +68,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
         }
 
         // TODO currently symfony normalize the security firewalls key which will replace "-" with "_".
-        $webspaceConfig[Configuration::FIREWALL] = str_replace('-', '_', $webspaceConfig[Configuration::FIREWALL]);
+        $webspaceConfig[Configuration::FIREWALL] = Normalizer::normalize($webspaceConfig[Configuration::FIREWALL]);
 
         // Set role by webspace key
         if (null === $webspaceConfig[Configuration::ROLE]) {
