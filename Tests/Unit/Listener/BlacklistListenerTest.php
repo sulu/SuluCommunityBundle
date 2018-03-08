@@ -76,7 +76,7 @@ class BlacklistListenerTest extends \PHPUnit_Framework_TestCase
         $user->getEmail()->willReturn('test@sulu.io');
 
         $event = $this->prophesize(CommunityEvent::class);
-        $event->getConfigProperty(Configuration::WEBSPACE_KEY)->willReturn('sulu_io');
+        $event->getConfigProperty(Configuration::WEBSPACE_KEY)->willReturn('sulu-io');
         $event->getConfigProperty(Configuration::EMAIL_TO)->willReturn(['admin@sulu.io' => 'admin@sulu.io']);
         $event->getConfigProperty(Configuration::EMAIL_FROM)->willReturn(['from@sulu.io' => 'from@sulu.io']);
         $event->getConfigTypeProperty(Configuration::TYPE_BLACKLISTED, Configuration::EMAIL)->willReturn(
@@ -92,7 +92,7 @@ class BlacklistListenerTest extends \PHPUnit_Framework_TestCase
             Argument::that(
                 function (BlacklistUser $item) use ($user) {
                     return '123-123-123' === $item->getToken()
-                    && 'sulu_io' === $item->getWebspaceKey()
+                    && 'sulu-io' === $item->getWebspaceKey()
                     && $item->getUser() === $user->reveal();
                 }
             )

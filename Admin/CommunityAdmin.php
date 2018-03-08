@@ -84,9 +84,35 @@ class CommunityAdmin extends Admin
     {
         $systems = [];
 
+        $webspaceCollection = $this->webspaceManager->getWebspaceCollection();
+
+        $webspaceKeys = array_keys($webspaceCollection->getWebspaces());
+
         foreach ($this->webspacesConfiguration as $webspaceKey => $webspaceConfig) {
-            $webspace = $this->webspaceManager->getWebspaceCollection()->getWebspace($webspaceKey);
-            $system = $webspace->getSecurity()->getSystem();
+            $webspace = $webspaceCollection->getWebspace($webspaceKey);
+
+            if (!$webspace) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Webspace "%s" not found for "sulu_community" expected one of %s.',
+                        $webspaceKey,
+                        '"' . implode('", "', $webspaceKeys) . '"'
+                    )
+                );
+            }
+
+            $security = $webspace->getSecurity();
+
+            if (!$security) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Missing "<security><system>Website</system><security>" configuration in webspace "%s" for "sulu_community".',
+                        $webspaceKey
+                    )
+                );
+            }
+
+            $system = $security->getSystem();
             $systems[$system] = [];
         }
 

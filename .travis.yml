@@ -29,6 +29,8 @@ install:
 
 script:
   - ./vendor/bin/phpunit --coverage-clover=coverage.clover
+  - ./Tests/app/console lint:twig Resources/views --env test
+  - ./Tests/app/console sulu:community:init -vvv --env test
   - if [[ $PHPSTAN == 'true' ]]; then ./vendor/bin/phpstan analyse ./ --level 2 -c phpstan.neon ; fi
 
 after_script:
