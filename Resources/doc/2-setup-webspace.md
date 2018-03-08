@@ -49,6 +49,8 @@ security:
             id: sulu_security.user_provider
 
     access_control:
+       # - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY } # needed when firewall on ^/ is used
+       # - { path: /_fragment, roles: IS_AUTHENTICATED_ANONYMOUSLY } # needed when firewall on ^/ is used
        - { path: /profile, roles: ROLE_USER }
        - { path: /completion, roles: ROLE_USER }
 
