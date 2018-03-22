@@ -21,7 +21,7 @@ Enable community features for your webspace:
 
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             from:
                 name: "Website"
                 email: "%sulu_admin.email%"
@@ -55,7 +55,7 @@ security:
        - { path: /completion, roles: ROLE_USER }
 
     firewalls:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             pattern: ^/
             anonymous: ~
             form_login:
