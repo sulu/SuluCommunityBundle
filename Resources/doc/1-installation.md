@@ -29,7 +29,6 @@ public function registerBundles()
 To avoid the trying to register two bundles with the same name error remove
 the SecurityBundle from `app/AdminKernel.php`.
 
-
 ## Register Routes
 
 Register the website routes:
@@ -62,3 +61,19 @@ php bin/console doctrine:schema:update --dump-sql
 ``` 
 
 You can use `--force` to run the sqls but be carefully which other sql statements are executed.
+
+## Install assets
+
+Execute the following command to install the community bundle assets:
+
+```bash
+php bin/adminconsole assets:install --symlink --relative
+```
+
+## Generate translations
+
+Execute the following command to generate the new translations:
+
+```bash
+php bin/adminconsole sulu:translate:export
+```
