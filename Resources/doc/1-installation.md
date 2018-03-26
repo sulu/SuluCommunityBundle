@@ -12,7 +12,7 @@ composer require sulu/community-bundle
 
 Enable the required bundles in the kernel:
 
-```bash
+```php
 <?php
 // app/AbstractKernel.php
 
@@ -26,8 +26,21 @@ public function registerBundles()
 }
 ```
 
-To avoid the trying to register two bundles with the same name error remove
-the SecurityBundle from `app/AdminKernel.php`.
+To avoid the:
+
+> Trying to register two bundles with the same name "SecurityBundle"
+
+error. Remove the SecurityBundle from `app/AdminKernel.php`.
+
+```diff
+<?php
+// app/AdminKernel.php
+
+public function registerBundles()
+{
+     // ...
+-    $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle(); // This following line need to be removed!
+```
 
 ## Register Routes
 
