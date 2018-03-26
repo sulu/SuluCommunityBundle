@@ -39,7 +39,7 @@ error. Remove the SecurityBundle from `app/AdminKernel.php`.
 public function registerBundles()
 {
      // ...
--    $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle(); // This following line need to be removed!
+-    $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle(); // This line need to be removed!
 ```
 
 ## Register Routes
