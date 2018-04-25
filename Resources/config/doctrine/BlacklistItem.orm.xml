@@ -12,9 +12,8 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="pattern" type="string" column="pattern" unique="true"/>
-        <field name="regexp" type="string" column="regexpPattern"/>
+        <field name="pattern" type="string" length="191" column="pattern" unique="true"/>
+        <field name="regexp" type="string" length="191" column="regexpPattern"/>
         <field name="type" type="string" column="type"/>
-
     </entity>
 </doctrine-mapping>
