@@ -12,7 +12,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="token" type="string" column="token" unique="true" nullable="true"/>
+        <field name="token" type="string" column="token" length="191" unique="true" nullable="true"/>
         <field name="type" type="integer" column="type"/>
         <field name="webspaceKey" type="string" column="webspaceKey"/>
 

@@ -1,5 +1,19 @@
 # Upgrade
 
+## 2.0.0 (unreleased)
+
+### UTF8MB4 compatibility
+
+To support utf8mb4 we needed to shorten the length of indexed fields
+Run the following SQLs to upgrade your DB:
+
+```sql
+ALTER TABLE com_email_token CHANGE token token VARCHAR(191) NOT NULL;
+ALTER TABLE com_blacklist_user CHANGE token token VARCHAR(191) DEFAULT NULL;
+ALTER TABLE com_blacklist_item CHANGE regexpPattern regexpPattern VARCHAR(191) NOT NULL;
+ALTER TABLE com_blacklist_item CHANGE pattern pattern VARCHAR(191) NOT NULL;
+```
+
 ## 0.3.0
 
 ### Parameter `sulu_community.config` was removed

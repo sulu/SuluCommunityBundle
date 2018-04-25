@@ -102,6 +102,7 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
                     'metadata' => [
                         'directories' => [
                             [
+                                'name' => 'sulu_community',
                                 'path' => __DIR__ . '/../Resources/config/serializer',
                                 'namespace_prefix' => 'Sulu\Bundle\CommunityBundle\Entity',
                             ],
