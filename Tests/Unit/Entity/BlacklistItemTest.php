@@ -11,10 +11,11 @@
 
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\InvalidTypeException;
 
-class BlacklistItemTest extends \PHPUnit_Framework_TestCase
+class BlacklistItemTest extends TestCase
 {
     public function testConstructor()
     {
@@ -68,7 +69,7 @@ class BlacklistItemTest extends \PHPUnit_Framework_TestCase
 
     public function setTypeBlockInvalid()
     {
-        $this->setExpectedException(InvalidTypeException::class);
+        $this->expectedException(InvalidTypeException::class);
 
         $item = new BlacklistItem();
         $item->setPattern('test');

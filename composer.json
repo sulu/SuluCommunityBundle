@@ -5,12 +5,24 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "symfony/symfony": "^3.4",
+        "symfony/config": "^3.4",
+        "symfony/console": "^3.4",
+        "symfony/dependency-injection": "^3.4",
+        "symfony/event-dispatcher": "^3.4",
+        "symfony/http-foundation": "^3.4",
+        "symfony/http-kernel": "^3.4",
+        "symfony/routing": "^3.4",
+        "symfony/form": "^3.4",
+        "symfony/force-lowest": "^3.4",
+        "symfony/framework-bundle": "^3.4",
+        "symfony/intl": "^3.4",
+        "symfony/doctrine-bridge": "^3.4",
+        "symfony/security": "^3.4",
         "symfony/security-acl": "~2.7|~3.0.0",
         "sulu/sulu": "^2.0",
         "jms/serializer-bundle": "^2.0",
         "massive/build-bundle": "^0.2 || ^0.3",
-        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/swiftmailer-bundle": "^2.6.4",
         "beberlei/DoctrineExtensions": "^1.0"
     },
     "require-dev": {
@@ -19,7 +31,7 @@
         "massive/search-bundle": "@dev",
         "zendframework/zend-stdlib": "~2.3",
         "zendframework/zendsearch": "@dev",
-        "phpunit/phpunit": ">=4.8, <6.0",
+        "phpunit/phpunit": "^6.5",
         "phpstan/phpstan": "^0.10.0"
     },
     "keywords": [
