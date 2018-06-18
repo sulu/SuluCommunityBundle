@@ -19,7 +19,8 @@
         "massive/search-bundle": "@dev",
         "zendframework/zend-stdlib": "~2.3",
         "zendframework/zendsearch": "@dev",
-        "phpunit/phpunit": ">=4.8, <6.0"
+        "phpunit/phpunit": ">=4.8, <6.0",
+        "phpstan/phpstan": "^0.10.0"
     },
     "keywords": [
         "registration",

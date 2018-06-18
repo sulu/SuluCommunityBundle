@@ -3,4 +3,8 @@ parameters:
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/vendor/*
         - %currentWorkingDirectory%/Tests/*
-
+    ignoreErrors:
+        # allow all function call on object for symfony container
+        - '#Call to an undefined method object::#'
+        - '# does not accept object.#'
+        - '# but returns object|null.#'
