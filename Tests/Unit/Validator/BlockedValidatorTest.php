@@ -11,13 +11,14 @@
 
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Validator;
 
+use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\CommunityBundle\Validator\Constraints\Blocked;
 use Sulu\Bundle\CommunityBundle\Validator\Constraints\BlockedValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class BlockedValidatorTest extends \PHPUnit_Framework_TestCase
+class BlockedValidatorTest extends TestCase
 {
     public function testValidate()
     {

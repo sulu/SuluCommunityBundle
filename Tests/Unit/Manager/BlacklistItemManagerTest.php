@@ -12,11 +12,12 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager;
 
-class BlacklistItemManagerTest extends \PHPUnit_Framework_TestCase
+class BlacklistItemManagerTest extends TestCase
 {
     /**
      * @var BlacklistItemRepository

@@ -11,6 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Mail;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactory;
@@ -18,7 +19,7 @@ use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class MailFactoryTest extends \PHPUnit_Framework_TestCase
+class MailFactoryTest extends TestCase
 {
     /**
      * @var \Swift_Mailer

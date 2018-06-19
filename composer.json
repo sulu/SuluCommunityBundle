@@ -5,21 +5,37 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "symfony/symfony": "^3.4",
-        "symfony/security-acl": "~2.7|~3.0.0",
-        "sulu/sulu": "dev-develop",
+        "beberlei/DoctrineExtensions": "^1.0",
         "jms/serializer-bundle": "^2.0",
         "massive/build-bundle": "^0.2 || ^0.3",
-        "symfony/swiftmailer-bundle": "~2.3",
-        "beberlei/DoctrineExtensions": "^1.0"
+        "sulu/sulu": "^2.0",
+        "symfony/config": "^3.4",
+        "symfony/console": "^3.4",
+        "symfony/dependency-injection": "^3.4",
+        "symfony/doctrine-bridge": "^3.4",
+        "symfony/event-dispatcher": "^3.4",
+        "symfony/force-lowest": "^3.4",
+        "symfony/form": "^3.4",
+        "symfony/framework-bundle": "^3.4",
+        "symfony/http-foundation": "^3.4",
+        "symfony/http-kernel": "^3.4",
+        "symfony/intl": "^3.4",
+        "symfony/routing": "^3.4",
+        "symfony/security": "^3.4",
+        "symfony/security-acl": "^2.8 || ^3.0",
+        "symfony/swiftmailer-bundle": "^2.6.4"
     },
     "require-dev": {
         "jackalope/jackalope-doctrine-dbal": "^1.2.5",
-        "symfony/monolog-bundle": "^3.1",
         "massive/search-bundle": "@dev",
+        "phpstan/phpstan": "^0.10.0",
+        "phpunit/phpunit": "^6.5",
+        "symfony/browser-kit": "^3.4",
+        "symfony/css-selector": "^3.4",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/stopwatch": "^3.4",
         "zendframework/zend-stdlib": "~2.3",
-        "zendframework/zendsearch": "@dev",
-        "phpunit/phpunit": ">=4.8, <6.0"
+        "zendframework/zendsearch": "@dev"
     },
     "keywords": [
         "registration",
@@ -40,6 +56,15 @@
     "autoload": {
         "psr-4": {
             "Sulu\\Bundle\\CommunityBundle\\": ""
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "2.0-dev"
         }
     }
 }
