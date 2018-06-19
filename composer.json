@@ -27,6 +27,7 @@
     },
     "require-dev": {
         "jackalope/jackalope-doctrine-dbal": "^1.2.5",
+        "symfony/stopwatch": "^3.4",
         "symfony/monolog-bundle": "^3.1",
         "massive/search-bundle": "@dev",
         "zendframework/zend-stdlib": "~2.3",
