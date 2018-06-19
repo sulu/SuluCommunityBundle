@@ -10,10 +10,10 @@ matrix:
   include:
     - php: 7.1
       env:
-        - COMPOSER_FLAGS="--prefer-dist --no-interaction --prefer-lowest --prefer-stable"
+        - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction --prefer-lowest --prefer-stable"
     - php: 7.2
       env:
-        - COMPOSER_FLAGS="--prefer-dist --no-interaction"
+        - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction"
         - CODE_COVERAGE=true
         - PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
         - PHPSTAN=true
