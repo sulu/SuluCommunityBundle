@@ -31,13 +31,19 @@ class AppKernel extends SuluTestKernel
      */
     public function registerBundles()
     {
-        return array_merge(
+        $bundles = array_merge(
             [
                 new SuluCommunityBundle(),
                 new SwiftmailerBundle(),
             ],
             parent::registerBundles()
         );
+
+        if ($this->getContext() === self::CONTEXT_WEBSITE) {
+            $bundles[] = new \Symfony\Bundle\SecurityBundle\SecurityBundle();
+        }
+
+        return $bundles;
     }
 
     /**
