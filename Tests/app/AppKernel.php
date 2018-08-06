@@ -39,7 +39,7 @@ class AppKernel extends SuluTestKernel
             parent::registerBundles()
         );
 
-        if ($this->getContext() === self::CONTEXT_WEBSITE) {
+        if (self::CONTEXT_WEBSITE === $this->getContext()) {
             $bundles[] = new \Symfony\Bundle\SecurityBundle\SecurityBundle();
         }
 
