@@ -172,6 +172,7 @@ class ProfileController extends AbstractController
     private function addNote(User $user)
     {
         $note = new Note();
+        $note->setValue('');
         $user->getContact()->addNote($note);
 
         $this->get('doctrine.orm.entity_manager')->persist($note);
