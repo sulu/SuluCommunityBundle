@@ -14,16 +14,17 @@ namespace Sulu\Bundle\CommunityBundle\SocialMedia;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
-use HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider as BaseClass;
+use HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider;
 use Sulu\Bundle\CommunityBundle\Entity\UserAccessToken;
 use Sulu\Bundle\CommunityBundle\Entity\UserAccessTokenRepository;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepositoryInterface;
 use Sulu\Component\Security\Authentication\UserInterface as SuluUserInterface;
 use Sulu\Component\Security\Authentication\UserRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class SocialMediaUserProvider extends BaseClass implements AccountConnectorInterface
+class SocialMediaUserProvider extends EntityUserProvider implements AccountConnectorInterface
 {
     /**
      * @var UserAccessTokenRepository
@@ -40,7 +41,13 @@ class SocialMediaUserProvider extends BaseClass implements AccountConnectorInter
      */
     private $contactRepository;
 
+    /**
+     * @var CommunityManagerInterface
+     */
+    private $communityManager;
+
     public function __construct(
+        CommunityManagerInterface $community,
         ManagerRegistry $registry,
         $class = SuluUserInterface::class,
         array $properties = [],
@@ -64,14 +71,12 @@ class SocialMediaUserProvider extends BaseClass implements AccountConnectorInter
         if ($previousAccessToken) {
             $this->em->remove($previousAccessToken);
 
-            // FIXME necessary?
             $this->em->flush();
         }
 
         $accessToken = $this->userAccessTokenRepository->create($user, $service, $username);
         $accessToken->setAccessToken($response->getAccessToken());
 
-        // FIXME necessary?
         $this->em->flush();
     }
 
@@ -95,7 +100,6 @@ class SocialMediaUserProvider extends BaseClass implements AccountConnectorInter
             $contact->setFirstName($response->getFirstName());
             $contact->setLastName($response->getLastName());
 
-            // FIXME necessary?
             $this->em->flush();
 
             return $accessToken->getUser();
@@ -112,29 +116,25 @@ class SocialMediaUserProvider extends BaseClass implements AccountConnectorInter
         $contact->setLastName($response->getLastName());
         $user->setContact($contact);
 
-        $user->setUsername($this->generateRandomUsername($username, $service));
+        $user->setUsername($this->generateRandomUsername($service, $username));
         $user->setEmail($email);
         $user->setSalt(uniqid());
         $user->setPassword($username);
+
+        $this->communityManager->register($user);
         $user->setEnabled(true);
-        $user->setLocale('de'); // FIXME locale
 
-        $this->em->persist($contact);
-        $this->em->persist($user);
-        $this->em->persist($accessToken);
-
-        // FIXME necessary?
         $this->em->flush();
 
         return $user;
     }
 
-    private function generateRandomUsername($username, $serviceName)
+    private function generateRandomUsername($serviceName, $username)
     {
         if (!$username) {
-            $username = 'user' . uniqid((rand()), true) . $serviceName;
+            $username = uniqid((rand()), true);
         }
 
-        return $username . '_' . $serviceName;
+        return $serviceName . '-' . $username;
     }
 }

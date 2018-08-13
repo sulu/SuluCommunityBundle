@@ -22,6 +22,7 @@ use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -84,12 +85,24 @@ class CommunityManager implements CommunityManagerInterface
     protected $mailFactory;
 
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
+     * @var string
+     */
+    protected $defaultLocale;
+
+    /**
      * @param array $config
      * @param string $webspaceKey
      * @param EventDispatcherInterface $eventDispatcher
      * @param TokenStorageInterface $tokenStorage
      * @param UserManagerInterface $userManager
      * @param MailFactoryInterface $mailFactory
+     * @param RequestStack $requestStack
+     * @param string $defaultLocale
      */
     public function __construct(
         array $config,
@@ -97,7 +110,9 @@ class CommunityManager implements CommunityManagerInterface
         EventDispatcherInterface $eventDispatcher,
         TokenStorageInterface $tokenStorage,
         UserManagerInterface $userManager,
-        MailFactoryInterface $mailFactory
+        MailFactoryInterface $mailFactory,
+        RequestStack $requestStack,
+        string $defaultLocale
     ) {
         $this->config = $config;
         $this->webspaceKey = $webspaceKey;
@@ -105,6 +120,8 @@ class CommunityManager implements CommunityManagerInterface
         $this->tokenStorage = $tokenStorage;
         $this->userManager = $userManager;
         $this->mailFactory = $mailFactory;
+        $this->requestStack = $requestStack;
+        $this->defaultLocale = $defaultLocale;
     }
 
     /**
@@ -122,7 +139,7 @@ class CommunityManager implements CommunityManagerInterface
     {
         // User need locale
         if (null === $user->getLocale()) {
-            $user->setLocale('en');
+            $user->setLocale($this->getLocale());
         }
 
         // Enable User by config
@@ -314,5 +331,14 @@ class CommunityManager implements CommunityManagerInterface
         }
 
         return $this->config[$type][$property];
+    }
+
+    private function getLocale(): string
+    {
+        if ($currentRequest = $this->requestStack->getCurrentRequest()) {
+            return $currentRequest->getLocale();
+        }
+
+        return $this->defaultLocale;
     }
 }

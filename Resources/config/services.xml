@@ -25,6 +25,8 @@
             <argument type="service" id="security.token_storage"/>
             <argument type="service" id="sulu_community.user_manager"/>
             <argument type="service" id="sulu_community.mail_factory"/>
+            <argument type="service" id="request_stack"/>
+            <argument>%kernel.default_locale%</argument>
         </service>
 
         <!-- User Manager -->
