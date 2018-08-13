@@ -59,7 +59,7 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->flush();
     }
 
-    public function testProfile()
+    private function submitProfile($data)
     {
         $client = $this->createClient(
             [
@@ -87,22 +87,12 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_country'));
         $this->assertCount(1, $crawler->filter('#profile_contact_notes_0_value'));
 
-        $form = $crawler->selectButton('profile[submit]')->form(
+        $form = $crawler->selectButton('profile[submit]')->form(array_merge(
+            $data,
             [
-                'profile[contact][formOfAddress]' => 0,
-                'profile[contact][firstName]' => 'Hikaru',
-                'profile[contact][lastName]' => 'Sulu',
-                'profile[contact][mainEmail]' => 'sulu@example.org',
-                'profile[contact][contactAddresses][0][address][street]' => 'Rathausstraße',
-                'profile[contact][contactAddresses][0][address][number]' => 16,
-                'profile[contact][contactAddresses][0][address][zip]' => 12351,
-                'profile[contact][contactAddresses][0][address][city]' => 'USS Excelsior',
-                'profile[contact][contactAddresses][0][address][country]' => 1,
-                'profile[contact][notes][0][value]' => 'Test',
-                'profile[contact][contactAddresses][0][main]' => 1,
                 'profile[_token]' => $crawler->filter('#profile__token')->first()->attr('value'),
             ]
-        );
+        ));
 
         $crawler = $client->submit($form);
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -111,12 +101,51 @@ class ProfileControllerTest extends SuluTestCase
 
         /** @var UserRepository $repository */
         $repository = $this->getEntityManager()->getRepository(User::class);
-        $user = $repository->findOneBy(['username' => 'test']);
 
+        return $repository->findOneBy(['username' => 'test']);
+    }
+
+    public function testProfile()
+    {
+        $user = $this->submitProfile([
+            'profile[contact][formOfAddress]' => 0,
+            'profile[contact][firstName]' => 'Hikaru',
+            'profile[contact][lastName]' => 'Sulu',
+            'profile[contact][mainEmail]' => 'sulu@example.org',
+            'profile[contact][contactAddresses][0][address][street]' => 'Rathausstraße',
+            'profile[contact][contactAddresses][0][address][number]' => 16,
+            'profile[contact][contactAddresses][0][address][zip]' => 12351,
+            'profile[contact][contactAddresses][0][address][city]' => 'USS Excelsior',
+            'profile[contact][contactAddresses][0][address][country]' => 1,
+            'profile[contact][notes][0][value]' => 'Test',
+            'profile[contact][contactAddresses][0][main]' => 1,
+        ]);
+
+        $this->assertEquals(0, $user->getContact()->getFormOfAddress());
         $this->assertEquals('Hikaru Sulu', $user->getFullname());
         $this->assertEquals('Rathausstraße', $user->getContact()->getMainAddress()->getStreet());
+        $this->assertEquals('USS Excelsior', $user->getContact()->getMainAddress()->getCity());
         $this->assertEquals(16, $user->getContact()->getMainAddress()->getNumber());
         $this->assertEquals(12351, $user->getContact()->getMainAddress()->getZip());
         $this->assertEquals(1, $user->getContact()->getMainAddress()->getCountry()->getId());
+        $this->assertEquals('Test', $user->getContact()->getNotes()[0]->getValue());
+    }
+
+    public function testProfileWithoutNote()
+    {
+        $user = $this->submitProfile([
+            'profile[contact][formOfAddress]' => 0,
+            'profile[contact][firstName]' => 'Hikaru',
+            'profile[contact][lastName]' => 'Sulu',
+            'profile[contact][mainEmail]' => 'sulu@example.org',
+            'profile[contact][contactAddresses][0][address][street]' => 'Rathausstraße',
+            'profile[contact][contactAddresses][0][address][number]' => 16,
+            'profile[contact][contactAddresses][0][address][zip]' => 12351,
+            'profile[contact][contactAddresses][0][address][city]' => 'USS Excelsior',
+            'profile[contact][contactAddresses][0][address][country]' => 1,
+            'profile[contact][contactAddresses][0][main]' => 1,
+        ]);
+
+        $this->assertSame('', $user->getContact()->getNotes()[0]->getValue());
     }
 }

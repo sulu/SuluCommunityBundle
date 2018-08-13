@@ -38,7 +38,7 @@ class AppKernel extends SuluTestKernel
 
         if (SuluTestKernel::CONTEXT_WEBSITE === $this->getContext()) {
             $bundles[] = new SecurityBundle();
-        }
+        );
 
         return $bundles;
     }

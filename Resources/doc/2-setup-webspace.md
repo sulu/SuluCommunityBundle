@@ -78,6 +78,34 @@ sulu_security:
         enabled: true
 ```
 
+For functional tests you need to activate the security in the website test configuration:
+
+```yaml
+# app/config/website/config_test.yml
+
+security:
+    access_decision_manager:
+        strategy: unanimous # normally affirmative but https://github.com/sulu/sulu/issues/2756
+
+    encoders:
+        legacy_encoder: plaintext
+        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
+
+    providers:
+        testprovider:
+            id: test_user_provider
+
+    access_control:
+       # keep this in sync with security.yml
+       - { path: /profile, roles: ROLE_USER }
+       - { path: /completion, roles: ROLE_USER }
+
+    firewalls:
+        <webspace_key>:
+             http_basic: ~
+             anonymous: ~
+```
+
 ## Create Role
 
 Create user roles with the following command:
