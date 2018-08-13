@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RegistrationController extends AbstractController
 {
+    use SaveMediaTrait;
+
     const TYPE = Configuration::TYPE_REGISTRATION;
 
     /**
@@ -52,6 +54,8 @@ class RegistrationController extends AbstractController
             if (!$user->getLocale()) {
                 $user->setLocale($request->getLocale());
             }
+
+            $this->saveMediaFields($form, $user, $request->getLocale());
 
             // Register User
             $user = $communityManager->register($user);

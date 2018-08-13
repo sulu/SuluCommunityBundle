@@ -16,7 +16,6 @@ use Sulu\Bundle\ContactBundle\Entity\Address;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
 use Sulu\Bundle\ContactBundle\Entity\ContactAddress;
 use Sulu\Bundle\ContactBundle\Entity\Note;
-use Sulu\Bundle\MediaBundle\Api\Media;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +26,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ProfileController extends AbstractController
 {
+    use SaveMediaTrait;
+
     const TYPE = Configuration::TYPE_PROFILE;
 
     /**
@@ -61,7 +62,7 @@ class ProfileController extends AbstractController
                 $user->setLocale($request->getLocale());
             }
 
-            $this->saveAvatar($form, $user, $request->getLocale());
+            $this->saveMediaFields($form, $user, $request->getLocale());
 
             // Register User
             $communityManager->saveProfile($user);
@@ -84,44 +85,6 @@ class ProfileController extends AbstractController
                 'success' => $success,
             ]
         );
-    }
-
-    /**
-     * Save media and set avatar on user.
-     *
-     * @param Form $form
-     * @param User $user
-     * @param string $locale
-     *
-     * @return Media|null
-     */
-    protected function saveAvatar(Form $form, User $user, $locale)
-    {
-        $uploadedFile = $form->get('contact')->get('avatar')->getData();
-        if (null === $uploadedFile) {
-            return null;
-        }
-
-        $systemCollectionManager = $this->get('sulu_media.system_collections.manager');
-        $mediaManager = $this->get('sulu_media.media_manager');
-
-        $collection = $systemCollectionManager->getSystemCollection('sulu_contact.contact');
-        $avatar = $user->getContact()->getAvatar();
-
-        $apiMedia = $mediaManager->save(
-            $uploadedFile,
-            [
-                'id' => (null !== $avatar ? $avatar->getId() : null),
-                'locale' => $locale,
-                'title' => $user->getUsername(),
-                'collection' => $collection,
-            ],
-            $user->getId()
-        );
-
-        $user->getContact()->setAvatar($apiMedia->getEntity());
-
-        return $apiMedia;
     }
 
     /**

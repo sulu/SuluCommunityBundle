@@ -21,6 +21,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class CompletionController extends AbstractController
 {
+    use SaveMediaTrait;
+
     const TYPE = Configuration::TYPE_COMPLETION;
 
     /**
@@ -53,6 +55,8 @@ class CompletionController extends AbstractController
         // Handle Form Success
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
+
+            $this->saveMediaFields($form, $user, $request->getLocale());
 
             // Completion User
             $communityManager->completion($user);
