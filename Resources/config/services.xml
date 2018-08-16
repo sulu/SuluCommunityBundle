@@ -16,6 +16,11 @@
 
     <services>
         <!-- Community Manager -->
+        <service id="sulu_community.community_manager.registry"
+                 class="Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistry"
+                 public="true">
+            <argument type="collection"/>
+        </service>
         <service id="sulu_community.community_manager"
                  class="Sulu\Bundle\CommunityBundle\Manager\CommunityManager"
                  abstract="true">
