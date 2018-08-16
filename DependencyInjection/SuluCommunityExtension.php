@@ -40,6 +40,11 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
         $loader->load('services.xml');
         $loader->load('validator.xml');
 
+        $bundles = $container->getParameter('kernel.bundles');
+        if (array_key_exists('HttplugBundle', $bundles) && array_key_exists('HWIOAuthBundle', $bundles)) {
+            $loader->load('social-media-login.xml');
+        }
+
         if ($lastLoginEnabled) {
             $lastLoginRefreshInterval = $config[Configuration::LAST_LOGIN][Configuration::REFRESH_INTERVAL];
 
