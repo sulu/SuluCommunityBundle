@@ -12,9 +12,8 @@
 namespace Sulu\Bundle\CommunityBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\Normalizer;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistryInterface;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
@@ -79,14 +78,14 @@ class InitCommand extends ContainerAwareCommand
     {
         $webspaceKey = $webspace->getKey();
 
-        $communityServiceName = sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey));
+        /** @var CommunityManagerRegistryInterface $registry */
+        $registry = $this->getContainer()->get('sulu_community.community_manager.registry');
 
-        if (!$webspace->getSecurity() || !$this->getContainer()->has($communityServiceName)) {
+        if (!$webspace->getSecurity() || !$registry->has($webspaceKey)) {
             return;
         }
 
-        /** @var CommunityManagerInterface $communityManager */
-        $communityManager = $this->getContainer()->get($communityServiceName);
+        $communityManager = $registry->get($webspaceKey);
         $roleName = $communityManager->getConfigProperty(Configuration::ROLE);
         $system = $webspace->getSecurity()->getSystem();
 

@@ -15,6 +15,7 @@ use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Create foreach configured webspace a community manager.
@@ -28,6 +29,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
     {
         $webspacesConfig = $container->getParameter('sulu_community.webspaces_config');
 
+        $references = [];
         foreach ($webspacesConfig as $webspaceKey => $webspaceConfig) {
             $webspaceConfig = $this->updateWebspaceConfig($webspaceKey, $webspaceConfig);
             $webspacesConfig[$webspaceKey] = $webspaceConfig;
@@ -36,10 +38,9 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             $definition->replaceArgument(0, $webspaceConfig);
             $definition->replaceArgument(1, $webspaceKey);
 
-            $container->setDefinition(
-                sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey)),
-                $definition
-            );
+            $id = sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey));
+            $references[$webspaceKey] = new Reference($id);
+            $container->setDefinition($id, $definition);
 
             if (false !== strpos($webspaceKey, '-')) {
                 $container->setAlias(
@@ -49,6 +50,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             }
         }
 
+        $container->getDefinition('sulu_community.community_manager.registry')->replaceArgument(0, $references);
         $container->setParameter('sulu_community.webspaces_config', $webspacesConfig);
     }
 
