@@ -150,6 +150,8 @@
 
         <!-- social-media -->
         <service id="sulu_community.social_media.oauth_provider" class="Sulu\Bundle\CommunityBundle\SocialMedia\SocialMediaUserProvider">
+            <argument type="service" id="sulu_community.community_manager.registry"/>
+            <argument type="service" id="request_stack"/>
             <argument type="service" id="doctrine"/>
         </service>
     </services>

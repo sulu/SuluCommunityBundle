@@ -19,8 +19,10 @@ class UserAccessTokenRepository extends EntityRepository
     public function create(UserInterface $user, string $service, string $identifier): UserAccessToken
     {
         $class = $this->getClassName();
+        $accessToken = new $class($user, $service, $identifier);
+        $this->getEntityManager()->persist($accessToken);
 
-        return new $class($user, $service, $identifier);
+        return $accessToken;
     }
 
     public function findByIdentifier(string $service, string $identifier): ?UserAccessToken

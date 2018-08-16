@@ -17,15 +17,26 @@ use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\EntityUserProvider;
 use Sulu\Bundle\CommunityBundle\Entity\UserAccessToken;
 use Sulu\Bundle\CommunityBundle\Entity\UserAccessTokenRepository;
-use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistryInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepositoryInterface;
 use Sulu\Component\Security\Authentication\UserInterface as SuluUserInterface;
 use Sulu\Component\Security\Authentication\UserRepositoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class SocialMediaUserProvider extends EntityUserProvider implements AccountConnectorInterface
 {
+    /**
+     * @var CommunityManagerRegistryInterface
+     */
+    private $communityManagerRegistry;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
     /**
      * @var UserAccessTokenRepository
      */
@@ -41,13 +52,9 @@ class SocialMediaUserProvider extends EntityUserProvider implements AccountConne
      */
     private $contactRepository;
 
-    /**
-     * @var CommunityManagerInterface
-     */
-    private $communityManager;
-
     public function __construct(
-        CommunityManagerInterface $community,
+        CommunityManagerRegistryInterface $communityManagerRegistry,
+        RequestStack $requestStack,
         ManagerRegistry $registry,
         $class = SuluUserInterface::class,
         array $properties = [],
@@ -55,6 +62,8 @@ class SocialMediaUserProvider extends EntityUserProvider implements AccountConne
     ) {
         parent::__construct($registry, $class, $properties, $managerName);
 
+        $this->communityManagerRegistry = $communityManagerRegistry;
+        $this->requestStack = $requestStack;
         $this->userAccessTokenRepository = $this->em->getRepository(UserAccessToken::class);
         $this->userRepository = $this->em->getRepository($this->em->getClassMetadata(SuluUserInterface::class)->getName());
         $this->contactRepository = $this->em->getRepository($this->em->getClassMetadata(ContactInterface::class)->getName());
@@ -121,7 +130,10 @@ class SocialMediaUserProvider extends EntityUserProvider implements AccountConne
         $user->setSalt(uniqid());
         $user->setPassword($username);
 
-        $this->communityManager->register($user);
+        $request = $this->requestStack->getCurrentRequest();
+        $webspaceKey = $request->attributes->get('_sulu')->getAttribute('webspace')->getKey();
+
+        $this->communityManagerRegistry->get($webspaceKey)->register($user);
         $user->setEnabled(true);
 
         $this->em->flush();
