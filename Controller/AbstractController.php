@@ -11,7 +11,6 @@
 
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
-use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\Normalizer;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
@@ -43,13 +42,7 @@ abstract class AbstractController extends Controller
      */
     protected function getCommunityManager($webspaceKey)
     {
-        if (!isset($this->communityManagers[$webspaceKey])) {
-            $this->communityManagers[$webspaceKey] = $this->get(
-                sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey))
-            );
-        }
-
-        return $this->communityManagers[$webspaceKey];
+        return $this->get('sulu_community.community_manager.registry')->get($webspaceKey);
     }
 
     /**
