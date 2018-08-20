@@ -12,10 +12,6 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\ContactBundle\Entity\Address;
-use Sulu\Bundle\ContactBundle\Entity\AddressType;
-use Sulu\Bundle\ContactBundle\Entity\ContactAddress;
-use Sulu\Bundle\ContactBundle\Entity\Note;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
