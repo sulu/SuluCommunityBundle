@@ -12,10 +12,6 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\ContactBundle\Entity\Address;
-use Sulu\Bundle\ContactBundle\Entity\AddressType;
-use Sulu\Bundle\ContactBundle\Entity\ContactAddress;
-use Sulu\Bundle\ContactBundle\Entity\Note;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,59 +81,5 @@ class ProfileController extends AbstractController
                 'success' => $success,
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        /** @var User $user */
-        $user = parent::getUser();
-
-        if (null === $user->getContact()->getMainAddress()) {
-            $this->addAddress($user);
-        }
-
-        if (0 === count($user->getContact()->getNotes())) {
-            $this->addNote($user);
-        }
-
-        return $user;
-    }
-
-    /**
-     * Add address to user.
-     *
-     * @param User $user
-     */
-    private function addAddress(User $user)
-    {
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-
-        $address = new Address();
-        $address->setPrimaryAddress(true);
-        $address->setAddressType($entityManager->getRepository(AddressType::class)->find(1));
-        $contactAddress = new ContactAddress();
-        $contactAddress->setAddress($address);
-        $contactAddress->setContact($user->getContact());
-
-        $user->getContact()->addContactAddress($contactAddress);
-    }
-
-    /**
-     * Add note to user.
-     *
-     * @param User $user
-     */
-    private function addNote(User $user)
-    {
-        $note = new Note();
-        $note->setValue('');
-        $user->getContact()->addNote($note);
-
-        $this->get('doctrine.orm.entity_manager')->persist($note);
     }
 }
