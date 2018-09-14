@@ -11,10 +11,11 @@
 
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Manager;
 
+use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManager;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistry;
 
-class CommunityManagerRegistryTest extends \PHPUnit_Framework_TestCase
+class CommunityManagerRegistryTest extends TestCase
 {
     public function testGet()
     {

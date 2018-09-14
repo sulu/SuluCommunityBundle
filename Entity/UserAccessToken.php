@@ -33,7 +33,7 @@ class UserAccessToken
     /**
      * @var string
      */
-    private $accessToken;
+    private $accessToken = '';
 
     public function __construct(UserInterface $user, string $service, string $identifier)
     {
