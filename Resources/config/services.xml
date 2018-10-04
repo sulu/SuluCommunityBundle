@@ -34,7 +34,8 @@
 
         <!-- User Manager -->
         <service id="sulu_community.user_manager"
-                 class="Sulu\Bundle\CommunityBundle\Manager\UserManager">
+                 class="Sulu\Bundle\CommunityBundle\Manager\UserManager"
+                 public="true">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
             <argument type="service" id="sulu_security.token_generator"/>
@@ -104,18 +105,21 @@
 
         <!-- blacklisting -->
         <service id="sulu_community.blacklisting.item_manager"
-                 class="Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager">
+                 class="Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager"
+                 public="true">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_community.blacklisting.item_repository"/>
         </service>
         <service id="sulu_community.blacklisting.item_repository"
-                 class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository">
+                 class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository"
+                 public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
             <argument type="string">SuluCommunityBundle:BlacklistItem</argument>
         </service>
         <service id="sulu_community.blacklisting.user_repository"
-                 class="Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository">
+                 class="Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository"
+                 public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
             <argument type="string">SuluCommunityBundle:BlacklistUser</argument>
@@ -133,7 +137,8 @@
                  method="sendConfirmationOnEmailChange"/>
         </service>
         <service id="sulu_community.email_confirmation.repository"
-                 class="Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository">
+                 class="Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository"
+                 public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
             <argument type="string">SuluCommunityBundle:EmailConfirmationToken</argument>

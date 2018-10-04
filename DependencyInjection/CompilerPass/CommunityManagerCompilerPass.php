@@ -12,9 +12,9 @@
 namespace Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -34,7 +34,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             $webspaceConfig = $this->updateWebspaceConfig($webspaceKey, $webspaceConfig);
             $webspacesConfig[$webspaceKey] = $webspaceConfig;
 
-            $definition = new DefinitionDecorator('sulu_community.community_manager');
+            $definition = new ChildDefinition('sulu_community.community_manager');
             $definition->replaceArgument(0, $webspaceConfig);
             $definition->replaceArgument(1, $webspaceKey);
 

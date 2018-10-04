@@ -16,6 +16,4 @@ if (!file_exists($file)) {
 
 $loader = require $file;
 
-Doctrine\Common\Annotations\AnnotationRegistry::registerLoader([$loader, 'loadClass']);
-
 return $loader;

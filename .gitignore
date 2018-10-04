@@ -27,6 +27,7 @@ node_modules/
 npm-debug.log
 
 # tests
+Tests/var
 Tests/app/cache
 Tests/app/logs
 Tests/app/data
