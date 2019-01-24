@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Admin;
 
 use Sulu\Bundle\AdminBundle\Admin\Admin;
+use Sulu\Bundle\AdminBundle\Navigation\Navigation;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
@@ -40,17 +41,22 @@ class CommunityAdmin extends Admin
      * @param SecurityCheckerInterface $securityChecker
      * @param WebspaceManagerInterface $webspaceManager
      * @param array $webspacesConfiguration
-     * @param string $title
      */
     public function __construct(
         SecurityCheckerInterface $securityChecker,
         WebspaceManagerInterface $webspaceManager,
-        array $webspacesConfiguration,
-        $title
+        array $webspacesConfiguration
     ) {
         $this->securityChecker = $securityChecker;
         $this->webspaceManager = $webspaceManager;
         $this->webspacesConfiguration = $webspacesConfiguration;
+    }
+
+    public function getNavigation(): Navigation
+    {
+        // TODO implement blacklisting
+
+        return parent::getNavigation();
     }
 
     /**

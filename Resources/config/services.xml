@@ -21,6 +21,7 @@
                  public="true">
             <argument type="collection"/>
         </service>
+
         <service id="sulu_community.community_manager"
                  class="Sulu\Bundle\CommunityBundle\Manager\CommunityManager"
                  abstract="true">
@@ -92,7 +93,6 @@
             <argument type="service" id="sulu_security.security_checker"/>
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
             <argument>%sulu_community.webspaces_config%</argument>
-            <argument>%sulu_admin.name%</argument>
 
             <tag name="sulu.admin"/>
             <tag name="sulu.context" context="admin"/>
@@ -110,6 +110,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_community.blacklisting.item_repository"/>
         </service>
+
         <service id="sulu_community.blacklisting.item_repository"
                  class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository"
                  public="true">
@@ -117,6 +118,7 @@
 
             <argument type="string">SuluCommunityBundle:BlacklistItem</argument>
         </service>
+
         <service id="sulu_community.blacklisting.user_repository"
                  class="Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository"
                  public="true">
@@ -136,6 +138,7 @@
             <tag name="kernel.event_listener" event="%sulu_community.event.save_profile%"
                  method="sendConfirmationOnEmailChange"/>
         </service>
+
         <service id="sulu_community.email_confirmation.repository"
                  class="Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository"
                  public="true">

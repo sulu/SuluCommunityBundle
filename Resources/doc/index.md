@@ -6,7 +6,6 @@
 2. [Enable Bundle](1-installation.md#enable-bundle)
 3. [Register Routes](1-installation.md#register-routes)
 4. [Install Assets](1-installation.md#install-assets)
-5. [Generate translations](1-installation.md#generate-translations)
 
 ## [Setup Webspace](2-setup-webspace.md)
 

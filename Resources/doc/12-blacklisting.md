@@ -3,28 +3,28 @@
 ## Config
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             blacklisted:
                 email:
                     subject: Blacklisted
-                    admin_template: AppBundle:templates:community/Blacklist/blacklist-email.html.twig
+                    admin_template: community/blacklist-email.html.twig
                     user_template: ~
             blacklist_denied:
                 email:
                     subject: Denied
                     admin_template: ~
                     user_template: ~
-                template: AppBundle:templates:community/Blacklist/blacklist-denied.html.twig
+                template: community/blacklist-denied.html.twig
             blacklist_confirmed:
                 email:
                     subject: Registration
                     admin_template: ~
-                    user_template: AppBundle:templates:community/Registration/registration-email.html.twig
-                template: AppBundle:templates:community/Blacklist/blacklist-confirmed.html.twig
+                    user_template: community/registration-email.html.twig
+                template: community/blacklist-confirmed.html.twig
 ```
 
 ## Backend Config
@@ -42,9 +42,9 @@ The admin of the page will receive the blacklisted email when a user email addre
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Blacklist/blacklist-email.html.twig #}
+{# community/blacklist-email.html.twig #}
 
-{% extends "AppBundle::master-email.html.twig" %}
+{% extends 'base-email.html.twig' %}
 
 {% block content %}
     <p>E-Mail: {{ user.email }}</p>
@@ -64,9 +64,9 @@ When the admin clicks on the link a template is rendered which can show specific
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Blacklist/blacklist-denied.html.twig / AppBundle:templates:community/Blacklist/blacklist-confirmed.html.twig #}
+{# community/blacklist-denied.html.twig / community/blacklist-confirmed.html.twig #}
 
-{% extends "AppBundle::master.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     User "{{ user.email }}" denied/confirmed.
@@ -78,9 +78,9 @@ When the admin clicks on the link a template is rendered which can show specific
 If the user is confirmed he will receive an email with the confirmation link:
 
 ```twig
-{# AppBundle:templates:community/Registration/registration-form.html.twig #}
+{# community/registration-form.html.twig #}
 
-{% extends "AppBundle:website:master.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <h1>Registration</h1>

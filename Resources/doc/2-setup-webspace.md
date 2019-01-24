@@ -5,7 +5,7 @@
 Add a security system to your webspace:
 
 ```xml
-<!-- app/Resources/webspaces/<your_webspace>.xml -->
+<!-- config/webspaces/<your_webspace>.xml -->
 
 <security>
     <system>Website</system>
@@ -17,27 +17,20 @@ Add a security system to your webspace:
 Enable community features for your webspace:
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     webspaces:
         <webspace_key>: # Replace <webspace_key> with the key of your webspace
-            from:
-                name: "Website"
-                email: "%sulu_admin.email%"
+            from: "%env(SULU_ADMIN_EMAIL)%"
 ```
 
 ## Enable Security
 
 ```yml 
-# app/config/website/security.yml
+# config/packages/security_website.yml
 
 security:
-    session_fixation_strategy: none
-
-    access_decision_manager:
-        strategy: affirmative
-
     encoders:
         Sulu\Bundle\SecurityBundle\Entity\User:
             algorithm: sha512
@@ -49,14 +42,14 @@ security:
             id: sulu_security.user_provider
 
     access_control:
-       # needed when firewall on ^/ is used
-       # - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       # - { path: /registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       # - { path: /password-reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       # - { path: /password-forget, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       # - { path: /_fragment, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       - { path: /profile, roles: ROLE_USER }
-       - { path: /completion, roles: ROLE_USER }
+        # needed when firewall on ^/ is not anonymous
+        # - { path: '/login', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: '/registration', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: '/password-reset', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: '/password-forget', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: '/_fragment', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '/profile', roles: ROLE_USER }
+        - { path: '/completion', roles: ROLE_USER }
 
     firewalls:
         <webspace_key>: # Replace <webspace_key> with the key of your webspace
@@ -69,7 +62,7 @@ security:
                 path: sulu_community.logout
                 target: /
             remember_me:
-                secret:   "%secret%"
+                secret:   "%kernel.secret%"
                 lifetime: 604800 # 1 week in seconds
                 path:     /
 
@@ -81,7 +74,7 @@ sulu_security:
 For functional tests you need to activate the security in the website test configuration:
 
 ```yaml
-# app/config/website/config_test.yml
+# config/packages/test/security_website.yml
 
 security:
     access_decision_manager:
@@ -95,13 +88,8 @@ security:
         testprovider:
             id: test_user_provider
 
-    access_control:
-       # keep this in sync with security.yml
-       - { path: /profile, roles: ROLE_USER }
-       - { path: /completion, roles: ROLE_USER }
-
     firewalls:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
              http_basic: ~
              anonymous: ~
 ```

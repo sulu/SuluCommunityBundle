@@ -3,19 +3,19 @@
 ## Config 
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             password_forget:
                 email:
                     subject: Password Forget
                     admin_template: ~
-                    user_template: AppBundle:templates:community/Password/forget-email.html.twig
+                    user_template: community/password-forget-email.html.twig
                 redirect_to: ?send=true
-                template: AppBundle:templates:community/Password/forget-form.html.twig
-                type: AppBundle\Form\Type\PasswordForgetType
+                template: community/password-forget-form.html.twig
+                type: App\Type\PasswordForgetType
 ```
 
 
@@ -26,9 +26,9 @@ After the user submitted the password forget form he will receive a email with t
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Password/forget-email.html.twig #}
+{# community/password-forget-email.html.twig #}
 
-{% extends "SuluCommunityBundle::master-email.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     {% set url = url('sulu_community.password_reset', { token: user.passwordResetToken }) %}
@@ -46,9 +46,9 @@ The password forget template.
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Confirmation/confirmation-message.html.twig #}
+{# community/password-forget-form.html.twig #}
 
-{% extends "AppBundle::master.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <h1>Password_forget</h1>
@@ -70,9 +70,9 @@ Set a new type to overwrite the existing form.
 **Example Class**:
 
 ```php
-//  src/AppBundle/Form/Type/PasswordForgetType.php
+//  src/Form/PasswordForgetType.php
 
-namespace AppBundle\Form\Type;
+namespace App\Form;
 
 use Sulu\Bundle\CommunityBundle\Validator\Constraints\Exist;
 use Sulu\Bundle\SecurityBundle\Entity\User;

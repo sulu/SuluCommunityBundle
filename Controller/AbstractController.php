@@ -16,7 +16,6 @@ use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\ContactBundle\Entity\Address;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
 use Sulu\Bundle\ContactBundle\Entity\ContactAddress;
-use Sulu\Bundle\ContactBundle\Entity\Note;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
@@ -79,9 +78,7 @@ abstract class AbstractController extends Controller
         }
 
         $user->setSalt($salt);
-        $encoder = $this->get('sulu_security.encoder_factory')->getEncoder($user);
-        $password = $encoder->encodePassword($plainPassword, $salt);
-
+        $password = $this->get('security.password_encoder')->encodePassword($user, $plainPassword);
         $user->setPassword($password);
 
         return $user;
@@ -172,11 +169,8 @@ abstract class AbstractController extends Controller
         $user = parent::getUser();
 
         if (null === $user->getContact()->getMainAddress()) {
+            // TODO this should be done by the form type not by the controller
             $this->addAddress($user);
-        }
-
-        if (0 === count($user->getContact()->getNotes())) {
-            $this->addNote($user);
         }
 
         return $user;
@@ -197,23 +191,10 @@ abstract class AbstractController extends Controller
         $address->setNote('');
         $address->setAddressType($entityManager->getRepository(AddressType::class)->find(1));
         $contactAddress = new ContactAddress();
+        $contactAddress->setMain(1);
         $contactAddress->setAddress($address);
         $contactAddress->setContact($contact);
 
         $contact->addContactAddress($contactAddress);
-    }
-
-    /**
-     * Add note to user.
-     *
-     * @param User $user
-     */
-    private function addNote(User $user)
-    {
-        $note = new Note();
-        $note->setValue('');
-        $user->getContact()->addNote($note);
-
-        $this->get('doctrine.orm.entity_manager')->persist($note);
     }
 }

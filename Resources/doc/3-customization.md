@@ -8,14 +8,14 @@ This is just an example configuration with all options.
 At first state you should just use the basic configuration from [here](2-setup-webspace.md#activate-community-features).
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     last_login:
         enabled: false
         refresh_interval: 600
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             from:
                 name: "Website"
                 email: "%sulu_admin.email%"
@@ -27,11 +27,11 @@ sulu_community:
             # Maintenance
             maintenance:
                 enabled: false
-                template: AppBundle:template:community/Maintenance/maintenance.html.twig
+                template: community/maintenance.html.twig
             # Login
             login:
-                embed_template: AppBundle:templates:community/Login/login-embed.html.twig
-                template: AppBundle:templates:community/Login/login.html.twig
+                embed_template: community/login-embed.html.twig
+                template: community/login.html.twig
                 
             # Registration
             registration:
@@ -39,11 +39,11 @@ sulu_community:
                 auto_login: true # only available when activate_user is true
                 email:
                     subject: Registration
-                    user_template: AppBundle:templates:community/Registration/registration-email.html.twig
+                    user_template: community/registration-email.html.twig
                     admin_template: ~
                 redirect_to: ?send=true
-                template: AppBundle:templates:community/Registration/registration-form.html.twig
-                type: AppBundle\Form\Type\RegistrationType
+                template: community/registration-form.html.twig
+                type: App\Form\RegistrationType
                     
             # Confirmation
             confirmation: 
@@ -54,7 +54,7 @@ sulu_community:
                     user_template: ~
                     admin_template: ~
                 redirect_to: ~
-                template: AppBundle:templates:community/Confirmation/confirmation-message.html.twig
+                template: community/confirmation-message.html.twig
                     
             # Completion
             completion:
@@ -64,27 +64,27 @@ sulu_community:
                     admin_template: ~
                 redirect_to: /
                 service: ~
-                template: AppBundle:templates:community/Completion/completion-form.html.twig
-                type: AppBundle\Form\Type\CompletionType
+                template: community/completion-form.html.twig
+                type: App\Form\CompletionType
                     
             # Password Forget / Reset
             password_forget:
                 email:
                     subject: Password Forget
                     admin_template: ~
-                    user_template: AppBundle:templates:community/Password/forget-email.html.twig
+                    user_template: community/password-forget-email.html.twig
                 redirect_to: ?send=true
-                template: AppBundle:templates:community/Password/forget-form.html.twig
-                type: AppBundle\Form\Type\PasswordForgetType
+                template: community/password-forget-form.html.twig
+                type: App\Form\PasswordForgetType
             password_reset:
                 auto_login: true
                 email:
                     subject: Password Reset
                     admin_template: ~
-                    user_template: AppBundle:templates:community/Password/reset-email.html.twig
+                    user_template: community/password-reset-email.html.twig
                 redirect_to: ?send=true
-                template: AppBundle:templates:community/Password/reset-form.html.twig
-                type: AppBundle\Form\Type\PasswordResetType
+                template: community/reset-form.html.twig
+                type: App\Form\PasswordResetType
                     
             # Profile
             profile:
@@ -93,35 +93,35 @@ sulu_community:
                     user_template: ~
                     admin_template: ~
                 redirect_to: ~
-                template: AppBundle:templates:community/Profile/profile-form.html.twig
-                type: AppBundle\Form\Type\ProfileType
+                template: community/profile-form.html.twig
+                type: App\Form\ProfileType
                 
             # Email Confirmation
             email_confirmation:
                 email:
                     subject: Email Changed
-                    user_template: AppBundle:templates:community/EmailConfirmation/email-confirmation-email.html.twig
+                    user_template: community/email-confirmation-email.html.twig
                     admin_template: ~
-                template: AppBundle:templates:community/EmailConfirmation/email-confirmation-success.html.twig
+                template: community/email-confirmation-success.html.twig
                 
             # Blacklist
             blacklisted:
                 email:
                     subject: Blacklisted
-                    admin_template: AppBundle:templates:community/Blacklist/blacklist-email.html.twig
+                    admin_template: community/blacklist-email.html.twig
                     user_template: ~
             blacklist_denied:
                 email:
                     subject: Denied
                     admin_template: ~
                     user_template: ~
-                template: AppBundle:templates:community/Blacklist/blacklist-denied.html.twig
+                template: community/blacklist-denied.html.twig
             blacklist_confirmed:
                 email:
                     subject: Registration
                     admin_template: ~
-                    user_template: AppBundle:templates:community/Registration/registration-email.html.twig
-                template: AppBundle:templates:community/Blacklist/blacklist-confirmed.html.twig
+                    user_template: community/registration-email.html.twig
+                template: community/blacklist-confirmed.html.twig
 ```
 
 ### Basic Options
@@ -185,7 +185,7 @@ The user will be automatically logged in after successfully submitting the form.
 #### embed_template
 
 Type: `string`
-Example: AppBundle:templates:community/Login/login-embed.html.twig
+Example: community/login-embed.html.twig
 
 The template which is used to render an uncached esi login form with `render_esi`.
 
@@ -199,14 +199,14 @@ The subject of the emails.
 #### email.admin_template
 
 Type: `string`
-Example: AppBundle:templates:community/Blacklist/blacklist-email.html.twig
+Example: community/blacklist-email.html.twig
 
 The template used to render the admin email, set to null to deactivate it.
 
 #### email.user_template
 
 Type: `string`
-Example: AppBundle:templates:community/Registration/registration-email.html.twig
+Example: community/registration-email.html.twig
 
 The template used to render the user email, set to null to deactivate it.
 
@@ -228,13 +228,13 @@ Service from interface `CompletionInterface` to validate if a user needs to add 
 #### template
 
 Type: `string`
-Example: AppBundle:templates:community/Registration/registration-form.html.twig
+Example: community/registration-form.html.twig
 
 The template where the form should be rendered.
 
 #### Type
 
 Type: `string`
-Example: AppBundle\Form\Type\RegistrationType
+Example: App\Form\RegistrationType
 
 The form type which is used to build the form.

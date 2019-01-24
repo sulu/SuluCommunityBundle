@@ -12,34 +12,11 @@ composer require sulu/community-bundle
 
 Enable the required bundles in the kernel:
 
-```php
-<?php
-// app/AbstractKernel.php
-
-public function registerBundles()
-{
-    $bundles = [
-        // ...
-        new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-        new Sulu\Bundle\CommunityBundle\SuluCommunityBundle(),
-    ];
-}
-```
-
-To avoid the:
-
-> Trying to register two bundles with the same name "SecurityBundle"
-
-error. Remove the SecurityBundle from `app/AdminKernel.php`.
-
 ```diff
-<?php
-// app/AdminKernel.php
-
-public function registerBundles()
-{
-     // ...
--    $bundles[] = new Symfony\Bundle\SecurityBundle\SecurityBundle(); // This line need to be removed!
++    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
++    Sulu\Bundle\CommunityBundle\SuluCommunityBundle::class => ['all' => true],
+     // Admin
+-    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true, 'admin' => true], 
 ```
 
 ## Register Routes
@@ -47,7 +24,7 @@ public function registerBundles()
 Register the website routes:
 
 ```yml
-# app/config/website/routing.yml
+# config/routes/sulu_community_website.yaml
 
 sulu_community:
     type: portal
@@ -57,7 +34,7 @@ sulu_community:
 Register the admin routes:
 
 ```yml
-#app/config/admin/routing.yml
+# config/routes/sulu_community_admin.yaml
 
 sulu_community_api:
     type: rest
@@ -81,12 +58,4 @@ Execute the following command to install the community bundle assets:
 
 ```bash
 php bin/adminconsole assets:install --symlink --relative
-```
-
-## Generate translations
-
-Execute the following command to generate the new translations:
-
-```bash
-php bin/adminconsole sulu:translate:export
 ```

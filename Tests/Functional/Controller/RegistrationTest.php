@@ -66,8 +66,8 @@ class RegistrationTest extends SuluTestCase
         $this->assertCount(1, $crawler->filter('input[name="registration[username]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[email]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[plainPassword]"]'));
-        $this->assertCount(1, $crawler->filter('input[name="registration[contact][firstName]"]'));
-        $this->assertCount(1, $crawler->filter('input[name="registration[contact][lastName]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="registration[firstName]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="registration[lastName]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[terms]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[_token]"]'));
         $this->assertCount(1, $crawler->filter('button[name="registration[submit]"]'));
@@ -77,8 +77,8 @@ class RegistrationTest extends SuluTestCase
                 'registration[username]' => 'sulu',
                 'registration[email]' => 'hikaru@sulu.io',
                 'registration[plainPassword]' => 'my-sulu',
-                'registration[contact][firstName]' => 'Hikaru',
-                'registration[contact][lastName]' => 'Sulu',
+                'registration[firstName]' => 'Hikaru',
+                'registration[lastName]' => 'Sulu',
                 'registration[terms]' => 1,
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]
@@ -193,8 +193,8 @@ class RegistrationTest extends SuluTestCase
                 'registration[username]' => 'sulu',
                 'registration[email]' => 'hikaru@sulu.io',
                 'registration[plainPassword]' => 'my-sulu',
-                'registration[contact][firstName]' => 'Hikaru',
-                'registration[contact][lastName]' => 'Sulu',
+                'registration[firstName]' => 'Hikaru',
+                'registration[lastName]' => 'Sulu',
                 'registration[terms]' => 1,
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]
@@ -229,8 +229,8 @@ class RegistrationTest extends SuluTestCase
                 'registration[username]' => 'sulu',
                 'registration[email]' => 'hikaru@sulu.io',
                 'registration[plainPassword]' => 'my-sulu',
-                'registration[contact][firstName]' => 'Hikaru',
-                'registration[contact][lastName]' => 'Sulu',
+                'registration[firstName]' => 'Hikaru',
+                'registration[lastName]' => 'Sulu',
                 'registration[terms]' => 1,
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]

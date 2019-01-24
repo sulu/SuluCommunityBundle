@@ -3,14 +3,14 @@
 ## Config
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             login:
-                embed_template: AppBundle:templates:community/Login/login-embed.html.twig
-                template: AppBundle:templates:community/Login/login.html.twig
+                embed_template: community/login-embed.html.twig
+                template: community/login.html.twig
 ```
 
 ## embed_template
@@ -21,7 +21,7 @@ button based on the login state of the user.
 When using the embed template make sure esi is enabled:
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 framework:
     esi: { enabled: true }
@@ -38,20 +38,22 @@ framework:
 
 Sulu sets by default the cache control header to 240 seconds. So it could happen
 that the browser cache the page and show an incorrect status. For this you can
-decrease or deactivate the browser cache lifetime in `app/config/config.yml`:
+decrease or deactivate the browser cache lifetime:
 
 ```yml
+# config/packages/sulu_http_cache.yaml
+
 sulu_http_cache:
     handlers:
         public:
-            max_age: 0
+            max_age: 10
             shared_max_age: 0
 ```
 
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Login/login-embed.html.twig #}
+{# community/login-embed.html.twig #}
 
 {% if app.user %}
     {% set media = null %}
@@ -82,7 +84,7 @@ sulu_http_cache:
 **Example Template**:
 
 ```twig
-{% extends "SuluCommunityBundle::master.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     {% if error %}
@@ -115,5 +117,4 @@ sulu_http_cache:
         Registration
     </a>
 {% endblock %}
-
 ```

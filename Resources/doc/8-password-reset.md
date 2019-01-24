@@ -3,20 +3,20 @@
 ## Config
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             password_reset:
                 auto_login: true
                 email:
                     subject: Password Reset
                     admin_template: ~
-                    user_template: AppBundle:templates:community/Password/reset-email.html.twig
+                    user_template: community/password-reset-email.html.twig
                 redirect_to: ?send=true
-                template: AppBundle:templates:community/Password/reset-form.html.twig
-                type: AppBundle\Form\Type\PasswordResetType
+                template: community/password-reset-form.html.twig
+                type: App\Form\PasswordResetType
 ```
 
 ## email
@@ -26,9 +26,9 @@ After the user submitted the password reset form he will receive an email.
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Password/reset-email.html.twig #}
+{# community/password-reset-email.html.twig #}
 
-{% extends "SuluCommunityBundle::master-email.html.twig" %}
+{% extends "base.html.twig" %}
 
 {% block content %}
     Your password was changed.
@@ -42,9 +42,9 @@ The password reset template.
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Password/reset-form.html.twig #}
+{# community/password-reset-form.html.twig #}
 
-{% extends "AppBundle::master.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <h1>Password reset</h1>
@@ -70,9 +70,9 @@ Set a new type to overwrite the existing form.
 **Example Class**:
 
 ```php
-//  src/AppBundle/Form/Type/PasswordResetType.php
+//  src/Form/PasswordResetType.php
 
-namespace AppBundle\Form\Type;
+namespace App\Form;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;

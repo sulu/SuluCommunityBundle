@@ -3,11 +3,11 @@
 ## Config
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             confirmation: 
                 activate_user: true
                 auto_login: true
@@ -16,7 +16,7 @@ sulu_community:
                     user_template: ~
                     admin_template: ~
                 redirect_to: ~
-                template: AppBundle:templates:community/Confirmation/confirmation-message.html.twig
+                template: community/confirmation-message.html.twig
 ```
 
 ## email
@@ -27,9 +27,9 @@ that a user has registered.
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Confirmation/confirmation-email.html.twig #}
+{# community/confirmation-email.html.twig #}
 
-{% extends "AppBundle::master-email.html.twig" %}
+{% extends 'base-email.html.twig' %}
 
 {% block content %}
     <h1>Welcome</h1>
@@ -47,9 +47,9 @@ When the user clicks on the confirmation link the following template will be ren
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Confirmation/confirmation-message.html.twig #}
+{# community/confirmation-message.html.twig #}
 
-{% extends "SuluCommunityBundle::master.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <h1>Confirmation</h1>

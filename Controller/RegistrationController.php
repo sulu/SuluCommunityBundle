@@ -39,7 +39,7 @@ class RegistrationController extends AbstractController
         // Create Form
         $form = $this->createForm(
             $communityManager->getConfigTypeProperty(self::TYPE, Configuration::FORM_TYPE),
-            $this->get('sulu.repository.user')->createNew(),
+            null,
             $communityManager->getConfigTypeProperty(self::TYPE, Configuration::FORM_TYPE_OPTIONS)
         );
 

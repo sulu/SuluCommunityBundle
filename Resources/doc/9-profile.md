@@ -3,20 +3,20 @@
 ## Config
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             # Profile
             profile:
                 email:
                     subject: Profile Updated
-                    user_template: ~
                     admin_template: ~
+                    user_template: community/profile-email.html.twig
                 redirect_to: ~
-                template: AppBundle:templates:community/Profile/profile-form.html.twig
-                type: AppBundle\Form\Type\ProfileType
+                template: community/profile-form.html.twig
+                type: App\Form\ProfileType
 ```
 
 ## email
@@ -26,9 +26,9 @@ It is possible that an email is also sent when a profile is changed.
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Profile/profile-email.html.twig #}
+{# community/profile-email.html.twig #}
 
-{% extends "AppBundle::master-email.html.twig" %}
+{% extends 'base-email.html.twig' %}
 
 {% block content %}
     Your profile was updated.
@@ -40,9 +40,9 @@ It is possible that an email is also sent when a profile is changed.
 The profile edit template.
 
 ```twig
-{# AppBundle:templates:community/Profile/profile-form.html.twig #}
+{# community/profile-form.html.twig #}
 
-{% extends "AppBundle::master.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <h1>Profile</h1>
@@ -64,14 +64,16 @@ Set a new type to overwrite the existing form.
 **Example Class**:
 
 ```php
-//  src/AppBundle/Form/Type/ProfileType.php
+//  src/Form/ProfileType.php
 
-namespace AppBundle\Form\Type;
+namespace App\Form;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextAreaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -82,8 +84,68 @@ class ProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('plainPassword', PasswordType::class, ['mapped' => false, 'required' => false]);
-        $builder->add('contact', $options['contact_type'], $options['contact_type_options']);
+        $builder->add('plainPassword', PasswordType::class, [
+            'mapped' => false,
+            'required' => false,
+        ]);
+
+        $builder->add('formOfAddress', ChoiceType::class, [
+            'property_path' => 'contact.formOfAddress',
+            'choices' => [
+                'sulu_contact.male_form_of_address' => 0,
+                'sulu_contact.female_form_of_address' => 1,
+            ],
+            'translation_domain' => 'admin',
+            'translation_domain' => 'backend',
+            'expanded' => true,
+        ]);
+
+        $builder->add('firstName', TextType::class, [
+            'property_path' => 'contact.firstName',
+        ]);
+
+        $builder->add('lastName', TextType::class, [
+             'property_path' => 'contact.lastName',
+        ]);
+ 
+        $builder->add('mainEmail', EmailType::class, [
+            'property_path' => 'contact.mainEmail',
+        ]);
+        
+        $builder->add('avatar', FileType::class, [
+            'mapped' => false,
+            'property_path' => 'contact.avatar',
+            'required' => false,
+        ]);
+
+        $builder->add('street', TextType::class, [
+            'property_path' => 'contact.mainAddress.avatar',
+            'required' => false,
+        ]);
+
+        $builder->add('number', TextType::class, [
+            'property_path' => 'contact.mainAddress.number',
+            'required' => false,
+        ]);
+
+        $builder->add('zip', TextType::class, [
+            'property_path' => 'contact.mainAddress.zip',
+            'required' => false,
+        ]);
+
+        $builder->add('country', EntityType::class, [
+            'property_path' => 'contact.mainAddress.country',
+            'class' => Country::class,
+            'choice_label' => function (Country $country) {
+                return Intl::getRegionBundle()->getCountryName($country->getCode());
+            },
+        ]);
+        
+        $builder->add('note', TextAreaType::class, [
+            'property_path' => 'contact.note',
+            'required' => false,
+        ]);
+        
         $builder->add('submit', SubmitType::class);
     }
 
@@ -95,250 +157,9 @@ class ProfileType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => User::class,
-                'contact_type' => ProfileContactType::class,
-                'contact_type_options' => ['label' => false],
                 'validation_groups' => ['profile'],
             ]
         );
-    }
-}
-```
-
-```php
-//  src/AppBundle/Form/Type/ProfileContactType.php
-
-namespace AppBundle\Form\Type;
-
-use Sulu\Bundle\ContactBundle\Entity\Contact;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class ProfileContactType extends AbstractType
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add(
-            'formOfAddress',
-            ChoiceType::class,
-            [
-                'choices' => [
-                    'contact.contacts.formOfAddress.male',
-                    'contact.contacts.formOfAddress.female',
-                ],
-                'translation_domain' => 'backend',
-                'expanded' => true,
-            ]
-        );
-
-        $builder->add('firstName', TextType::class);
-        $builder->add('lastName', TextType::class);
-        $builder->add('mainEmail', EmailType::class);
-        $builder->add('avatar', FileType::class, ['mapped' => false, 'required' => false]);
-
-        $builder->add(
-            'contactAddresses',
-            CollectionType::class,
-            [
-                'label' => false,
-                'type' => $options['contact_address_type'],
-                'options' => $options['contact_address_type_options'],
-            ]
-        );
-        $builder->add(
-            'notes',
-            CollectionType::class,
-            [
-                'label' => false,
-                'type' => $options['note_type'],
-                'options' => $options['note_type_options'],
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => Contact::class,
-                'contact_address_type' => ProfileContactAddressType::class,
-                'contact_address_type_options' => ['label' => false],
-                'note_type' => ProfileNoteType::class,
-                'note_type_options' => ['label' => false],
-                'validation_groups' => ['profile'],
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'contact';
-    }
-}
-```
-
-```php
-//  src/AppBundle/Form/Type/ProfileNoteType.php
-
-namespace AppBundle\Form\Type;
-
-use Sulu\Bundle\ContactBundle\Entity\Note;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class ProfileNoteType extends AbstractType
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('value', TextType::class, ['required' => false, 'label' => 'Note']);
-        $builder->get('value')->addViewTransformer(
-            new CallbackTransformer(
-                function ($value) {
-                    return $value;
-                },
-                function ($value) {
-                    if ($value === null) {
-                        return '';
-                    }
-
-                    return $value;
-                }
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(['data_class' => Note::class]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'note';
-    }
-}
-```
-
-```php
-//  src/AppBundle/Form/Type/ProfileContactAddressType.php
-
-namespace AppBundle\Form\Type;
-
-use Sulu\Bundle\ContactBundle\Entity\ContactAddress;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class ProfileContactAddressType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('address', $options['address_type'], $options['address_type_options']);
-        $builder->add('main', 'hidden', [
-            'required' => false,
-            'data' => 1,
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => ContactAddress::class,
-                'address_type' => ProfileAddressType::class,
-                'address_type_options' => ['label' => false],
-                'validation_groups' => ['profile'],
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'contact_address';
-    }
-}
-```
-
-```php
-//  src/AppBundle/Form/Type/ProfileAddressType.php
-
-namespace AppBundle\Form\Type;
-
-use Sulu\Bundle\ContactBundle\Entity\Address;
-use Sulu\Bundle\ContactBundle\Entity\Country;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class ProfileAddressType extends AbstractType
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('primaryAddress', 'hidden', ['data' => 1]);
-
-        $builder->add('street', TextType::class, ['required' => false]);
-        $builder->add('number', TextType::class, ['required' => false]);
-        $builder->add('zip', TextType::class, ['required' => false]);
-        $builder->add('city', TextType::class, ['required' => false]);
-        $builder->add('country', EntityType::class, ['class' => Country::class, 'property' => 'name']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => Address::class,
-                'validation_groups' => ['profile'],
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'address';
     }
 }
 ```
