@@ -79,7 +79,7 @@ abstract class AbstractController extends Controller
         }
 
         $user->setSalt($salt);
-        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+        $encoder = $this->get('sulu_security.encoder_factory')->getEncoder($user);
         $password = $encoder->encodePassword($plainPassword, $salt);
 
         $user->setPassword($password);

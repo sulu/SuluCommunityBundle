@@ -11,6 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Controller;
 
+use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\CommunityBundle\Controller\SaveMediaTrait;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Sulu\Bundle\MediaBundle\Api\Media as ApiMedia;
@@ -21,7 +22,7 @@ use Sulu\Component\Media\SystemCollections\SystemCollectionManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class SaveMediaTraitTest extends \PHPUnit_Framework_TestCase
+class SaveMediaTraitTest extends TestCase
 {
     use SaveMediaTrait {
         getMediaManager as mockedGetMediaManager;

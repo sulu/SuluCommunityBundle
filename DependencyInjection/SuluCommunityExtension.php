@@ -57,6 +57,15 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
      */
     public function prepend(ContainerBuilder $container)
     {
+        if ($container->hasExtension('framework')) {
+            $container->prependExtensionConfig(
+                'framework',
+                [
+                    'csrf_protection' => true,
+                ]
+            );
+        }
+
         if ($container->hasExtension('massive_build')) {
             $container->prependExtensionConfig(
                 'massive_build',

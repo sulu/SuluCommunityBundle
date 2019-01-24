@@ -39,7 +39,9 @@ class ProfileContactType extends AbstractType
                     'contact.contacts.formOfAddress.male' => 0,
                     'contact.contacts.formOfAddress.female' => 1,
                 ],
-                'choices_as_values' => true,
+                'choice_label' => function ($value) {
+                    return $value;
+                },
                 'translation_domain' => 'backend',
                 'expanded' => true,
             ]
