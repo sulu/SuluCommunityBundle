@@ -1,11 +1,11 @@
-{% extends "SuluCommunityBundle::master.html.twig" %}
+{% extends '@SuluCommunity/base.html.twig' %}
 
 {% block content %}
-    <h1>{{ 'Password_forget'|trans }}</h1>
+    <h1>{{ 'Completion'|trans }}</h1>
 
     {% if app.request.get('send') == 'true' %}
         <p>
-            {{ 'password_forget_finished'|trans }}
+            {{ 'completion_finished'|trans }}
         </p>
     {% else %}
         {{ form(form) }}

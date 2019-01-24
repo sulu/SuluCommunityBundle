@@ -87,7 +87,7 @@ class MailFactory implements MailFactoryInterface
     {
         $body = $this->engine->render($template, $data);
 
-        $message = \Swift_Message::newInstance();
+        $message = new \Swift_Message();
         $message->setSubject($this->translator->trans($subject));
         $message->setFrom($from);
         $message->setTo($to);

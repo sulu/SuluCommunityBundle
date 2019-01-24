@@ -26,3 +26,22 @@ doctrine:
                 dir: "%kernel.root_dir%/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
                 alias: GedmoTree
                 is_bundle: false
+
+security:
+    access_decision_manager:
+        strategy: affirmative
+
+    encoders:
+        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
+
+    providers:
+        testprovider:
+            id: test_user_provider
+
+    access_control:
+        - { path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+    firewalls:
+        test:
+            http_basic: ~
+            anonymous: ~

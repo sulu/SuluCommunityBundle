@@ -1,4 +1,4 @@
-{% extends "SuluCommunityBundle::master-email.html.twig" %}
+{% extends '@SuluCommunity/base-email.html.twig' %}
 
 {% block content %}
     {% set confirmUrl = url('sulu_community.email_confirmation', { token: token }) %}
