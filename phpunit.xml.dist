@@ -19,5 +19,9 @@
 
     <php>
         <env name="KERNEL_CLASS" value="Sulu\Bundle\CommunityBundle\Tests\Application\Kernel"/>
+        <env name="APP_ENV" value="test"/>
+        <env name="DATABASE_URL" value="mysql://root:@127.0.0.1:3306/su_community_test"/>
+        <env name="DATABASE_CHARSET" value="utf8mb4"/>
+        <env name="DATABASE_COLLATE" value="utf8mb4_unicode_ci"/>
     </php>
 </phpunit>
