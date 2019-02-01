@@ -10,7 +10,7 @@ composer require sulu/community-bundle
 
 ## Enable Bundle
 
-Enable the required bundles in the kernel:
+Enable the required bundles in the `config/bundles.php` of your project:
 
 ```diff
 +    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
