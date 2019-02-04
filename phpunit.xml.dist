@@ -23,5 +23,6 @@
         <env name="DATABASE_URL" value="mysql://root:@127.0.0.1:3306/su_community_test"/>
         <env name="DATABASE_CHARSET" value="utf8mb4"/>
         <env name="DATABASE_COLLATE" value="utf8mb4_unicode_ci"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
     </php>
 </phpunit>
