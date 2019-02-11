@@ -26,6 +26,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AbstractController extends Controller
 {
+    use RenderCompatibilityTrait;
+
     /**
      * @var string
      */
@@ -124,26 +126,6 @@ abstract class AbstractController extends Controller
     protected function saveEntities()
     {
         $this->get('doctrine.orm.entity_manager')->flush();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function render($view, array $parameters = [], Response $response = null)
-    {
-        return parent::render(
-            $view,
-            $this->getTemplateAttributes($parameters),
-            $response
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function renderView($view, array $parameters = [])
-    {
-        return parent::renderView($view, $this->getTemplateAttributes($parameters));
     }
 
     /**
