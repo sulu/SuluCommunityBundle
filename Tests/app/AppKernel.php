@@ -11,6 +11,7 @@
 
 use Sulu\Bundle\CommunityBundle\SuluCommunityBundle;
 use Sulu\Bundle\TestBundle\Kernel\SuluTestKernel;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -31,16 +32,12 @@ class AppKernel extends SuluTestKernel
      */
     public function registerBundles()
     {
-        $bundles = array_merge(
-            [
-                new SuluCommunityBundle(),
-                new SwiftmailerBundle(),
-            ],
-            parent::registerBundles()
-        );
+        $bundles = parent::registerBundles();
+        $bundles[] = new SuluCommunityBundle();
+        $bundles[] = new SwiftmailerBundle();
 
-        if (self::CONTEXT_WEBSITE === $this->getContext()) {
-            $bundles[] = new \Symfony\Bundle\SecurityBundle\SecurityBundle();
+        if (SuluTestKernel::CONTEXT_WEBSITE === $this->getContext()) {
+            $bundles[] = new SecurityBundle();
         }
 
         return $bundles;

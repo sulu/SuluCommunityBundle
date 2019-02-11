@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Listener;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
@@ -24,7 +25,7 @@ use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
 use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
-class BlacklistListenerTest extends \PHPUnit_Framework_TestCase
+class BlacklistListenerTest extends TestCase
 {
     /**
      * @var BlacklistItemRepository
