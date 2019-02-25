@@ -76,7 +76,7 @@ class InitCommand extends ContainerAwareCommand
             $this->initWebspace($this->webspaceManager->findWebspaceByKey($webspaceKey), $output);
             $this->entityManager->flush();
 
-            return;
+            return 0;
         }
 
         /** @var Webspace $webspace */

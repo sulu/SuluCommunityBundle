@@ -18,12 +18,12 @@ matrix:
     - php: 7.1
       env:
         - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction --prefer-lowest --prefer-stable"
-    - php: 7.2
+    - php: 7.3
       env:
         - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction"
         - CODE_COVERAGE=true
         - PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
-        - PHPSTAN=true
+        - LINT_CODE=true
 
 before_install:
   - phpenv config-add Tests/travis.php.ini
@@ -34,12 +34,13 @@ install:
   - composer info -i
   - ./Tests/Application/bin/adminconsole doctrine:database:create
   - ./Tests/Application/bin/adminconsole doctrine:schema:update --force
+  - if [[ $LINT_CODE == 'true' ]]; then ./Tests/Application/bin/adminconsole cache:clear --env=dev ; fi
 
 script:
   - ./vendor/bin/phpunit $PHPUNIT_FLAGS
   - ./Tests/Application/bin/adminconsole lint:twig Resources/views --env test
   - ./Tests/Application/bin/adminconsole sulu:community:init -vvv --env test
-  - if [[ $PHPSTAN == 'true' ]]; then ./vendor/bin/phpstan analyse ./ --level 3 -c phpstan.neon ; fi
+  - if [[ $LINT_CODE == 'true' ]]; then composer lint ; fi
 
 after_script:
   - if [[ $CODE_COVERAGE == 'true' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi

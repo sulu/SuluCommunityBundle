@@ -11,7 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Event;
 
-use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\Event;
 class CommunityEvent extends Event
 {
     /**
-     * @var BaseUser
+     * @var User
      */
     protected $user;
 
@@ -32,10 +32,10 @@ class CommunityEvent extends Event
     /**
      * CommunityEvent constructor.
      *
-     * @param BaseUser $user
+     * @param User $user
      * @param array $config
      */
-    public function __construct(BaseUser $user, array $config)
+    public function __construct(User $user, array $config)
     {
         $this->user = $user;
         $this->config = $config;
@@ -44,7 +44,7 @@ class CommunityEvent extends Event
     /**
      * Get user.
      *
-     * @return BaseUser
+     * @return User
      */
     public function getUser()
     {

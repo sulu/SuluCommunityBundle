@@ -26,8 +26,11 @@
     },
     "require-dev": {
         "jackalope/jackalope-doctrine-dbal": "^1.2.5",
+        "jangregor/phpstan-prophecy": "^0.3",
         "massive/search-bundle": "@dev",
-        "phpstan/phpstan": "^0.10",
+        "phpstan/phpstan": "^0.11",
+        "phpstan/phpstan-doctrine": "^0.11",
+        "phpstan/phpstan-symfony": "^0.11",
         "phpunit/phpunit": "^6.5",
         "symfony/browser-kit": "^3.4 || ^4.0",
         "symfony/css-selector": "^3.4 || ^4.0",
@@ -61,6 +64,12 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "lint": [
+            "@phpstan"
+        ],
+        "phpstan": "vendor/bin/phpstan analyse ./ -c phpstan.neon"
     },
     "extra": {
         "branch-alias": {

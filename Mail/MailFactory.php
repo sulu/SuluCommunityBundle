@@ -11,7 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Mail;
 
-use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -50,7 +50,7 @@ class MailFactory implements MailFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function sendEmails(Mail $mail, BaseUser $user, $parameters = [])
+    public function sendEmails(Mail $mail, User $user, $parameters = [])
     {
         $email = $user->getEmail();
         if ($mail->getUserEmail()) {

@@ -11,7 +11,6 @@
 
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
-use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -117,16 +116,16 @@ interface CommunityManagerInterface
      * Send email to user and admin by type.
      *
      * @param string $type
-     * @param BaseUser $user
+     * @param User $user
      */
-    public function sendEmails($type, BaseUser $user);
+    public function sendEmails($type, User $user);
 
     /**
      * Save profile for given user.
      *
-     * @param BaseUser $user
+     * @param User $user
      *
-     * @return BaseUser
+     * @return User
      */
-    public function saveProfile(BaseUser $user);
+    public function saveProfile(User $user);
 }

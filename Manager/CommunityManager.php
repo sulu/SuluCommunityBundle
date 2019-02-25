@@ -16,7 +16,6 @@ use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
-use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
@@ -245,7 +244,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function sendEmails($type, BaseUser $user)
+    public function sendEmails($type, User $user)
     {
         $this->mailFactory->sendEmails(
             Mail::create(
@@ -260,7 +259,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function saveProfile(BaseUser $user)
+    public function saveProfile(User $user)
     {
         $this->userManager->updateUser($user);
 

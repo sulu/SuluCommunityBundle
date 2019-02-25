@@ -2,6 +2,23 @@
 
 ## 2.0.0 (unreleased)
 
+### BaseUser class references replaced with User class
+
+The `BaseUser` class from sulu is not longered used and all function
+where replaced using the `User` entity class directly.
+
+### Child Form Types removed
+
+The following form types are removed:
+
+ - `ProfileAddressType`
+ - `ProfileContactAddressType`
+ - `ProfileContactType`
+ - `ProfileNoteType`
+ - `RegistrationContactType`
+
+the fields are now mapped using `property_path` attribute.
+
 ### UTF8MB4 compatibility
 
 To support utf8mb4 we needed to shorten the length of indexed fields
