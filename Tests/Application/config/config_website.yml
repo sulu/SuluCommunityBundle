@@ -31,8 +31,8 @@ security:
         Sulu\Bundle\SecurityBundle\Entity\User: plaintext
 
     providers:
-        testprovider:
-            id: test_user_provider
+        sulu:
+            id: sulu_security.user_provider
 
     access_control:
         - { path: /profile, roles: ROLE_USER }

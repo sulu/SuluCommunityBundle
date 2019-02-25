@@ -7,22 +7,20 @@
 
 set_time_limit(0);
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
-
 use Sulu\Bundle\CommunityBundle\Tests\Application\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 
 $input = new ArgvInput();
-$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
-$debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
+$env = $input->getParameterOption(['--env', '-e'], getenv('SYMFONY_ENV') ?: 'dev');
+$debug = '0' !== getenv('SYMFONY_DEBUG') && !$input->hasParameterOption(['--no-debug', '']) && 'prod' !== $env;
 
 if ($debug) {
     Debug::enable();
 }
 
-$kernel = new Kernel($env, $debug, Kernel::CONTEXT_WEBSITE);
+$kernel = new Kernel($env, $debug, $suluContext);
 $application = new Application($kernel);
 $application->run($input);
 

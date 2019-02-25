@@ -12,7 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\HttpCacheBundle\Cache\AbstractHttpCache;
+use Sulu\Bundle\HttpCacheBundle\Cache\SuluHttpCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -71,7 +71,7 @@ class LoginController extends AbstractController
         $response->setSharedMaxAge(0);
         $response->headers->addCacheControlDirective('must-revalidate', true);
         $response->headers->addCacheControlDirective('no-store', true);
-        $response->headers->set(AbstractHttpCache::HEADER_REVERSE_PROXY_TTL, 0);
+        $response->headers->set(SuluHttpCache::HEADER_REVERSE_PROXY_TTL, 0);
 
         return $response;
     }

@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\NoResultException;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
+use Sulu\Bundle\CommunityBundle\Tests\Functional\Traits\BlacklistItemTrait;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
@@ -27,6 +28,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class RegistrationTest extends SuluTestCase
 {
+    use BlacklistItemTrait;
+
     protected function setUp()
     {
         parent::setUp();
@@ -152,13 +155,7 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationBlacklistedBlocked()
     {
-        $client = $this->createAuthenticatedClient();
-        $client->request(
-            'POST',
-            '/admin/api/blacklist-items',
-            ['pattern' => '*@sulu.io', 'type' => BlacklistItem::TYPE_BLOCK]
-        );
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_BLOCK);
 
         $client = $this->createClient();
 
@@ -183,13 +180,7 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationBlacklistedRequested()
     {
-        $client = $this->createAuthenticatedClient();
-        $client->request(
-            'POST',
-            '/admin/api/blacklist-items',
-            ['pattern' => '*@sulu.io', 'type' => BlacklistItem::TYPE_REQUEST]
-        );
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_REQUEST);
 
         $client = $this->createClient();
 

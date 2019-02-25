@@ -22,7 +22,7 @@ $databaseCreatedFile = __DIR__ . '/Application/var/cache/admin/test/adminAdminTe
 if (!file_exists($databaseCreatedFile)) {
     // Create test database
     $cmd = sprintf(
-        'php "%s/Application/bin/console" doctrine:database:create --if-not-exists',
+        'php "%s/Application/bin/adminconsole" doctrine:database:create --if-not-exists',
         __DIR__
     );
 
@@ -34,7 +34,7 @@ if (!file_exists($databaseCreatedFile)) {
 
     // Create or update test database schema
     $cmd = sprintf(
-        'php "%s/Application/bin/console" doctrine:schema:update --force',
+        'php "%s/Application/bin/adminconsole" doctrine:schema:update --force',
         __DIR__
     );
 

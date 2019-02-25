@@ -14,10 +14,13 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
+use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\ContactBundle\Entity\Country;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
+use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
+use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class ProfileControllerTest extends SuluTestCase
@@ -56,9 +59,37 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->persist($addressType);
         $entityManager->persist($country);
         $entityManager->persist($emailType);
-        $entityManager->flush();
 
-        $this->getContainer()->get('test_user_provider')->getUser();
+        $contact = $entityManager->getRepository(ContactInterface::class)->createNew();
+        $contact->setFirstName('Max');
+        $contact->setLastName('Mustermann');
+        $entityManager->persist($contact);
+
+        /** @var User $user */
+        $user = $entityManager->getRepository(User::class)->createNew();
+        $user->setUsername('test');
+        $user->setPassword('test');
+        $user->setSalt('');
+        $user->setLocale('en');
+        $user->setContact($contact);
+        $entityManager->persist($user);
+
+        /** @var Role $role */
+        $role = $entityManager->getRepository(Role::class)->createNew();
+        $role->setName('Sulu-ioUser');
+        $role->setSystem('Website');
+        $entityManager->persist($role);
+
+        /** @var UserRole $userRole */
+        $userRole = new UserRole();
+        $userRole->setUser($user);
+        $userRole->setRole($role);
+        $userRole->setLocale('en');
+        $entityManager->persist($userRole);
+
+        $user->addUserRole($userRole);
+
+        $entityManager->flush();
     }
 
     private function submitProfile($data)
@@ -90,6 +121,8 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertHttpStatusCode(200, $client->getResponse());
 
         $this->assertCount(1, $crawler->filter('.success'));
+
+        $this->getEntityManager()->clear();
 
         /** @var UserRepository $repository */
         $repository = $this->getEntityManager()->getRepository(User::class);

@@ -18,6 +18,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilder;
 use Sulu\Component\Rest\ListBuilder\Doctrine\FieldDescriptor\DoctrineFieldDescriptor;
+use Sulu\Component\Rest\ListBuilder\FieldDescriptorInterface;
 use Sulu\Component\Rest\ListBuilder\ListRepresentation;
 use Sulu\Component\Rest\RequestParametersTrait;
 use Sulu\Component\Rest\RestController;
@@ -188,12 +189,9 @@ class BlacklistItemController extends RestController implements ClassResourceInt
                 BlacklistItem::class,
                 'community.blacklist.pattern',
                 [],
-                false,
-                false,
+                FieldDescriptorInterface::VISIBILITY_ALWAYS,
+                FieldDescriptorInterface::SEARCHABILITY_YES,
                 'string',
-                '',
-                '',
-                true,
                 true
             ),
             'type' => new DoctrineFieldDescriptor(
@@ -202,12 +200,9 @@ class BlacklistItemController extends RestController implements ClassResourceInt
                 BlacklistItem::class,
                 'public.type',
                 [],
-                false,
-                false,
+                FieldDescriptorInterface::VISIBILITY_ALWAYS,
+                FieldDescriptorInterface::SEARCHABILITY_YES,
                 'select',
-                '',
-                '',
-                true,
                 true
             ),
         ];
