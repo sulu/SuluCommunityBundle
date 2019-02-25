@@ -22,7 +22,7 @@ if ($debug) {
     Debug::enable();
 }
 
-$kernel = new Kernel($env, $debug);
+$kernel = new Kernel($env, $debug, Kernel::CONTEXT_WEBSITE);
 $application = new Application($kernel);
 $application->run($input);
 

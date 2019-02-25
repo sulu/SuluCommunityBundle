@@ -54,12 +54,7 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegister()
     {
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/registration');
 
@@ -94,12 +89,7 @@ class RegistrationTest extends SuluTestCase
 
         $confirmationKey = $user->getConfirmationKey();
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $client->request('GET', '/confirmation/' . $confirmationKey);
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -114,12 +104,7 @@ class RegistrationTest extends SuluTestCase
     {
         $this->testConfirmation();
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/login');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -144,12 +129,7 @@ class RegistrationTest extends SuluTestCase
     {
         $this->testConfirmation();
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/login');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -180,12 +160,7 @@ class RegistrationTest extends SuluTestCase
         );
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/registration');
         $form = $crawler->selectButton('registration[submit]')->form(
@@ -216,12 +191,7 @@ class RegistrationTest extends SuluTestCase
         );
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/registration');
         $form = $crawler->selectButton('registration[submit]')->form(
@@ -258,12 +228,7 @@ class RegistrationTest extends SuluTestCase
 
         $links = $emailCrawler->filter('a');
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $client->request('GET', $links->first()->attr('href'));
         $this->assertContains('User "hikaru@sulu.io" confirmed', $client->getResponse()->getContent());
@@ -284,12 +249,7 @@ class RegistrationTest extends SuluTestCase
 
         $links = $emailCrawler->filter('a');
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $client->request('GET', $links->last()->attr('href'));
         $this->assertContains('User "hikaru@sulu.io" denied', $client->getResponse()->getContent());
@@ -303,12 +263,7 @@ class RegistrationTest extends SuluTestCase
     {
         $user = $this->testConfirmation();
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
         $crawler = $client->request('GET', '/password-forget');
 
         $this->assertCount(1, $crawler->filter('input[name="password_forget[email_username]"]'));

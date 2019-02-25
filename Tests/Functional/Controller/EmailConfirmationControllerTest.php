@@ -79,12 +79,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
     public function testConfirm()
     {
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'dev',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/profile/email-confirmation?token=123-123-123');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -108,12 +103,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
     public function testConfirmWrongToken()
     {
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'dev',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/profile/email-confirmation?token=312-312-312');
         $this->assertHttpStatusCode(200, $client->getResponse());

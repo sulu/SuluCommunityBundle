@@ -57,20 +57,13 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->persist($country);
         $entityManager->persist($emailType);
         $entityManager->flush();
+
+        $this->getContainer()->get('test_user_provider')->getUser();
     }
 
     private function submitProfile($data)
     {
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'dev',
-            ],
-            [
-                'PHP_AUTH_USER' => 'test',
-                'PHP_AUTH_PW' => 'test',
-            ]
-        );
+        $client = $this->createAuthenticatedClient();
 
         $crawler = $client->request('GET', '/profile');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -126,7 +119,7 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertEquals(16, $user->getContact()->getMainAddress()->getNumber());
         $this->assertEquals(12351, $user->getContact()->getMainAddress()->getZip());
         $this->assertEquals(1, $user->getContact()->getMainAddress()->getCountry()->getId());
-        $this->assertEquals('Test', $user->getContact()->getNotes()[0]->getValue());
+        $this->assertEquals('Test', $user->getContact()->getNote());
     }
 
     public function testProfileWithoutNote()
@@ -143,7 +136,7 @@ class ProfileControllerTest extends SuluTestCase
             'profile[country]' => 1,
         ]);
 
-        $this->assertSame('', $user->getContact()->getNotes()[0]->getValue());
+        $this->assertSame(null, $user->getContact()->getNote());
     }
 
     protected function getKernelConfiguration()
