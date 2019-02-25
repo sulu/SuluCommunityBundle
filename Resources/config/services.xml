@@ -15,6 +15,16 @@
     </parameters>
 
     <services>
+        <!-- Commands -->
+        <service id="sulu_community.command.init"
+                 class="Sulu\Bundle\CommunityBundle\Command\InitCommand">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument type="service" id="sulu_community.community_manager.registry"/>
+
+            <tag name="console.command"/>
+        </service>
+
         <!-- Community Manager -->
         <service id="sulu_community.community_manager.registry"
                  class="Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistry"

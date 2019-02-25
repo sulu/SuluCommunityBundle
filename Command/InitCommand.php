@@ -16,6 +16,7 @@ use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistryInterface;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
+use Sulu\Component\Security\Authentication\RoleInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 use Sulu\Component\Webspace\Webspace;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -30,12 +31,37 @@ class InitCommand extends ContainerAwareCommand
     const NAME = 'sulu:community:init';
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var WebspaceManagerInterface
+     */
+    private $webspaceManager;
+
+    /**
+     * @var CommunityManagerRegistryInterface
+     */
+    private $communityManagerRegistry;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        WebspaceManagerInterface $webspaceManager,
+        CommunityManagerRegistryInterface $communityManagerRegistry
+    ) {
+        $this->entityManager = $entityManager;
+        $this->webspaceManager = $webspaceManager;
+        $this->communityManagerRegistry = $communityManagerRegistry;
+        parent::__construct(self::NAME);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configure()
     {
-        $this->setName(self::NAME)
-            ->setDescription('Create the user roles for the community.')
+        $this->setDescription('Create the user roles for the community.')
             ->addArgument('webspace', null, 'A specific webspace key.');
     }
 
@@ -44,26 +70,21 @@ class InitCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var WebspaceManagerInterface $webspaceManager */
-        $webspaceManager = $this->getContainer()->get('sulu_core.webspace.webspace_manager');
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-
         $webspaceKey = $input->getArgument('webspace');
 
         if (null !== $webspaceKey) {
-            $this->initWebspace($webspaceManager->findWebspaceByKey($webspaceKey), $output);
-            $entityManager->flush();
+            $this->initWebspace($this->webspaceManager->findWebspaceByKey($webspaceKey), $output);
+            $this->entityManager->flush();
 
             return;
         }
 
         /** @var Webspace $webspace */
-        foreach ($webspaceManager->getWebspaceCollection() as $webspace) {
+        foreach ($this->webspaceManager->getWebspaceCollection() as $webspace) {
             $this->initWebspace($webspace, $output);
         }
 
-        $entityManager->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -78,14 +99,11 @@ class InitCommand extends ContainerAwareCommand
     {
         $webspaceKey = $webspace->getKey();
 
-        /** @var CommunityManagerRegistryInterface $registry */
-        $registry = $this->getContainer()->get('sulu_community.community_manager.registry');
-
-        if (!$webspace->getSecurity() || !$registry->has($webspaceKey)) {
+        if (!$webspace->getSecurity() || !$this->communityManagerRegistry->has($webspaceKey)) {
             return;
         }
 
-        $communityManager = $registry->get($webspaceKey);
+        $communityManager = $this->communityManagerRegistry->get($webspaceKey);
         $roleName = $communityManager->getConfigProperty(Configuration::ROLE);
         $system = $webspace->getSecurity()->getSystem();
 
@@ -110,7 +128,7 @@ class InitCommand extends ContainerAwareCommand
     protected function createRoleIfNotExists($roleName, $system)
     {
         /** @var RoleRepository $roleRepository */
-        $roleRepository = $this->getContainer()->get('sulu.repository.role');
+        $roleRepository = $this->entityManager->getRepository(RoleInterface::class);
 
         $role = $roleRepository->findOneBy(['name' => $roleName, 'system' => $system]);
 
