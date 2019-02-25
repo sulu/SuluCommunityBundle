@@ -139,4 +139,11 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $this->assertCount(1, $user->getContact()->getEmails());
         $this->assertEquals($user->getEmail(), $user->getContact()->getEmails()->first()->getEmail());
     }
+
+    protected function getKernelConfiguration()
+    {
+        return [
+            'sulu_context' => 'website',
+        ];
+    }
 }

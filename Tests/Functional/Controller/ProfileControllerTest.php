@@ -145,4 +145,11 @@ class ProfileControllerTest extends SuluTestCase
 
         $this->assertSame('', $user->getContact()->getNotes()[0]->getValue());
     }
+
+    protected function getKernelConfiguration()
+    {
+        return [
+            'sulu_context' => 'website',
+        ];
+    }
 }

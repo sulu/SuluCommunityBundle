@@ -370,4 +370,11 @@ class RegistrationTest extends SuluTestCase
             return;
         }
     }
+
+    protected function getKernelConfiguration()
+    {
+        return [
+            'sulu_context' => 'website',
+        ];
+    }
 }

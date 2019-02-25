@@ -28,4 +28,11 @@ class LoginControllerTest extends SuluTestCase
         $this->assertCount(1, $crawler->filter('#remember_me'));
         $this->assertCount(1, $crawler->filter('button'));
     }
+
+    protected function getKernelConfiguration()
+    {
+        return [
+            'sulu_context' => 'website',
+        ];
+    }
 }
