@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "beberlei/DoctrineExtensions": "^1.0",
+        "beberlei/doctrineextensions": "^1.0",
         "jms/serializer-bundle": "^2.0",
         "massive/build-bundle": "^0.2 || ^0.3 || ^0.4",
         "sulu/sulu": "dev-develop",

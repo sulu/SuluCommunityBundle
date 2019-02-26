@@ -19,6 +19,10 @@ Enable the required bundles in the `config/bundles.php` of your project:
 -    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true, 'admin' => true], 
 ```
 
+To avoid the:
+
+> Trying to register two bundles with the same name "SecurityBundle"
+
 ## Register Routes
 
 Register the website routes:
