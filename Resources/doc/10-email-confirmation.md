@@ -3,18 +3,18 @@
 ## Config
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             # Email Confirmation
             email_confirmation:
                 email:
                     subject: Email Changed
-                    user_template: AppBundle:templates:community/EmailConfirmation/email-confirmation-email.html.twig
+                    user_template: community/email-confirmation-email.html.twig
                     admin_template: ~
-                template: AppBundle:templates:community/EmailConfirmation/email-confirmation-success.html.twig
+                template: community/email-confirmation-success.html.twig
 ```
 
 ## email
@@ -24,9 +24,9 @@ The email with the url to confirm the new email address.
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/EmailConfirmation/email-confirmation-email.html.twig #}
+{# community/email-confirmation-email.html.twig #}
 
-{% extends "AppBundle::master-email.html.twig" %}
+{% extends 'base-email.html.twig' %}
 
 {% block content %}
     {% set confirmUrl = url('sulu_community.email_confirmation', { token: token }) %}
@@ -41,8 +41,9 @@ Template which is rendered after the email address has been successfully confirm
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/EmailConfirmation/email-confirmation-success.html.twig #}
-{% extends "AppBundle:website:master.html.twig" %}
+{# community/email-confirmation-success.html.twig #}
+
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <h1>Profile</h1>

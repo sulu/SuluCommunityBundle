@@ -3,19 +3,19 @@
 ## Config
 
 ```yml
-# app/config/config.yml
+# config/packages/sulu_community.yaml
 sulu_community:
     webspaces:
-        <webspace_key>:
+        <webspace_key>: # Replace <webspace_key> with the key of your webspace
             registration:
                 activate_user: false
                 auto_login: true # only available when activate_user is true
                 email:
                     subject: Registration
-                    user_template: AppBundle:templates:community/Registration/registration-email.html.twig
+                    user_template: community/registration-email.html.twig
                     admin_template: ~
-                template: AppBundle:templates:community/Registration/registration-form.html.twig
-                type: AppBundle\Form\Type\RegistrationType
+                template: community/registration-form.html.twig
+                type: App\Form\RegistrationType
 ```
 
 ## email
@@ -25,9 +25,9 @@ The registration email contains the confirmation link.
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Registration/registration-email.html.twig #}
+{# community/registration-email.html.twig #}
 
-{% extends "AppBundle::master-email.html.twig" %}
+{% extends 'base-email.html.twig' %}
 
 {% block content %}
     {% set url = url('sulu_community.confirmation', { token: user.confirmationKey }) %}
@@ -45,9 +45,9 @@ The template contains the form and the success message.
 **Example Template**:
 
 ```twig
-{# AppBundle:templates:community/Registration/registration-form.html.twig #}
+{# community/registration-form.html.twig #}
 
-{% extends "AppBundle:website:master.html.twig" %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
     <h1>Registration</h1>
@@ -69,9 +69,9 @@ You can create your own form by setting your own RegistrationType.
 **Example Class**:
 
 ```php
-// src/Appbundle/Type/RegistrationType.php
+// src/Form/RegistrationType.php
 
-namespace AppBundle\Form\Type;
+namespace App\Form;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
@@ -91,20 +91,20 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('username', TextType::class);
+    
         $builder->add('email', EmailType::class);
-        $builder->add(
-            'plainPassword',
-            PasswordType::class,
-            [
-                'mapped' => false,
-            ]
-        );
 
-        $builder->add(
-            'contact',
-            $options['contact_type'],
-            $options['contact_type_options']
-        );
+        $builder->add('plainPassword', PasswordType::class, [
+            'mapped' => false,
+        ]);
+
+        $builder->add('firstName', TextType::class, [
+            'property_path' => 'contact.firstName',
+        ]);
+
+        $builder->add('lastName', TextType::class, [
+            'property_path' => 'contact.lastName',
+        ]);
 
         $builder->add(
             'terms',
@@ -126,54 +126,15 @@ class RegistrationType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => User::class,
-                'contact_type' => RegistrationContactType::class,
-                'contact_type_options' => ['label' => false],
                 'validation_groups' => ['registration'],
+                'empty_data' => function(FormInterface $form) {
+                    $user = new User();
+                    $user->setContact(new Contact());
+
+                    return $user;
+                }
             ]
         );
-    }
-}
-```
-
-```php
-// src/Appbundle/Type/RegistrationContactType.php
-
-namespace AppBundle\Form\Type;
-
-use Sulu\Bundle\ContactBundle\Entity\Contact;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class RegistrationContactType extends AbstractType
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('firstName', TextType::class);
-        $builder->add('lastName', TextType::class);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Contact::class,
-            'validation_groups' => ['registration'],
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'contact';
     }
 }
 ```

@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\NoResultException;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
+use Sulu\Bundle\CommunityBundle\Tests\Functional\Traits\BlacklistItemTrait;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
@@ -27,6 +28,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class RegistrationTest extends SuluTestCase
 {
+    use BlacklistItemTrait;
+
     protected function setUp()
     {
         parent::setUp();
@@ -54,20 +57,15 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegister()
     {
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/registration');
 
         $this->assertCount(1, $crawler->filter('input[name="registration[username]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[email]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[plainPassword]"]'));
-        $this->assertCount(1, $crawler->filter('input[name="registration[contact][firstName]"]'));
-        $this->assertCount(1, $crawler->filter('input[name="registration[contact][lastName]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="registration[firstName]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="registration[lastName]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[terms]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[_token]"]'));
         $this->assertCount(1, $crawler->filter('button[name="registration[submit]"]'));
@@ -77,8 +75,8 @@ class RegistrationTest extends SuluTestCase
                 'registration[username]' => 'sulu',
                 'registration[email]' => 'hikaru@sulu.io',
                 'registration[plainPassword]' => 'my-sulu',
-                'registration[contact][firstName]' => 'Hikaru',
-                'registration[contact][lastName]' => 'Sulu',
+                'registration[firstName]' => 'Hikaru',
+                'registration[lastName]' => 'Sulu',
                 'registration[terms]' => 1,
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]
@@ -94,12 +92,7 @@ class RegistrationTest extends SuluTestCase
 
         $confirmationKey = $user->getConfirmationKey();
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $client->request('GET', '/confirmation/' . $confirmationKey);
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -114,12 +107,7 @@ class RegistrationTest extends SuluTestCase
     {
         $this->testConfirmation();
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/login');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -144,12 +132,7 @@ class RegistrationTest extends SuluTestCase
     {
         $this->testConfirmation();
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/login');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -172,20 +155,9 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationBlacklistedBlocked()
     {
-        $client = $this->createAuthenticatedClient();
-        $client->request(
-            'POST',
-            '/admin/api/blacklist-items',
-            ['pattern' => '*@sulu.io', 'type' => BlacklistItem::TYPE_BLOCK]
-        );
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_BLOCK);
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/registration');
         $form = $crawler->selectButton('registration[submit]')->form(
@@ -193,8 +165,8 @@ class RegistrationTest extends SuluTestCase
                 'registration[username]' => 'sulu',
                 'registration[email]' => 'hikaru@sulu.io',
                 'registration[plainPassword]' => 'my-sulu',
-                'registration[contact][firstName]' => 'Hikaru',
-                'registration[contact][lastName]' => 'Sulu',
+                'registration[firstName]' => 'Hikaru',
+                'registration[lastName]' => 'Sulu',
                 'registration[terms]' => 1,
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]
@@ -208,20 +180,9 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationBlacklistedRequested()
     {
-        $client = $this->createAuthenticatedClient();
-        $client->request(
-            'POST',
-            '/admin/api/blacklist-items',
-            ['pattern' => '*@sulu.io', 'type' => BlacklistItem::TYPE_REQUEST]
-        );
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_REQUEST);
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $crawler = $client->request('GET', '/registration');
         $form = $crawler->selectButton('registration[submit]')->form(
@@ -229,8 +190,8 @@ class RegistrationTest extends SuluTestCase
                 'registration[username]' => 'sulu',
                 'registration[email]' => 'hikaru@sulu.io',
                 'registration[plainPassword]' => 'my-sulu',
-                'registration[contact][firstName]' => 'Hikaru',
-                'registration[contact][lastName]' => 'Sulu',
+                'registration[firstName]' => 'Hikaru',
+                'registration[lastName]' => 'Sulu',
                 'registration[terms]' => 1,
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]
@@ -258,12 +219,7 @@ class RegistrationTest extends SuluTestCase
 
         $links = $emailCrawler->filter('a');
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $client->request('GET', $links->first()->attr('href'));
         $this->assertContains('User "hikaru@sulu.io" confirmed', $client->getResponse()->getContent());
@@ -284,12 +240,7 @@ class RegistrationTest extends SuluTestCase
 
         $links = $emailCrawler->filter('a');
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
 
         $client->request('GET', $links->last()->attr('href'));
         $this->assertContains('User "hikaru@sulu.io" denied', $client->getResponse()->getContent());
@@ -303,12 +254,7 @@ class RegistrationTest extends SuluTestCase
     {
         $user = $this->testConfirmation();
 
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'prod',
-            ]
-        );
+        $client = $this->createClient();
         $crawler = $client->request('GET', '/password-forget');
 
         $this->assertCount(1, $crawler->filter('input[name="password_forget[email_username]"]'));
@@ -369,5 +315,12 @@ class RegistrationTest extends SuluTestCase
         } catch (NoResultException $exception) {
             return;
         }
+    }
+
+    protected function getKernelConfiguration()
+    {
+        return [
+            'sulu_context' => 'website',
+        ];
     }
 }

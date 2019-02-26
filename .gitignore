@@ -1,5 +1,4 @@
 # PHPUnit
-/app/phpunit.xml
 /phpunit.xml
 
 # composer
@@ -27,7 +26,7 @@ node_modules/
 npm-debug.log
 
 # tests
-Tests/var
+var/
 Tests/app/cache
 Tests/app/logs
 Tests/app/data

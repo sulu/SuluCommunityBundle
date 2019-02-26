@@ -1,0 +1,57 @@
+parameters:
+    secret: test
+
+framework:
+    router: { resource: '%kernel.root_dir%/config/routing_website.yml' }
+    profiler: { only_exceptions: false }
+
+swiftmailer:
+    disable_delivery:  true
+
+doctrine:
+    orm:
+        mappings:
+            gedmo_tree:
+                type: xml
+                prefix: Gedmo\Tree\Entity
+                dir: "%kernel.root_dir%/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                alias: GedmoTree
+                is_bundle: false
+
+sulu_community:
+    webspaces:
+        sulu-io:
+            from: 'admin@sulu.io'
+
+security:
+    access_decision_manager:
+        strategy: affirmative
+
+    encoders:
+        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
+
+    providers:
+        sulu:
+            id: sulu_security.user_provider
+
+    access_control:
+        - { path: /profile, roles: ROLE_USER }
+        - { path: /completion, roles: ROLE_USER }
+
+    firewalls:
+        sulu-io:
+            pattern: ^/
+            http_basic: ~
+            anonymous: ~
+            form_login:
+                login_path: sulu_community.login
+                check_path: sulu_community.login
+                default_target_path: sulu_community.profile
+                always_use_default_target_path: true
+            logout:
+                path: sulu_community.logout
+                target: /
+
+sulu_security:
+    checker:
+        enabled: true

@@ -6,17 +6,24 @@ cache:
   directories:
     - "$HOME/.composer/cache"
 
+env:
+  global:
+    - APP_ENV=test
+    - DATABASE_URL=mysql://root:@127.0.0.1:3306/su_community_test
+    - DATABASE_CHARSET=utf8mb4
+    - DATABASE_COLLATE=utf8mb4_unicode_ci
+
 matrix:
   include:
     - php: 7.1
       env:
         - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction --prefer-lowest --prefer-stable"
-    - php: 7.2
+    - php: 7.3
       env:
         - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction"
         - CODE_COVERAGE=true
         - PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
-        - PHPSTAN=true
+        - LINT_CODE=true
 
 before_install:
   - phpenv config-add Tests/travis.php.ini
@@ -25,14 +32,15 @@ before_install:
 install:
   - travis_retry composer update $COMPOSER_FLAGS
   - composer info -i
-  - ./Tests/app/console doctrine:database:create
-  - ./Tests/app/console doctrine:schema:update --force
+  - ./Tests/Application/bin/adminconsole doctrine:database:create
+  - ./Tests/Application/bin/adminconsole doctrine:schema:update --force
+  - if [[ $LINT_CODE == 'true' ]]; then ./Tests/Application/bin/adminconsole cache:clear --env=dev ; fi
 
 script:
   - ./vendor/bin/phpunit $PHPUNIT_FLAGS
-  - ./Tests/app/console lint:twig Resources/views --env test
-  - ./Tests/app/console sulu:community:init -vvv --env test
-  - if [[ $PHPSTAN == 'true' ]]; then ./vendor/bin/phpstan analyse ./ --level 3 -c phpstan.neon ; fi
+  - ./Tests/Application/bin/adminconsole lint:twig Resources/views --env test
+  - ./Tests/Application/bin/adminconsole sulu:community:init -vvv --env test
+  - if [[ $LINT_CODE == 'true' ]]; then composer lint ; fi
 
 after_script:
   - if [[ $CODE_COVERAGE == 'true' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi

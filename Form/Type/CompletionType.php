@@ -39,16 +39,17 @@ class CompletionType extends AbstractType
             $builder->add('email', EmailType::class);
         }
 
-        $builder->add(
-            'contact',
-            $options['contact_type'],
-            array_merge(
-                $options['contact_type_options'],
-                [
-                    'data' => $user->getContact(),
-                ]
-            )
-        );
+        if (!$user->getContact()->getFirstName()) {
+            $builder->add('firstName', TextType::class, [
+                'property_path' => 'contact.firstName',
+            ]);
+        }
+
+        if (!$user->getContact()->getLastName()) {
+            $builder->add('lastName', TextType::class, [
+                'property_path' => 'contact.lastName',
+            ]);
+        }
 
         $builder->add('submit', SubmitType::class);
     }
@@ -61,8 +62,6 @@ class CompletionType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => User::class,
-                'contact_type' => CompletionContactType::class,
-                'contact_type_options' => ['label' => false],
                 'validation_groups' => ['completion'],
             ]
         );

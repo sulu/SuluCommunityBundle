@@ -11,7 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Mail;
 
-use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 
 /**
  * Interface for user sending-emails.
@@ -22,8 +22,8 @@ interface MailFactoryInterface
      * Send emails by specific settings.
      *
      * @param Mail $mail
-     * @param BaseUser $user
+     * @param User $user
      * @param array $parameters
      */
-    public function sendEmails(Mail $mail, BaseUser $user, $parameters = []);
+    public function sendEmails(Mail $mail, User $user, $parameters = []);
 }

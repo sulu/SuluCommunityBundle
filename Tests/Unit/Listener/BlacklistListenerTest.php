@@ -22,7 +22,7 @@ use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
 use Sulu\Bundle\CommunityBundle\EventListener\BlacklistListener;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
-use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class BlacklistListenerTest extends TestCase
@@ -73,7 +73,7 @@ class BlacklistListenerTest extends TestCase
             ->willReturn([new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_REQUEST)]);
         $this->tokenGenerator->generateToken()->willReturn('123-123-123');
 
-        $user = $this->prophesize(BaseUser::class);
+        $user = $this->prophesize(User::class);
         $user->getEmail()->willReturn('test@sulu.io');
 
         $event = $this->prophesize(CommunityEvent::class);
@@ -113,7 +113,7 @@ class BlacklistListenerTest extends TestCase
         $this->repository->findBySender('test@sulu.io')
             ->willReturn([]);
 
-        $user = $this->prophesize(BaseUser::class);
+        $user = $this->prophesize(User::class);
         $user->getEmail()->willReturn('test@sulu.io');
 
         $event = $this->prophesize(CommunityEvent::class);

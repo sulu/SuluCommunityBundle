@@ -14,10 +14,13 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
+use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\ContactBundle\Entity\Country;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
+use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
+use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class ProfileControllerTest extends SuluTestCase
@@ -56,36 +59,56 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->persist($addressType);
         $entityManager->persist($country);
         $entityManager->persist($emailType);
+
+        $contact = $entityManager->getRepository(ContactInterface::class)->createNew();
+        $contact->setFirstName('Max');
+        $contact->setLastName('Mustermann');
+        $entityManager->persist($contact);
+
+        /** @var User $user */
+        $user = $entityManager->getRepository(User::class)->createNew();
+        $user->setUsername('test');
+        $user->setPassword('test');
+        $user->setSalt('');
+        $user->setLocale('en');
+        $user->setContact($contact);
+        $entityManager->persist($user);
+
+        /** @var Role $role */
+        $role = $entityManager->getRepository(Role::class)->createNew();
+        $role->setName('Sulu-ioUser');
+        $role->setSystem('Website');
+        $entityManager->persist($role);
+
+        /** @var UserRole $userRole */
+        $userRole = new UserRole();
+        $userRole->setUser($user);
+        $userRole->setRole($role);
+        $userRole->setLocale('en');
+        $entityManager->persist($userRole);
+
+        $user->addUserRole($userRole);
+
         $entityManager->flush();
     }
 
     private function submitProfile($data)
     {
-        $client = $this->createClient(
-            [
-                'sulu_context' => 'website',
-                'environment' => 'dev',
-            ],
-            [
-                'PHP_AUTH_USER' => 'test',
-                'PHP_AUTH_PW' => 'test',
-            ]
-        );
+        $client = $this->createAuthenticatedClient();
 
         $crawler = $client->request('GET', '/profile');
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $this->assertCount(1, $crawler->filter('#profile_contact_formOfAddress'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_firstName'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_lastName'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_mainEmail'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_main'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_street'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_number'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_zip'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_city'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_contactAddresses_0_address_country'));
-        $this->assertCount(1, $crawler->filter('#profile_contact_notes_0_value'));
+        $this->assertCount(1, $crawler->filter('#profile_formOfAddress'));
+        $this->assertCount(1, $crawler->filter('#profile_firstName'));
+        $this->assertCount(1, $crawler->filter('#profile_lastName'));
+        $this->assertCount(1, $crawler->filter('#profile_mainEmail'));
+        $this->assertCount(1, $crawler->filter('#profile_street'));
+        $this->assertCount(1, $crawler->filter('#profile_number'));
+        $this->assertCount(1, $crawler->filter('#profile_zip'));
+        $this->assertCount(1, $crawler->filter('#profile_city'));
+        $this->assertCount(1, $crawler->filter('#profile_country'));
+        $this->assertCount(1, $crawler->filter('#profile_note'));
 
         $form = $crawler->selectButton('profile[submit]')->form(array_merge(
             $data,
@@ -99,6 +122,8 @@ class ProfileControllerTest extends SuluTestCase
 
         $this->assertCount(1, $crawler->filter('.success'));
 
+        $this->getEntityManager()->clear();
+
         /** @var UserRepository $repository */
         $repository = $this->getEntityManager()->getRepository(User::class);
 
@@ -108,17 +133,16 @@ class ProfileControllerTest extends SuluTestCase
     public function testProfile()
     {
         $user = $this->submitProfile([
-            'profile[contact][formOfAddress]' => 0,
-            'profile[contact][firstName]' => 'Hikaru',
-            'profile[contact][lastName]' => 'Sulu',
-            'profile[contact][mainEmail]' => 'sulu@example.org',
-            'profile[contact][contactAddresses][0][address][street]' => 'Rathausstraße',
-            'profile[contact][contactAddresses][0][address][number]' => 16,
-            'profile[contact][contactAddresses][0][address][zip]' => 12351,
-            'profile[contact][contactAddresses][0][address][city]' => 'USS Excelsior',
-            'profile[contact][contactAddresses][0][address][country]' => 1,
-            'profile[contact][notes][0][value]' => 'Test',
-            'profile[contact][contactAddresses][0][main]' => 1,
+            'profile[formOfAddress]' => 0,
+            'profile[firstName]' => 'Hikaru',
+            'profile[lastName]' => 'Sulu',
+            'profile[mainEmail]' => 'sulu@example.org',
+            'profile[street]' => 'Rathausstraße',
+            'profile[number]' => 16,
+            'profile[zip]' => 12351,
+            'profile[city]' => 'USS Excelsior',
+            'profile[country]' => 1,
+            'profile[note]' => 'Test',
         ]);
 
         $this->assertEquals(0, $user->getContact()->getFormOfAddress());
@@ -128,24 +152,30 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertEquals(16, $user->getContact()->getMainAddress()->getNumber());
         $this->assertEquals(12351, $user->getContact()->getMainAddress()->getZip());
         $this->assertEquals(1, $user->getContact()->getMainAddress()->getCountry()->getId());
-        $this->assertEquals('Test', $user->getContact()->getNotes()[0]->getValue());
+        $this->assertEquals('Test', $user->getContact()->getNote());
     }
 
     public function testProfileWithoutNote()
     {
         $user = $this->submitProfile([
-            'profile[contact][formOfAddress]' => 0,
-            'profile[contact][firstName]' => 'Hikaru',
-            'profile[contact][lastName]' => 'Sulu',
-            'profile[contact][mainEmail]' => 'sulu@example.org',
-            'profile[contact][contactAddresses][0][address][street]' => 'Rathausstraße',
-            'profile[contact][contactAddresses][0][address][number]' => 16,
-            'profile[contact][contactAddresses][0][address][zip]' => 12351,
-            'profile[contact][contactAddresses][0][address][city]' => 'USS Excelsior',
-            'profile[contact][contactAddresses][0][address][country]' => 1,
-            'profile[contact][contactAddresses][0][main]' => 1,
+            'profile[formOfAddress]' => 0,
+            'profile[firstName]' => 'Hikaru',
+            'profile[lastName]' => 'Sulu',
+            'profile[mainEmail]' => 'sulu@example.org',
+            'profile[street]' => 'Rathausstraße',
+            'profile[number]' => 16,
+            'profile[zip]' => 12351,
+            'profile[city]' => 'USS Excelsior',
+            'profile[country]' => 1,
         ]);
 
-        $this->assertSame('', $user->getContact()->getNotes()[0]->getValue());
+        $this->assertSame(null, $user->getContact()->getNote());
+    }
+
+    protected function getKernelConfiguration()
+    {
+        return [
+            'sulu_context' => 'website',
+        ];
     }
 }

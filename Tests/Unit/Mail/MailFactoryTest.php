@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactory;
-use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -42,7 +42,7 @@ class MailFactoryTest extends TestCase
     private $mailFactory;
 
     /**
-     * @var BaseUser
+     * @var User
      */
     private $user;
 
@@ -51,7 +51,7 @@ class MailFactoryTest extends TestCase
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
         $this->engine = $this->prophesize(EngineInterface::class);
         $this->translator = $this->prophesize(TranslatorInterface::class);
-        $this->user = $this->prophesize(BaseUser::class);
+        $this->user = $this->prophesize(User::class);
         $this->user->getEmail()->willReturn('test@example.com');
         $this->user->getLocale()->willReturn('de');
 

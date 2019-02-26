@@ -12,7 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Sulu\Bundle\SecurityBundle\Entity\BaseUser;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -72,7 +72,7 @@ class LastLoginListener
         if ($this->tokenStorage->getToken()) {
             $user = $this->tokenStorage->getToken()->getUser();
 
-            if ($user instanceof BaseUser && !$this->isActiveNow($user)) {
+            if ($user instanceof User && !$this->isActiveNow($user)) {
                 $user->setLastLogin(new \DateTime());
                 $this->entityManager->flush($user);
             }
@@ -82,11 +82,11 @@ class LastLoginListener
     /**
      * Check if user was active shortly.
      *
-     * @param BaseUser $user
+     * @param User $user
      *
      * @return bool
      */
-    private function isActiveNow(BaseUser $user)
+    private function isActiveNow(User $user)
     {
         $delay = new \DateTime($this->interval . ' seconds ago');
 

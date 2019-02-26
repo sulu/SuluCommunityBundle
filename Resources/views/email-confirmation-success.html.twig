@@ -1,0 +1,15 @@
+{% extends '@SuluCommunity/base.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'Profile'|trans }}</h1>
+
+    {% if success %}
+        <p class="success">
+            {{ 'email_confirmation_finished'|trans }}
+        </p>
+    {% else %}
+        <p class="fail">
+            {{ 'email_confirmation_failed'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

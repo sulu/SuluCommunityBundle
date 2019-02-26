@@ -1,0 +1,13 @@
+{% extends '@SuluCommunity/base.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'Completion'|trans }}</h1>
+
+    {% if app.request.get('send') == 'true' %}
+        <p>
+            {{ 'completion_finished'|trans }}
+        </p>
+    {% else %}
+        {{ form(form) }}
+    {% endif %}
+{% endblock %}

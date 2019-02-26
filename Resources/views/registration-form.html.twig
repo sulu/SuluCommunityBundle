@@ -1,0 +1,13 @@
+{% extends '@SuluCommunity/base.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'Registration'|trans }}</h1>
+
+    {% if app.request.get('send') == 'true' %}
+        <p>
+            {{ 'registration_finished'|trans }}
+        </p>
+    {% else %}
+        {{ form(form) }}
+    {% endif %}
+{% endblock %}

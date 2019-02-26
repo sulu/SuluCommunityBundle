@@ -1,0 +1,9 @@
+{% extends '@SuluCommunity/base-email.html.twig' %}
+
+{% block content %}
+    {% set url = url('sulu_community.confirmation', { token: user.confirmationKey }) %}
+
+    <a href="{{ url }}">
+        {{ url }}
+    </a>
+{% endblock %}
