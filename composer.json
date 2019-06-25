@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "jackalope/jackalope-doctrine-dbal": "^1.2.5",
-        "jangregor/phpstan-prophecy": "^0.3",
+        "jangregor/phpstan-prophecy": "^0.4",
         "massive/search-bundle": "@dev",
         "phpstan/phpstan": "^0.11",
         "phpstan/phpstan-doctrine": "^0.11",
@@ -69,7 +69,10 @@
         "lint": [
             "@phpstan"
         ],
-        "phpstan": "vendor/bin/phpstan analyse ./ -c phpstan.neon"
+        "phpstan": [
+            "Tests/Application/bin/adminconsole cache:warmup",
+            "vendor/bin/phpstan analyse ./ -c phpstan.neon"
+        ]
     },
     "extra": {
         "branch-alias": {

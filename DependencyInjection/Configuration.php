@@ -145,7 +145,7 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode(self::MAINTENANCE)
                                 ->canBeEnabled()
                                 ->children()
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('SuluCommunityBundle:Maintenance:maintenance.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('@SuluCommunity/maintenance.html.twig')->end()
                                 ->end()
                             ->end()
                             // Login

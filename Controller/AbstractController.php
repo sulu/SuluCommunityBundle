@@ -20,6 +20,7 @@ use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Contains helper function for all controllers.
@@ -147,8 +148,11 @@ abstract class AbstractController extends Controller
      */
     public function getUser()
     {
-        /** @var User $user */
         $user = parent::getUser();
+
+        if (!$user instanceof User) {
+            throw new HttpException(403);
+        }
 
         if (null === $user->getContact()->getMainAddress()) {
             // TODO this should be done by the form type not by the controller
