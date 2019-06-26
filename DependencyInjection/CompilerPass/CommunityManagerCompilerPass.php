@@ -31,7 +31,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
 
         $references = [];
         foreach ($webspacesConfig as $webspaceKey => $webspaceConfig) {
-            $webspaceConfig = $this->updateWebspaceConfig($webspaceKey, $webspaceConfig);
+            $webspaceConfig = $this->updateWebspaceConfig($container, $webspaceKey, $webspaceConfig);
             $webspacesConfig[$webspaceKey] = $webspaceConfig;
 
             $definition = new ChildDefinition('sulu_community.community_manager');
@@ -57,12 +57,13 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
     /**
      * Update webspace config.
      *
+     * @param ContainerBuilder $container
      * @param string $webspaceKey
      * @param array $webspaceConfig
      *
      * @return array
      */
-    private function updateWebspaceConfig($webspaceKey, array $webspaceConfig)
+    private function updateWebspaceConfig(ContainerBuilder $container, $webspaceKey, array $webspaceConfig)
     {
         // Set firewall by webspace key
         if (null === $webspaceConfig[Configuration::FIREWALL]) {
@@ -95,8 +96,13 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             $webspaceConfig[Configuration::EMAIL_TO] = $webspaceConfig[Configuration::EMAIL_FROM];
         }
 
-        // Set maintenance mode
-        if ($webspaceConfig[Configuration::MAINTENANCE][Configuration::ENABLED]) {
+        // TODO maintenance mode should not be handled in compilerpass
+        $maintenanceEnabled = $container->resolveEnvPlaceholders(
+            $webspaceConfig[Configuration::MAINTENANCE][Configuration::ENABLED],
+            true
+        );
+
+        if ($maintenanceEnabled) {
             $webspaceConfig = $this->activateMaintenanceMode($webspaceConfig);
         }
 

@@ -11,3 +11,5 @@ parameters:
         - %currentWorkingDirectory%/Tests/*
     symfony:
         container_xml_path: %currentWorkingDirectory%/Tests/Application/var/cache/admin/dev/adminAdminDevDebugProjectContainer.xml
+    ignoreErrors:
+        - '#Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch()#'
