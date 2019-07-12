@@ -8,7 +8,7 @@
         "beberlei/doctrineextensions": "^1.0",
         "jms/serializer-bundle": "^2.0",
         "massive/build-bundle": "^0.2 || ^0.3 || ^0.4",
-        "sulu/sulu": "dev-develop",
+        "sulu/sulu": "dev-develop || ^2.0",
         "symfony/config": "^3.4 || ^4.0",
         "symfony/console": "^3.4 || ^4.0",
         "symfony/dependency-injection": "^3.4 || ^4.0",
