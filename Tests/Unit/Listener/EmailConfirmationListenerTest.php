@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -116,7 +116,7 @@ class EmailConfirmationListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function (EmailConfirmationToken $token) {
+                function(EmailConfirmationToken $token) {
                     return '123-123-123' === $token->getToken() && $token->getUser() === $this->user->reveal();
                 }
             )

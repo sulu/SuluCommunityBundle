@@ -1,5 +1,9 @@
 # PHPUnit
 /phpunit.xml
+.phpunit.result.cache
+
+# PHPCS
+.php_cs.cache
 
 # composer
 /composer.phar
@@ -19,14 +23,10 @@
 .DS_Store
 
 # Frontend Caches
-bower_components/
-.tmp/
 .sass-cache/
 node_modules/
+package-lock.json
 npm-debug.log
 
 # tests
-var/
-Tests/app/cache
-Tests/app/logs
-Tests/app/data
+Tests/Application/var

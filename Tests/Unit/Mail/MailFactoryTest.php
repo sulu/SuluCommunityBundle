@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -69,7 +69,7 @@ class MailFactoryTest extends TestCase
 
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
@@ -78,7 +78,7 @@ class MailFactoryTest extends TestCase
         )->shouldBeCalledTimes(1);
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];
@@ -97,7 +97,7 @@ class MailFactoryTest extends TestCase
 
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
@@ -106,7 +106,7 @@ class MailFactoryTest extends TestCase
         )->shouldBeCalledTimes(1);
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];
@@ -125,7 +125,7 @@ class MailFactoryTest extends TestCase
 
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
@@ -134,7 +134,7 @@ class MailFactoryTest extends TestCase
         )->shouldNotBeCalled();
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];

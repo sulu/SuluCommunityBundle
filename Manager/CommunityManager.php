@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -16,8 +16,8 @@ use Sulu\Bundle\CommunityBundle\Event\UserCompletedEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserConfirmedEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserPasswordForgotEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserPasswordResetedEvent;
-use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserProfileSavedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
