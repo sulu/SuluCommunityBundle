@@ -4,7 +4,7 @@
     "type": "sulu-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "beberlei/doctrineextensions": "^1.0",
         "jms/serializer-bundle": "^3.0",
         "massive/build-bundle": "^0.3 || ^0.4",
@@ -27,6 +27,7 @@
         "jackalope/jackalope-doctrine-dbal": "^1.2.5",
         "jangregor/phpstan-prophecy": "^0.4",
         "massive/search-bundle": "@dev",
+        "php-ffmpeg/php-ffmpeg": "^0.13 || ^0.14",
         "phpstan/phpstan": "^0.11",
         "phpstan/phpstan-doctrine": "^0.11",
         "phpstan/phpstan-symfony": "^0.11",

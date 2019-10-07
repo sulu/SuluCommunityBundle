@@ -1,27 +1,9 @@
-parameters:
-    secret: test
+imports:
+    - config.yml
 
 framework:
     router: { resource: '%kernel.root_dir%/config/routing_website.yml' }
     profiler: { only_exceptions: false }
-
-swiftmailer:
-    disable_delivery:  true
-
-doctrine:
-    orm:
-        mappings:
-            gedmo_tree:
-                type: xml
-                prefix: Gedmo\Tree\Entity
-                dir: "%kernel.root_dir%/../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
-                alias: GedmoTree
-                is_bundle: false
-
-sulu_community:
-    webspaces:
-        sulu-io:
-            from: 'admin@sulu.io'
 
 security:
     access_decision_manager:
@@ -51,7 +33,3 @@ security:
             logout:
                 path: sulu_community.logout
                 target: /
-
-sulu_security:
-    checker:
-        enabled: true

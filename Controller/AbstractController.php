@@ -27,8 +27,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 abstract class AbstractController extends Controller
 {
-    use RenderCompatibilityTrait;
-
     /**
      * @var string
      */
@@ -182,5 +180,25 @@ abstract class AbstractController extends Controller
         $contactAddress->setContact($contact);
 
         $contact->addContactAddress($contactAddress);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function render(string $view, array $parameters = [], Response $response = null): Response
+    {
+        return parent::render(
+            $view,
+            $this->getTemplateAttributes($parameters),
+            $response
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderView(string $view, array $parameters = []): string
+    {
+        return parent::renderView($view, $this->getTemplateAttributes($parameters));
     }
 }

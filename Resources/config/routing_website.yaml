@@ -27,7 +27,7 @@ sulu_community.email_confirmation:
     controller: SuluCommunityBundle:EmailConfirmation:index
 
 sulu_community.login:
-    path: /_community/login
+    path: /login
     controller: SuluCommunityBundle:Login:index
 
 sulu_community.logout:

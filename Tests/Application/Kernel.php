@@ -26,7 +26,6 @@ class Kernel extends SuluTestKernel
     {
         $bundles = parent::registerBundles();
         $bundles[] = new SuluCommunityBundle();
-        $bundles[] = new SwiftmailerBundle();
 
         if (SuluTestKernel::CONTEXT_WEBSITE === $this->getContext()) {
             $bundles[] = new SecurityBundle();

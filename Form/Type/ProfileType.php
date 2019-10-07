@@ -90,6 +90,7 @@ class ProfileType extends AbstractType
 
         $builder->add('countryCode', CountryType::class, [
             'property_path' => 'contact.mainAddress.countryCode',
+            'required' => false,
         ]);
 
         $builder->add('note', TextareaType::class, [
