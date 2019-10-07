@@ -1,6 +1,5 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
-$suluContext = \Sulu\Component\HttpKernel\SuluKernel::CONTEXT_WEBSITE;
+$suluContext = 'website';
 include __DIR__ . DIRECTORY_SEPARATOR. 'console.php';

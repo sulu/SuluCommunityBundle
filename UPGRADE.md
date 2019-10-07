@@ -15,9 +15,6 @@ The general `CommunityEvent` class was removed and replaced with:
 
 which all extend from the new `AbstractCommunityEvent`.
 
-Also the Event constants were moved from `CommunityManager` to a new `CommunityEvents` class
-and matches the new classnames now.
-
 ### Address entity changed
 
 If you implemented a custom ProfileType you need to change the country field to countryCode:

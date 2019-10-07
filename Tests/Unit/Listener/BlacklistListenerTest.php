@@ -18,7 +18,7 @@ use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
 use Sulu\Bundle\CommunityBundle\EventListener\BlacklistListener;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
@@ -52,7 +52,7 @@ class BlacklistListenerTest extends TestCase
      */
     private $listener;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = $this->prophesize(BlacklistItemRepository::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
@@ -76,7 +76,7 @@ class BlacklistListenerTest extends TestCase
         $user = $this->prophesize(User::class);
         $user->getEmail()->willReturn('test@sulu.io');
 
-        $event = $this->prophesize(CommunityEvent::class);
+        $event = $this->prophesize(UserRegisteredEvent::class);
         $event->getConfigProperty(Configuration::WEBSPACE_KEY)->willReturn('sulu-io');
         $event->getConfigProperty(Configuration::EMAIL_TO)->willReturn(['admin@sulu.io' => 'admin@sulu.io']);
         $event->getConfigProperty(Configuration::EMAIL_FROM)->willReturn(['from@sulu.io' => 'from@sulu.io']);
@@ -116,7 +116,7 @@ class BlacklistListenerTest extends TestCase
         $user = $this->prophesize(User::class);
         $user->getEmail()->willReturn('test@sulu.io');
 
-        $event = $this->prophesize(CommunityEvent::class);
+        $event = $this->prophesize(UserRegisteredEvent::class);
         $event->getUser()->willReturn($user->reveal());
         $event->stopPropagation()->shouldNotBeCalled();
 

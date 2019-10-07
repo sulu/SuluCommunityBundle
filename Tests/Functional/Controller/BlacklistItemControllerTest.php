@@ -16,7 +16,7 @@ use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class BlacklistItemControllerTest extends SuluTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->purgeDatabase();
     }

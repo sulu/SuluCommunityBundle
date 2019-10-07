@@ -13,8 +13,8 @@ security:
         Sulu\Bundle\SecurityBundle\Entity\User: plaintext
 
     providers:
-        sulu:
-            id: sulu_security.user_provider
+        testprovider:
+            id: test_user_provider
 
     access_control:
         - { path: /profile, roles: ROLE_USER }
@@ -23,7 +23,8 @@ security:
     firewalls:
         sulu-io:
             pattern: ^/
-            http_basic: ~
+            http_basic:
+                provider: testprovider
             anonymous: ~
             form_login:
                 login_path: sulu_community.login
@@ -33,3 +34,6 @@ security:
             logout:
                 path: sulu_community.logout
                 target: /
+
+sulu_test:
+    enable_test_user_provider: true

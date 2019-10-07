@@ -67,7 +67,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
             $this->view(
                 new ListRepresentation(
                     $listResponse,
-                    self::$entityKey,
+                    'items',
                     'sulu_community.get_blacklist-items',
                     $request->query->all(),
                     $listBuilder->getCurrentPage(),

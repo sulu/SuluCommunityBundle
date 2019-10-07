@@ -89,7 +89,7 @@ class SaveMediaTraitTest extends TestCase
      */
     private $apiMedia;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->form = $this->prophesize(FormInterface::class);
         $this->contactForm = $this->prophesize(FormInterface::class);
@@ -107,7 +107,7 @@ class SaveMediaTraitTest extends TestCase
         $this->locale = 'de';
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->tempFilePaths as $tempFilePath) {
             unlink($tempFilePath);

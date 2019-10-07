@@ -11,9 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
-use Sulu\Bundle\CommunityBundle\CommunityEvents;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserCompletedEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserConfirmedEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserPasswordForgotEvent;
@@ -138,7 +136,7 @@ class CommunityManager implements CommunityManagerInterface
 
         // Event
         $event = new UserRegisteredEvent($user, $this->config);
-        $this->eventDispatcher->dispatch($event, CommunityEvents::EVENT_USER_REGISTERED);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -150,7 +148,7 @@ class CommunityManager implements CommunityManagerInterface
     {
         // Event
         $event = new UserCompletedEvent($user, $this->config);
-        $this->eventDispatcher->dispatch($event, CommunityEvents::EVENT_USER_COMPLETED);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -196,7 +194,7 @@ class CommunityManager implements CommunityManagerInterface
 
         // Event
         $event = new UserConfirmedEvent($user, $this->config);
-        $this->eventDispatcher->dispatch($event, CommunityEvents::EVENT_USER_CONFIRMED);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -221,7 +219,7 @@ class CommunityManager implements CommunityManagerInterface
 
         // Event
         $event = new UserPasswordForgotEvent($user, $this->config);
-        $this->eventDispatcher->dispatch($event, CommunityEvents::EVENT_USER_PASSWORD_FORGOT);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -237,7 +235,7 @@ class CommunityManager implements CommunityManagerInterface
 
         // Event
         $event = new UserPasswordResetedEvent($user, $this->config);
-        $this->eventDispatcher->dispatch($event, CommunityEvents::EVENT_USER_PASSWORD_RESETED);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -266,7 +264,7 @@ class CommunityManager implements CommunityManagerInterface
 
         // Event
         $event = new UserProfileSavedEvent($user, $this->config);
-        $this->eventDispatcher->dispatch($event, CommunityEvents::EVENT_USER_PROFILE_SAVED);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }

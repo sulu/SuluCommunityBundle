@@ -53,7 +53,7 @@ class EmailConfirmationListenerTest extends TestCase
     private $listener;
 
     /**
-     * @var CommunityEvent
+     * @var UserProfileSavedEvent
      */
     private $event;
 
@@ -75,7 +75,7 @@ class EmailConfirmationListenerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->mailFactory = $this->prophesize(MailFactoryInterface::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);

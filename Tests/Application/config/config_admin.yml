@@ -6,6 +6,3 @@ parameters:
 
 framework:
     router: { resource: "%kernel.root_dir%/config/routing_admin.yml" }
-
-swiftmailer:
-    disable_delivery:  true

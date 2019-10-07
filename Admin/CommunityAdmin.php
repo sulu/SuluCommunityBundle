@@ -12,7 +12,8 @@
 namespace Sulu\Bundle\CommunityBundle\Admin;
 
 use Sulu\Bundle\AdminBundle\Admin\Admin;
-use Sulu\Bundle\AdminBundle\Navigation\Navigation;
+use Sulu\Bundle\AdminBundle\Admin\Navigation\NavigationItemCollection;
+use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
@@ -52,11 +53,14 @@ class CommunityAdmin extends Admin
         $this->webspacesConfiguration = $webspacesConfiguration;
     }
 
-    public function getNavigation(): Navigation
+    public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
     {
-        // TODO implement blacklisting
+        // TODO implement Blacklisting navigation items
+    }
 
-        return parent::getNavigation();
+    public function configureViews(ViewCollection $viewCollection): void
+    {
+        // TODO implement Blacklisting views
     }
 
     /**
@@ -113,13 +117,5 @@ class CommunityAdmin extends Admin
                 ],
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsBundleName()
-    {
-        return 'sulucommunity';
     }
 }

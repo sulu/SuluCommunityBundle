@@ -34,7 +34,7 @@ class BlacklistItemManagerTest extends TestCase
      */
     private $manager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = $this->prophesize(BlacklistItemRepository::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);

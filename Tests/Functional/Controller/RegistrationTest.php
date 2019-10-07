@@ -20,6 +20,7 @@ use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
+use Sulu\Component\HttpKernel\SuluKernel;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -30,7 +31,7 @@ class RegistrationTest extends SuluTestCase
 {
     use BlacklistItemTrait;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -174,7 +175,7 @@ class RegistrationTest extends SuluTestCase
         $client->submit($form);
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $this->assertContains('is blocked', $client->getResponse()->getContent());
+        $this->assertStringContainsString('is blocked', $client->getResponse()->getContent());
         $this->assertNull($this->findUser());
     }
 
@@ -185,6 +186,8 @@ class RegistrationTest extends SuluTestCase
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/registration');
+        $this->assertHttpStatusCode(200, $client->getResponse());
+
         $form = $crawler->selectButton('registration[submit]')->form(
             [
                 'registration[username]' => 'sulu',
@@ -203,9 +206,10 @@ class RegistrationTest extends SuluTestCase
 
         // check email to admin
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+
         $this->assertEquals(1, $mailCollector->getMessageCount());
         $message = $mailCollector->getMessages()[0];
-        $this->assertEquals('admin@sulu.io', key($message->getTo()));
+        $this->assertEquals('admin@localhost', key($message->getTo()));
 
         return $message;
     }
@@ -222,7 +226,7 @@ class RegistrationTest extends SuluTestCase
         $client = $this->createClient();
 
         $client->request('GET', $links->first()->attr('href'));
-        $this->assertContains('User "hikaru@sulu.io" confirmed', $client->getResponse()->getContent());
+        $this->assertStringContainsString('User "hikaru@sulu.io" confirmed', $client->getResponse()->getContent());
 
         // check email to user
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
@@ -243,7 +247,7 @@ class RegistrationTest extends SuluTestCase
         $client = $this->createClient();
 
         $client->request('GET', $links->last()->attr('href'));
-        $this->assertContains('User "hikaru@sulu.io" denied', $client->getResponse()->getContent());
+        $this->assertStringContainsString('User "hikaru@sulu.io" denied', $client->getResponse()->getContent());
 
         // check email to user
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
@@ -317,10 +321,10 @@ class RegistrationTest extends SuluTestCase
         }
     }
 
-    protected function getKernelConfiguration()
+    protected static function getKernelConfiguration(): array
     {
         return [
-            'sulu_context' => 'website',
+            'sulu.context' => SuluKernel::CONTEXT_WEBSITE,
         ];
     }
 }

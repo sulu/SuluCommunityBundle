@@ -21,10 +21,11 @@ use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
+use Sulu\Component\HttpKernel\SuluKernel;
 
 class ProfileControllerTest extends SuluTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -162,10 +163,10 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertSame(null, $user->getContact()->getNote());
     }
 
-    protected function getKernelConfiguration()
+    protected static function getKernelConfiguration(): array
     {
         return [
-            'sulu_context' => 'website',
+            'sulu.context' => SuluKernel::CONTEXT_WEBSITE,
         ];
     }
 }

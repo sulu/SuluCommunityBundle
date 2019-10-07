@@ -3,17 +3,6 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
-    <parameters>
-        <!-- Event Constants -->
-        <parameter type="constant" key="sulu_community.event.user_registered">Sulu\Bundle\CommunityBundle\CommunityEvents::USER_REGISTERED</parameter>
-        <parameter type="constant" key="sulu_community.event.user_confirmed">Sulu\Bundle\CommunityBundle\CommunityEvents::USER_CONFIRMED</parameter>
-        <parameter type="constant" key="sulu_community.event.user_password_forgot">Sulu\Bundle\CommunityBundle\CommunityEvents::USER_PASSWORD_FORGOT</parameter>
-        <parameter type="constant" key="sulu_community.event.user_password_reseted">Sulu\Bundle\CommunityBundle\CommunityEvents::USER_PASSWORD_RESETED</parameter>
-        <parameter type="constant" key="sulu_community.event.user_completed">Sulu\Bundle\CommunityBundle\CommunityEvents::USER_COMPLETED</parameter>
-        <parameter type="constant" key="sulu_community.event.user_profile_saved">Sulu\Bundle\CommunityBundle\CommunityEvents::USER_PROFILE_SAVED</parameter>
-    </parameters>
-
     <services>
         <!-- Commands -->
         <service id="sulu_community.command.init"

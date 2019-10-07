@@ -69,7 +69,7 @@ class BlacklistItemTest extends TestCase
 
     public function setTypeBlockInvalid()
     {
-        $this->expectedException(InvalidTypeException::class);
+        $this->expectException(InvalidTypeException::class);
 
         $item = new BlacklistItem();
         $item->setPattern('test');

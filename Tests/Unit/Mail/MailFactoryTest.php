@@ -46,7 +46,7 @@ class MailFactoryTest extends TestCase
      */
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
         $this->engine = $this->prophesize(EngineInterface::class);

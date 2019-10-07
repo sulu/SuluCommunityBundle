@@ -20,6 +20,7 @@ use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
+use Sulu\Component\HttpKernel\SuluKernel;
 
 class EmailConfirmationControllerTest extends SuluTestCase
 {
@@ -28,7 +29,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
      */
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -79,7 +80,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
     public function testConfirm()
     {
-        $client = $this->createClient();
+        $client = $this->createAuthenticatedClient();
 
         $crawler = $client->request('GET', '/profile/email-confirmation?token=123-123-123');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -103,7 +104,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
     public function testConfirmWrongToken()
     {
-        $client = $this->createClient();
+        $client = $this->createAuthenticatedClient();
 
         $crawler = $client->request('GET', '/profile/email-confirmation?token=312-312-312');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -130,10 +131,10 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $this->assertEquals($user->getEmail(), $user->getContact()->getEmails()->first()->getEmail());
     }
 
-    protected function getKernelConfiguration()
+    protected static function getKernelConfiguration(): array
     {
         return [
-            'sulu_context' => 'website',
+            'sulu.context' => SuluKernel::CONTEXT_WEBSITE,
         ];
     }
 }
