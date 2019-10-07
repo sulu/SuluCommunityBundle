@@ -12,12 +12,12 @@
 namespace Sulu\Bundle\CommunityBundle\Event;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event for community actions with config and the user which throw the event.
  */
-class CommunityEvent extends Event
+abstract class AbstractCommunityEvent extends Event
 {
     /**
      * @var User

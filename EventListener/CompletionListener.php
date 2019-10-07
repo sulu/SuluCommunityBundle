@@ -11,11 +11,13 @@
 
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
+use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use Sulu\Bundle\CommunityBundle\Validator\User\CompletionInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -23,7 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * Validates the current user entity.
  */
-class CompletionListener
+class CompletionListener implements EventSubscriberInterface
 {
     /**
      * @var RequestAnalyzerInterface
@@ -71,6 +73,13 @@ class CompletionListener
         $this->tokenStorage = $tokenStorage;
         $this->validators = $validators;
         $this->fragmentPath = $fragmentPath;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onRequest',
+        ];
     }
 
     /**

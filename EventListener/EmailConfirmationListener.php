@@ -15,17 +15,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserProfileSavedEvent;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Compares user-email and contact main-email.
  * If they are different a confirmation link will be send.
  */
-class EmailConfirmationListener
+class EmailConfirmationListener implements EventSubscriberInterface
 {
     /**
      * @var MailFactoryInterface
@@ -65,12 +66,19 @@ class EmailConfirmationListener
         $this->tokenGenerator = $tokenGenerator;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            UserProfileSavedEvent::class => 'sendConfirmationOnEmailChange',
+        ];
+    }
+
     /**
      * Send confirmation-email if email-address has changed.
      *
-     * @param CommunityEvent $event
+     * @param UserProfileSavedEvent $event
      */
-    public function sendConfirmationOnEmailChange(CommunityEvent $event)
+    public function sendConfirmationOnEmailChange(UserProfileSavedEvent $event)
     {
         $user = $event->getUser();
 

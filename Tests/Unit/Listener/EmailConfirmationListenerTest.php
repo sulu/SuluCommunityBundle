@@ -17,7 +17,7 @@ use Prophecy\Argument;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserProfileSavedEvent;
 use Sulu\Bundle\CommunityBundle\EventListener\EmailConfirmationListener;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
@@ -89,7 +89,7 @@ class EmailConfirmationListenerTest extends TestCase
             $this->tokenGenerator->reveal()
         );
 
-        $this->event = $this->prophesize(CommunityEvent::class);
+        $this->event = $this->prophesize(UserProfileSavedEvent::class);
         $this->user = $this->prophesize(User::class);
         $this->contact = $this->prophesize(Contact::class);
         $this->token = $this->prophesize(EmailConfirmationToken::class);

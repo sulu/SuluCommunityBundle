@@ -12,14 +12,16 @@
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
+use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Last login listener to refresh the users last login timestamp.
  */
-class LastLoginListener
+class LastLoginListener implements EventSubscriberInterface
 {
     /**
      * @var TokenStorageInterface
@@ -51,6 +53,13 @@ class LastLoginListener
         $this->tokenStorage = $tokenStorage;
         $this->entityManager = $entityManager;
         $this->interval = (int) $interval;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onRequest',
+        ];
     }
 
     /**
