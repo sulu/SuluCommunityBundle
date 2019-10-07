@@ -94,7 +94,7 @@
 
     <!-- Address -->
     <class name="Sulu\Bundle\ContactBundle\Entity\Address">
-        <property name="country">
+        <property name="countryCode">
             <constraint name="NotBlank">
                 <option name="groups">
                     <value>registration</value>

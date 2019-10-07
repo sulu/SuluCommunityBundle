@@ -11,11 +11,10 @@
 
 namespace Sulu\Bundle\CommunityBundle\Form\Type;
 
-use Sulu\Bundle\ContactBundle\Entity\Country;
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -23,7 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -90,12 +88,8 @@ class ProfileType extends AbstractType
             'required' => false,
         ]);
 
-        $builder->add('country', EntityType::class, [
-            'property_path' => 'contact.mainAddress.country',
-            'class' => Country::class,
-            'choice_label' => function (Country $country) {
-                return Intl::getRegionBundle()->getCountryName($country->getCode());
-            },
+        $builder->add('countryCode', CountryType::class, [
+            'property_path' => 'contact.mainAddress.countryCode',
         ]);
 
         $builder->add('note', TextareaType::class, [
