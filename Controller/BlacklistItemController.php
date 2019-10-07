@@ -16,6 +16,7 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
+use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManagerInterface;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilder;
 use Sulu\Component\Rest\ListBuilder\Doctrine\FieldDescriptor\DoctrineFieldDescriptor;
 use Sulu\Component\Rest\ListBuilder\FieldDescriptorInterface;
@@ -143,9 +144,14 @@ class BlacklistItemController extends RestController implements ClassResourceInt
     {
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
+        /** @var BlacklistItemManagerInterface $manager */
         $manager = $this->get('sulu_community.blacklisting.item_manager');
 
-        $manager->delete(array_filter(explode(',', $request->get('ids', ''))));
+        $ids = array_map(function($id) {
+            return (int) $id;
+        }, array_filter(explode(',', $request->query->get('ids', ''))));
+
+        $manager->delete($ids);
         $entityManager->flush();
 
         return $this->handleView($this->view(null));
@@ -182,7 +188,14 @@ class BlacklistItemController extends RestController implements ClassResourceInt
     private function getFieldDescriptors()
     {
         return [
-            'id' => new DoctrineFieldDescriptor('id', 'id', BlacklistItem::class, 'public.id', [], true),
+            'id' => new DoctrineFieldDescriptor(
+                'id',
+                'id',
+                BlacklistItem::class,
+                'public.id',
+                [],
+                FieldDescriptorInterface::VISIBILITY_NO
+            ),
             'pattern' => new DoctrineFieldDescriptor(
                 'pattern',
                 'pattern',

@@ -173,9 +173,11 @@ abstract class AbstractController extends Controller
         $address = new Address();
         $address->setPrimaryAddress(true);
         $address->setNote('');
-        $address->setAddressType($entityManager->getRepository(AddressType::class)->find(1));
+        /** @var AddressType $addressType */
+        $addressType = $entityManager->getReference(AddressType::class, 1);
+        $address->setAddressType($addressType);
         $contactAddress = new ContactAddress();
-        $contactAddress->setMain(1);
+        $contactAddress->setMain(true);
         $contactAddress->setAddress($address);
         $contactAddress->setContact($contact);
 

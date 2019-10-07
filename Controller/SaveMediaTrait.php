@@ -11,6 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
+use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Component\Media\SystemCollections\SystemCollectionManagerInterface;
@@ -56,7 +57,7 @@ trait SaveMediaTrait
     protected function saveAvatar(FormInterface $form, User $user, $locale)
     {
         if (!$form->has('contact') || !$form->get('contact')->has('avatar')) {
-            return;
+            return null;
         }
 
         $uploadedFile = $form->get('contact')->get('avatar')->getData();
@@ -66,6 +67,7 @@ trait SaveMediaTrait
 
         $avatar = $user->getContact()->getAvatar();
 
+        /** @var MediaInterface|null $avatar */
         $apiMedia = $this->saveMedia($uploadedFile, (null !== $avatar ? $avatar->getId() : null), $locale, $user->getId());
 
         $user->getContact()->setAvatar($apiMedia->getEntity());

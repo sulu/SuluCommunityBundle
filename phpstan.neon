@@ -4,7 +4,7 @@ includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
 
 parameters:
-    level: 3
+    level: max
     excludes_analyse:
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/vendor/*
@@ -12,4 +12,13 @@ parameters:
     symfony:
         container_xml_path: %currentWorkingDirectory%/Tests/Application/var/cache/admin/dev/adminAdminDevDebugProjectContainer.xml
     ignoreErrors:
-        - '#Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch()#'
+        -
+            path: Manager/CommunityManager.php
+            message: '#Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch()#'
+        -
+            path: Controller/SaveMediaTrait.php
+            message: '#Else branch is unreachable because ternary operator condition is always true.#'
+        - '#Parameter \#2 \$values of method Symfony\\Component\\HttpFoundation\\ResponseHeaderBag::set\(\) expects array<string>|string, int given.#'
+        - '#Parameter \#1 \$confirmationKey of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setConfirmationKey\(\) expects string, null given.#'
+        - '#Parameter \#1 \$passwordResetTokenExpiresAt of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setPasswordResetTokenExpiresAt\(\) expects DateTime, null given.#'
+        - '#Parameter \#1 \$passwordResetToken of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setPasswordResetToken\(\) expects string, null given.#'

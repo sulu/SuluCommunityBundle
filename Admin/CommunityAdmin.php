@@ -17,6 +17,7 @@ use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
+use Sulu\Component\Webspace\Security;
 
 /**
  * Integrates community into sulu-admin.
@@ -87,6 +88,7 @@ class CommunityAdmin extends Admin
                 );
             }
 
+            /** @var Security|null $security */
             $security = $webspace->getSecurity();
 
             if (!$security) {

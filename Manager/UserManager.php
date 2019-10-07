@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\ContactBundle\Contact\ContactManagerInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepositoryInterface;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
@@ -99,6 +100,7 @@ class UserManager implements UserManagerInterface
     public function createUser(User $user, $webspaceKey, $roleName)
     {
         // User needs contact
+        /** @var ContactInterface|null $contact */
         $contact = $user->getContact();
 
         if (!$contact) {
@@ -188,11 +190,22 @@ class UserManager implements UserManagerInterface
 
         $locales = [];
 
-        foreach ($this->webspaceManager->findWebspaceByKey($webspaceKey)->getLocalizations() as $localization) {
+        $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
+
+        if (!$webspace) {
+            throw new \InvalidArgumentException(
+                sprintf('Webspace with key "%s" could not be found.', $webspaceKey)
+            );
+        }
+
+        foreach ($webspace->getLocalizations() as $localization) {
             $locales[] = $localization->getLocale();
         }
 
-        $userRole->setLocale(json_encode($locales));
+        /** @var string $localeString */
+        $localeString = json_encode($locales);
+
+        $userRole->setLocale($localeString);
         $userRole->setRole($role);
         $userRole->setUser($user);
 
@@ -204,7 +217,7 @@ class UserManager implements UserManagerInterface
      */
     public function findByPasswordResetToken($token)
     {
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
 
         if (!$user || $user->getPasswordResetTokenExpiresAt() < new \DateTime()) {

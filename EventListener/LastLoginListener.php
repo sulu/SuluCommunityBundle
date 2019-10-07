@@ -77,15 +77,21 @@ class LastLoginListener implements EventSubscriberInterface
             return;
         }
 
-        // Check token authentication availability
-        if ($this->tokenStorage->getToken()) {
-            $user = $this->tokenStorage->getToken()->getUser();
+        $token = $this->tokenStorage->getToken();
 
-            if ($user instanceof User && !$this->isActiveNow($user)) {
-                $user->setLastLogin(new \DateTime());
-                $this->entityManager->flush($user);
-            }
+        // Check token authentication availability
+        if (!$token) {
+            return;
         }
+
+        $user = $token->getUser();
+
+        if (!$user instanceof User || $this->isActiveNow($user)) {
+            return;
+        }
+
+        $user->setLastLogin(new \DateTime());
+        $this->entityManager->flush($user);
     }
 
     /**
