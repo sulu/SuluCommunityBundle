@@ -21,29 +21,10 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class MailFactoryTest extends TestCase
 {
-    /**
-     * @var \Swift_Mailer
-     */
     private $mailer;
-
-    /**
-     * @var EngineInterface
-     */
     private $engine;
-
-    /**
-     * @var TranslatorInterface
-     */
     private $translator;
-
-    /**
-     * @var MailFactory
-     */
     private $mailFactory;
-
-    /**
-     * @var User
-     */
     private $user;
 
     public function setUp(): void

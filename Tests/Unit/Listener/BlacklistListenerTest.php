@@ -27,29 +27,10 @@ use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class BlacklistListenerTest extends TestCase
 {
-    /**
-     * @var BlacklistItemRepository
-     */
     private $repository;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
-
-    /**
-     * @var TokenGeneratorInterface
-     */
     private $tokenGenerator;
-
-    /**
-     * @var MailFactoryInterface
-     */
     private $mailFactory;
-
-    /**
-     * @var BlacklistListener
-     */
     private $listener;
 
     public function setUp(): void

@@ -92,9 +92,10 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $entityManager = $this->getEntityManager();
         $entityManager->clear();
 
-        $this->assertNull($entityManager->getRepository(EmailConfirmationToken::class)->findByToken('123-123-123'));
+        $this->assertNull($this->getContainer()->get('sulu_community.email_confirmation.repository')->findByToken('123-123-123'));
 
         $user = $entityManager->find(User::class, $this->user->getId());
+        $this->assertInstanceOf(User::class, $user);
         $contact = $user->getContact();
 
         $this->assertEquals($user->getEmail(), $contact->getMainEmail());

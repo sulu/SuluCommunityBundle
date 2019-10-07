@@ -51,13 +51,13 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->persist($addressType);
         $entityManager->persist($emailType);
 
-        $contact = $entityManager->getRepository(ContactInterface::class)->createNew();
+        $contact = $this->getContainer()->get('sulu.repository.contact')->createNew();
         $contact->setFirstName('Max');
         $contact->setLastName('Mustermann');
         $entityManager->persist($contact);
 
         /** @var User $user */
-        $user = $entityManager->getRepository(User::class)->createNew();
+        $user = $this->getContainer()->get('sulu.repository.user')->createNew();
         $user->setUsername('test');
         $user->setPassword('test');
         $user->setSalt('');
@@ -66,7 +66,7 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->persist($user);
 
         /** @var Role $role */
-        $role = $entityManager->getRepository(Role::class)->createNew();
+        $role = $this->getContainer()->get('sulu.repository.role')->createNew();
         $role->setName('Sulu-ioUser');
         $role->setSystem('Website');
         $entityManager->persist($role);
@@ -160,7 +160,7 @@ class ProfileControllerTest extends SuluTestCase
             'profile[countryCode]' => 'AT',
         ]);
 
-        $this->assertSame(null, $user->getContact()->getNote());
+        $this->assertNull($user->getContact()->getNote());
     }
 
     protected static function getKernelConfiguration(): array

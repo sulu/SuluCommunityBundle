@@ -29,64 +29,17 @@ class SaveMediaTraitTest extends TestCase
         getSystemCollectionManager as mockedGetSystemCollectionManager;
     }
 
-    /**
-     * @var MediaManagerInterface
-     */
     private $mediaManager;
-
-    /**
-     * @var SystemCollectionManagerInterface
-     */
     private $systemCollectionManager;
-
-    /**
-     * @var User
-     */
     private $user;
-
-    /**
-     * @var string
-     */
     private $locale;
-
-    /**
-     * @var FormInterface
-     */
     private $form;
-
-    /**
-     * @var FormInterface
-     */
     private $contactForm;
-
-    /**
-     * @var FormInterface
-     */
     private $avatarForm;
-
-    /**
-     * @var FormInterface
-     */
     private $mediasForm;
-
-    /**
-     * @var string[]
-     */
     private $tempFilePaths = [];
-
-    /**
-     * @var Contact
-     */
     private $contact;
-
-    /**
-     * @var Media
-     */
     private $media;
-
-    /**
-     * @var ApiMedia
-     */
     private $apiMedia;
 
     protected function setUp(): void

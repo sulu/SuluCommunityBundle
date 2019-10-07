@@ -35,9 +35,3 @@ if ($debug) {
 $kernel = new Kernel($env, $debug, $suluContext);
 $application = new Application($kernel);
 $application->run($input);
-
-// register all commands available by our bundles
-$adminPool = $kernel->getContainer()->get('sulu_admin.admin_pool');
-foreach ($adminPool->getCommands() as $command) {
-    $application->add($command);
-}

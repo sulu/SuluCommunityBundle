@@ -19,19 +19,8 @@ use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager;
 
 class BlacklistItemManagerTest extends TestCase
 {
-    /**
-     * @var BlacklistItemRepository
-     */
     private $repository;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
-
-    /**
-     * @var BlacklistItemManager
-     */
     private $manager;
 
     public function setUp(): void

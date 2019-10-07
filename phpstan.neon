@@ -2,13 +2,15 @@ includes:
     - vendor/jangregor/phpstan-prophecy/src/extension.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
 
 parameters:
     level: max
     excludes_analyse:
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/vendor/*
-        - %currentWorkingDirectory%/Tests/*
+        - %currentWorkingDirectory%/Tests/Application/*
     symfony:
         container_xml_path: %currentWorkingDirectory%/Tests/Application/var/cache/admin/dev/adminAdminDevDebugProjectContainer.xml
     ignoreErrors:
@@ -18,7 +20,11 @@ parameters:
         -
             path: Controller/SaveMediaTrait.php
             message: '#Else branch is unreachable because ternary operator condition is always true.#'
+        -
+            path: Tests/Functional/Controller/RegistrationTest.php
+            message: '#Call to method PHPUnit\\Framework\\Assert::assertNull\(\) with string will always evaluate to false.#'
         - '#Parameter \#2 \$values of method Symfony\\Component\\HttpFoundation\\ResponseHeaderBag::set\(\) expects array<string>|string, int given.#'
         - '#Parameter \#1 \$confirmationKey of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setConfirmationKey\(\) expects string, null given.#'
         - '#Parameter \#1 \$passwordResetTokenExpiresAt of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setPasswordResetTokenExpiresAt\(\) expects DateTime, null given.#'
         - '#Parameter \#1 \$passwordResetToken of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setPasswordResetToken\(\) expects string, null given.#'
+        - '#Call to an undefined method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest::get\(\).#'

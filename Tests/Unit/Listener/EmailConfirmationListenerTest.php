@@ -27,49 +27,14 @@ use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class EmailConfirmationListenerTest extends TestCase
 {
-    /**
-     * @var MailFactoryInterface
-     */
     private $mailFactory;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
-
-    /**
-     * @var EmailConfirmationTokenRepository
-     */
     private $repository;
-
-    /**
-     * @var TokenGeneratorInterface
-     */
     private $tokenGenerator;
-
-    /**
-     * @var EmailConfirmationListener
-     */
     private $listener;
-
-    /**
-     * @var UserProfileSavedEvent
-     */
     private $event;
-
-    /**
-     * @var User
-     */
     private $user;
-
-    /**
-     * @var Contact
-     */
     private $contact;
-
-    /**
-     * @var EmailConfirmationToken
-     */
     private $token;
 
     /**
