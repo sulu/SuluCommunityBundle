@@ -58,7 +58,7 @@ class MailListener implements EventSubscriberInterface
      *
      * @param AbstractCommunityEvent $event
      */
-    public function sendRegistrationEmails(AbstractCommunityEvent $event)
+    public function sendRegistrationEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_REGISTRATION);
     }
@@ -68,7 +68,7 @@ class MailListener implements EventSubscriberInterface
      *
      * @param AbstractCommunityEvent $event
      */
-    public function sendConfirmationEmails(AbstractCommunityEvent $event)
+    public function sendConfirmationEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_CONFIRMATION);
     }
@@ -78,7 +78,7 @@ class MailListener implements EventSubscriberInterface
      *
      * @param AbstractCommunityEvent $event
      */
-    public function sendPasswordForgetEmails(AbstractCommunityEvent $event)
+    public function sendPasswordForgetEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_PASSWORD_FORGET);
     }
@@ -88,7 +88,7 @@ class MailListener implements EventSubscriberInterface
      *
      * @param AbstractCommunityEvent $event
      */
-    public function sendPasswordResetEmails(AbstractCommunityEvent $event)
+    public function sendPasswordResetEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_PASSWORD_RESET);
     }
@@ -98,7 +98,7 @@ class MailListener implements EventSubscriberInterface
      *
      * @param AbstractCommunityEvent $event
      */
-    public function sendCompletionEmails(AbstractCommunityEvent $event)
+    public function sendCompletionEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_COMPLETION);
     }
@@ -108,7 +108,7 @@ class MailListener implements EventSubscriberInterface
      *
      * @param AbstractCommunityEvent $event
      */
-    public function sendNotificationSaveProfile(AbstractCommunityEvent $event)
+    public function sendNotificationSaveProfile(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_PROFILE);
     }
@@ -119,7 +119,7 @@ class MailListener implements EventSubscriberInterface
      * @param AbstractCommunityEvent $event
      * @param string $type
      */
-    protected function sendTypeEmails(AbstractCommunityEvent $event, $type)
+    protected function sendTypeEmails(AbstractCommunityEvent $event, string $type): void
     {
         $config = $event->getConfig();
         $mail = Mail::create(

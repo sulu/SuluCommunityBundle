@@ -102,7 +102,7 @@ class InitCommand extends ContainerAwareCommand
      *
      * @throws \Exception
      */
-    protected function initWebspace($webspace, OutputInterface $output)
+    protected function initWebspace(Webspace $webspace, OutputInterface $output): void
     {
         $webspaceKey = $webspace->getKey();
 
@@ -135,7 +135,7 @@ class InitCommand extends ContainerAwareCommand
      *
      * @return string
      */
-    protected function createRoleIfNotExists($roleName, $system)
+    protected function createRoleIfNotExists(string $roleName, string $system): string
     {
         /** @var RoleRepository $roleRepository */
         $roleRepository = $this->entityManager->getRepository(RoleInterface::class);

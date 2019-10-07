@@ -42,7 +42,7 @@ class CommunityAdmin extends Admin
     /**
      * @param SecurityCheckerInterface $securityChecker
      * @param WebspaceManagerInterface $webspaceManager
-     * @param array $webspacesConfiguration
+     * @param mixed[] $webspacesConfiguration
      */
     public function __construct(
         SecurityCheckerInterface $securityChecker,

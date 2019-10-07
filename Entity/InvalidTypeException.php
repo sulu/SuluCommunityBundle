@@ -30,7 +30,7 @@ class InvalidTypeException extends \InvalidArgumentException
      * @param string[] $validTypes
      * @param string $type
      */
-    public function __construct(array $validTypes, $type)
+    public function __construct(array $validTypes, string $type)
     {
         parent::__construct(
             sprintf('Invalid type "%s" given. Valid types are [%s]', $type, implode(', ', $validTypes)),
@@ -44,7 +44,7 @@ class InvalidTypeException extends \InvalidArgumentException
     /**
      * @return string[]
      */
-    public function getValidTypes()
+    public function getValidTypes(): array
     {
         return $this->validTypes;
     }
@@ -52,7 +52,7 @@ class InvalidTypeException extends \InvalidArgumentException
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }

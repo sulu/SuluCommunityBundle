@@ -31,9 +31,9 @@ class BlacklistItemManagerTest extends TestCase
         $this->manager = new BlacklistItemManager($this->entityManager->reveal(), $this->repository->reveal());
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
-        $entity = new \stdClass();
+        $entity = new BlacklistItem();
 
         $this->repository->createNew()->willReturn($entity)->shouldBeCalled();
         $this->entityManager->persist($entity)->shouldBeCalled();
@@ -41,33 +41,33 @@ class BlacklistItemManagerTest extends TestCase
         $this->assertEquals($entity, $this->manager->create());
     }
 
-    public function testFind()
+    public function testFind(): void
     {
-        $entity = new \stdClass();
+        $entity = new BlacklistItem();
         $this->repository->find(1)->willReturn($entity)->shouldBeCalled();
 
         $this->assertEquals($entity, $this->manager->find(1));
     }
 
-    public function testDeleteSingle()
+    public function testDeleteSingle(): void
     {
         $className = BlacklistItem::class;
         $this->repository->getClassName()->willReturn($className);
 
-        $entity = new \stdClass();
+        $entity = new BlacklistItem();
         $this->entityManager->getReference($className, 1)->willReturn($entity);
         $this->entityManager->remove($entity)->shouldBeCalled();
 
         $this->manager->delete(1);
     }
 
-    public function testDeleteList()
+    public function testDeleteList(): void
     {
         $className = BlacklistItem::class;
         $this->repository->getClassName()->willReturn($className);
 
-        $entity1 = new \stdClass();
-        $entity2 = new \stdClass();
+        $entity1 = new BlacklistItem();
+        $entity2 = new BlacklistItem();
         $this->entityManager->getReference($className, 1)->willReturn($entity1);
         $this->entityManager->getReference($className, 2)->willReturn($entity2);
         $this->entityManager->remove($entity1)->shouldBeCalled();

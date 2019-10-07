@@ -22,7 +22,7 @@ class BlacklistItemRepositoryTest extends SuluTestCase
         $this->purgeDatabase();
     }
 
-    public function testFindBySender()
+    public function testFindBySender(): void
     {
         $item1 = new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_BLOCK);
         $item2 = new BlacklistItem('test@sulu.io', BlacklistItem::TYPE_REQUEST);

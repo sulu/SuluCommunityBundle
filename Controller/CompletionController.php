@@ -32,7 +32,7 @@ class CompletionController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $user = $this->getUser();
 

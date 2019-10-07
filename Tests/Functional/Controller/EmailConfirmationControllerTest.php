@@ -78,7 +78,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $entityManager->flush();
     }
 
-    public function testConfirm()
+    public function testConfirm(): User
     {
         $client = $this->createAuthenticatedClient();
 
@@ -103,7 +103,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
         return $user;
     }
 
-    public function testConfirmWrongToken()
+    public function testConfirmWrongToken(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -119,7 +119,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $this->assertNotNull($entityManager->getRepository(EmailConfirmationToken::class)->findByToken('123-123-123'));
     }
 
-    public function testConfirmWithoutEmail()
+    public function testConfirmWithoutEmail(): void
     {
         $this->getEntityManager()->remove($this->user->getContact()->getEmails()->first());
         $this->user->getContact()->getEmails()->clear();

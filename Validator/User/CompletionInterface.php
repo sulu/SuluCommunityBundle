@@ -26,5 +26,5 @@ interface CompletionInterface
      *
      * @return bool
      */
-    public function validate(User $user, $webspaceKey);
+    public function validate(User $user, string $webspaceKey): bool;
 }

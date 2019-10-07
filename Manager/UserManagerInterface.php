@@ -27,7 +27,7 @@ interface UserManagerInterface
      *
      * @return User
      */
-    public function createUser(User $user, $webspaceKey, $roleName);
+    public function createUser(User $user, string $webspaceKey, string $roleName): User;
 
     /**
      * Update User entity.
@@ -36,7 +36,7 @@ interface UserManagerInterface
      *
      * @return User
      */
-    public function updateUser(User $user);
+    public function updateUser(User $user): User;
 
     /**
      * Generates a unique token.
@@ -45,7 +45,7 @@ interface UserManagerInterface
      *
      * @return string
      */
-    public function getUniqueToken($field);
+    public function getUniqueToken(string $field): string;
 
     /**
      * Find a user by the password reset token.
@@ -54,7 +54,7 @@ interface UserManagerInterface
      *
      * @return User|null
      */
-    public function findByPasswordResetToken($token);
+    public function findByPasswordResetToken(string $token): ?User;
 
     /**
      * Find a user by a the confirmation key.
@@ -63,7 +63,7 @@ interface UserManagerInterface
      *
      * @return User|null
      */
-    public function findByConfirmationKey($token);
+    public function findByConfirmationKey(string $token): ?User;
 
     /**
      * Find a user by username or email.
@@ -72,5 +72,5 @@ interface UserManagerInterface
      *
      * @return User|null
      */
-    public function findUser($identifier);
+    public function findUser(string $identifier): ?User;
 }

@@ -31,7 +31,7 @@ class ConfirmationController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request, $token)
+    public function indexAction(Request $request, string $token): Response
     {
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 

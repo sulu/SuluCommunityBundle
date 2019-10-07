@@ -48,7 +48,7 @@ class BlacklistListenerTest extends TestCase
         );
     }
 
-    public function testValidateEmail()
+    public function testValidateEmail(): void
     {
         $this->repository->findBySender('test@sulu.io')
             ->willReturn([new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_REQUEST)]);
@@ -89,7 +89,7 @@ class BlacklistListenerTest extends TestCase
         $this->listener->validateEmail($event->reveal());
     }
 
-    public function testValidateEmailNoMatch()
+    public function testValidateEmailNoMatch(): void
     {
         $this->repository->findBySender('test@sulu.io')
             ->willReturn([]);

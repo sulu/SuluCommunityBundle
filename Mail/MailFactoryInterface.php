@@ -23,7 +23,7 @@ interface MailFactoryInterface
      *
      * @param Mail $mail
      * @param User $user
-     * @param array $parameters
+     * @param mixed[] $parameters
      */
-    public function sendEmails(Mail $mail, User $user, $parameters = []);
+    public function sendEmails(Mail $mail, User $user, array $parameters = []): void;
 }

@@ -11,6 +11,7 @@
 
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
+use Sulu\Bundle\MediaBundle\Api\Media;
 use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
@@ -20,22 +21,25 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait SaveMediaTrait
 {
-    private function saveMediaFields(FormInterface $form, User $user, $locale)
+    private function saveMediaFields(FormInterface $form, User $user, string $locale): void
     {
         $this->saveAvatar($form, $user, $locale);
         $this->saveDocuments($form, $user, $locale);
     }
 
-    private function saveDocuments(FormInterface $form, User $user, $locale)
+    /**
+     * @return mixed[]
+     */
+    private function saveDocuments(FormInterface $form, User $user, string $locale): array
     {
-        if (!$form->has('contact') || !$form->get('contact')->has('medias')) {
-            return;
+        if (!$form->has('medias')) {
+            return [];
         }
 
-        $uploadedFiles = $form->get('contact')->get('medias')->getData();
+        $uploadedFiles = $form->get('medias')->getData();
 
         if (empty($uploadedFiles)) {
-            return null;
+            return [];
         }
 
         if (!is_array($uploadedFiles)) {
@@ -54,13 +58,13 @@ trait SaveMediaTrait
         return $apiMedias;
     }
 
-    protected function saveAvatar(FormInterface $form, User $user, $locale)
+    protected function saveAvatar(FormInterface $form, User $user, string $locale): ?Media
     {
-        if (!$form->has('contact') || !$form->get('contact')->has('avatar')) {
+        if (!$form->has('avatar')) {
             return null;
         }
 
-        $uploadedFile = $form->get('contact')->get('avatar')->getData();
+        $uploadedFile = $form->get('avatar')->getData();
         if (null === $uploadedFile) {
             return null;
         }
@@ -75,7 +79,7 @@ trait SaveMediaTrait
         return $apiMedia;
     }
 
-    private function saveMedia(UploadedFile $uploadedFile, $id, $locale, $userId)
+    private function saveMedia(UploadedFile $uploadedFile, ?int $id, string $locale, ?int $userId): Media
     {
         return $this->getMediaManager()->save(
             $uploadedFile,
@@ -94,7 +98,7 @@ trait SaveMediaTrait
      *
      * @return SystemCollectionManagerInterface
      */
-    private function getSystemCollectionManager()
+    private function getSystemCollectionManager(): SystemCollectionManagerInterface
     {
         return $this->get('sulu_media.system_collections.manager');
     }
@@ -104,7 +108,7 @@ trait SaveMediaTrait
      *
      * @return MediaManagerInterface
      */
-    private function getMediaManager()
+    private function getMediaManager(): MediaManagerInterface
     {
         return $this->get('sulu_media.media_manager');
     }
@@ -114,7 +118,7 @@ trait SaveMediaTrait
      *
      * @return int
      */
-    private function getContactMediaCollection()
+    private function getContactMediaCollection(): int
     {
         return $this->getSystemCollectionManager()->getSystemCollection('sulu_contact.contact');
     }

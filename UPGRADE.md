@@ -2,6 +2,11 @@
 
 ## 2.0.0 (unreleased)
 
+### Typehints added to the codebase
+
+Everywhere were possible typehints were added to the classes and interfaces.
+If you extend or implement something you need also add the typehints there.
+
 ### Events changed
 
 The general `CommunityEvent` class was removed and replaced with:

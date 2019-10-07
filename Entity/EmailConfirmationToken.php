@@ -46,7 +46,7 @@ class EmailConfirmationToken
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -56,7 +56,7 @@ class EmailConfirmationToken
      *
      * @return string
      */
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
@@ -66,9 +66,9 @@ class EmailConfirmationToken
      *
      * @param string $token
      *
-     * @return $this
+     * @return self
      */
-    public function setToken($token)
+    public function setToken(string $token): self
     {
         $this->token = $token;
 
@@ -80,7 +80,7 @@ class EmailConfirmationToken
      *
      * @return UserInterface
      */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }

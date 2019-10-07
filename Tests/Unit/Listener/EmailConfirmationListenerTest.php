@@ -72,7 +72,7 @@ class EmailConfirmationListenerTest extends TestCase
         $this->token->getUser()->willReturn($this->user->reveal());
     }
 
-    public function testSendConfirmation()
+    public function testSendConfirmation(): void
     {
         $this->user->getEmail()->willReturn('test@sulu.io');
         $this->contact->getMainEmail()->willReturn('new@sulu.io');
@@ -97,7 +97,7 @@ class EmailConfirmationListenerTest extends TestCase
         $this->listener->sendConfirmationOnEmailChange($this->event->reveal());
     }
 
-    public function testSendConfirmationExistingToken()
+    public function testSendConfirmationExistingToken(): void
     {
         $this->user->getEmail()->willReturn('test@sulu.io');
         $this->contact->getMainEmail()->willReturn('new@sulu.io');
@@ -119,7 +119,7 @@ class EmailConfirmationListenerTest extends TestCase
         $this->listener->sendConfirmationOnEmailChange($this->event->reveal());
     }
 
-    public function testSendConfirmationNoChange()
+    public function testSendConfirmationNoChange(): void
     {
         $this->user->getEmail()->willReturn('test@sulu.io');
         $this->contact->getMainEmail()->willReturn('test@sulu.io');

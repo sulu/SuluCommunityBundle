@@ -77,7 +77,7 @@ class BlacklistListener implements EventSubscriberInterface
      *
      * @param UserRegisteredEvent $event
      */
-    public function validateEmail(UserRegisteredEvent $event)
+    public function validateEmail(UserRegisteredEvent $event): void
     {
         if (BlacklistItem::TYPE_REQUEST !== $this->getType($event->getUser()->getEmail())) {
             return;
@@ -111,7 +111,7 @@ class BlacklistListener implements EventSubscriberInterface
      *
      * @return string|null
      */
-    private function getType($email)
+    private function getType(string $email): ?string
     {
         $items = $this->blacklistItemRepository->findBySender($email);
 

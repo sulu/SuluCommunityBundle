@@ -194,7 +194,7 @@ class Configuration implements ConfigurationInterface
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()
-                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Profile change')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
                                         ->end()

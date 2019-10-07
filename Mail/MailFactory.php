@@ -50,11 +50,11 @@ class MailFactory implements MailFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function sendEmails(Mail $mail, User $user, $parameters = [])
+    public function sendEmails(Mail $mail, User $user, array $parameters = []): void
     {
-        $email = $user->getEmail();
-        if ($mail->getUserEmail()) {
-            $email = $mail->getUserEmail();
+        $email = $mail->getUserEmail();
+        if (!$email) {
+            $email = $user->getEmail();
         }
         $data = array_merge($parameters, ['user' => $user]);
 
@@ -81,9 +81,9 @@ class MailFactory implements MailFactoryInterface
      * @param string|array $to
      * @param string $subject
      * @param string $template
-     * @param array $data
+     * @param mixed[] $data
      */
-    protected function sendEmail($from, $to, $subject, $template, $data)
+    protected function sendEmail($from, $to, string $subject, string $template, array $data): void
     {
         $body = $this->engine->render($template, $data);
 

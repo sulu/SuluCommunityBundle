@@ -59,12 +59,15 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      * @param string $webspaceKey
-     * @param array $webspaceConfig
+     * @param mixed[] $webspaceConfig
      *
-     * @return array
+     * @return mixed[]
      */
-    private function updateWebspaceConfig(ContainerBuilder $container, $webspaceKey, array $webspaceConfig)
-    {
+    private function updateWebspaceConfig(
+        ContainerBuilder $container,
+        string $webspaceKey,
+        array $webspaceConfig
+    ): array {
         // Set firewall by webspace key
         if (null === $webspaceConfig[Configuration::FIREWALL]) {
             $webspaceConfig[Configuration::FIREWALL] = $webspaceKey;
@@ -114,11 +117,11 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
     /**
      * Activate Maintenance mode.
      *
-     * @param array $webspaceConfig
+     * @param mixed[] $webspaceConfig
      *
-     * @return array
+     * @return mixed[]
      */
-    private function activateMaintenanceMode(array $webspaceConfig)
+    private function activateMaintenanceMode(array $webspaceConfig): array
     {
         foreach (Configuration::$TYPES as $type) {
             if (isset($webspaceConfig[$type][Configuration::TEMPLATE])) {

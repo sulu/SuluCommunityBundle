@@ -41,7 +41,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      *
      * @return Response
      */
-    public function fieldsAction()
+    public function fieldsAction(): Response
     {
         return $this->handleView($this->view(array_values($this->getFieldDescriptors()), 200));
     }
@@ -53,7 +53,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      *
      * @return Response
      */
-    public function cgetAction(Request $request)
+    public function cgetAction(Request $request): Response
     {
         $restHelper = $this->get('sulu_core.doctrine_rest_helper');
         $factory = $this->get('sulu_core.doctrine_list_builder_factory');
@@ -86,7 +86,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      *
      * @return Response
      */
-    public function getAction($id)
+    public function getAction(int $id): Response
     {
         $manager = $this->get('sulu_community.blacklisting.item_manager');
 
@@ -100,7 +100,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      *
      * @return Response
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request): Response
     {
         $manager = $this->get('sulu_community.blacklisting.item_manager');
         $entityManager = $this->get('doctrine.orm.entity_manager');
@@ -121,7 +121,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      *
      * @return Response
      */
-    public function deleteAction($id)
+    public function deleteAction(int $id): Response
     {
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
@@ -140,7 +140,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      *
      * @return Response
      */
-    public function cdeleteAction(Request $request)
+    public function cdeleteAction(Request $request): Response
     {
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
@@ -165,7 +165,7 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      *
      * @return Response
      */
-    public function putAction($id, Request $request)
+    public function putAction(int $id, Request $request): Response
     {
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
@@ -183,9 +183,9 @@ class BlacklistItemController extends RestController implements ClassResourceInt
     /**
      * Creates the field-descriptors for blacklist-items.
      *
-     * @return array
+     * @return DoctrineFieldDescriptor[]
      */
-    private function getFieldDescriptors()
+    private function getFieldDescriptors(): array
     {
         return [
             'id' => new DoctrineFieldDescriptor(
@@ -226,9 +226,9 @@ class BlacklistItemController extends RestController implements ClassResourceInt
      *
      * @param Request $request
      * @param DoctrineListBuilder $listBuilder
-     * @param array $fieldDescriptors
+     * @param DoctrineFieldDescriptor[] $fieldDescriptors
      *
-     * @return array
+     * @return array|mixed
      */
     private function prepareListResponse(Request $request, DoctrineListBuilder $listBuilder, array $fieldDescriptors)
     {

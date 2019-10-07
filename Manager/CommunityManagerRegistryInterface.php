@@ -18,12 +18,12 @@ interface CommunityManagerRegistryInterface
      *
      * @return CommunityManagerInterface
      */
-    public function get($webspaceKey);
+    public function get(string $webspaceKey): CommunityManagerInterface;
 
     /**
      * @param string $webspaceKey
      *
      * @return bool
      */
-    public function has($webspaceKey);
+    public function has(string $webspaceKey): bool;
 }

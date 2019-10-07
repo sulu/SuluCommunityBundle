@@ -29,10 +29,10 @@ class CommunityManagerRegistry implements CommunityManagerRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function get($webspaceKey)
+    public function get(string $webspaceKey): CommunityManagerInterface
     {
         if (!$this->has($webspaceKey)) {
-            throw new \Exception(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Webspace "%s" is not configured.',
                     $webspaceKey
@@ -46,7 +46,7 @@ class CommunityManagerRegistry implements CommunityManagerRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function has($webspaceKey)
+    public function has($webspaceKey): bool
     {
         return array_key_exists($webspaceKey, $this->managers);
     }

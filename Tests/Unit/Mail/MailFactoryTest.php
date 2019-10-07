@@ -43,7 +43,7 @@ class MailFactoryTest extends TestCase
         );
     }
 
-    public function testSendEmails()
+    public function testSendEmails(): void
     {
         $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
         $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');
@@ -71,7 +71,7 @@ class MailFactoryTest extends TestCase
         $this->mailFactory->sendEmails($mail, $this->user->reveal());
     }
 
-    public function testSendEmailsNoAdminTemplate()
+    public function testSendEmailsNoAdminTemplate(): void
     {
         $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
         $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');
@@ -99,7 +99,7 @@ class MailFactoryTest extends TestCase
         $this->mailFactory->sendEmails($mail, $this->user->reveal());
     }
 
-    public function testSendEmailsNoUserTemplate()
+    public function testSendEmailsNoUserTemplate(): void
     {
         $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
         $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');

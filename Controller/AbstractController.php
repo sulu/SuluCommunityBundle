@@ -39,7 +39,7 @@ abstract class AbstractController extends Controller
      *
      * @return CommunityManagerInterface
      */
-    protected function getCommunityManager($webspaceKey)
+    protected function getCommunityManager(string $webspaceKey): CommunityManagerInterface
     {
         return $this->get('sulu_community.community_manager.registry')->get($webspaceKey);
     }
@@ -49,7 +49,7 @@ abstract class AbstractController extends Controller
      *
      * @return string
      */
-    protected function getWebspaceKey()
+    protected function getWebspaceKey(): string
     {
         if (null === $this->webspaceKey) {
             return $this->get('sulu_core.webspace.request_analyzer')->getWebspace()->getKey();
@@ -66,7 +66,7 @@ abstract class AbstractController extends Controller
      *
      * @return User
      */
-    protected function setUserPasswordAndSalt(User $user, FormInterface $form)
+    protected function setUserPasswordAndSalt(User $user, FormInterface $form): User
     {
         $plainPassword = $form->get('plainPassword')->getData();
         if (null === $plainPassword) {
@@ -90,9 +90,9 @@ abstract class AbstractController extends Controller
      *
      * @param string $type
      *
-     * @return string
+     * @return bool
      */
-    protected function checkAutoLogin($type)
+    protected function checkAutoLogin(string $type): bool
     {
         return $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(
             $type,
@@ -104,11 +104,11 @@ abstract class AbstractController extends Controller
      * Render a specific type template.
      *
      * @param string $type
-     * @param array $data
+     * @param mixed[] $data
      *
      * @return Response
      */
-    protected function renderTemplate($type, $data = [])
+    protected function renderTemplate(string $type, array $data = []): Response
     {
         return $this->render(
             $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(
@@ -122,7 +122,7 @@ abstract class AbstractController extends Controller
     /**
      * Save all persisted entities.
      */
-    protected function saveEntities()
+    protected function saveEntities(): void
     {
         $this->get('doctrine.orm.entity_manager')->flush();
     }
@@ -130,11 +130,11 @@ abstract class AbstractController extends Controller
     /**
      * Set Sulu template attributes.
      *
-     * @param array $custom
+     * @param mixed[] $custom
      *
-     * @return array
+     * @return mixed[]
      */
-    private function getTemplateAttributes($custom = [])
+    private function getTemplateAttributes(array $custom = []): array
     {
         return $this->get('sulu_website.resolver.template_attribute')->resolve($custom);
     }
@@ -144,7 +144,7 @@ abstract class AbstractController extends Controller
      *
      * @return User
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         $user = parent::getUser();
 
@@ -165,7 +165,7 @@ abstract class AbstractController extends Controller
      *
      * @param User $user
      */
-    private function addAddress(User $user)
+    private function addAddress(User $user): void
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $contact = $user->getContact();

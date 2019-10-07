@@ -48,11 +48,11 @@ class LastLoginListener implements EventSubscriberInterface
     public function __construct(
         TokenStorageInterface $tokenStorage,
         EntityManager $entityManager,
-        $interval = null
+        int $interval = 0
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->entityManager = $entityManager;
-        $this->interval = (int) $interval;
+        $this->interval = $interval;
     }
 
     public static function getSubscribedEvents()
@@ -67,7 +67,7 @@ class LastLoginListener implements EventSubscriberInterface
      *
      * @param GetResponseEvent $event
      */
-    public function onRequest(GetResponseEvent $event)
+    public function onRequest(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -101,7 +101,7 @@ class LastLoginListener implements EventSubscriberInterface
      *
      * @return bool
      */
-    private function isActiveNow(User $user)
+    private function isActiveNow(User $user): bool
     {
         $delay = new \DateTime($this->interval . ' seconds ago');
 

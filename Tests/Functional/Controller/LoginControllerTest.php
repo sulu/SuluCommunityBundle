@@ -16,7 +16,7 @@ use Sulu\Component\HttpKernel\SuluKernel;
 
 class LoginControllerTest extends SuluTestCase
 {
-    public function testLoginForm()
+    public function testLoginForm(): void
     {
         $client = $this->createWebsiteClient();
 

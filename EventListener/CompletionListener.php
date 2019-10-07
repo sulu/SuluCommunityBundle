@@ -59,13 +59,13 @@ class CompletionListener implements EventSubscriberInterface
      * @param RouterInterface $router
      * @param TokenStorage $tokenStorage
      * @param string $fragmentPath
-     * @param array $validators
+     * @param CompletionInterface[] $validators
      */
     public function __construct(
         RequestAnalyzerInterface $requestAnalyzer,
         RouterInterface $router,
         TokenStorage $tokenStorage,
-        $fragmentPath,
+        string $fragmentPath,
         array $validators
     ) {
         $this->requestAnalyzer = $requestAnalyzer;
@@ -87,7 +87,7 @@ class CompletionListener implements EventSubscriberInterface
      *
      * @param GetResponseEvent $event
      */
-    public function onRequest(GetResponseEvent $event)
+    public function onRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
         $completionUrl = $this->router->generate('sulu_community.completion');
@@ -137,7 +137,7 @@ class CompletionListener implements EventSubscriberInterface
      * @param CompletionInterface $validator
      * @param string $webspaceKey
      */
-    public function addValidator(CompletionInterface $validator, $webspaceKey)
+    public function addValidator(CompletionInterface $validator, string $webspaceKey): void
     {
         $this->validators[$webspaceKey] = $validator;
     }
@@ -147,7 +147,7 @@ class CompletionListener implements EventSubscriberInterface
      *
      * @return CompletionInterface|null
      */
-    protected function getValidator($webspaceKey)
+    protected function getValidator(string $webspaceKey): ?CompletionInterface
     {
         if (!isset($this->validators[$webspaceKey])) {
             return null;

@@ -45,7 +45,7 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
 
             $container->setParameter(
                 'sulu_community.last_login.refresh_interval',
-                $lastLoginRefreshInterval
+                (int) $lastLoginRefreshInterval
             );
 
             $loader->load('last-login.xml');

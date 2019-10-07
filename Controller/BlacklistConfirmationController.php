@@ -31,7 +31,7 @@ class BlacklistConfirmationController extends AbstractController
      *
      * @return Response
      */
-    public function confirmAction(Request $request)
+    public function confirmAction(Request $request): Response
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $repository = $this->get('sulu_community.blacklisting.user_repository');
@@ -65,7 +65,7 @@ class BlacklistConfirmationController extends AbstractController
      *
      * @return Response
      */
-    public function denyAction(Request $request)
+    public function denyAction(Request $request): Response
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $repository = $this->get('sulu_community.blacklisting.user_repository');

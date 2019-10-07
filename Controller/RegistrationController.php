@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 

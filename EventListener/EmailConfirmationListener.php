@@ -78,7 +78,7 @@ class EmailConfirmationListener implements EventSubscriberInterface
      *
      * @param UserProfileSavedEvent $event
      */
-    public function sendConfirmationOnEmailChange(UserProfileSavedEvent $event)
+    public function sendConfirmationOnEmailChange(UserProfileSavedEvent $event): void
     {
         $user = $event->getUser();
 

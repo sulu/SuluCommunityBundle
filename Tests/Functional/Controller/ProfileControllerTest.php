@@ -14,7 +14,6 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
-use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
@@ -83,7 +82,10 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->flush();
     }
 
-    private function submitProfile($data)
+    /**
+     * @param mixed[] $data
+     */
+    private function submitProfile(array $data): User
     {
         $client = $this->createAuthenticatedClient();
 
@@ -121,7 +123,7 @@ class ProfileControllerTest extends SuluTestCase
         return $repository->findOneBy(['username' => 'test']);
     }
 
-    public function testProfile()
+    public function testProfile(): void
     {
         $user = $this->submitProfile([
             'profile[formOfAddress]' => 0,
@@ -146,7 +148,7 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertEquals('Test', $user->getContact()->getNote());
     }
 
-    public function testProfileWithoutNote()
+    public function testProfileWithoutNote(): void
     {
         $user = $this->submitProfile([
             'profile[formOfAddress]' => 0,

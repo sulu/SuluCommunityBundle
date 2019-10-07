@@ -82,7 +82,7 @@ class CommunityManager implements CommunityManagerInterface
     protected $mailFactory;
 
     /**
-     * @param array $config
+     * @param mixed[] $config
      * @param string $webspaceKey
      * @param EventDispatcherInterface $eventDispatcher
      * @param TokenStorageInterface $tokenStorage
@@ -91,7 +91,7 @@ class CommunityManager implements CommunityManagerInterface
      */
     public function __construct(
         array $config,
-        $webspaceKey,
+        string $webspaceKey,
         EventDispatcherInterface $eventDispatcher,
         TokenStorageInterface $tokenStorage,
         UserManagerInterface $userManager,
@@ -108,7 +108,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getWebspaceKey()
+    public function getWebspaceKey(): string
     {
         return $this->webspaceKey;
     }
@@ -116,7 +116,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function register(User $user)
+    public function register(User $user): User
     {
         /** @var string|null $userLocale */
         $userLocale = $user->getLocale();
@@ -147,7 +147,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function completion(User $user)
+    public function completion(User $user): User
     {
         // Event
         $event = new UserCompletedEvent($user, $this->config);
@@ -159,10 +159,10 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function login(User $user, Request $request)
+    public function login(User $user, Request $request): void
     {
         if (!$user->getEnabled()) {
-            return null;
+            return;
         }
 
         $token = new UsernamePasswordToken(
@@ -176,14 +176,12 @@ class CommunityManager implements CommunityManagerInterface
 
         $event = new InteractiveLoginEvent($request, $token);
         $this->eventDispatcher->dispatch($event, SecurityEvents::INTERACTIVE_LOGIN);
-
-        return $token;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function confirm($token)
+    public function confirm(string $token): ?User
     {
         $user = $this->userManager->findByConfirmationKey($token);
 
@@ -205,7 +203,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function passwordForget($emailUsername)
+    public function passwordForget(string $emailUsername): ?User
     {
         $user = $this->userManager->findUser($emailUsername);
 
@@ -230,7 +228,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function passwordReset(User $user)
+    public function passwordReset(User $user): User
     {
         $user->setPasswordResetTokenExpiresAt(null);
         $user->setPasswordResetToken(null);
@@ -246,7 +244,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function sendEmails($type, User $user)
+    public function sendEmails(string $type, User $user): void
     {
         $this->mailFactory->sendEmails(
             Mail::create(
@@ -261,7 +259,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function saveProfile(User $user)
+    public function saveProfile(User $user): ?User
     {
         $this->userManager->updateUser($user);
 
@@ -275,7 +273,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -286,7 +284,7 @@ class CommunityManager implements CommunityManagerInterface
     public function getConfigProperty($property)
     {
         if (!array_key_exists($property, $this->config)) {
-            throw new \Exception(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Property "%s" not found for webspace "%s" in Community Manager.',
                     $property,
@@ -304,7 +302,7 @@ class CommunityManager implements CommunityManagerInterface
     public function getConfigTypeProperty($type, $property)
     {
         if (!array_key_exists($type, $this->config) || !array_key_exists($property, $this->config[$type])) {
-            throw new \Exception(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Property "%s" from type "%s" not found for webspace "%s" in Community Manager.',
                     $property,

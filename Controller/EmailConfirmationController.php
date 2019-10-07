@@ -33,7 +33,7 @@ class EmailConfirmationController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $repository = $this->get('sulu_community.email_confirmation.repository');

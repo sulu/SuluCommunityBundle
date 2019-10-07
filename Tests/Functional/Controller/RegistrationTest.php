@@ -57,7 +57,7 @@ class RegistrationTest extends SuluTestCase
         $entityManager->flush();
     }
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $client = $this->createClient();
 
@@ -87,7 +87,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertHttpStatusCode(302, $client->getResponse());
     }
 
-    public function testConfirmation()
+    public function testConfirmation(): User
     {
         $this->testRegister();
         /** @var User $user */
@@ -107,7 +107,7 @@ class RegistrationTest extends SuluTestCase
         return $user;
     }
 
-    public function testLogin()
+    public function testLogin(): void
     {
         $this->testConfirmation();
 
@@ -132,7 +132,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertEquals('http://localhost/profile', $client->getResponse()->getTargetUrl());
     }
 
-    public function testLoginWrongPassword()
+    public function testLoginWrongPassword(): void
     {
         $this->testConfirmation();
 
@@ -157,7 +157,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertEquals('http://localhost/login', $client->getResponse()->getTargetUrl());
     }
 
-    public function testRegistrationBlacklistedBlocked()
+    public function testRegistrationBlacklistedBlocked(): void
     {
         $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_BLOCK);
 
@@ -184,7 +184,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertNull($this->findUser());
     }
 
-    public function testRegistrationBlacklistedRequested()
+    public function testRegistrationBlacklistedRequested(): \Swift_Message
     {
         $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_REQUEST);
 
@@ -222,7 +222,7 @@ class RegistrationTest extends SuluTestCase
         return $message;
     }
 
-    public function testBlacklistConfirm()
+    public function testBlacklistConfirm(): void
     {
         $message = $this->testRegistrationBlacklistedRequested();
 
@@ -253,7 +253,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertEquals('hikaru@sulu.io', key($message->getTo()));
     }
 
-    public function testBlacklistBlocked()
+    public function testBlacklistBlocked(): void
     {
         $message = $this->testRegistrationBlacklistedRequested();
 
@@ -282,7 +282,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertEquals(0, $mailCollector->getMessageCount());
     }
 
-    public function testPasswordForget()
+    public function testPasswordForget(): void
     {
         $user = $this->testConfirmation();
 
@@ -345,7 +345,7 @@ class RegistrationTest extends SuluTestCase
      *
      * @return User|null
      */
-    private function findUser($username = 'sulu')
+    private function findUser(string $username = 'sulu'): ?User
     {
         // clear entity-manager to ensure newest user
         $this->getEntityManager()->clear();
