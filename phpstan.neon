@@ -4,36 +4,7 @@ includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-phpunit/rules.neon
-
-services:
-  -
-    class: TheCodingMachine\PHPStan\Rules\Exceptions\ThrowMustBundlePreviousExceptionRule
-    tags:
-      - phpstan.rules.rule
-  -
-    class: TheCodingMachine\PHPStan\Rules\Exceptions\DoNotThrowExceptionBaseClassRule
-    tags:
-      - phpstan.rules.rule
-  -
-    class: TheCodingMachine\PHPStan\Rules\Exceptions\EmptyExceptionRule
-    tags:
-      - phpstan.rules.rule
-  -
-    class: TheCodingMachine\PHPStan\Rules\Exceptions\MustRethrowRule
-    tags:
-      - phpstan.rules.rule
-  -
-    class: TheCodingMachine\PHPStan\Rules\TypeHints\MissingTypeHintInFunctionRule
-    tags:
-      - phpstan.rules.rule
-  -
-    class: TheCodingMachine\PHPStan\Rules\TypeHints\MissingTypeHintInMethodRule
-    tags:
-      - phpstan.rules.rule
-  -
-    class: TheCodingMachine\PHPStan\Rules\Superglobals\NoSuperglobalsRule
-    tags:
-      - phpstan.rules.rule
+    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
 
 parameters:
     paths:
