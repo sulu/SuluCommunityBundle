@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Controller;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\Controller\SaveMediaTrait;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Sulu\Bundle\MediaBundle\Api\Media as ApiMedia;
@@ -29,16 +30,59 @@ class SaveMediaTraitTest extends TestCase
         getSystemCollectionManager as mockedGetSystemCollectionManager;
     }
 
+    /**
+     * @var ObjectProphecy|MediaManagerInterface
+     */
     private $mediaManager;
+
+    /**
+     * @var ObjectProphecy|SystemCollectionManagerInterface
+     */
     private $systemCollectionManager;
+
+    /**
+     * @var ObjectProphecy|User
+     */
     private $user;
+
+    /**
+     * @var string
+     */
     private $locale;
+
+    /**
+     * @var ObjectProphecy|FormInterface
+     */
     private $form;
+
+    /**
+     * @var ObjectProphecy|FormInterface
+     */
     private $avatarForm;
+
+    /**
+     * @var ObjectProphecy|FormInterface
+     */
     private $mediasForm;
+
+    /**
+     * @var string[]
+     */
     private $tempFilePaths = [];
+
+    /**
+     * @var ObjectProphecy|Contact
+     */
     private $contact;
+
+    /**
+     * @var ObjectProphecy|Media
+     */
     private $media;
+
+    /**
+     * @var ObjectProphecy|ApiMedia
+     */
     private $apiMedia;
 
     protected function setUp(): void
@@ -79,8 +123,8 @@ class SaveMediaTraitTest extends TestCase
     {
         $this->contact->setAvatar($this->media->reveal())->shouldBeCalled();
 
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $uploadedFile = new UploadedFile($this->tempFilePaths[0], 'test.jpg');
+        $fileName = $this->createTempnam();
+        $uploadedFile = new UploadedFile($fileName, 'test.jpg');
 
         $this->user->getId()->willReturn(1)->shouldBeCalled();
         $this->contact->getAvatar()->willReturn(null)->shouldBeCalled();
@@ -111,8 +155,8 @@ class SaveMediaTraitTest extends TestCase
     {
         $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
 
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $uploadedFile = new UploadedFile($this->tempFilePaths[0], 'test.jpg');
+        $tempFileName = $this->createTempnam();
+        $uploadedFile = new UploadedFile($tempFileName, 'test.jpg');
 
         $this->user->getId()->willReturn(1)->shouldBeCalled();
         $this->contact->getAvatar()->shouldNotBeCalled();
@@ -143,10 +187,11 @@ class SaveMediaTraitTest extends TestCase
     {
         $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
 
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $uploadedFile = new UploadedFile($this->tempFilePaths[0], 'test.jpg');
-        $uploadedFile2 = new UploadedFile($this->tempFilePaths[1], 'test2.jpg');
+        $tempFileName1 = $this->createTempnam();
+        $tempFileName2 = $this->createTempnam();
+
+        $uploadedFile = new UploadedFile($tempFileName1, 'test.jpg');
+        $uploadedFile2 = new UploadedFile($tempFileName2, 'test2.jpg');
 
         $this->user->getId()->willReturn(1)->shouldBeCalled();
         $this->contact->getAvatar()->shouldNotBeCalled();
@@ -189,12 +234,13 @@ class SaveMediaTraitTest extends TestCase
         $this->contact->setAvatar($this->media->reveal())->shouldBeCalled();
         $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
 
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $uploadedFile = new UploadedFile($this->tempFilePaths[0], 'test.jpg');
-        $uploadedFile2 = new UploadedFile($this->tempFilePaths[1], 'test2.jpg');
-        $uploadedFile3 = new UploadedFile($this->tempFilePaths[1], 'test3.jpg');
+        $tempFileName1 = $this->createTempnam();
+        $tempFileName2 = $this->createTempnam();
+        $tempFileName3 = $this->createTempnam();
+
+        $uploadedFile = new UploadedFile($tempFileName1, 'test.jpg');
+        $uploadedFile2 = new UploadedFile($tempFileName2, 'test2.jpg');
+        $uploadedFile3 = new UploadedFile($tempFileName3, 'test3.jpg');
 
         $this->user->getId()->willReturn(1)->shouldBeCalled();
         $this->contact->getAvatar()->willReturn($this->media->reveal())->shouldBeCalled();
@@ -252,5 +298,18 @@ class SaveMediaTraitTest extends TestCase
     private function getSystemCollectionManager(): SystemCollectionManagerInterface
     {
         return $this->systemCollectionManager->reveal();
+    }
+
+    private function createTempnam(): string
+    {
+        $filename = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
+
+        if (false === $filename) {
+            throw new \RuntimeException('Could not create tempnam in: ' . sys_get_temp_dir());
+        }
+
+        $this->tempFilePaths[] = $filename;
+
+        return $filename;
     }
 }
