@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -17,7 +17,7 @@ use Sulu\Bundle\CommunityBundle\Entity\InvalidTypeException;
 
 class BlacklistItemTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $item = new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_REQUEST);
         $this->assertEquals('*@sulu.io', $item->getPattern());
@@ -25,7 +25,7 @@ class BlacklistItemTest extends TestCase
         $this->assertEquals(BlacklistItem::TYPE_REQUEST, $item->getType());
     }
 
-    public function testEmptyConstructor()
+    public function testEmptyConstructor(): void
     {
         $item = new BlacklistItem();
         $this->assertEquals(null, $item->getPattern());
@@ -33,7 +33,7 @@ class BlacklistItemTest extends TestCase
         $this->assertEquals(null, $item->getType());
     }
 
-    public function testSetPattern()
+    public function testSetPattern(): void
     {
         $item = new BlacklistItem();
         $item->setPattern('*@sulu.io');
@@ -42,7 +42,7 @@ class BlacklistItemTest extends TestCase
         $this->assertEquals('[^@]*@sulu\.io', $item->getRegexp());
     }
 
-    public function testSetPatternNoWildcard()
+    public function testSetPatternNoWildcard(): void
     {
         $item = new BlacklistItem();
         $item->setPattern('test@sulu.io');
@@ -51,27 +51,27 @@ class BlacklistItemTest extends TestCase
         $this->assertEquals('test@sulu\.io', $item->getRegexp());
     }
 
-    public function setTypeRequest()
+    public function testSetTypeRequest(): void
     {
         $item = new BlacklistItem();
-        $item->setPattern(BlacklistItem::TYPE_REQUEST);
+        $item->setType(BlacklistItem::TYPE_REQUEST);
 
         $this->assertEquals(BlacklistItem::TYPE_REQUEST, $item->getType());
     }
 
-    public function setTypeBlock()
+    public function testSetTypeBlock(): void
     {
         $item = new BlacklistItem();
-        $item->setPattern(BlacklistItem::TYPE_BLOCK);
+        $item->setType(BlacklistItem::TYPE_BLOCK);
 
         $this->assertEquals(BlacklistItem::TYPE_BLOCK, $item->getType());
     }
 
-    public function setTypeBlockInvalid()
+    public function testSetTypeBlockInvalid(): void
     {
-        $this->expectedException(InvalidTypeException::class);
+        $this->expectException(InvalidTypeException::class);
 
         $item = new BlacklistItem();
-        $item->setPattern('test');
+        $item->setType('test');
     }
 }

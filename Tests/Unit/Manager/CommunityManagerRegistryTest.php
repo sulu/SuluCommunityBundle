@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -17,7 +17,7 @@ use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistry;
 
 class CommunityManagerRegistryTest extends TestCase
 {
-    public function testGet()
+    public function testGet(): void
     {
         $manager = $this->prophesize(CommunityManager::class);
         $registry = new CommunityManagerRegistry(['sulu_io' => $manager->reveal()]);
@@ -25,7 +25,7 @@ class CommunityManagerRegistryTest extends TestCase
         $this->assertEquals($manager->reveal(), $registry->get('sulu_io'));
     }
 
-    public function testGetNotExists()
+    public function testGetNotExists(): void
     {
         $this->expectException(\Exception::class);
 
@@ -34,7 +34,7 @@ class CommunityManagerRegistryTest extends TestCase
         $registry->get('sulu_io');
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $manager = $this->prophesize(CommunityManager::class);
         $registry = new CommunityManagerRegistry(['sulu_io' => $manager->reveal()]);

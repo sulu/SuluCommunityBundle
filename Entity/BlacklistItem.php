@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -48,7 +48,7 @@ class BlacklistItem
      * @param string $pattern
      * @param string $type
      */
-    public function __construct($pattern = null, $type = null)
+    public function __construct(?string $pattern = null, ?string $type = null)
     {
         $this->type = $type;
 
@@ -62,7 +62,7 @@ class BlacklistItem
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -72,7 +72,7 @@ class BlacklistItem
      *
      * @return string|null
      */
-    public function getPattern()
+    public function getPattern(): ?string
     {
         return $this->pattern;
     }
@@ -82,9 +82,9 @@ class BlacklistItem
      *
      * @param string $pattern
      *
-     * @return $this
+     * @return self
      */
-    public function setPattern($pattern)
+    public function setPattern(string $pattern): self
     {
         $this->pattern = $pattern;
         $this->regexp = str_replace('\*', '[^@]*', preg_quote($pattern));
@@ -97,7 +97,7 @@ class BlacklistItem
      *
      * @return string|null
      */
-    public function getRegexp()
+    public function getRegexp(): ?string
     {
         return $this->regexp;
     }
@@ -107,7 +107,7 @@ class BlacklistItem
      *
      * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -117,9 +117,9 @@ class BlacklistItem
      *
      * @param string $type
      *
-     * @return $this
+     * @return self
      */
-    public function setType($type)
+    public function setType(string $type): self
     {
         if (!in_array($type, self::$types)) {
             throw new InvalidTypeException(self::$types, $type);

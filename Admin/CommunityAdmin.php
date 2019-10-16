@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,10 +12,12 @@
 namespace Sulu\Bundle\CommunityBundle\Admin;
 
 use Sulu\Bundle\AdminBundle\Admin\Admin;
-use Sulu\Bundle\AdminBundle\Navigation\Navigation;
+use Sulu\Bundle\AdminBundle\Admin\Navigation\NavigationItemCollection;
+use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
+use Sulu\Component\Webspace\Security;
 
 /**
  * Integrates community into sulu-admin.
@@ -40,7 +42,7 @@ class CommunityAdmin extends Admin
     /**
      * @param SecurityCheckerInterface $securityChecker
      * @param WebspaceManagerInterface $webspaceManager
-     * @param array $webspacesConfiguration
+     * @param mixed[] $webspacesConfiguration
      */
     public function __construct(
         SecurityCheckerInterface $securityChecker,
@@ -52,11 +54,14 @@ class CommunityAdmin extends Admin
         $this->webspacesConfiguration = $webspacesConfiguration;
     }
 
-    public function getNavigation(): Navigation
+    public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
     {
-        // TODO implement blacklisting
+        // TODO implement Blacklisting navigation items
+    }
 
-        return parent::getNavigation();
+    public function configureViews(ViewCollection $viewCollection): void
+    {
+        // TODO implement Blacklisting views
     }
 
     /**
@@ -83,6 +88,7 @@ class CommunityAdmin extends Admin
                 );
             }
 
+            /** @var Security|null $security */
             $security = $webspace->getSecurity();
 
             if (!$security) {
@@ -113,13 +119,5 @@ class CommunityAdmin extends Admin
                 ],
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsBundleName()
-    {
-        return 'sulucommunity';
     }
 }

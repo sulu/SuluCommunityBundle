@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -20,6 +20,7 @@ use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
+use Sulu\Component\HttpKernel\SuluKernel;
 
 class EmailConfirmationControllerTest extends SuluTestCase
 {
@@ -28,7 +29,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
      */
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -77,9 +78,9 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $entityManager->flush();
     }
 
-    public function testConfirm()
+    public function testConfirm(): User
     {
-        $client = $this->createClient();
+        $client = $this->createAuthenticatedClient();
 
         $crawler = $client->request('GET', '/profile/email-confirmation?token=123-123-123');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -91,9 +92,10 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $entityManager = $this->getEntityManager();
         $entityManager->clear();
 
-        $this->assertNull($entityManager->getRepository(EmailConfirmationToken::class)->findByToken('123-123-123'));
+        $this->assertNull($this->getContainer()->get('sulu_community.email_confirmation.repository')->findByToken('123-123-123'));
 
         $user = $entityManager->find(User::class, $this->user->getId());
+        $this->assertInstanceOf(User::class, $user);
         $contact = $user->getContact();
 
         $this->assertEquals($user->getEmail(), $contact->getMainEmail());
@@ -101,9 +103,9 @@ class EmailConfirmationControllerTest extends SuluTestCase
         return $user;
     }
 
-    public function testConfirmWrongToken()
+    public function testConfirmWrongToken(): void
     {
-        $client = $this->createClient();
+        $client = $this->createAuthenticatedClient();
 
         $crawler = $client->request('GET', '/profile/email-confirmation?token=312-312-312');
         $this->assertHttpStatusCode(200, $client->getResponse());
@@ -117,7 +119,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $this->assertNotNull($entityManager->getRepository(EmailConfirmationToken::class)->findByToken('123-123-123'));
     }
 
-    public function testConfirmWithoutEmail()
+    public function testConfirmWithoutEmail(): void
     {
         $this->getEntityManager()->remove($this->user->getContact()->getEmails()->first());
         $this->user->getContact()->getEmails()->clear();
@@ -130,10 +132,10 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $this->assertEquals($user->getEmail(), $user->getContact()->getEmails()->first()->getEmail());
     }
 
-    protected function getKernelConfiguration()
+    protected static function getKernelConfiguration(): array
     {
         return [
-            'sulu_context' => 'website',
+            'sulu.context' => SuluKernel::CONTEXT_WEBSITE,
         ];
     }
 }

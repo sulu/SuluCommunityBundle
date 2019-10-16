@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Controller;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\Controller\SaveMediaTrait;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Sulu\Bundle\MediaBundle\Api\Media as ApiMedia;
@@ -30,17 +31,17 @@ class SaveMediaTraitTest extends TestCase
     }
 
     /**
-     * @var MediaManagerInterface
+     * @var ObjectProphecy|MediaManagerInterface
      */
     private $mediaManager;
 
     /**
-     * @var SystemCollectionManagerInterface
+     * @var ObjectProphecy|SystemCollectionManagerInterface
      */
     private $systemCollectionManager;
 
     /**
-     * @var User
+     * @var ObjectProphecy|User
      */
     private $user;
 
@@ -50,22 +51,17 @@ class SaveMediaTraitTest extends TestCase
     private $locale;
 
     /**
-     * @var FormInterface
+     * @var ObjectProphecy|FormInterface
      */
     private $form;
 
     /**
-     * @var FormInterface
-     */
-    private $contactForm;
-
-    /**
-     * @var FormInterface
+     * @var ObjectProphecy|FormInterface
      */
     private $avatarForm;
 
     /**
-     * @var FormInterface
+     * @var ObjectProphecy|FormInterface
      */
     private $mediasForm;
 
@@ -75,24 +71,23 @@ class SaveMediaTraitTest extends TestCase
     private $tempFilePaths = [];
 
     /**
-     * @var Contact
+     * @var ObjectProphecy|Contact
      */
     private $contact;
 
     /**
-     * @var Media
+     * @var ObjectProphecy|Media
      */
     private $media;
 
     /**
-     * @var ApiMedia
+     * @var ObjectProphecy|ApiMedia
      */
     private $apiMedia;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->form = $this->prophesize(FormInterface::class);
-        $this->contactForm = $this->prophesize(FormInterface::class);
         $this->avatarForm = $this->prophesize(FormInterface::class);
         $this->mediasForm = $this->prophesize(FormInterface::class);
         $this->contact = $this->prophesize(Contact::class);
@@ -107,50 +102,38 @@ class SaveMediaTraitTest extends TestCase
         $this->locale = 'de';
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->tempFilePaths as $tempFilePath) {
             unlink($tempFilePath);
         }
     }
 
-    public function testNoContact()
+    public function testNoAvatarAndNoMedias(): void
     {
-        $this->form->has('contact')->willReturn(false)->shouldBeCalled();
-        $this->form->get('contact')->shouldNotBeCalled();
+        $this->form->has('avatar')->willReturn(false)->shouldBeCalled();
+        $this->form->get('avatar')->shouldNotBeCalled();
+        $this->form->has('medias')->willReturn(false)->shouldBeCalled();
+        $this->form->get('medias')->shouldNotBeCalled();
 
         $this->saveMediaFields($this->form->reveal(), $this->user->reveal(), $this->locale);
     }
 
-    public function testNoAvatarAndNoMedias()
-    {
-        $this->form->has('contact')->willReturn(true)->shouldBeCalled();
-        $this->contactForm->has('avatar')->willReturn(false)->shouldBeCalled();
-        $this->contactForm->get('avatar')->shouldNotBeCalled();
-        $this->contactForm->has('medias')->willReturn(false)->shouldBeCalled();
-        $this->contactForm->get('medias')->shouldNotBeCalled();
-        $this->form->get('contact')->willReturn($this->contactForm->reveal());
-
-        $this->saveMediaFields($this->form->reveal(), $this->user->reveal(), $this->locale);
-    }
-
-    public function testAvatarAndNoMedias()
+    public function testAvatarAndNoMedias(): void
     {
         $this->contact->setAvatar($this->media->reveal())->shouldBeCalled();
 
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $uploadedFile = new UploadedFile($this->tempFilePaths[0], 'test.jpg');
+        $fileName = $this->createTempnam();
+        $uploadedFile = new UploadedFile($fileName, 'test.jpg');
 
         $this->user->getId()->willReturn(1)->shouldBeCalled();
         $this->contact->getAvatar()->willReturn(null)->shouldBeCalled();
 
-        $this->form->has('contact')->willReturn(true)->shouldBeCalled();
-        $this->contactForm->has('medias')->willReturn(false)->shouldBeCalled();
-        $this->contactForm->get('medias')->shouldNotBeCalled();
-        $this->contactForm->has('avatar')->willReturn(true)->shouldBeCalled();
+        $this->form->has('medias')->willReturn(false)->shouldBeCalled();
+        $this->form->get('medias')->shouldNotBeCalled();
+        $this->form->has('avatar')->willReturn(true)->shouldBeCalled();
         $this->avatarForm->getData()->willReturn($uploadedFile)->shouldBeCalled();
-        $this->contactForm->get('avatar')->willReturn($this->avatarForm->reveal())->shouldBeCalled();
-        $this->form->get('contact')->willReturn($this->contactForm->reveal());
+        $this->form->get('avatar')->willReturn($this->avatarForm->reveal())->shouldBeCalled();
 
         $this->systemCollectionManager->getSystemCollection('sulu_contact.contact')->willReturn(2)->shouldBeCalled();
 
@@ -168,23 +151,21 @@ class SaveMediaTraitTest extends TestCase
         $this->saveMediaFields($this->form->reveal(), $this->user->reveal(), $this->locale);
     }
 
-    public function testNoAvatarAndSingleMedia()
+    public function testNoAvatarAndSingleMedia(): void
     {
         $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
 
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $uploadedFile = new UploadedFile($this->tempFilePaths[0], 'test.jpg');
+        $tempFileName = $this->createTempnam();
+        $uploadedFile = new UploadedFile($tempFileName, 'test.jpg');
 
         $this->user->getId()->willReturn(1)->shouldBeCalled();
         $this->contact->getAvatar()->shouldNotBeCalled();
 
-        $this->form->has('contact')->willReturn(true)->shouldBeCalled();
-        $this->contactForm->has('medias')->willReturn(true)->shouldBeCalled();
-        $this->contactForm->get('medias')->willReturn($this->mediasForm->reveal());
+        $this->form->has('medias')->willReturn(true)->shouldBeCalled();
+        $this->form->get('medias')->willReturn($this->mediasForm->reveal());
         $this->mediasForm->getData()->willReturn($uploadedFile)->shouldBeCalled();
-        $this->contactForm->has('avatar')->willReturn(false)->shouldBeCalled();
-        $this->contactForm->get('avatar')->shouldNotBeCalled();
-        $this->form->get('contact')->willReturn($this->contactForm->reveal());
+        $this->form->has('avatar')->willReturn(false)->shouldBeCalled();
+        $this->form->get('avatar')->shouldNotBeCalled();
 
         $this->systemCollectionManager->getSystemCollection('sulu_contact.contact')->willReturn(2)->shouldBeCalled();
 
@@ -202,25 +183,24 @@ class SaveMediaTraitTest extends TestCase
         $this->saveMediaFields($this->form->reveal(), $this->user->reveal(), $this->locale);
     }
 
-    public function testNoAvatarAndMultipleMedias()
+    public function testNoAvatarAndMultipleMedias(): void
     {
         $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
 
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $uploadedFile = new UploadedFile($this->tempFilePaths[0], 'test.jpg');
-        $uploadedFile2 = new UploadedFile($this->tempFilePaths[1], 'test2.jpg');
+        $tempFileName1 = $this->createTempnam();
+        $tempFileName2 = $this->createTempnam();
+
+        $uploadedFile = new UploadedFile($tempFileName1, 'test.jpg');
+        $uploadedFile2 = new UploadedFile($tempFileName2, 'test2.jpg');
 
         $this->user->getId()->willReturn(1)->shouldBeCalled();
         $this->contact->getAvatar()->shouldNotBeCalled();
 
-        $this->form->has('contact')->willReturn(true)->shouldBeCalled();
-        $this->contactForm->has('medias')->willReturn(true)->shouldBeCalled();
-        $this->contactForm->get('medias')->willReturn($this->mediasForm->reveal());
+        $this->form->has('medias')->willReturn(true)->shouldBeCalled();
+        $this->form->get('medias')->willReturn($this->mediasForm->reveal());
         $this->mediasForm->getData()->willReturn([$uploadedFile, $uploadedFile2])->shouldBeCalled();
-        $this->contactForm->has('avatar')->willReturn(false)->shouldBeCalled();
-        $this->contactForm->get('avatar')->shouldNotBeCalled();
-        $this->form->get('contact')->willReturn($this->contactForm->reveal());
+        $this->form->has('avatar')->willReturn(false)->shouldBeCalled();
+        $this->form->get('avatar')->shouldNotBeCalled();
 
         $this->systemCollectionManager->getSystemCollection('sulu_contact.contact')->willReturn(2)->shouldBeCalled();
 
@@ -249,29 +229,28 @@ class SaveMediaTraitTest extends TestCase
         $this->saveMediaFields($this->form->reveal(), $this->user->reveal(), $this->locale);
     }
 
-    public function testAvatarAndMultipleMedias()
+    public function testAvatarAndMultipleMedias(): void
     {
         $this->contact->setAvatar($this->media->reveal())->shouldBeCalled();
         $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
 
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $this->tempFilePaths[] = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
-        $uploadedFile = new UploadedFile($this->tempFilePaths[0], 'test.jpg');
-        $uploadedFile2 = new UploadedFile($this->tempFilePaths[1], 'test2.jpg');
-        $uploadedFile3 = new UploadedFile($this->tempFilePaths[1], 'test3.jpg');
+        $tempFileName1 = $this->createTempnam();
+        $tempFileName2 = $this->createTempnam();
+        $tempFileName3 = $this->createTempnam();
+
+        $uploadedFile = new UploadedFile($tempFileName1, 'test.jpg');
+        $uploadedFile2 = new UploadedFile($tempFileName2, 'test2.jpg');
+        $uploadedFile3 = new UploadedFile($tempFileName3, 'test3.jpg');
 
         $this->user->getId()->willReturn(1)->shouldBeCalled();
         $this->contact->getAvatar()->willReturn($this->media->reveal())->shouldBeCalled();
 
-        $this->form->has('contact')->willReturn(true)->shouldBeCalled();
-        $this->contactForm->has('medias')->willReturn(true)->shouldBeCalled();
-        $this->contactForm->get('medias')->willReturn($this->mediasForm->reveal());
+        $this->form->has('medias')->willReturn(true)->shouldBeCalled();
+        $this->form->get('medias')->willReturn($this->mediasForm->reveal());
         $this->mediasForm->getData()->willReturn([$uploadedFile, $uploadedFile2])->shouldBeCalled();
-        $this->contactForm->has('avatar')->willReturn(true)->shouldBeCalled();
+        $this->form->has('avatar')->willReturn(true)->shouldBeCalled();
         $this->avatarForm->getData()->willReturn($uploadedFile3)->shouldBeCalled();
-        $this->contactForm->get('avatar')->willReturn($this->avatarForm->reveal())->shouldBeCalled();
-        $this->form->get('contact')->willReturn($this->contactForm->reveal());
+        $this->form->get('avatar')->willReturn($this->avatarForm->reveal())->shouldBeCalled();
 
         $this->systemCollectionManager->getSystemCollection('sulu_contact.contact')->willReturn(2)->shouldBeCalled();
 
@@ -311,13 +290,26 @@ class SaveMediaTraitTest extends TestCase
         $this->saveMediaFields($this->form->reveal(), $this->user->reveal(), $this->locale);
     }
 
-    private function getMediaManager()
+    private function getMediaManager(): MediaManagerInterface
     {
         return $this->mediaManager->reveal();
     }
 
-    private function getSystemCollectionManager()
+    private function getSystemCollectionManager(): SystemCollectionManagerInterface
     {
         return $this->systemCollectionManager->reveal();
+    }
+
+    private function createTempnam(): string
+    {
+        $filename = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
+
+        if (false === $filename) {
+            throw new \RuntimeException('Could not create tempnam in: ' . sys_get_temp_dir());
+        }
+
+        $this->tempFilePaths[] = $filename;
+
+        return $filename;
     }
 }

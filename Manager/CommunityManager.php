@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,7 +12,12 @@
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserCompletedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserConfirmedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserPasswordForgotEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserPasswordResetedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserProfileSavedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepository;
@@ -24,19 +29,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\SecurityEvents;
 
 /**
  * Handles registration, confirmation, password reset and forget.
  */
 class CommunityManager implements CommunityManagerInterface
 {
-    const EVENT_REGISTERED = 'sulu.community.registered';
-    const EVENT_CONFIRMED = 'sulu.community.confirmed';
-    const EVENT_PASSWORD_FORGOT = 'sulu.community.password_forgot';
-    const EVENT_PASSWORD_RESETED = 'sulu.community.password_reseted';
-    const EVENT_COMPLETED = 'sulu.community.completed';
-    const EVENT_SAVE_PROFILE = 'sulu.community.save_profile';
-
     /**
      * @var array
      */
@@ -83,7 +82,7 @@ class CommunityManager implements CommunityManagerInterface
     protected $mailFactory;
 
     /**
-     * @param array $config
+     * @param mixed[] $config
      * @param string $webspaceKey
      * @param EventDispatcherInterface $eventDispatcher
      * @param TokenStorageInterface $tokenStorage
@@ -92,7 +91,7 @@ class CommunityManager implements CommunityManagerInterface
      */
     public function __construct(
         array $config,
-        $webspaceKey,
+        string $webspaceKey,
         EventDispatcherInterface $eventDispatcher,
         TokenStorageInterface $tokenStorage,
         UserManagerInterface $userManager,
@@ -109,7 +108,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getWebspaceKey()
+    public function getWebspaceKey(): string
     {
         return $this->webspaceKey;
     }
@@ -117,10 +116,13 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function register(User $user)
+    public function register(User $user): User
     {
+        /** @var string|null $userLocale */
+        $userLocale = $user->getLocale();
+
         // User need locale
-        if (null === $user->getLocale()) {
+        if (null === $userLocale) {
             $user->setLocale('en');
         }
 
@@ -136,8 +138,8 @@ class CommunityManager implements CommunityManagerInterface
         $this->userManager->createUser($user, $this->webspaceKey, $this->getConfigProperty(Configuration::ROLE));
 
         // Event
-        $event = new CommunityEvent($user, $this->config);
-        $this->eventDispatcher->dispatch(self::EVENT_REGISTERED, $event);
+        $event = new UserRegisteredEvent($user, $this->config);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -145,11 +147,11 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function completion(User $user)
+    public function completion(User $user): User
     {
         // Event
-        $event = new CommunityEvent($user, $this->config);
-        $this->eventDispatcher->dispatch(self::EVENT_COMPLETED, $event);
+        $event = new UserCompletedEvent($user, $this->config);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -157,10 +159,10 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function login(User $user, Request $request)
+    public function login(User $user, Request $request): void
     {
         if (!$user->getEnabled()) {
-            return null;
+            return;
         }
 
         $token = new UsernamePasswordToken(
@@ -173,15 +175,13 @@ class CommunityManager implements CommunityManagerInterface
         $this->tokenStorage->setToken($token);
 
         $event = new InteractiveLoginEvent($request, $token);
-        $this->eventDispatcher->dispatch('security.interactive_login', $event);
-
-        return $token;
+        $this->eventDispatcher->dispatch($event, SecurityEvents::INTERACTIVE_LOGIN);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function confirm($token)
+    public function confirm(string $token): ?User
     {
         $user = $this->userManager->findByConfirmationKey($token);
 
@@ -194,8 +194,8 @@ class CommunityManager implements CommunityManagerInterface
         $user->setEnabled($this->getConfigTypeProperty(Configuration::TYPE_CONFIRMATION, Configuration::ACTIVATE_USER));
 
         // Event
-        $event = new CommunityEvent($user, $this->config);
-        $this->eventDispatcher->dispatch(self::EVENT_CONFIRMED, $event);
+        $event = new UserConfirmedEvent($user, $this->config);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -203,7 +203,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function passwordForget($emailUsername)
+    public function passwordForget(string $emailUsername): ?User
     {
         $user = $this->userManager->findUser($emailUsername);
 
@@ -219,8 +219,8 @@ class CommunityManager implements CommunityManagerInterface
         );
 
         // Event
-        $event = new CommunityEvent($user, $this->config);
-        $this->eventDispatcher->dispatch(self::EVENT_PASSWORD_FORGOT, $event);
+        $event = new UserPasswordForgotEvent($user, $this->config);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -228,15 +228,15 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function passwordReset(User $user)
+    public function passwordReset(User $user): User
     {
         $user->setPasswordResetTokenExpiresAt(null);
         $user->setPasswordResetToken(null);
         $user->setEnabled(true);
 
         // Event
-        $event = new CommunityEvent($user, $this->config);
-        $this->eventDispatcher->dispatch(self::EVENT_PASSWORD_RESETED, $event);
+        $event = new UserPasswordResetedEvent($user, $this->config);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -244,7 +244,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function sendEmails($type, User $user)
+    public function sendEmails(string $type, User $user): void
     {
         $this->mailFactory->sendEmails(
             Mail::create(
@@ -259,13 +259,13 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function saveProfile(User $user)
+    public function saveProfile(User $user): ?User
     {
         $this->userManager->updateUser($user);
 
         // Event
-        $event = new CommunityEvent($user, $this->config);
-        $this->eventDispatcher->dispatch(self::EVENT_SAVE_PROFILE, $event);
+        $event = new UserProfileSavedEvent($user, $this->config);
+        $this->eventDispatcher->dispatch($event);
 
         return $user;
     }
@@ -273,7 +273,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -284,7 +284,7 @@ class CommunityManager implements CommunityManagerInterface
     public function getConfigProperty($property)
     {
         if (!array_key_exists($property, $this->config)) {
-            throw new \Exception(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Property "%s" not found for webspace "%s" in Community Manager.',
                     $property,
@@ -302,7 +302,7 @@ class CommunityManager implements CommunityManagerInterface
     public function getConfigTypeProperty($type, $property)
     {
         if (!array_key_exists($type, $this->config) || !array_key_exists($property, $this->config[$type])) {
-            throw new \Exception(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Property "%s" from type "%s" not found for webspace "%s" in Community Manager.',
                     $property,

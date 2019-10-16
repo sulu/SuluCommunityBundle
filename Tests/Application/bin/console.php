@@ -1,11 +1,23 @@
-#!/usr/bin/env php
 <?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of Sulu.
+ *
+ * (c) Sulu GmbH
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 // if you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
 //umask(0000);
 
 set_time_limit(0);
+
+require_once __DIR__ . '/../config/bootstrap.php';
 
 use Sulu\Bundle\CommunityBundle\Tests\Application\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -23,9 +35,3 @@ if ($debug) {
 $kernel = new Kernel($env, $debug, $suluContext);
 $application = new Application($kernel);
 $application->run($input);
-
-// register all commands available by our bundles
-$adminPool = $kernel->getContainer()->get('sulu_admin.admin_pool');
-foreach ($adminPool->getCommands() as $command) {
-    $application->add($command);
-}

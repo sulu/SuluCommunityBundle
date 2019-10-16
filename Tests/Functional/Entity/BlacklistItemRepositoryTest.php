@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -17,12 +17,12 @@ use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class BlacklistItemRepositoryTest extends SuluTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->purgeDatabase();
     }
 
-    public function testFindBySender()
+    public function testFindBySender(): void
     {
         $item1 = new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_BLOCK);
         $item2 = new BlacklistItem('test@sulu.io', BlacklistItem::TYPE_REQUEST);
@@ -37,7 +37,7 @@ class BlacklistItemRepositoryTest extends SuluTestCase
         $entityManager->clear();
 
         $items = array_map(
-            function (BlacklistItem $item) {
+            function(BlacklistItem $item) {
                 return ['pattern' => $item->getPattern(), 'type' => $item->getType()];
             },
             $repository->findBySender('test@sulu.io')

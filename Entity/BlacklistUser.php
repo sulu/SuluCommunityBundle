@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -52,7 +52,7 @@ class BlacklistUser
      * @param string $webspaceKey
      * @param UserInterface $user
      */
-    public function __construct($token, $webspaceKey, UserInterface $user)
+    public function __construct(string $token, string $webspaceKey, UserInterface $user)
     {
         $this->token = $token;
         $this->webspaceKey = $webspaceKey;
@@ -66,7 +66,7 @@ class BlacklistUser
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -76,7 +76,7 @@ class BlacklistUser
      *
      * @return string|null
      */
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->token;
     }
@@ -86,7 +86,7 @@ class BlacklistUser
      *
      * @return int
      */
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
@@ -96,7 +96,7 @@ class BlacklistUser
      *
      * @return string
      */
-    public function getWebspaceKey()
+    public function getWebspaceKey(): string
     {
         return $this->webspaceKey;
     }
@@ -106,7 +106,7 @@ class BlacklistUser
      *
      * @return UserInterface
      */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
@@ -114,9 +114,9 @@ class BlacklistUser
     /**
      * Set type to denied.
      *
-     * @return BlacklistUser
+     * @return self
      */
-    public function deny()
+    public function deny(): self
     {
         $this->type = self::TYPE_DENIED;
         $this->token = null;
@@ -127,9 +127,9 @@ class BlacklistUser
     /**
      * Set type to denied.
      *
-     * @return BlacklistUser
+     * @return self
      */
-    public function confirm()
+    public function confirm(): self
     {
         $this->type = self::TYPE_CONFIRMED;
         $this->token = null;

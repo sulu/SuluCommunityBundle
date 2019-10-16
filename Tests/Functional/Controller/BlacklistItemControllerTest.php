@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -16,12 +16,12 @@ use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class BlacklistItemControllerTest extends SuluTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->purgeDatabase();
     }
 
-    public function testCgetEmpty()
+    public function testCgetEmpty(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -30,11 +30,15 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $result = json_decode($client->getResponse()->getContent(), true);
 
+        $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
         $this->assertCount(0, $result['_embedded']['items']);
     }
 
-    public function testPost($pattern = '*@sulu.io')
+    /**
+     * @return mixed[]
+     */
+    public function testPost(string $pattern = '*@sulu.io'): array
     {
         $client = $this->createAuthenticatedClient();
 
@@ -47,13 +51,17 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $result = json_decode($client->getResponse()->getContent(), true);
 
+        $this->assertIsArray($result);
         $this->assertEquals($pattern, $result['pattern']);
         $this->assertEquals(BlacklistItem::TYPE_REQUEST, $result['type']);
 
         return $result;
     }
 
-    public function testGet()
+    /**
+     * @return mixed[]
+     */
+    public function testGet(): array
     {
         $item = $this->testPost();
 
@@ -64,6 +72,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $result = json_decode($client->getResponse()->getContent(), true);
 
+        $this->assertIsArray($result);
         $this->assertEquals($item['id'], $result['id']);
         $this->assertEquals($item['pattern'], $result['pattern']);
         $this->assertEquals($item['type'], $result['type']);
@@ -71,7 +80,7 @@ class BlacklistItemControllerTest extends SuluTestCase
         return $result;
     }
 
-    public function testCget()
+    public function testCget(): void
     {
         $item = $this->testPost();
 
@@ -82,6 +91,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $result = json_decode($client->getResponse()->getContent(), true);
 
+        $this->assertIsArray($result);
         $this->assertEquals(1, $result['total']);
         $this->assertCount(1, $result['_embedded']['items']);
         $this->assertEquals($item['id'], $result['_embedded']['items'][0]['id']);
@@ -89,7 +99,7 @@ class BlacklistItemControllerTest extends SuluTestCase
         $this->assertEquals($item['type'], $result['_embedded']['items'][0]['type']);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $item = $this->testPost();
 
@@ -103,11 +113,12 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $result = json_decode($client->getResponse()->getContent(), true);
 
+        $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
         $this->assertCount(0, $result['_embedded']['items']);
     }
 
-    public function testCDelete()
+    public function testCDelete(): void
     {
         $item1 = $this->testPost();
         $item2 = $this->testPost('test@sulu.io');
@@ -122,11 +133,12 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $result = json_decode($client->getResponse()->getContent(), true);
 
+        $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
         $this->assertCount(0, $result['_embedded']['items']);
     }
 
-    public function testPostInvalidType()
+    public function testPostInvalidType(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -138,7 +150,7 @@ class BlacklistItemControllerTest extends SuluTestCase
         $this->assertHttpStatusCode(409, $client->getResponse());
     }
 
-    public function testPut()
+    public function testPut(): void
     {
         $item = $this->testPost();
 
@@ -153,11 +165,12 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $result = json_decode($client->getResponse()->getContent(), true);
 
+        $this->assertIsArray($result);
         $this->assertEquals('test@sulu.io', $result['pattern']);
         $this->assertEquals(BlacklistItem::TYPE_BLOCK, $result['type']);
     }
 
-    public function testPutInvalidType()
+    public function testPutInvalidType(): void
     {
         $item = $this->testPost();
 

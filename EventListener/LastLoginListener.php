@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,14 +12,16 @@
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
+use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Last login listener to refresh the users last login timestamp.
  */
-class LastLoginListener
+class LastLoginListener implements EventSubscriberInterface
 {
     /**
      * @var TokenStorageInterface
@@ -46,11 +48,18 @@ class LastLoginListener
     public function __construct(
         TokenStorageInterface $tokenStorage,
         EntityManager $entityManager,
-        $interval = null
+        int $interval = 0
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->entityManager = $entityManager;
-        $this->interval = (int) $interval;
+        $this->interval = $interval;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onRequest',
+        ];
     }
 
     /**
@@ -58,7 +67,7 @@ class LastLoginListener
      *
      * @param GetResponseEvent $event
      */
-    public function onRequest(GetResponseEvent $event)
+    public function onRequest(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -68,15 +77,21 @@ class LastLoginListener
             return;
         }
 
-        // Check token authentication availability
-        if ($this->tokenStorage->getToken()) {
-            $user = $this->tokenStorage->getToken()->getUser();
+        $token = $this->tokenStorage->getToken();
 
-            if ($user instanceof User && !$this->isActiveNow($user)) {
-                $user->setLastLogin(new \DateTime());
-                $this->entityManager->flush($user);
-            }
+        // Check token authentication availability
+        if (!$token) {
+            return;
         }
+
+        $user = $token->getUser();
+
+        if (!$user instanceof User || $this->isActiveNow($user)) {
+            return;
+        }
+
+        $user->setLastLogin(new \DateTime());
+        $this->entityManager->flush($user);
     }
 
     /**
@@ -86,7 +101,7 @@ class LastLoginListener
      *
      * @return bool
      */
-    private function isActiveNow(User $user)
+    private function isActiveNow(User $user): bool
     {
         $delay = new \DateTime($this->interval . ' seconds ago');
 

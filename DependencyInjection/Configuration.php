@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -92,8 +92,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sulu_community');
+        $treeBuilder = new TreeBuilder('sulu_community');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
@@ -194,7 +194,7 @@ class Configuration implements ConfigurationInterface
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()
-                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue(null)->end()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Profile change')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue(null)->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
                                         ->end()

@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -23,11 +23,11 @@ class Mail
      *
      * @param string|array $from
      * @param string|array $to
-     * @param array $config
+     * @param mixed[] $config
      *
      * @return Mail
      */
-    public static function create($from, $to, $config)
+    public static function create($from, $to, array $config): self
     {
         return new self(
             $from,
@@ -49,7 +49,7 @@ class Mail
     private $to;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $userEmail;
 
@@ -75,7 +75,7 @@ class Mail
      * @param null|string $userTemplate
      * @param null|string $adminTemplate
      */
-    public function __construct($from, $to, $subject, $userTemplate = null, $adminTemplate = null)
+    public function __construct($from, $to, string $subject, ?string $userTemplate = null, ?string $adminTemplate = null)
     {
         $this->from = $from;
         $this->to = $to;
@@ -109,7 +109,7 @@ class Mail
      *
      * @return string
      */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->subject;
     }
@@ -119,7 +119,7 @@ class Mail
      *
      * @return null|string
      */
-    public function getUserTemplate()
+    public function getUserTemplate(): ?string
     {
         return $this->userTemplate;
     }
@@ -129,7 +129,7 @@ class Mail
      *
      * @return null|string
      */
-    public function getAdminTemplate()
+    public function getAdminTemplate(): ?string
     {
         return $this->adminTemplate;
     }
@@ -137,9 +137,9 @@ class Mail
     /**
      * Returns user-email.
      *
-     * @return string
+     * @return string|null
      */
-    public function getUserEmail()
+    public function getUserEmail(): ?string
     {
         return $this->userEmail;
     }
@@ -148,11 +148,11 @@ class Mail
      * Set user-email.
      * This setting overwrite the user-email.
      *
-     * @param string $userEmail
+     * @param string|null $userEmail
      *
-     * @return $this
+     * @return self
      */
-    public function setUserEmail($userEmail)
+    public function setUserEmail(?string $userEmail): self
     {
         $this->userEmail = $userEmail;
 

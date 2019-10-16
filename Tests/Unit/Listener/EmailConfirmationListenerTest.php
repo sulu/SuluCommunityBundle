@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -17,7 +17,7 @@ use Prophecy\Argument;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserProfileSavedEvent;
 use Sulu\Bundle\CommunityBundle\EventListener\EmailConfirmationListener;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
@@ -27,55 +27,20 @@ use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class EmailConfirmationListenerTest extends TestCase
 {
-    /**
-     * @var MailFactoryInterface
-     */
     private $mailFactory;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
-
-    /**
-     * @var EmailConfirmationTokenRepository
-     */
     private $repository;
-
-    /**
-     * @var TokenGeneratorInterface
-     */
     private $tokenGenerator;
-
-    /**
-     * @var EmailConfirmationListener
-     */
     private $listener;
-
-    /**
-     * @var CommunityEvent
-     */
     private $event;
-
-    /**
-     * @var User
-     */
     private $user;
-
-    /**
-     * @var Contact
-     */
     private $contact;
-
-    /**
-     * @var EmailConfirmationToken
-     */
     private $token;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->mailFactory = $this->prophesize(MailFactoryInterface::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
@@ -89,7 +54,7 @@ class EmailConfirmationListenerTest extends TestCase
             $this->tokenGenerator->reveal()
         );
 
-        $this->event = $this->prophesize(CommunityEvent::class);
+        $this->event = $this->prophesize(UserProfileSavedEvent::class);
         $this->user = $this->prophesize(User::class);
         $this->contact = $this->prophesize(Contact::class);
         $this->token = $this->prophesize(EmailConfirmationToken::class);
@@ -107,7 +72,7 @@ class EmailConfirmationListenerTest extends TestCase
         $this->token->getUser()->willReturn($this->user->reveal());
     }
 
-    public function testSendConfirmation()
+    public function testSendConfirmation(): void
     {
         $this->user->getEmail()->willReturn('test@sulu.io');
         $this->contact->getMainEmail()->willReturn('new@sulu.io');
@@ -116,7 +81,7 @@ class EmailConfirmationListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function (EmailConfirmationToken $token) {
+                function(EmailConfirmationToken $token) {
                     return '123-123-123' === $token->getToken() && $token->getUser() === $this->user->reveal();
                 }
             )
@@ -132,7 +97,7 @@ class EmailConfirmationListenerTest extends TestCase
         $this->listener->sendConfirmationOnEmailChange($this->event->reveal());
     }
 
-    public function testSendConfirmationExistingToken()
+    public function testSendConfirmationExistingToken(): void
     {
         $this->user->getEmail()->willReturn('test@sulu.io');
         $this->contact->getMainEmail()->willReturn('new@sulu.io');
@@ -154,7 +119,7 @@ class EmailConfirmationListenerTest extends TestCase
         $this->listener->sendConfirmationOnEmailChange($this->event->reveal());
     }
 
-    public function testSendConfirmationNoChange()
+    public function testSendConfirmationNoChange(): void
     {
         $this->user->getEmail()->willReturn('test@sulu.io');
         $this->contact->getMainEmail()->willReturn('test@sulu.io');

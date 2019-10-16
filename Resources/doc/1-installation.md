@@ -15,7 +15,6 @@ Enable the required bundles in the `config/bundles.php` of your project:
 ```diff
 +    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
 +    Sulu\Bundle\CommunityBundle\SuluCommunityBundle::class => ['all' => true],
-     // Admin
 -    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true, 'admin' => true], 
 ```
 

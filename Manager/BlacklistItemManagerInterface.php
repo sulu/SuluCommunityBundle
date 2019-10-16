@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -25,19 +25,19 @@ interface BlacklistItemManagerInterface
      *
      * @return BlacklistItem
      */
-    public function find($id);
+    public function find(int $id): BlacklistItem;
 
     /**
      * Return new blacklist-item.
      *
      * @return BlacklistItem
      */
-    public function create();
+    public function create(): BlacklistItem;
 
     /**
      * Deletes given blacklist-item.
      *
      * @param int|int[] $ids
      */
-    public function delete($ids);
+    public function delete($ids): void;
 }

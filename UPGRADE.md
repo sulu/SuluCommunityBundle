@@ -2,6 +2,74 @@
 
 ## 2.0.0 (unreleased)
 
+### Typehints added to the codebase
+
+Everywhere were possible typehints were added to the classes and interfaces.
+If you extend or implement something you need also add the typehints there.
+
+### Events changed
+
+The general `CommunityEvent` class was removed and replaced with:
+
+ - `UserRegisteredEvent`
+ - `UserCompletedEvent`
+ - `UserPasswordForgotEvent`
+ - `UserPasswordResetedEvent`
+ - `UserRegisteredEvent`
+ - `UserProfileSavedEvent`
+
+which all extend from the new `AbstractCommunityEvent`.
+
+### Address entity changed
+
+If you implemented a custom ProfileType you need to change the country field to countryCode:
+
+```php
+// Before
+$builder->add('country', EntityType::class, [
+    'property_path' => 'contact.mainAddress.countryCode',
+    'class' => Country::class,
+    'choice_label' => function (Country $country) {
+        return Intl::getRegionBundle()->getCountryName($country->getCode());
+    },
+]);
+
+// After
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+
+$builder->add('countryCode', CountryType::class, [
+	'property_path' => 'contact.mainAddress.countryCode',
+]);
+```
+
+For database migration see [Sulu 2.0 Upgrade](https://github.com/sulu/sulu/blob/2.0.0/UPGRADE.md#country-table-co_countries-was-replace-with-symfony-intl-regionbundle).
+
+### Routing files changed to yaml
+
+```yaml
+# Before sulu_community_website.yaml
+sulu_community:
+    type: portal
+    resource: "@SuluCommunityBundle/Resources/config/routing_website.xml"
+
+# Before sulu_community_admin.yaml
+sulu_community_api:
+    type: rest
+    prefix:  /admin/api
+    resource: "@SuluCommunityBundle/Resources/config/routing_api.xml"
+
+# After sulu_community_website.yaml
+sulu_community:
+    type: portal
+    resource: "@SuluCommunityBundle/Resources/config/routing_website.yaml"
+
+# After sulu_community_admin.yaml
+sulu_community_api:
+    type: rest
+    prefix:  /admin/api
+    resource: "@SuluCommunityBundle/Resources/config/routing_api.yaml"
+```
+
 ### BaseUser class references replaced with User class
 
 The `BaseUser` class from sulu is not longered used and all function

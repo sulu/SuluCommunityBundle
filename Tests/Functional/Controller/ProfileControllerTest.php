@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -14,18 +14,17 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
-use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
-use Sulu\Bundle\ContactBundle\Entity\Country;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
+use Sulu\Component\HttpKernel\SuluKernel;
 
 class ProfileControllerTest extends SuluTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -41,14 +40,6 @@ class ProfileControllerTest extends SuluTestCase
         $metadata = $entityManager->getClassMetadata(get_class($addressType));
         $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
-        $country = new Country();
-        $country->setName('Star Trek');
-        $country->setCode('ST');
-        $country->setId(1);
-
-        $metadata = $entityManager->getClassMetadata(get_class($country));
-        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
-
         $emailType = new EmailType();
         $emailType->setName('work');
         $emailType->setId(1);
@@ -57,16 +48,15 @@ class ProfileControllerTest extends SuluTestCase
         $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $entityManager->persist($addressType);
-        $entityManager->persist($country);
         $entityManager->persist($emailType);
 
-        $contact = $entityManager->getRepository(ContactInterface::class)->createNew();
+        $contact = $this->getContainer()->get('sulu.repository.contact')->createNew();
         $contact->setFirstName('Max');
         $contact->setLastName('Mustermann');
         $entityManager->persist($contact);
 
         /** @var User $user */
-        $user = $entityManager->getRepository(User::class)->createNew();
+        $user = $this->getContainer()->get('sulu.repository.user')->createNew();
         $user->setUsername('test');
         $user->setPassword('test');
         $user->setSalt('');
@@ -75,7 +65,7 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->persist($user);
 
         /** @var Role $role */
-        $role = $entityManager->getRepository(Role::class)->createNew();
+        $role = $this->getContainer()->get('sulu.repository.role')->createNew();
         $role->setName('Sulu-ioUser');
         $role->setSystem('Website');
         $entityManager->persist($role);
@@ -92,7 +82,10 @@ class ProfileControllerTest extends SuluTestCase
         $entityManager->flush();
     }
 
-    private function submitProfile($data)
+    /**
+     * @param mixed[] $data
+     */
+    private function submitProfile(array $data): User
     {
         $client = $this->createAuthenticatedClient();
 
@@ -107,7 +100,7 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertCount(1, $crawler->filter('#profile_number'));
         $this->assertCount(1, $crawler->filter('#profile_zip'));
         $this->assertCount(1, $crawler->filter('#profile_city'));
-        $this->assertCount(1, $crawler->filter('#profile_country'));
+        $this->assertCount(1, $crawler->filter('#profile_countryCode'));
         $this->assertCount(1, $crawler->filter('#profile_note'));
 
         $form = $crawler->selectButton('profile[submit]')->form(array_merge(
@@ -130,7 +123,7 @@ class ProfileControllerTest extends SuluTestCase
         return $repository->findOneBy(['username' => 'test']);
     }
 
-    public function testProfile()
+    public function testProfile(): void
     {
         $user = $this->submitProfile([
             'profile[formOfAddress]' => 0,
@@ -141,7 +134,7 @@ class ProfileControllerTest extends SuluTestCase
             'profile[number]' => 16,
             'profile[zip]' => 12351,
             'profile[city]' => 'USS Excelsior',
-            'profile[country]' => 1,
+            'profile[countryCode]' => 'AT',
             'profile[note]' => 'Test',
         ]);
 
@@ -151,11 +144,11 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertEquals('USS Excelsior', $user->getContact()->getMainAddress()->getCity());
         $this->assertEquals(16, $user->getContact()->getMainAddress()->getNumber());
         $this->assertEquals(12351, $user->getContact()->getMainAddress()->getZip());
-        $this->assertEquals(1, $user->getContact()->getMainAddress()->getCountry()->getId());
+        $this->assertEquals('AT', $user->getContact()->getMainAddress()->getCountryCode());
         $this->assertEquals('Test', $user->getContact()->getNote());
     }
 
-    public function testProfileWithoutNote()
+    public function testProfileWithoutNote(): void
     {
         $user = $this->submitProfile([
             'profile[formOfAddress]' => 0,
@@ -166,16 +159,16 @@ class ProfileControllerTest extends SuluTestCase
             'profile[number]' => 16,
             'profile[zip]' => 12351,
             'profile[city]' => 'USS Excelsior',
-            'profile[country]' => 1,
+            'profile[countryCode]' => 'AT',
         ]);
 
-        $this->assertSame(null, $user->getContact()->getNote());
+        $this->assertNull($user->getContact()->getNote());
     }
 
-    protected function getKernelConfiguration()
+    protected static function getKernelConfiguration(): array
     {
         return [
-            'sulu_context' => 'website',
+            'sulu.context' => SuluKernel::CONTEXT_WEBSITE,
         ];
     }
 }

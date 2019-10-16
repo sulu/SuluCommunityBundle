@@ -2,14 +2,41 @@ includes:
     - vendor/jangregor/phpstan-prophecy/src/extension.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
 
 parameters:
-    level: 3
+    paths:
+        - .
+    level: max
     excludes_analyse:
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/vendor/*
-        - %currentWorkingDirectory%/Tests/*
+        - %currentWorkingDirectory%/Tests/Application/*
     symfony:
         container_xml_path: %currentWorkingDirectory%/Tests/Application/var/cache/admin/dev/adminAdminDevDebugProjectContainer.xml
     ignoreErrors:
-        - '#Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch()#'
+        -
+            path: Manager/CommunityManager.php
+            message: '#Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch()#'
+        -
+            path: Controller/SaveMediaTrait.php
+            message: '#Else branch is unreachable because ternary operator condition is always true.#'
+        -
+            path: Tests/Functional/Controller/RegistrationTest.php
+            message: '#Call to method PHPUnit\\Framework\\Assert::assertNull\(\) with string will always evaluate to false.#'
+        -
+            path: Controller/LoginController.php
+            message: '#Parameter \#2 \$values of method Symfony\\Component\\HttpFoundation\\ResponseHeaderBag::set\(\) expects array<string>|string, int given.#'
+        -
+            path: Tests/
+            message: '#Parameter \#2 \$response of method Sulu\\Bundle\\TestBundle\\Testing\\SuluTestCase::assertHttpStatusCode\(\) expects Symfony\\Component\\HttpFoundation\\Response, object given#'
+        -
+            path: Tests/
+            message: '#Call to an undefined method object::getContent().#'
+        - '#Parameter \#1 \$confirmationKey of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setConfirmationKey\(\) expects string, null given.#'
+        - '#Parameter \#1 \$passwordResetTokenExpiresAt of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setPasswordResetTokenExpiresAt\(\) expects DateTime, null given.#'
+        - '#Parameter \#1 \$passwordResetToken of method Sulu\\Bundle\\SecurityBundle\\Entity\\User::setPasswordResetToken\(\) expects string, null given.#'
+        - '#Call to an undefined method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest::get\(\).#'
+        - '#Parameter \#3 \$userId of method Sulu\\Bundle\\MediaBundle\\Media\\Manager\\MediaManagerInterface::save\(\) expects int, int|null given.#'

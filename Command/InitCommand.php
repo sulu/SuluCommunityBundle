@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -18,6 +18,7 @@ use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Component\Security\Authentication\RoleInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
+use Sulu\Component\Webspace\Security;
 use Sulu\Component\Webspace\Webspace;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -70,10 +71,17 @@ class InitCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var string $webspaceKey */
         $webspaceKey = $input->getArgument('webspace');
 
         if (null !== $webspaceKey) {
-            $this->initWebspace($this->webspaceManager->findWebspaceByKey($webspaceKey), $output);
+            $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
+
+            if (!$webspace) {
+                throw new \InvalidArgumentException(sprintf('Given webspace "%s" is invalid', $webspaceKey));
+            }
+
+            $this->initWebspace($webspace, $output);
             $this->entityManager->flush();
 
             return 0;
@@ -94,17 +102,20 @@ class InitCommand extends ContainerAwareCommand
      *
      * @throws \Exception
      */
-    protected function initWebspace($webspace, OutputInterface $output)
+    protected function initWebspace(Webspace $webspace, OutputInterface $output): void
     {
         $webspaceKey = $webspace->getKey();
 
-        if (!$webspace->getSecurity() || !$this->communityManagerRegistry->has($webspaceKey)) {
+        /** @var Security|null $security */
+        $security = $webspace->getSecurity();
+
+        if (!$security || !$this->communityManagerRegistry->has($webspaceKey)) {
             return;
         }
 
         $communityManager = $this->communityManagerRegistry->get($webspaceKey);
         $roleName = $communityManager->getConfigProperty(Configuration::ROLE);
-        $system = $webspace->getSecurity()->getSystem();
+        $system = $security->getSystem();
 
         // Create role if not exists
         $output->writeln(
@@ -124,7 +135,7 @@ class InitCommand extends ContainerAwareCommand
      *
      * @return string
      */
-    protected function createRoleIfNotExists($roleName, $system)
+    protected function createRoleIfNotExists(string $roleName, string $system): string
     {
         /** @var RoleRepository $roleRepository */
         $roleRepository = $this->entityManager->getRepository(RoleInterface::class);

@@ -3,17 +3,6 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
-    <parameters>
-        <!-- Event Constants -->
-        <parameter type="constant" key="sulu_community.event.registered">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_REGISTERED</parameter>
-        <parameter type="constant" key="sulu_community.event.confirmed">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_CONFIRMED</parameter>
-        <parameter type="constant" key="sulu_community.event.password_forgot">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_PASSWORD_FORGOT</parameter>
-        <parameter type="constant" key="sulu_community.event.password_reseted">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_PASSWORD_RESETED</parameter>
-        <parameter type="constant" key="sulu_community.event.completed">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_COMPLETED</parameter>
-        <parameter type="constant" key="sulu_community.event.save_profile">Sulu\Bundle\CommunityBundle\Manager\CommunityManager::EVENT_SAVE_PROFILE</parameter>
-    </parameters>
-
     <services>
         <!-- Commands -->
         <service id="sulu_community.command.init"
@@ -60,18 +49,7 @@
         <service id="sulu_community.mail_listener" class="Sulu\Bundle\CommunityBundle\EventListener\MailListener">
             <argument type="service" id="sulu_community.mail_factory"/>
 
-            <tag name="kernel.event_listener" event="%sulu_community.event.registered%"
-                 method="sendRegistrationEmails" priority="50"/>
-            <tag name="kernel.event_listener" event="%sulu_community.event.confirmed%"
-                 method="sendConfirmationEmails"/>
-            <tag name="kernel.event_listener" event="%sulu_community.event.password_forgot%"
-                 method="sendPasswordForgetEmails"/>
-            <tag name="kernel.event_listener" event="%sulu_community.event.password_reseted%"
-                 method="sendPasswordResetEmails"/>
-            <tag name="kernel.event_listener" event="%sulu_community.event.completed%"
-                 method="sendCompletionEmails"/>
-            <tag name="kernel.event_listener" event="%sulu_community.event.save_profile%"
-                 method="sendNotificationSaveProfile"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <!-- black-listener -->
@@ -81,8 +59,7 @@
             <argument type="service" id="sulu_security.token_generator"/>
             <argument type="service" id="sulu_community.mail_factory"/>
 
-            <tag name="kernel.event_listener" event="%sulu_community.event.registered%" method="validateEmail"
-                 priority="51"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <!-- completion-listener -->
@@ -94,7 +71,7 @@
             <argument>%fragment.path%</argument>
             <argument type="collection"/>
 
-            <tag name="kernel.event_listener" event="kernel.request" method="onRequest"/>
+            <tag name="kernel.event_subscriber"/>
             <tag name="sulu.context" context="website"/>
         </service>
 
@@ -145,8 +122,7 @@
             <argument type="service" id="sulu_community.email_confirmation.repository"/>
             <argument type="service" id="sulu_security.token_generator"/>
 
-            <tag name="kernel.event_listener" event="%sulu_community.event.save_profile%"
-                 method="sendConfirmationOnEmailChange"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="sulu_community.email_confirmation.repository"

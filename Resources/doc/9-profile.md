@@ -70,6 +70,8 @@ namespace App\Form;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -133,12 +135,8 @@ class ProfileType extends AbstractType
             'required' => false,
         ]);
 
-        $builder->add('country', EntityType::class, [
-            'property_path' => 'contact.mainAddress.country',
-            'class' => Country::class,
-            'choice_label' => function (Country $country) {
-                return Intl::getRegionBundle()->getCountryName($country->getCode());
-            },
+        $builder->add('countryCode', CountryType::class, [
+            'property_path' => 'contact.mainAddress.countryCode',
         ]);
         
         $builder->add('note', TextAreaType::class, [

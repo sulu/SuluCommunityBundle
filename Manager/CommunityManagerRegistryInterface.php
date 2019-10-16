@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -18,12 +18,12 @@ interface CommunityManagerRegistryInterface
      *
      * @return CommunityManagerInterface
      */
-    public function get($webspaceKey);
+    public function get(string $webspaceKey): CommunityManagerInterface;
 
     /**
      * @param string $webspaceKey
      *
      * @return bool
      */
-    public function has($webspaceKey);
+    public function has(string $webspaceKey): bool;
 }

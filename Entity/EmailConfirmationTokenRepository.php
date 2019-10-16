@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -26,7 +26,7 @@ class EmailConfirmationTokenRepository extends EntityRepository
      *
      * @param string $token
      *
-     * @return EmailConfirmationToken|object|null
+     * @return EmailConfirmationToken|null
      */
     public function findByToken($token)
     {
@@ -44,7 +44,7 @@ class EmailConfirmationTokenRepository extends EntityRepository
      *
      * @param UserInterface $user
      *
-     * @return EmailConfirmationToken|object|null
+     * @return EmailConfirmationToken|null
      */
     public function findByUser($user)
     {

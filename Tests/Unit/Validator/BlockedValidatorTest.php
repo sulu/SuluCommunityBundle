@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class BlockedValidatorTest extends TestCase
 {
-    public function testValidate()
+    public function testValidate(): void
     {
         $context = $this->prophesize(ExecutionContextInterface::class);
         $repository = $this->prophesize(BlacklistItemRepository::class);
@@ -40,7 +40,7 @@ class BlockedValidatorTest extends TestCase
         $context->addViolation('The email "%email%" is blocked.', ['%email%' => 'test@sulu.io'])->shouldBeCalled();
     }
 
-    public function testValidateNoBlocking()
+    public function testValidateNoBlocking(): void
     {
         $context = $this->prophesize(ExecutionContextInterface::class);
         $repository = $this->prophesize(BlacklistItemRepository::class);
@@ -55,7 +55,7 @@ class BlockedValidatorTest extends TestCase
         $context->addViolation('The email "%email%" is blocked.', ['%email%' => 'test@sulu.io'])->shouldNotBeCalled();
     }
 
-    public function testValidateNoMatch()
+    public function testValidateNoMatch(): void
     {
         $context = $this->prophesize(ExecutionContextInterface::class);
         $repository = $this->prophesize(BlacklistItemRepository::class);

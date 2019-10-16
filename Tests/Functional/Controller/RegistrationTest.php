@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -20,6 +20,8 @@ use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
+use Sulu\Component\HttpKernel\SuluKernel;
+use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -30,7 +32,7 @@ class RegistrationTest extends SuluTestCase
 {
     use BlacklistItemTrait;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -55,7 +57,7 @@ class RegistrationTest extends SuluTestCase
         $entityManager->flush();
     }
 
-    public function testRegister()
+    public function testRegister(): void
     {
         $client = $this->createClient();
 
@@ -85,9 +87,10 @@ class RegistrationTest extends SuluTestCase
         $this->assertHttpStatusCode(302, $client->getResponse());
     }
 
-    public function testConfirmation()
+    public function testConfirmation(): User
     {
         $this->testRegister();
+        /** @var User $user */
         $user = $this->findUser();
 
         $confirmationKey = $user->getConfirmationKey();
@@ -97,13 +100,14 @@ class RegistrationTest extends SuluTestCase
         $client->request('GET', '/confirmation/' . $confirmationKey);
         $this->assertHttpStatusCode(200, $client->getResponse());
 
+        /** @var User $user */
         $user = $this->findUser();
         $this->assertNull($user->getConfirmationKey());
 
         return $user;
     }
 
-    public function testLogin()
+    public function testLogin(): void
     {
         $this->testConfirmation();
 
@@ -128,7 +132,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertEquals('http://localhost/profile', $client->getResponse()->getTargetUrl());
     }
 
-    public function testLoginWrongPassword()
+    public function testLoginWrongPassword(): void
     {
         $this->testConfirmation();
 
@@ -153,7 +157,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertEquals('http://localhost/login', $client->getResponse()->getTargetUrl());
     }
 
-    public function testRegistrationBlacklistedBlocked()
+    public function testRegistrationBlacklistedBlocked(): void
     {
         $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_BLOCK);
 
@@ -173,18 +177,22 @@ class RegistrationTest extends SuluTestCase
         );
         $client->submit($form);
         $this->assertHttpStatusCode(200, $client->getResponse());
+        $content = $client->getResponse()->getContent();
 
-        $this->assertContains('is blocked', $client->getResponse()->getContent());
+        $this->assertIsString($content);
+        $this->assertStringContainsString('is blocked', $content);
         $this->assertNull($this->findUser());
     }
 
-    public function testRegistrationBlacklistedRequested()
+    public function testRegistrationBlacklistedRequested(): \Swift_Message
     {
         $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_REQUEST);
 
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/registration');
+        $this->assertHttpStatusCode(200, $client->getResponse());
+
         $form = $crawler->selectButton('registration[submit]')->form(
             [
                 'registration[username]' => 'sulu',
@@ -202,15 +210,19 @@ class RegistrationTest extends SuluTestCase
         $this->assertNotNull($this->findUser());
 
         // check email to admin
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $profile = $client->getProfile();
+        $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
+
+        /** @var MessageDataCollector $mailCollector */
+        $mailCollector = $profile->getCollector('swiftmailer');
         $this->assertEquals(1, $mailCollector->getMessageCount());
         $message = $mailCollector->getMessages()[0];
-        $this->assertEquals('admin@sulu.io', key($message->getTo()));
+        $this->assertEquals('admin@localhost', key($message->getTo()));
 
         return $message;
     }
 
-    public function testBlacklistConfirm()
+    public function testBlacklistConfirm(): void
     {
         $message = $this->testRegistrationBlacklistedRequested();
 
@@ -218,20 +230,30 @@ class RegistrationTest extends SuluTestCase
         $emailCrawler->addContent($message->getBody());
 
         $links = $emailCrawler->filter('a');
+        $firstLink = $links->first()->attr('href');
+        $this->assertIsString($firstLink);
+        $this->assertStringContainsString('/_community/confirm', $firstLink);
 
         $client = $this->createClient();
 
-        $client->request('GET', $links->first()->attr('href'));
-        $this->assertContains('User "hikaru@sulu.io" confirmed', $client->getResponse()->getContent());
+        $client->request('GET', $firstLink);
+        $content = $client->getResponse()->getContent();
+
+        $this->assertIsString($content);
+        $this->assertStringContainsString('User "hikaru@sulu.io" confirmed', $content);
 
         // check email to user
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $profile = $client->getProfile();
+        $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
+
+        /** @var MessageDataCollector $mailCollector */
+        $mailCollector = $profile->getCollector('swiftmailer');
         $this->assertEquals(1, $mailCollector->getMessageCount());
         $message = $mailCollector->getMessages()[0];
         $this->assertEquals('hikaru@sulu.io', key($message->getTo()));
     }
 
-    public function testBlacklistBlocked()
+    public function testBlacklistBlocked(): void
     {
         $message = $this->testRegistrationBlacklistedRequested();
 
@@ -239,18 +261,28 @@ class RegistrationTest extends SuluTestCase
         $emailCrawler->addContent($message->getBody());
 
         $links = $emailCrawler->filter('a');
+        $lastLink = $links->last()->attr('href');
+        $this->assertIsString($lastLink);
+        $this->assertStringContainsString('/_community/deny', $lastLink);
 
         $client = $this->createClient();
 
-        $client->request('GET', $links->last()->attr('href'));
-        $this->assertContains('User "hikaru@sulu.io" denied', $client->getResponse()->getContent());
+        $client->request('GET', $lastLink);
+        $content = $client->getResponse()->getContent();
+
+        $this->assertIsString($content);
+        $this->assertStringContainsString('User "hikaru@sulu.io" denied', $content);
 
         // check email to user
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $profile = $client->getProfile();
+        $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
+
+        /** @var MessageDataCollector $mailCollector */
+        $mailCollector = $profile->getCollector('swiftmailer');
         $this->assertEquals(0, $mailCollector->getMessageCount());
     }
 
-    public function testPasswordForget()
+    public function testPasswordForget(): void
     {
         $user = $this->testConfirmation();
 
@@ -269,7 +301,11 @@ class RegistrationTest extends SuluTestCase
         $client->submit($form);
 
         // check email to user
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $profile = $client->getProfile();
+        $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
+
+        /** @var MessageDataCollector $mailCollector */
+        $mailCollector = $profile->getCollector('swiftmailer');
         $this->assertEquals(1, $mailCollector->getMessageCount());
         $message = $mailCollector->getMessages()[0];
         $this->assertEquals('hikaru@sulu.io', key($message->getTo()));
@@ -278,7 +314,11 @@ class RegistrationTest extends SuluTestCase
         $emailCrawler->addContent($message->getBody());
         $links = $emailCrawler->filter('a');
 
-        $crawler = $client->request('GET', $links->first()->attr('href'));
+        $firstLink = $links->first()->attr('href');
+        $this->assertIsString($firstLink);
+        $this->assertStringContainsString('/password-reset/', $firstLink);
+
+        $crawler = $client->request('GET', $firstLink);
 
         $this->assertCount(1, $crawler->filter('input[name="password_reset[plainPassword]"]'));
 
@@ -293,7 +333,9 @@ class RegistrationTest extends SuluTestCase
 
         $this->getEntityManager()->clear();
 
-        $this->assertStringStartsWith('my-new-password', $this->findUser()->getPassword());
+        /** @var User $user */
+        $user = $this->findUser();
+        $this->assertStringStartsWith('my-new-password', $user->getPassword());
     }
 
     /**
@@ -301,26 +343,29 @@ class RegistrationTest extends SuluTestCase
      *
      * @param string $username
      *
-     * @return User
+     * @return User|null
      */
-    private function findUser($username = 'sulu')
+    private function findUser(string $username = 'sulu'): ?User
     {
         // clear entity-manager to ensure newest user
         $this->getEntityManager()->clear();
 
-        $repository = $this->getEntityManager()->getRepository(User::class);
+        $repository = $this->getContainer()->get('sulu.repository.user');
 
         try {
-            return $repository->findUserByUsername($username);
+            /** @var User $user */
+            $user = $repository->findUserByUsername($username);
+
+            return $user;
         } catch (NoResultException $exception) {
-            return;
+            return null;
         }
     }
 
-    protected function getKernelConfiguration()
+    protected static function getKernelConfiguration(): array
     {
         return [
-            'sulu_context' => 'website',
+            'sulu.context' => SuluKernel::CONTEXT_WEBSITE,
         ];
     }
 }

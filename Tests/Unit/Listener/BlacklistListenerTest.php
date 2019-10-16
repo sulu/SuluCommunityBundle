@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -18,7 +18,7 @@ use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
 use Sulu\Bundle\CommunityBundle\EventListener\BlacklistListener;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
@@ -27,32 +27,13 @@ use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class BlacklistListenerTest extends TestCase
 {
-    /**
-     * @var BlacklistItemRepository
-     */
     private $repository;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
-
-    /**
-     * @var TokenGeneratorInterface
-     */
     private $tokenGenerator;
-
-    /**
-     * @var MailFactoryInterface
-     */
     private $mailFactory;
-
-    /**
-     * @var BlacklistListener
-     */
     private $listener;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = $this->prophesize(BlacklistItemRepository::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
@@ -67,7 +48,7 @@ class BlacklistListenerTest extends TestCase
         );
     }
 
-    public function testValidateEmail()
+    public function testValidateEmail(): void
     {
         $this->repository->findBySender('test@sulu.io')
             ->willReturn([new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_REQUEST)]);
@@ -76,7 +57,7 @@ class BlacklistListenerTest extends TestCase
         $user = $this->prophesize(User::class);
         $user->getEmail()->willReturn('test@sulu.io');
 
-        $event = $this->prophesize(CommunityEvent::class);
+        $event = $this->prophesize(UserRegisteredEvent::class);
         $event->getConfigProperty(Configuration::WEBSPACE_KEY)->willReturn('sulu-io');
         $event->getConfigProperty(Configuration::EMAIL_TO)->willReturn(['admin@sulu.io' => 'admin@sulu.io']);
         $event->getConfigProperty(Configuration::EMAIL_FROM)->willReturn(['from@sulu.io' => 'from@sulu.io']);
@@ -91,7 +72,7 @@ class BlacklistListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function (BlacklistUser $item) use ($user) {
+                function(BlacklistUser $item) use ($user) {
                     return '123-123-123' === $item->getToken()
                     && 'sulu-io' === $item->getWebspaceKey()
                     && $item->getUser() === $user->reveal();
@@ -108,7 +89,7 @@ class BlacklistListenerTest extends TestCase
         $this->listener->validateEmail($event->reveal());
     }
 
-    public function testValidateEmailNoMatch()
+    public function testValidateEmailNoMatch(): void
     {
         $this->repository->findBySender('test@sulu.io')
             ->willReturn([]);
@@ -116,7 +97,7 @@ class BlacklistListenerTest extends TestCase
         $user = $this->prophesize(User::class);
         $user->getEmail()->willReturn('test@sulu.io');
 
-        $event = $this->prophesize(CommunityEvent::class);
+        $event = $this->prophesize(UserRegisteredEvent::class);
         $event->getUser()->willReturn($user->reveal());
         $event->stopPropagation()->shouldNotBeCalled();
 

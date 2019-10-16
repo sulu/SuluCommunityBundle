@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -11,11 +11,13 @@
 
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
+use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use Sulu\Bundle\CommunityBundle\Validator\User\CompletionInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -23,7 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * Validates the current user entity.
  */
-class CompletionListener
+class CompletionListener implements EventSubscriberInterface
 {
     /**
      * @var RequestAnalyzerInterface
@@ -57,13 +59,13 @@ class CompletionListener
      * @param RouterInterface $router
      * @param TokenStorage $tokenStorage
      * @param string $fragmentPath
-     * @param array $validators
+     * @param CompletionInterface[] $validators
      */
     public function __construct(
         RequestAnalyzerInterface $requestAnalyzer,
         RouterInterface $router,
         TokenStorage $tokenStorage,
-        $fragmentPath,
+        string $fragmentPath,
         array $validators
     ) {
         $this->requestAnalyzer = $requestAnalyzer;
@@ -73,12 +75,19 @@ class CompletionListener
         $this->fragmentPath = $fragmentPath;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onRequest',
+        ];
+    }
+
     /**
      * Will call a specific user completion validator of a webspace.
      *
      * @param GetResponseEvent $event
      */
-    public function onRequest(GetResponseEvent $event)
+    public function onRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
         $completionUrl = $this->router->generate('sulu_community.completion');
@@ -128,7 +137,7 @@ class CompletionListener
      * @param CompletionInterface $validator
      * @param string $webspaceKey
      */
-    public function addValidator(CompletionInterface $validator, $webspaceKey)
+    public function addValidator(CompletionInterface $validator, string $webspaceKey): void
     {
         $this->validators[$webspaceKey] = $validator;
     }
@@ -138,7 +147,7 @@ class CompletionListener
      *
      * @return CompletionInterface|null
      */
-    protected function getValidator($webspaceKey)
+    protected function getValidator(string $webspaceKey): ?CompletionInterface
     {
         if (!isset($this->validators[$webspaceKey])) {
             return null;

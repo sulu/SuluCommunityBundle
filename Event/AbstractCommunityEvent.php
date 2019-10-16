@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,12 +12,12 @@
 namespace Sulu\Bundle\CommunityBundle\Event;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event for community actions with config and the user which throw the event.
  */
-class CommunityEvent extends Event
+abstract class AbstractCommunityEvent extends Event
 {
     /**
      * @var User
@@ -33,7 +33,7 @@ class CommunityEvent extends Event
      * CommunityEvent constructor.
      *
      * @param User $user
-     * @param array $config
+     * @param mixed[] $config
      */
     public function __construct(User $user, array $config)
     {
@@ -46,7 +46,7 @@ class CommunityEvent extends Event
      *
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -54,9 +54,9 @@ class CommunityEvent extends Event
     /**
      * Get config.
      *
-     * @return array
+     * @return mixed[]
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -68,7 +68,7 @@ class CommunityEvent extends Event
      *
      * @return mixed
      */
-    public function getConfigProperty($property)
+    public function getConfigProperty(string $property)
     {
         return $this->config[$property];
     }
@@ -76,11 +76,12 @@ class CommunityEvent extends Event
     /**
      * Get config type property.
      *
+     * @param string $type
      * @param string $property
      *
      * @return mixed
      */
-    public function getConfigTypeProperty($type, $property)
+    public function getConfigTypeProperty(string $type, string $property)
     {
         return $this->config[$type][$property];
     }

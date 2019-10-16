@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\ContactBundle\Contact\ContactManagerInterface;
+use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepositoryInterface;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
@@ -96,9 +97,10 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function createUser(User $user, $webspaceKey, $roleName)
+    public function createUser(User $user, string $webspaceKey, string $roleName): User
     {
         // User needs contact
+        /** @var ContactInterface|null $contact */
         $contact = $user->getContact();
 
         if (!$contact) {
@@ -132,14 +134,23 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function updateUser(User $user)
+    public function updateUser(User $user): User
     {
         $contact = $user->getContact();
+
+        $mainEmail = $contact->getMainEmail();
+        if (!$mainEmail) {
+            $mainEmail = $user->getEmail();
+        }
+
+        if (!$mainEmail) {
+            return $user;
+        }
 
         if (!$contact->getEmails()->isEmpty()) {
             /** @var Email $email */
             $email = $contact->getEmails()->first();
-            $email->setEmail($contact->getMainEmail());
+            $email->setEmail($mainEmail);
 
             return $user;
         }
@@ -147,7 +158,7 @@ class UserManager implements UserManagerInterface
         /** @var EmailType $emailType */
         $emailType = $this->entityManager->getReference(EmailType::class, 1);
         $contactEmail = new Email();
-        $contactEmail->setEmail($contact->getMainEmail());
+        $contactEmail->setEmail($mainEmail);
         $contactEmail->setEmailType($emailType);
         $contact->addEmail($contactEmail);
 
@@ -159,7 +170,7 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getUniqueToken($field)
+    public function getUniqueToken(string $field): string
     {
         $token = $this->tokenGenerator->generateToken();
         $user = $this->userRepository->findOneBy([$field => $token]);
@@ -180,7 +191,7 @@ class UserManager implements UserManagerInterface
      *
      * @return UserRole
      */
-    protected function createUserRole(User $user, $webspaceKey, $roleName)
+    protected function createUserRole(User $user, string $webspaceKey, string $roleName): UserRole
     {
         /** @var RoleInterface $role */
         $role = $this->roleRepository->findOneBy(['name' => $roleName]);
@@ -188,11 +199,22 @@ class UserManager implements UserManagerInterface
 
         $locales = [];
 
-        foreach ($this->webspaceManager->findWebspaceByKey($webspaceKey)->getLocalizations() as $localization) {
+        $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
+
+        if (!$webspace) {
+            throw new \InvalidArgumentException(
+                sprintf('Webspace with key "%s" could not be found.', $webspaceKey)
+            );
+        }
+
+        foreach ($webspace->getLocalizations() as $localization) {
             $locales[] = $localization->getLocale();
         }
 
-        $userRole->setLocale(json_encode($locales));
+        /** @var string $localeString */
+        $localeString = json_encode($locales);
+
+        $userRole->setLocale($localeString);
         $userRole->setRole($role);
         $userRole->setUser($user);
 
@@ -202,9 +224,9 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findByPasswordResetToken($token)
+    public function findByPasswordResetToken(string $token): ?User
     {
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
 
         if (!$user || $user->getPasswordResetTokenExpiresAt() < new \DateTime()) {
@@ -217,7 +239,7 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findByConfirmationKey($token)
+    public function findByConfirmationKey(string $token): ?User
     {
         return $this->userRepository->findOneBy(['confirmationKey' => $token]);
     }
@@ -225,7 +247,7 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findUser($identifier)
+    public function findUser(string $identifier): ?User
     {
         $user = $this->userRepository->findUserByIdentifier($identifier);
 

@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -12,14 +12,21 @@
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\AbstractCommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserCompletedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserConfirmedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserPasswordForgotEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserPasswordResetedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserProfileSavedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Send emails when specific events are thrown.
  */
-class MailListener
+class MailListener implements EventSubscriberInterface
 {
     /**
      * @var MailFactoryInterface
@@ -34,12 +41,24 @@ class MailListener
         $this->mailFactory = $mailFactory;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            UserRegisteredEvent::class => ['sendRegistrationEmails', 50],
+            UserConfirmedEvent::class => 'sendConfirmationEmails',
+            UserPasswordForgotEvent::class => 'sendPasswordForgetEmails',
+            UserPasswordResetedEvent::class => 'sendPasswordResetEmails',
+            UserCompletedEvent::class => 'sendCompletionEmails',
+            UserProfileSavedEvent::class => 'sendNotificationSaveProfile',
+        ];
+    }
+
     /**
      * Send registration emails.
      *
-     * @param CommunityEvent $event
+     * @param AbstractCommunityEvent $event
      */
-    public function sendRegistrationEmails(CommunityEvent $event)
+    public function sendRegistrationEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_REGISTRATION);
     }
@@ -47,9 +66,9 @@ class MailListener
     /**
      * Send confirmation emails.
      *
-     * @param CommunityEvent $event
+     * @param AbstractCommunityEvent $event
      */
-    public function sendConfirmationEmails(CommunityEvent $event)
+    public function sendConfirmationEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_CONFIRMATION);
     }
@@ -57,9 +76,9 @@ class MailListener
     /**
      * Send password forget emails.
      *
-     * @param CommunityEvent $event
+     * @param AbstractCommunityEvent $event
      */
-    public function sendPasswordForgetEmails(CommunityEvent $event)
+    public function sendPasswordForgetEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_PASSWORD_FORGET);
     }
@@ -67,9 +86,9 @@ class MailListener
     /**
      * Send password reset emails.
      *
-     * @param CommunityEvent $event
+     * @param AbstractCommunityEvent $event
      */
-    public function sendPasswordResetEmails(CommunityEvent $event)
+    public function sendPasswordResetEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_PASSWORD_RESET);
     }
@@ -77,9 +96,9 @@ class MailListener
     /**
      * Send password reset emails.
      *
-     * @param CommunityEvent $event
+     * @param AbstractCommunityEvent $event
      */
-    public function sendCompletionEmails(CommunityEvent $event)
+    public function sendCompletionEmails(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_COMPLETION);
     }
@@ -87,9 +106,9 @@ class MailListener
     /**
      * Send notification email for profile save.
      *
-     * @param CommunityEvent $event
+     * @param AbstractCommunityEvent $event
      */
-    public function sendNotificationSaveProfile(CommunityEvent $event)
+    public function sendNotificationSaveProfile(AbstractCommunityEvent $event): void
     {
         $this->sendTypeEmails($event, Configuration::TYPE_PROFILE);
     }
@@ -97,10 +116,10 @@ class MailListener
     /**
      * Send emails for specific type.
      *
-     * @param CommunityEvent $event
+     * @param AbstractCommunityEvent $event
      * @param string $type
      */
-    protected function sendTypeEmails(CommunityEvent $event, $type)
+    protected function sendTypeEmails(AbstractCommunityEvent $event, string $type): void
     {
         $config = $event->getConfig();
         $mail = Mail::create(

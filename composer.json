@@ -4,40 +4,43 @@
     "type": "sulu-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "beberlei/doctrineextensions": "^1.0",
-        "jms/serializer-bundle": "^2.0",
-        "massive/build-bundle": "^0.2 || ^0.3 || ^0.4",
-        "sulu/sulu": "dev-develop || ^2.0",
-        "symfony/config": "^3.4 || ^4.0",
-        "symfony/console": "^3.4 || ^4.0",
-        "symfony/dependency-injection": "^3.4 || ^4.0",
-        "symfony/doctrine-bridge": "^3.4 || ^4.0",
-        "symfony/event-dispatcher": "^3.4 || ^4.0",
-        "symfony/force-lowest": "^3.4 || ^4.0",
-        "symfony/form": "^3.4 || ^4.0",
-        "symfony/framework-bundle": "^3.4 || ^4.0",
-        "symfony/http-foundation": "^3.4 || ^4.0",
-        "symfony/http-kernel": "^3.4 || ^4.0",
-        "symfony/intl": "^3.4 || ^4.0",
-        "symfony/routing": "^3.4 || ^4.0",
-        "symfony/security": "^3.4 || ^4.0",
-        "symfony/swiftmailer-bundle": "^2.6.4 || ^3.0"
+        "doctrine/doctrine-bundle": "^1.10",
+        "jms/serializer-bundle": "^3.0",
+        "massive/build-bundle": "^0.3 || ^0.4",
+        "sulu/sulu": "^2.0",
+        "symfony/config": "^4.3",
+        "symfony/console": "^4.3",
+        "symfony/dependency-injection": "^4.3",
+        "symfony/event-dispatcher": "^4.3",
+        "symfony/form": "^4.3",
+        "symfony/framework-bundle": "^4.3",
+        "symfony/http-foundation": "^4.3",
+        "symfony/http-kernel": "^4.3",
+        "symfony/intl": "^4.3",
+        "symfony/routing": "^4.3",
+        "symfony/security": "^4.3",
+        "symfony/swiftmailer-bundle": "^3.1.4"
     },
     "require-dev": {
-        "jackalope/jackalope-doctrine-dbal": "^1.2.5",
+        "jackalope/jackalope-doctrine-dbal": "^1.3.4",
         "jangregor/phpstan-prophecy": "^0.4",
         "massive/search-bundle": "@dev",
+        "php-ffmpeg/php-ffmpeg": "^0.13 || ^0.14",
         "phpstan/phpstan": "^0.11",
+        "phpstan/phpstan-phpunit": "^0.11",
         "phpstan/phpstan-doctrine": "^0.11",
         "phpstan/phpstan-symfony": "^0.11",
-        "phpunit/phpunit": "^6.5",
-        "symfony/browser-kit": "^3.4 || ^4.0",
-        "symfony/css-selector": "^3.4 || ^4.0",
+        "phpunit/phpunit": "^8.0",
+        "symfony/browser-kit": "^4.3",
+        "symfony/css-selector": "^4.3",
+        "symfony/dotenv": "^4.3",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/phpunit-bridge": "^3.4 || ^4.0",
-        "symfony/stopwatch": "^3.4 || ^4.0",
-        "symfony/var-dumper": "^3.4 || ^4.0",
+        "symfony/phpunit-bridge": "^4.3",
+        "symfony/stopwatch": "^4.3",
+        "symfony/var-dumper": "^4.3",
+        "thecodingmachine/phpstan-strict-rules": "^0.11",
         "zendframework/zend-stdlib": "~2.3",
         "zendframework/zendsearch": "@dev"
     },
@@ -62,17 +65,26 @@
             "Sulu\\Bundle\\CommunityBundle\\": ""
         }
     },
-    "config": {
-        "sort-packages": true
-    },
     "scripts": {
         "lint": [
             "@phpstan"
         ],
+        "test": [
+            "@phpunit"
+        ],
+        "bootstrap-test-environment": [
+            "Tests/Application/bin/adminconsole doctrine:database:drop --if-exists --force --env test",
+            "Tests/Application/bin/adminconsole doctrine:database:create --env test",
+            "Tests/Application/bin/adminconsole doctrine:schema:update --force --env test"
+        ],
+        "phpunit": "vendor/bin/phpunit",
         "phpstan": [
             "Tests/Application/bin/adminconsole cache:warmup",
-            "vendor/bin/phpstan analyse ./ -c phpstan.neon"
+            "vendor/bin/phpstan analyse -c phpstan.neon"
         ]
+    },
+    "config": {
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {

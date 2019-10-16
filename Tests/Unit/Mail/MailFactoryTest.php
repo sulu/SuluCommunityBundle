@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -21,32 +21,13 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class MailFactoryTest extends TestCase
 {
-    /**
-     * @var \Swift_Mailer
-     */
     private $mailer;
-
-    /**
-     * @var EngineInterface
-     */
     private $engine;
-
-    /**
-     * @var TranslatorInterface
-     */
     private $translator;
-
-    /**
-     * @var MailFactory
-     */
     private $mailFactory;
-
-    /**
-     * @var User
-     */
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
         $this->engine = $this->prophesize(EngineInterface::class);
@@ -62,14 +43,14 @@ class MailFactoryTest extends TestCase
         );
     }
 
-    public function testSendEmails()
+    public function testSendEmails(): void
     {
         $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
         $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
@@ -78,7 +59,7 @@ class MailFactoryTest extends TestCase
         )->shouldBeCalledTimes(1);
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];
@@ -90,14 +71,14 @@ class MailFactoryTest extends TestCase
         $this->mailFactory->sendEmails($mail, $this->user->reveal());
     }
 
-    public function testSendEmailsNoAdminTemplate()
+    public function testSendEmailsNoAdminTemplate(): void
     {
         $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
         $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
@@ -106,7 +87,7 @@ class MailFactoryTest extends TestCase
         )->shouldBeCalledTimes(1);
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];
@@ -118,14 +99,14 @@ class MailFactoryTest extends TestCase
         $this->mailFactory->sendEmails($mail, $this->user->reveal());
     }
 
-    public function testSendEmailsNoUserTemplate()
+    public function testSendEmailsNoUserTemplate(): void
     {
         $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
         $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'User-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['test@example.com' => null];
@@ -134,7 +115,7 @@ class MailFactoryTest extends TestCase
         )->shouldNotBeCalled();
         $this->mailer->send(
             Argument::that(
-                function (\Swift_Message $message) {
+                function(\Swift_Message $message) {
                     return 'Admin-Template' === $message->getBody()
                     && $message->getFrom() === ['test@sulu.io' => null]
                     && $message->getTo() === ['user@sulu.io' => null];

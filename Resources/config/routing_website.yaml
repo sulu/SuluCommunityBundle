@@ -1,0 +1,42 @@
+sulu_community.registration:
+    path: /registration
+    controller: SuluCommunityBundle:Registration:index
+
+sulu_community.confirmation:
+    path: /confirmation/{token}
+    controller: SuluCommunityBundle:Confirmation:index
+
+sulu_community.completion:
+    path: /completion
+    controller: SuluCommunityBundle:Completion:index
+
+sulu_community.password_forget:
+    path: /password-forget
+    controller: SuluCommunityBundle:Password:forget
+
+sulu_community.password_reset:
+    path: /password-reset/{token}
+    controller: SuluCommunityBundle:Password:reset
+
+sulu_community.profile:
+    path: /profile
+    controller: SuluCommunityBundle:Profile:index
+
+sulu_community.email_confirmation:
+    path: /profile/email-confirmation
+    controller: SuluCommunityBundle:EmailConfirmation:index
+
+sulu_community.login:
+    path: /login
+    controller: SuluCommunityBundle:Login:index
+
+sulu_community.logout:
+    path: /logout
+
+sulu_community.user_confirm:
+    path: /_community/confirm
+    controller: SuluCommunityBundle:BlacklistConfirmation:confirm
+
+sulu_community.user_deny:
+    path: /_community/deny
+    controller: SuluCommunityBundle:BlacklistConfirmation:deny

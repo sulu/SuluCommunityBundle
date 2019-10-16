@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -30,7 +30,7 @@ class LoginController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -53,7 +53,7 @@ class LoginController extends AbstractController
      *
      * @return Response
      */
-    public function embedAction(Request $request)
+    public function embedAction(Request $request): Response
     {
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 

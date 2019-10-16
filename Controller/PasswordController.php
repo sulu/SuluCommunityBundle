@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -27,7 +27,7 @@ class PasswordController extends AbstractController
      *
      * @return Response
      */
-    public function forgetAction(Request $request)
+    public function forgetAction(Request $request): Response
     {
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 
@@ -84,7 +84,7 @@ class PasswordController extends AbstractController
      *
      * @return Response
      */
-    public function resetAction(Request $request, $token)
+    public function resetAction(Request $request, string $token): Response
     {
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 

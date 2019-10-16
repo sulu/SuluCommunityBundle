@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -13,6 +13,8 @@ namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
+use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
+use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -29,11 +31,12 @@ class BlacklistConfirmationController extends AbstractController
      *
      * @return Response
      */
-    public function confirmAction(Request $request)
+    public function confirmAction(Request $request): Response
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $repository = $this->get('sulu_community.blacklisting.user_repository');
 
+        /** @var BlacklistUser|null $blacklistUser */
         $blacklistUser = $repository->findByToken($request->get('token'));
 
         if (null === $blacklistUser) {
@@ -44,7 +47,10 @@ class BlacklistConfirmationController extends AbstractController
         $entityManager->flush();
 
         $communityManager = $this->getCommunityManager($blacklistUser->getWebspaceKey());
-        $communityManager->sendEmails(Configuration::TYPE_BLACKLIST_CONFIRMED, $blacklistUser->getUser());
+
+        /** @var User $user */
+        $user = $blacklistUser->getUser();
+        $communityManager->sendEmails(Configuration::TYPE_BLACKLIST_CONFIRMED, $user);
 
         return $this->renderTemplate(
             Configuration::TYPE_BLACKLIST_CONFIRMED,
@@ -59,19 +65,21 @@ class BlacklistConfirmationController extends AbstractController
      *
      * @return Response
      */
-    public function denyAction(Request $request)
+    public function denyAction(Request $request): Response
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $repository = $this->get('sulu_community.blacklisting.user_repository');
         $itemRepository = $this->get('sulu_community.blacklisting.item_repository');
         $itemManager = $this->get('sulu_community.blacklisting.item_manager');
 
+        /** @var BlacklistUser|null $blacklistUser */
         $blacklistUser = $repository->findByToken($request->get('token'));
 
         if (null === $blacklistUser) {
             throw new NotFoundHttpException();
         }
 
+        /** @var User $user */
         $user = $blacklistUser->getUser();
         $blacklistUser->deny();
 
@@ -97,7 +105,7 @@ class BlacklistConfirmationController extends AbstractController
 
         $entityManager->flush();
 
-        $communityManager->sendEmails(Configuration::TYPE_BLACKLIST_DENIED, $blacklistUser->getUser());
+        $communityManager->sendEmails(Configuration::TYPE_BLACKLIST_DENIED, $user);
 
         return $this->renderTemplate(
             Configuration::TYPE_BLACKLIST_DENIED,

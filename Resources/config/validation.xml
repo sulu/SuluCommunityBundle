@@ -5,7 +5,7 @@
         http://symfony.com/schema/dic/constraint-mapping
         http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
     <!-- BaseUser -->
-    <class name="Sulu\Bundle\SecurityBundle\Entity\BaseUser">
+    <class name="Sulu\Bundle\SecurityBundle\Entity\User">
         <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
             <option name="fields">username</option>
             <option name="groups">
@@ -51,10 +51,7 @@
                 </option>
             </constraint>
         </property>
-    </class>
 
-    <!-- User -->
-    <class name="Sulu\Bundle\SecurityBundle\Entity\User">
         <property name="contact">
             <constraint name="Valid" />
         </property>
@@ -94,7 +91,7 @@
 
     <!-- Address -->
     <class name="Sulu\Bundle\ContactBundle\Entity\Address">
-        <property name="country">
+        <property name="countryCode">
             <constraint name="NotBlank">
                 <option name="groups">
                     <value>registration</value>

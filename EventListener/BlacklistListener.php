@@ -3,7 +3,7 @@
 /*
  * This file is part of Sulu.
  *
- * (c) MASSIVE ART WebServices GmbH
+ * (c) Sulu GmbH
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -16,15 +16,16 @@ use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
-use Sulu\Bundle\CommunityBundle\Event\CommunityEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Interrupts registration to avoid register request-type emails.
  */
-class BlacklistListener
+class BlacklistListener implements EventSubscriberInterface
 {
     /**
      * @var BlacklistItemRepository
@@ -64,12 +65,19 @@ class BlacklistListener
         $this->mailFactory = $mailFactory;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            UserRegisteredEvent::class => ['validateEmail', 51],
+        ];
+    }
+
     /**
      * Validates email and interrupts registration process if email matches blacklist.
      *
-     * @param CommunityEvent $event
+     * @param UserRegisteredEvent $event
      */
-    public function validateEmail(CommunityEvent $event)
+    public function validateEmail(UserRegisteredEvent $event): void
     {
         if (BlacklistItem::TYPE_REQUEST !== $this->getType($event->getUser()->getEmail())) {
             return;
@@ -103,7 +111,7 @@ class BlacklistListener
      *
      * @return string|null
      */
-    private function getType($email)
+    private function getType(string $email): ?string
     {
         $items = $this->blacklistItemRepository->findBySender($email);
 
