@@ -29,9 +29,7 @@ class CommunityAdmin extends Admin
 {
     const SECURITY_CONTEXT = 'sulu.community.blacklist';
     const LIST_VIEW = 'sulu_community.blacklist';
-
     const ADD_FORM_VIEW = 'sulu_community.blacklist.add_form';
-
     const EDIT_FORM_VIEW = 'sulu_community.blacklist.edit_form';
 
     /**

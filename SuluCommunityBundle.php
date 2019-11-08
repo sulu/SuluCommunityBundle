@@ -30,8 +30,6 @@ class SuluCommunityBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        parent::build($container);
-
         $this->buildPersistence(
             [
                 BlacklistItem::class => 'sulu.model.blacklist.class',
