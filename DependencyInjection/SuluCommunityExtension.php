@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 
 use DoctrineExtensions\Query\Mysql\Regexp;
 use Sulu\Bundle\CommunityBundle\Entity\InvalidTypeException;
+use Sulu\Bundle\PersistenceBundle\DependencyInjection\PersistenceExtensionTrait;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class SuluCommunityExtension extends Extension implements PrependExtensionInterface
 {
+    use PersistenceExtensionTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -31,6 +34,8 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
+        $this->configurePersistence($config['objects'], $container);
 
         $container->setParameter('sulu_community.webspaces_config', $config[Configuration::WEBSPACES]);
 
@@ -57,6 +62,32 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
      */
     public function prepend(ContainerBuilder $container)
     {
+        if ($container->hasExtension('sulu_admin')) {
+            $container->prependExtensionConfig(
+                'sulu_admin',
+                [
+                    'lists' => [
+                        'directories' => [
+                            __DIR__ . '/../Resources/config/lists',
+                        ],
+                    ],
+                    'forms' => [
+                        'directories' => [
+                            __DIR__ . '/../Resources/config/forms',
+                        ],
+                    ],
+                    'resources' => [
+                        'blacklist' => [
+                            'routes' => [
+                                'list' => 'sulu_community.get_blacklist-items',
+                                'detail' => 'sulu_community.get_blacklist-item',
+                            ],
+                        ],
+                    ],
+                ]
+            );
+        }
+
         if ($container->hasExtension('framework')) {
             $container->prependExtensionConfig(
                 'framework',

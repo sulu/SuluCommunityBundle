@@ -12,7 +12,10 @@
 namespace Sulu\Bundle\CommunityBundle\Admin;
 
 use Sulu\Bundle\AdminBundle\Admin\Admin;
+use Sulu\Bundle\AdminBundle\Admin\Navigation\NavigationItem;
 use Sulu\Bundle\AdminBundle\Admin\Navigation\NavigationItemCollection;
+use Sulu\Bundle\AdminBundle\Admin\View\ToolbarAction;
+use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactoryInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
@@ -24,6 +27,13 @@ use Sulu\Component\Webspace\Security;
  */
 class CommunityAdmin extends Admin
 {
+    const SECURITY_CONTEXT = 'sulu.community.blacklist';
+    const LIST_VIEW = 'sulu_community.blacklist';
+
+    const ADD_FORM_VIEW = 'sulu_community.blacklist.add_form';
+
+    const EDIT_FORM_VIEW = 'sulu_community.blacklist.edit_form';
+
     /**
      * @var SecurityCheckerInterface
      */
@@ -33,6 +43,11 @@ class CommunityAdmin extends Admin
      * @var WebspaceManagerInterface
      */
     private $webspaceManager;
+
+    /**
+     * @var ViewBuilderFactoryInterface
+     */
+    private $viewBuilderFactory;
 
     /**
      * @var array
@@ -45,21 +60,88 @@ class CommunityAdmin extends Admin
     public function __construct(
         SecurityCheckerInterface $securityChecker,
         WebspaceManagerInterface $webspaceManager,
+        ViewBuilderFactoryInterface $viewBuilderFactory,
         array $webspacesConfiguration
     ) {
         $this->securityChecker = $securityChecker;
         $this->webspaceManager = $webspaceManager;
+        $this->viewBuilderFactory = $viewBuilderFactory;
         $this->webspacesConfiguration = $webspacesConfiguration;
     }
 
     public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
     {
-        // TODO implement Blacklisting navigation items
+        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::VIEW)) {
+            $tags = new NavigationItem('sulu_community.blacklist');
+            $tags->setPosition(40);
+            $tags->setView(static::LIST_VIEW);
+
+            $navigationItemCollection->get(Admin::SETTINGS_NAVIGATION_ITEM)->addChild($tags);
+        }
     }
 
     public function configureViews(ViewCollection $viewCollection): void
     {
-        // TODO implement Blacklisting views
+        $formToolbarActions = [];
+        $listToolbarActions = [];
+
+        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::ADD)) {
+            $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
+        }
+
+        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+            $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
+        }
+
+        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::DELETE)) {
+            $formToolbarActions[] = new ToolbarAction('sulu_admin.delete');
+            $listToolbarActions[] = new ToolbarAction('sulu_admin.delete');
+        }
+
+        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::VIEW)) {
+            $listToolbarActions[] = new ToolbarAction('sulu_admin.export');
+        }
+
+        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+            $viewCollection->add(
+                $this->viewBuilderFactory->createListViewBuilder(static::LIST_VIEW, '/blacklist')
+                    ->setResourceKey('blacklist')
+                    ->setListKey('blacklist')
+                    ->setTitle('sulu_community.blacklist')
+                    ->addListAdapters(['table'])
+                    ->setAddView(static::ADD_FORM_VIEW)
+                    ->setEditView(static::EDIT_FORM_VIEW)
+                    ->addToolbarActions($listToolbarActions)
+            );
+            $viewCollection->add(
+                $this->viewBuilderFactory->createResourceTabViewBuilder(static::ADD_FORM_VIEW, '/blacklist/add')
+                    ->setResourceKey('blacklist')
+                    ->setBackView(static::LIST_VIEW)
+            );
+            $viewCollection->add(
+                $this->viewBuilderFactory->createFormViewBuilder('sulu_community.blacklist.add_form.details', '/details')
+                    ->setResourceKey('blacklist')
+                    ->setFormKey('blacklist_details')
+                    ->setTabTitle('sulu_admin.details')
+                    ->setEditView(static::EDIT_FORM_VIEW)
+                    ->addToolbarActions($formToolbarActions)
+                    ->setParent(static::ADD_FORM_VIEW)
+            );
+            $viewCollection->add(
+                $this->viewBuilderFactory->createResourceTabViewBuilder(static::EDIT_FORM_VIEW, '/blacklist/:id')
+                    ->setResourceKey('blacklist')
+                    ->setBackView(static::LIST_VIEW)
+                    ->setTitleProperty('name')
+            );
+            $viewCollection->add(
+                $this->viewBuilderFactory->createFormViewBuilder('sulu_community.blacklist.edit_form.details', '/details')
+                    ->setResourceKey('blacklist')
+                    ->setFormKey('blacklist_details')
+                    ->setTabTitle('sulu_admin.details')
+                    ->addToolbarActions($formToolbarActions)
+                    ->setParent(static::EDIT_FORM_VIEW)
+            );
+        }
     }
 
     /**

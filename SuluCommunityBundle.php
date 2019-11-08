@@ -13,6 +13,8 @@ namespace Sulu\Bundle\CommunityBundle;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\CommunityManagerCompilerPass;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\CommunityValidatorCompilerPass;
+use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
+use Sulu\Bundle\PersistenceBundle\PersistenceBundleTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -21,12 +23,21 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class SuluCommunityBundle extends Bundle
 {
+    use PersistenceBundleTrait;
+
     /**
      * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
+
+        $this->buildPersistence(
+            [
+                BlacklistItem::class => 'sulu.model.blacklist.class',
+            ],
+            $container
+        );
 
         $container->addCompilerPass(new CommunityManagerCompilerPass());
         $container->addCompilerPass(new CommunityValidatorCompilerPass());
