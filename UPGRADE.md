@@ -2,6 +2,9 @@
 
 ## 2.0.0 (unreleased)
 
+### ListRepresentation relation name changed
+The name of the relation inside of the `_embedded` field has been changed from `items` to `blacklist`.
+
 ### Typehints added to the codebase
 
 Everywhere were possible typehints were added to the classes and interfaces.

@@ -10,7 +10,7 @@
             translation="sulu_admin.id"
         >
             <field-name>id</field-name>
-            <entity-name>%sulu.model.blacklist.class%</entity-name>
+            <entity-name>%sulu.model.blacklist_item.class%</entity-name>
         </property>
 
         <property
@@ -21,7 +21,7 @@
             translation="sulu_community.pattern"
         >
             <field-name>pattern</field-name>
-            <entity-name>%sulu.model.blacklist.class%</entity-name>
+            <entity-name>%sulu.model.blacklist_item.class%</entity-name>
         </property>
 
         <property
@@ -32,7 +32,7 @@
             translation="sulu_community.type"
         >
             <field-name>type</field-name>
-            <entity-name>%sulu.model.blacklist.class%</entity-name>
+            <entity-name>%sulu.model.blacklist_item.class%</entity-name>
         </property>
     </properties>
 </list>

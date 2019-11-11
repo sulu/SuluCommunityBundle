@@ -13,6 +13,8 @@ namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
+use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
+use Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository;
 use Sulu\Bundle\CommunityBundle\Form\Type\CompletionType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordForgetType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordResetType;
@@ -102,11 +104,18 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('objects')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('blacklist')
+                        ->arrayNode('blacklist_item')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('model')->defaultValue(BlacklistItem::class)->end()
                                 ->scalarNode('repository')->defaultValue(BlacklistItemRepository::class)->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('blacklist_user')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('model')->defaultValue(BlacklistUser::class)->end()
+                                ->scalarNode('repository')->defaultValue(BlacklistUserRepository::class)->end()
                             ->end()
                         ->end()
                     ->end()

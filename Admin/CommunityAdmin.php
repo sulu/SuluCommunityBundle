@@ -27,10 +27,10 @@ use Sulu\Component\Webspace\Security;
  */
 class CommunityAdmin extends Admin
 {
-    const SECURITY_CONTEXT = 'sulu.community.blacklist';
-    const LIST_VIEW = 'sulu_community.blacklist';
-    const ADD_FORM_VIEW = 'sulu_community.blacklist.add_form';
-    const EDIT_FORM_VIEW = 'sulu_community.blacklist.edit_form';
+    const BLACKLIST_ITEM_SECURITY_CONTEXT = 'sulu.community.blacklist_item';
+    const BLACKLIST_ITEM_LIST_VIEW = 'sulu_community.blacklist_item';
+    const BLACKLIST_ITEM_ADD_FORM_VIEW = 'sulu_community.blacklist_item.add_form';
+    const BLACKLIST_ITEM_EDIT_FORM_VIEW = 'sulu_community.blacklist_item.edit_form';
 
     /**
      * @var SecurityCheckerInterface
@@ -69,10 +69,10 @@ class CommunityAdmin extends Admin
 
     public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
     {
-        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::VIEW)) {
+        if ($this->securityChecker->hasPermission(static::BLACKLIST_ITEM_SECURITY_CONTEXT, PermissionTypes::VIEW)) {
             $tags = new NavigationItem('sulu_community.blacklist');
             $tags->setPosition(40);
-            $tags->setView(static::LIST_VIEW);
+            $tags->setView(static::BLACKLIST_ITEM_LIST_VIEW);
 
             $navigationItemCollection->get(Admin::SETTINGS_NAVIGATION_ITEM)->addChild($tags);
         }
@@ -83,61 +83,61 @@ class CommunityAdmin extends Admin
         $formToolbarActions = [];
         $listToolbarActions = [];
 
-        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::ADD)) {
+        if ($this->securityChecker->hasPermission(static::BLACKLIST_ITEM_SECURITY_CONTEXT, PermissionTypes::ADD)) {
             $listToolbarActions[] = new ToolbarAction('sulu_admin.add');
         }
 
-        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+        if ($this->securityChecker->hasPermission(static::BLACKLIST_ITEM_SECURITY_CONTEXT, PermissionTypes::EDIT)) {
             $formToolbarActions[] = new ToolbarAction('sulu_admin.save');
         }
 
-        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::DELETE)) {
+        if ($this->securityChecker->hasPermission(static::BLACKLIST_ITEM_SECURITY_CONTEXT, PermissionTypes::DELETE)) {
             $formToolbarActions[] = new ToolbarAction('sulu_admin.delete');
             $listToolbarActions[] = new ToolbarAction('sulu_admin.delete');
         }
 
-        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::VIEW)) {
+        if ($this->securityChecker->hasPermission(static::BLACKLIST_ITEM_SECURITY_CONTEXT, PermissionTypes::VIEW)) {
             $listToolbarActions[] = new ToolbarAction('sulu_admin.export');
         }
 
-        if ($this->securityChecker->hasPermission(static::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+        if ($this->securityChecker->hasPermission(static::BLACKLIST_ITEM_SECURITY_CONTEXT, PermissionTypes::EDIT)) {
             $viewCollection->add(
-                $this->viewBuilderFactory->createListViewBuilder(static::LIST_VIEW, '/blacklist')
+                $this->viewBuilderFactory->createListViewBuilder(static::BLACKLIST_ITEM_LIST_VIEW, '/blacklist')
                     ->setResourceKey('blacklist')
                     ->setListKey('blacklist')
                     ->setTitle('sulu_community.blacklist')
                     ->addListAdapters(['table'])
-                    ->setAddView(static::ADD_FORM_VIEW)
-                    ->setEditView(static::EDIT_FORM_VIEW)
+                    ->setAddView(static::BLACKLIST_ITEM_ADD_FORM_VIEW)
+                    ->setEditView(static::BLACKLIST_ITEM_EDIT_FORM_VIEW)
                     ->addToolbarActions($listToolbarActions)
             );
             $viewCollection->add(
-                $this->viewBuilderFactory->createResourceTabViewBuilder(static::ADD_FORM_VIEW, '/blacklist/add')
+                $this->viewBuilderFactory->createResourceTabViewBuilder(static::BLACKLIST_ITEM_ADD_FORM_VIEW, '/blacklist/add')
                     ->setResourceKey('blacklist')
-                    ->setBackView(static::LIST_VIEW)
+                    ->setBackView(static::BLACKLIST_ITEM_LIST_VIEW)
             );
             $viewCollection->add(
-                $this->viewBuilderFactory->createFormViewBuilder('sulu_community.blacklist.add_form.details', '/details')
+                $this->viewBuilderFactory->createFormViewBuilder(static::BLACKLIST_ITEM_ADD_FORM_VIEW . '.details', '/details')
                     ->setResourceKey('blacklist')
                     ->setFormKey('blacklist_details')
                     ->setTabTitle('sulu_admin.details')
-                    ->setEditView(static::EDIT_FORM_VIEW)
+                    ->setEditView(static::BLACKLIST_ITEM_EDIT_FORM_VIEW)
                     ->addToolbarActions($formToolbarActions)
-                    ->setParent(static::ADD_FORM_VIEW)
+                    ->setParent(static::BLACKLIST_ITEM_ADD_FORM_VIEW)
             );
             $viewCollection->add(
-                $this->viewBuilderFactory->createResourceTabViewBuilder(static::EDIT_FORM_VIEW, '/blacklist/:id')
+                $this->viewBuilderFactory->createResourceTabViewBuilder(static::BLACKLIST_ITEM_EDIT_FORM_VIEW, '/blacklist/:id')
                     ->setResourceKey('blacklist')
-                    ->setBackView(static::LIST_VIEW)
+                    ->setBackView(static::BLACKLIST_ITEM_LIST_VIEW)
                     ->setTitleProperty('name')
             );
             $viewCollection->add(
-                $this->viewBuilderFactory->createFormViewBuilder('sulu_community.blacklist.edit_form.details', '/details')
+                $this->viewBuilderFactory->createFormViewBuilder(static::BLACKLIST_ITEM_EDIT_FORM_VIEW . '.details', '/details')
                     ->setResourceKey('blacklist')
                     ->setFormKey('blacklist_details')
                     ->setTabTitle('sulu_admin.details')
                     ->addToolbarActions($formToolbarActions)
-                    ->setParent(static::EDIT_FORM_VIEW)
+                    ->setParent(static::BLACKLIST_ITEM_EDIT_FORM_VIEW)
             );
         }
     }
@@ -176,7 +176,7 @@ class CommunityAdmin extends Admin
             [
                 'Sulu' => [
                     'Settings' => [
-                        'sulu.community.blacklist' => [
+                        'sulu.community.blacklist_item' => [
                             PermissionTypes::VIEW,
                             PermissionTypes::ADD,
                             PermissionTypes::EDIT,
