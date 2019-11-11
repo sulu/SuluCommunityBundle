@@ -34,7 +34,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
-        $this->assertCount(0, $result['_embedded']['blacklist']);
+        $this->assertCount(0, $result['_embedded']['blacklist_items']);
     }
 
     /**
@@ -101,10 +101,10 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertEquals(1, $result['total']);
-        $this->assertCount(1, $result['_embedded']['blacklist']);
-        $this->assertEquals($item['id'], $result['_embedded']['blacklist'][0]['id']);
-        $this->assertEquals($item['pattern'], $result['_embedded']['blacklist'][0]['pattern']);
-        $this->assertEquals($item['type'], $result['_embedded']['blacklist'][0]['type']);
+        $this->assertCount(1, $result['_embedded']['blacklist_items']);
+        $this->assertEquals($item['id'], $result['_embedded']['blacklist_items'][0]['id']);
+        $this->assertEquals($item['pattern'], $result['_embedded']['blacklist_items'][0]['pattern']);
+        $this->assertEquals($item['type'], $result['_embedded']['blacklist_items'][0]['type']);
     }
 
     public function testDelete(): void
@@ -125,7 +125,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
-        $this->assertCount(0, $result['_embedded']['blacklist']);
+        $this->assertCount(0, $result['_embedded']['blacklist_items']);
     }
 
     public function testCDelete(): void
@@ -147,7 +147,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
-        $this->assertCount(0, $result['_embedded']['blacklist']);
+        $this->assertCount(0, $result['_embedded']['blacklist_items']);
     }
 
     public function testPostInvalidType(): void

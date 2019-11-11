@@ -3,7 +3,7 @@
 ## 2.0.0 (unreleased)
 
 ### ListRepresentation relation name changed
-The name of the relation inside of the `_embedded` field has been changed from `items` to `blacklist`.
+The name of the relation inside of the `_embedded` field has been changed from `items` to `blacklist_items`.
 
 ### Typehints added to the codebase
 
