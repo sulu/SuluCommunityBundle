@@ -31,7 +31,7 @@ Register the website routes:
 
 sulu_community:
     type: portal
-    resource: "@SuluCommunityBundle/Resources/config/routing_website.xml"
+    resource: "@SuluCommunityBundle/Resources/config/routing_website.yaml"
 ```
 
 Register the admin routes:
@@ -41,7 +41,7 @@ Register the admin routes:
 
 sulu_community_api:
     type: rest
-    resource: "@SuluCommunityBundle/Resources/config/routing_api.xml"
+    resource: "@SuluCommunityBundle/Resources/config/routing_api.yaml"
     prefix: /admin/api
 ```
 
