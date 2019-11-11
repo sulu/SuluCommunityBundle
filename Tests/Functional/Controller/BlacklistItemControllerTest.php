@@ -28,7 +28,9 @@ class BlacklistItemControllerTest extends SuluTestCase
         $client->request('GET', '/admin/api/blacklist-items');
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $result = json_decode($client->getResponse()->getContent(), true);
+        /** @var string $content */
+        $content = $client->getResponse()->getContent();
+        $result = json_decode($content, true);
 
         $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
@@ -49,7 +51,9 @@ class BlacklistItemControllerTest extends SuluTestCase
         );
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $result = json_decode($client->getResponse()->getContent(), true);
+        /** @var string $content */
+        $content = $client->getResponse()->getContent();
+        $result = json_decode($content, true);
 
         $this->assertIsArray($result);
         $this->assertEquals($pattern, $result['pattern']);
@@ -70,7 +74,9 @@ class BlacklistItemControllerTest extends SuluTestCase
         $client->request('GET', '/admin/api/blacklist-items/' . $item['id']);
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $result = json_decode($client->getResponse()->getContent(), true);
+        /** @var string $content */
+        $content = $client->getResponse()->getContent();
+        $result = json_decode($content, true);
 
         $this->assertIsArray($result);
         $this->assertEquals($item['id'], $result['id']);
@@ -89,7 +95,9 @@ class BlacklistItemControllerTest extends SuluTestCase
         $client->request('GET', '/admin/api/blacklist-items');
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $result = json_decode($client->getResponse()->getContent(), true);
+        /** @var string $content */
+        $content = $client->getResponse()->getContent();
+        $result = json_decode($content, true);
 
         $this->assertIsArray($result);
         $this->assertEquals(1, $result['total']);
@@ -111,7 +119,9 @@ class BlacklistItemControllerTest extends SuluTestCase
         $client->request('GET', '/admin/api/blacklist-items');
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $result = json_decode($client->getResponse()->getContent(), true);
+        /** @var string $content */
+        $content = $client->getResponse()->getContent();
+        $result = json_decode($content, true);
 
         $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
@@ -131,7 +141,9 @@ class BlacklistItemControllerTest extends SuluTestCase
         $client->request('GET', '/admin/api/blacklist-items');
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $result = json_decode($client->getResponse()->getContent(), true);
+        /** @var string $content */
+        $content = $client->getResponse()->getContent();
+        $result = json_decode($content, true);
 
         $this->assertIsArray($result);
         $this->assertEquals(0, $result['total']);
@@ -163,7 +175,9 @@ class BlacklistItemControllerTest extends SuluTestCase
         );
         $this->assertHttpStatusCode(200, $client->getResponse());
 
-        $result = json_decode($client->getResponse()->getContent(), true);
+        /** @var string $content */
+        $content = $client->getResponse()->getContent();
+        $result = json_decode($content, true);
 
         $this->assertIsArray($result);
         $this->assertEquals('test@sulu.io', $result['pattern']);
