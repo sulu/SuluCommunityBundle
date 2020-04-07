@@ -99,6 +99,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_community.blacklisting.item_repository"/>
         </service>
+        <service id="Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManagerInterface" alias="sulu_community.blacklisting.item_manager"/>
 
         <service id="sulu_community.blacklisting.item_repository"
                  class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository"
@@ -140,6 +141,14 @@
             <argument type="service" id="mailer"/>
             <argument type="service" id="twig"/>
             <argument type="service" id="translator"/>
+        </service>
+
+        <!-- Controller -->
+        <service id="Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController" class="Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="sulu_core.doctrine_rest_helper"/>
+            <argument type="service" id="sulu_core.doctrine_list_builder_factory"/>
+            <argument type="service" id="sulu_community.blacklisting.item_manager"/>
         </service>
     </services>
 </container>
