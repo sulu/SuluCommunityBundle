@@ -136,7 +136,7 @@
         <!-- mailing -->
         <service id="sulu_community.mail_factory" class="Sulu\Bundle\CommunityBundle\Mail\MailFactory">
             <argument type="service" id="mailer"/>
-            <argument type="service" id="templating"/>
+            <argument type="service" id="twig"/>
             <argument type="service" id="translator"/>
         </service>
     </services>
