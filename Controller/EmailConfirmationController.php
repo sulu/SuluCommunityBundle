@@ -29,10 +29,6 @@ class EmailConfirmationController extends AbstractController
 
     /**
      * Overwrite user email with contact email.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function indexAction(Request $request): Response
     {

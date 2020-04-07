@@ -21,61 +21,36 @@ interface CommunityManagerInterface
 {
     /**
      * Return the webspace key.
-     *
-     * @return string
      */
     public function getWebspaceKey(): string;
 
     /**
      * Register user for the system.
-     *
-     * @param User $user
-     *
-     * @return User
      */
     public function register(User $user): User;
 
     /**
      * Complete the user registration.
-     *
-     * @param User $user
-     *
-     * @return User
      */
     public function completion(User $user): User;
 
     /**
      * Login user into the system.
-     *
-     * @param User $user
-     * @param Request $request
      */
     public function login(User $user, Request $request): void;
 
     /**
      * Confirm the user registration.
-     *
-     * @param string $token
-     *
-     * @return User|null
      */
     public function confirm(string $token): ?User;
 
     /**
      * Generate password reset token and save.
-     *
-     * @param string $emailUsername
-     *
-     * @return User|null
      */
     public function passwordForget(string $emailUsername): ?User;
 
     /**
      * Reset user password token.
-     *
-     * @param User $user
-     *
-     * @return User
      */
     public function passwordReset(User $user): User;
 
@@ -89,8 +64,6 @@ interface CommunityManagerInterface
     /**
      * Get community webspace config property.
      *
-     * @param string $property
-     *
      * @return mixed
      *
      * @throws \Exception
@@ -100,9 +73,6 @@ interface CommunityManagerInterface
     /**
      * Get community webspace config type property.
      *
-     * @param string $type
-     * @param string $property
-     *
      * @return mixed
      *
      * @throws \Exception
@@ -111,16 +81,11 @@ interface CommunityManagerInterface
 
     /**
      * Send email to user and admin by type.
-     *
-     * @param string $type
-     * @param User $user
      */
     public function sendEmails(string $type, User $user): void;
 
     /**
      * Save profile for given user.
-     *
-     * @param User $user
      *
      * @return User
      */

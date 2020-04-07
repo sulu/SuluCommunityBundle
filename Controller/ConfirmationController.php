@@ -26,11 +26,6 @@ class ConfirmationController extends AbstractController
 
     /**
      * Confirm user email address by token.
-     *
-     * @param Request $request
-     * @param string $token
-     *
-     * @return Response
      */
     public function indexAction(Request $request, string $token): Response
     {

@@ -83,11 +83,6 @@ class CommunityManager implements CommunityManagerInterface
 
     /**
      * @param mixed[] $config
-     * @param string $webspaceKey
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param TokenStorageInterface $tokenStorage
-     * @param UserManagerInterface $userManager
-     * @param MailFactoryInterface $mailFactory
      */
     public function __construct(
         array $config,
@@ -284,13 +279,7 @@ class CommunityManager implements CommunityManagerInterface
     public function getConfigProperty($property)
     {
         if (!array_key_exists($property, $this->config)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Property "%s" not found for webspace "%s" in Community Manager.',
-                    $property,
-                    $this->webspaceKey
-                )
-            );
+            throw new \InvalidArgumentException(sprintf('Property "%s" not found for webspace "%s" in Community Manager.', $property, $this->webspaceKey));
         }
 
         return $this->config[$property];
@@ -302,14 +291,7 @@ class CommunityManager implements CommunityManagerInterface
     public function getConfigTypeProperty($type, $property)
     {
         if (!array_key_exists($type, $this->config) || !array_key_exists($property, $this->config[$type])) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Property "%s" from type "%s" not found for webspace "%s" in Community Manager.',
-                    $property,
-                    $type,
-                    $this->webspaceKey
-                )
-            );
+            throw new \InvalidArgumentException(sprintf('Property "%s" from type "%s" not found for webspace "%s" in Community Manager.', $property, $type, $this->webspaceKey));
         }
 
         return $this->config[$type][$property];

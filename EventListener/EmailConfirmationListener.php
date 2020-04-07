@@ -48,12 +48,6 @@ class EmailConfirmationListener implements EventSubscriberInterface
      */
     private $emailConformationRepository;
 
-    /**
-     * @param MailFactoryInterface $mailFactory
-     * @param EntityManagerInterface $entityManager
-     * @param EmailConfirmationTokenRepository $emailConformationRepository
-     * @param TokenGeneratorInterface $tokenGenerator
-     */
     public function __construct(
         MailFactoryInterface $mailFactory,
         EntityManagerInterface $entityManager,
@@ -75,8 +69,6 @@ class EmailConfirmationListener implements EventSubscriberInterface
 
     /**
      * Send confirmation-email if email-address has changed.
-     *
-     * @param UserProfileSavedEvent $event
      */
     public function sendConfirmationOnEmailChange(UserProfileSavedEvent $event): void
     {

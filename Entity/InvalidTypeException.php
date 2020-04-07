@@ -28,7 +28,6 @@ class InvalidTypeException extends \InvalidArgumentException
 
     /**
      * @param string[] $validTypes
-     * @param string $type
      */
     public function __construct(array $validTypes, string $type)
     {
@@ -49,9 +48,6 @@ class InvalidTypeException extends \InvalidArgumentException
         return $this->validTypes;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;

@@ -20,11 +20,6 @@ interface CompletionInterface
 {
     /**
      * Validates the user data.
-     *
-     * @param User $user
-     * @param string $webspaceKey
-     *
-     * @return bool
      */
     public function validate(User $user, string $webspaceKey): bool;
 }

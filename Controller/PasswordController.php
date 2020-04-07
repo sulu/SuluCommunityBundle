@@ -23,10 +23,6 @@ class PasswordController extends AbstractController
 {
     /**
      * Handles the forget form.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function forgetAction(Request $request): Response
     {
@@ -79,11 +75,6 @@ class PasswordController extends AbstractController
 
     /**
      * Handles the reset password form.
-     *
-     * @param Request $request
-     * @param string $token
-     *
-     * @return Response
      */
     public function resetAction(Request $request, string $token): Response
     {

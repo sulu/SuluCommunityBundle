@@ -26,10 +26,6 @@ class LoginController extends AbstractController
 
     /**
      * Show Login page.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function indexAction(Request $request): Response
     {
@@ -49,10 +45,6 @@ class LoginController extends AbstractController
 
     /**
      * ESI Action to show user on every page.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function embedAction(Request $request): Response
     {

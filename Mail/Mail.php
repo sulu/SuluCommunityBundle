@@ -71,9 +71,6 @@ class Mail
     /**
      * @param string|array $from
      * @param string|array $to
-     * @param string $subject
-     * @param null|string $userTemplate
-     * @param null|string $adminTemplate
      */
     public function __construct($from, $to, string $subject, ?string $userTemplate = null, ?string $adminTemplate = null)
     {
@@ -106,8 +103,6 @@ class Mail
 
     /**
      * Returns subject.
-     *
-     * @return string
      */
     public function getSubject(): string
     {
@@ -116,8 +111,6 @@ class Mail
 
     /**
      * Returns user-template.
-     *
-     * @return null|string
      */
     public function getUserTemplate(): ?string
     {
@@ -126,8 +119,6 @@ class Mail
 
     /**
      * Returns admin-template.
-     *
-     * @return null|string
      */
     public function getAdminTemplate(): ?string
     {
@@ -136,8 +127,6 @@ class Mail
 
     /**
      * Returns user-email.
-     *
-     * @return string|null
      */
     public function getUserEmail(): ?string
     {
@@ -147,10 +136,6 @@ class Mail
     /**
      * Set user-email.
      * This setting overwrite the user-email.
-     *
-     * @param string|null $userEmail
-     *
-     * @return self
      */
     public function setUserEmail(?string $userEmail): self
     {

@@ -29,10 +29,6 @@ class BlacklistConfirmationController extends AbstractController
 {
     /**
      * Confirms user with given token.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function confirmAction(Request $request): Response
     {
@@ -60,10 +56,6 @@ class BlacklistConfirmationController extends AbstractController
 
     /**
      * Denies user with given token.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function denyAction(Request $request): Response
     {

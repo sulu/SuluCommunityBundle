@@ -13,17 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Manager;
 
 interface CommunityManagerRegistryInterface
 {
-    /**
-     * @param string $webspaceKey
-     *
-     * @return CommunityManagerInterface
-     */
     public function get(string $webspaceKey): CommunityManagerInterface;
 
-    /**
-     * @param string $webspaceKey
-     *
-     * @return bool
-     */
     public function has(string $webspaceKey): bool;
 }

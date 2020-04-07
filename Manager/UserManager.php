@@ -67,14 +67,6 @@ class UserManager implements UserManagerInterface
 
     /**
      * UserManager constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param WebspaceManagerInterface $webspaceManager
-     * @param TokenGeneratorInterface $tokenGenerator
-     * @param UserRepositoryInterface $userRepository
-     * @param RoleRepositoryInterface $roleRepository
-     * @param ContactRepositoryInterface $contactRepository
-     * @param ContactManagerInterface $contactManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -184,12 +176,6 @@ class UserManager implements UserManagerInterface
 
     /**
      * Create a user roles add permissions for all webspace locales.
-     *
-     * @param User $user
-     * @param string $webspaceKey
-     * @param string $roleName
-     *
-     * @return UserRole
      */
     protected function createUserRole(User $user, string $webspaceKey, string $roleName): UserRole
     {
@@ -202,9 +188,7 @@ class UserManager implements UserManagerInterface
         $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
 
         if (!$webspace) {
-            throw new \InvalidArgumentException(
-                sprintf('Webspace with key "%s" could not be found.', $webspaceKey)
-            );
+            throw new \InvalidArgumentException(sprintf('Webspace with key "%s" could not be found.', $webspaceKey));
         }
 
         foreach ($webspace->getLocalizations() as $localization) {

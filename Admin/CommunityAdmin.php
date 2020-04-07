@@ -40,8 +40,6 @@ class CommunityAdmin extends Admin
     private $webspacesConfiguration;
 
     /**
-     * @param SecurityCheckerInterface $securityChecker
-     * @param WebspaceManagerInterface $webspaceManager
      * @param mixed[] $webspacesConfiguration
      */
     public function __construct(
@@ -79,25 +77,14 @@ class CommunityAdmin extends Admin
             $webspace = $webspaceCollection->getWebspace($webspaceKey);
 
             if (!$webspace) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Webspace "%s" not found for "sulu_community" expected one of %s.',
-                        $webspaceKey,
-                        '"' . implode('", "', $webspaceKeys) . '"'
-                    )
-                );
+                throw new \InvalidArgumentException(sprintf('Webspace "%s" not found for "sulu_community" expected one of %s.', $webspaceKey, '"' . implode('", "', $webspaceKeys) . '"'));
             }
 
             /** @var Security|null $security */
             $security = $webspace->getSecurity();
 
             if (!$security) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Missing "<security><system>Website</system><security>" configuration in webspace "%s" for "sulu_community".',
-                        $webspaceKey
-                    )
-                );
+                throw new \InvalidArgumentException(sprintf('Missing "<security><system>Website</system><security>" configuration in webspace "%s" for "sulu_community".', $webspaceKey));
             }
 
             $system = $security->getSystem();

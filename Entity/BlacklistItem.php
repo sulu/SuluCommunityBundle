@@ -59,8 +59,6 @@ class BlacklistItem
 
     /**
      * Get id.
-     *
-     * @return int
      */
     public function getId(): int
     {
@@ -69,8 +67,6 @@ class BlacklistItem
 
     /**
      * Get pattern.
-     *
-     * @return string|null
      */
     public function getPattern(): ?string
     {
@@ -79,10 +75,6 @@ class BlacklistItem
 
     /**
      * Set pattern.
-     *
-     * @param string $pattern
-     *
-     * @return self
      */
     public function setPattern(string $pattern): self
     {
@@ -94,8 +86,6 @@ class BlacklistItem
 
     /**
      * Get regexp.
-     *
-     * @return string|null
      */
     public function getRegexp(): ?string
     {
@@ -104,8 +94,6 @@ class BlacklistItem
 
     /**
      * Get type.
-     *
-     * @return string|null
      */
     public function getType(): ?string
     {
@@ -114,10 +102,6 @@ class BlacklistItem
 
     /**
      * Set type.
-     *
-     * @param string $type
-     *
-     * @return self
      */
     public function setType(string $type): self
     {

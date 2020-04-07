@@ -32,7 +32,6 @@ abstract class AbstractCommunityEvent extends Event
     /**
      * CommunityEvent constructor.
      *
-     * @param User $user
      * @param mixed[] $config
      */
     public function __construct(User $user, array $config)
@@ -43,8 +42,6 @@ abstract class AbstractCommunityEvent extends Event
 
     /**
      * Get user.
-     *
-     * @return User
      */
     public function getUser(): User
     {
@@ -64,8 +61,6 @@ abstract class AbstractCommunityEvent extends Event
     /**
      * Get config property.
      *
-     * @param string $property
-     *
      * @return mixed
      */
     public function getConfigProperty(string $property)
@@ -75,9 +70,6 @@ abstract class AbstractCommunityEvent extends Event
 
     /**
      * Get config type property.
-     *
-     * @param string $type
-     * @param string $property
      *
      * @return mixed
      */

@@ -35,11 +35,6 @@ class MailFactory implements MailFactoryInterface
      */
     protected $translator;
 
-    /**
-     * @param \Swift_Mailer $mailer
-     * @param Environment $twig
-     * @param TranslatorInterface $translator
-     */
     public function __construct(\Swift_Mailer $mailer, Environment $twig, TranslatorInterface $translator)
     {
         $this->mailer = $mailer;
@@ -79,8 +74,6 @@ class MailFactory implements MailFactoryInterface
      *
      * @param string|array $from
      * @param string|array $to
-     * @param string $subject
-     * @param string $template
      * @param mixed[] $data
      */
     protected function sendEmail($from, $to, string $subject, string $template, array $data): void

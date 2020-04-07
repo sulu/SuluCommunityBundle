@@ -57,8 +57,6 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
     /**
      * Update webspace config.
      *
-     * @param ContainerBuilder $container
-     * @param string $webspaceKey
      * @param mixed[] $webspaceConfig
      *
      * @return mixed[]

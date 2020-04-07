@@ -72,8 +72,6 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
 
     /**
      * Returns fields.
-     *
-     * @return Response
      */
     public function fieldsAction(): Response
     {
@@ -82,10 +80,6 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
 
     /**
      * Return a list of items.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function cgetAction(Request $request): Response
     {
@@ -112,10 +106,6 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
 
     /**
      * Returns a single item.
-     *
-     * @param int $id
-     *
-     * @return Response
      */
     public function getAction(int $id): Response
     {
@@ -124,10 +114,6 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
 
     /**
      * Creates a new item.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function postAction(Request $request): Response
     {
@@ -142,10 +128,6 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
 
     /**
      * Deletes given item.
-     *
-     * @param int $id
-     *
-     * @return Response
      */
     public function deleteAction(int $id): Response
     {
@@ -157,10 +139,6 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
 
     /**
      * Deletes a list of items.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function cdeleteAction(Request $request): Response
     {
@@ -176,11 +154,6 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
 
     /**
      * Updates given item.
-     *
-     * @param int $id
-     * @param Request $request
-     *
-     * @return Response
      */
     public function putAction(int $id, Request $request): Response
     {
@@ -237,8 +210,6 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
     /**
      * Prepare list response.
      *
-     * @param Request $request
-     * @param ListBuilderInterface $listBuilder
      * @param DoctrineFieldDescriptor[] $fieldDescriptors
      *
      * @return array|mixed

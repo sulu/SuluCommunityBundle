@@ -40,10 +40,6 @@ abstract class AbstractController extends SymfonyAbstractController
 
     /**
      * Returns current or specific communityManager.
-     *
-     * @param string $webspaceKey
-     *
-     * @return CommunityManagerInterface
      */
     protected function getCommunityManager(string $webspaceKey): CommunityManagerInterface
     {
@@ -52,8 +48,6 @@ abstract class AbstractController extends SymfonyAbstractController
 
     /**
      * Returns current webspace key.
-     *
-     * @return string
      */
     protected function getWebspaceKey(): string
     {
@@ -66,11 +60,6 @@ abstract class AbstractController extends SymfonyAbstractController
 
     /**
      * Set Password and Salt by a Symfony Form.
-     *
-     * @param User $user
-     * @param FormInterface $form
-     *
-     * @return User
      */
     protected function setUserPasswordAndSalt(User $user, FormInterface $form): User
     {
@@ -93,10 +82,6 @@ abstract class AbstractController extends SymfonyAbstractController
 
     /**
      * Check if user should be logged in.
-     *
-     * @param string $type
-     *
-     * @return bool
      */
     protected function checkAutoLogin(string $type): bool
     {
@@ -109,10 +94,7 @@ abstract class AbstractController extends SymfonyAbstractController
     /**
      * Render a specific type template.
      *
-     * @param string $type
      * @param mixed[] $data
-     *
-     * @return Response
      */
     protected function renderTemplate(string $type, array $data = []): Response
     {
@@ -168,8 +150,6 @@ abstract class AbstractController extends SymfonyAbstractController
 
     /**
      * Add address to user.
-     *
-     * @param User $user
      */
     private function addAddress(User $user): void
     {

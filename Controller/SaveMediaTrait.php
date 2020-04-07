@@ -95,8 +95,6 @@ trait SaveMediaTrait
 
     /**
      * Get system collection manager.
-     *
-     * @return SystemCollectionManagerInterface
      */
     private function getSystemCollectionManager(): SystemCollectionManagerInterface
     {
@@ -105,8 +103,6 @@ trait SaveMediaTrait
 
     /**
      * Get media manager.
-     *
-     * @return MediaManagerInterface
      */
     private function getMediaManager(): MediaManagerInterface
     {
@@ -127,8 +123,6 @@ trait SaveMediaTrait
 
     /**
      * Get contact media collection.
-     *
-     * @return int
      */
     private function getContactMediaCollection(): int
     {

@@ -47,12 +47,6 @@ class BlacklistListener implements EventSubscriberInterface
      */
     private $mailFactory;
 
-    /**
-     * @param BlacklistItemRepository $blacklistItemRepository
-     * @param ObjectManager $objectManager
-     * @param TokenGeneratorInterface $tokenGenerator
-     * @param MailFactoryInterface $mailFactory
-     */
     public function __construct(
         BlacklistItemRepository $blacklistItemRepository,
         ObjectManager $objectManager,
@@ -74,8 +68,6 @@ class BlacklistListener implements EventSubscriberInterface
 
     /**
      * Validates email and interrupts registration process if email matches blacklist.
-     *
-     * @param UserRegisteredEvent $event
      */
     public function validateEmail(UserRegisteredEvent $event): void
     {
@@ -106,10 +98,6 @@ class BlacklistListener implements EventSubscriberInterface
 
     /**
      * Returns blacklist-type of given email.
-     *
-     * @param string $email
-     *
-     * @return string|null
      */
     private function getType(string $email): ?string
     {

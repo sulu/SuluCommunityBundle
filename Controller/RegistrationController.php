@@ -26,10 +26,6 @@ class RegistrationController extends AbstractController
 
     /**
      * Handle registration form.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function indexAction(Request $request): Response
     {
