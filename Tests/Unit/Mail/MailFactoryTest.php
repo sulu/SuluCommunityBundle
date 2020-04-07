@@ -16,13 +16,13 @@ use Prophecy\Argument;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactory;
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class MailFactoryTest extends TestCase
 {
     private $mailer;
-    private $engine;
+    private $twig;
     private $translator;
     private $mailFactory;
     private $user;
@@ -30,7 +30,7 @@ class MailFactoryTest extends TestCase
     public function setUp(): void
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
-        $this->engine = $this->prophesize(EngineInterface::class);
+        $this->twig = $this->prophesize(Environment::class);
         $this->translator = $this->prophesize(TranslatorInterface::class);
         $this->user = $this->prophesize(User::class);
         $this->user->getEmail()->willReturn('test@example.com');
@@ -38,15 +38,15 @@ class MailFactoryTest extends TestCase
 
         $this->mailFactory = new MailFactory(
             $this->mailer->reveal(),
-            $this->engine->reveal(),
+            $this->twig->reveal(),
             $this->translator->reveal()
         );
     }
 
     public function testSendEmails(): void
     {
-        $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
-        $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');
+        $this->twig->render('user-template', Argument::any())->willReturn('User-Template');
+        $this->twig->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
             Argument::that(
@@ -73,8 +73,8 @@ class MailFactoryTest extends TestCase
 
     public function testSendEmailsNoAdminTemplate(): void
     {
-        $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
-        $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');
+        $this->twig->render('user-template', Argument::any())->willReturn('User-Template');
+        $this->twig->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
             Argument::that(
@@ -101,8 +101,8 @@ class MailFactoryTest extends TestCase
 
     public function testSendEmailsNoUserTemplate(): void
     {
-        $this->engine->render('user-template', Argument::any())->willReturn('User-Template');
-        $this->engine->render('admin-template', Argument::any())->willReturn('Admin-Template');
+        $this->twig->render('user-template', Argument::any())->willReturn('User-Template');
+        $this->twig->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
             Argument::that(
