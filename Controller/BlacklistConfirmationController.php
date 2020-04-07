@@ -13,7 +13,10 @@ namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
+use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
+use Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository;
+use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,18 +36,15 @@ class BlacklistConfirmationController extends AbstractController
      */
     public function confirmAction(Request $request): Response
     {
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $repository = $this->get('sulu_community.blacklisting.user_repository');
-
         /** @var BlacklistUser|null $blacklistUser */
-        $blacklistUser = $repository->findByToken($request->get('token'));
+        $blacklistUser = $this->getBlacklistUserRepository()->findByToken($request->get('token'));
 
         if (null === $blacklistUser) {
             throw new NotFoundHttpException();
         }
 
         $blacklistUser->confirm();
-        $entityManager->flush();
+        $this->getEntityManager()->flush();
 
         $communityManager = $this->getCommunityManager($blacklistUser->getWebspaceKey());
 
@@ -67,13 +67,10 @@ class BlacklistConfirmationController extends AbstractController
      */
     public function denyAction(Request $request): Response
     {
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $repository = $this->get('sulu_community.blacklisting.user_repository');
-        $itemRepository = $this->get('sulu_community.blacklisting.item_repository');
-        $itemManager = $this->get('sulu_community.blacklisting.item_manager');
+        $entityManager = $this->getEntityManager();
 
         /** @var BlacklistUser|null $blacklistUser */
-        $blacklistUser = $repository->findByToken($request->get('token'));
+        $blacklistUser = $this->getBlacklistUserRepository()->findByToken($request->get('token'));
 
         if (null === $blacklistUser) {
             throw new NotFoundHttpException();
@@ -94,10 +91,10 @@ class BlacklistConfirmationController extends AbstractController
             $entityManager->remove($blacklistUser);
         }
 
-        $item = $itemRepository->findOneByPattern($user->getEmail());
+        $item = $this->getBlacklistItemRepository()->findOneByPattern($user->getEmail());
 
         if (!$item) {
-            $item = $itemManager->create();
+            $item = $this->getBlacklistItemManager()->create();
         }
 
         $item->setType(BlacklistItem::TYPE_BLOCK)
@@ -111,5 +108,31 @@ class BlacklistConfirmationController extends AbstractController
             Configuration::TYPE_BLACKLIST_DENIED,
             ['user' => $blacklistUser->getUser()]
         );
+    }
+
+    protected function getBlacklistUserRepository(): BlacklistUserRepository
+    {
+        return $this->container->get('sulu_community.blacklisting.user_repository');
+    }
+
+    protected function getBlacklistItemRepository(): BlacklistItemRepository
+    {
+        return $this->container->get('sulu_community.blacklisting.item_repository');
+    }
+
+    protected function getBlacklistItemManager(): BlacklistItemManager
+    {
+        return $this->container->get('sulu_community.blacklisting.item_manager');
+    }
+
+    public static function getSubscribedServices()
+    {
+        $subscribedServices = parent::getSubscribedServices();
+
+        $subscribedServices['sulu_community.blacklisting.user_repository'] = BlacklistUserRepository::class;
+        $subscribedServices['sulu_community.blacklisting.item_repository'] = BlacklistItemRepository::class;
+        $subscribedServices['sulu_community.blacklisting.item_manager'] = BlacklistItemManager::class;
+
+        return $subscribedServices;
     }
 }

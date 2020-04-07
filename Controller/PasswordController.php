@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
+use Sulu\Bundle\CommunityBundle\Manager\UserManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -89,7 +90,7 @@ class PasswordController extends AbstractController
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 
         // Check valid token
-        $user = $this->get('sulu_community.user_manager')->findByPasswordResetToken($token);
+        $user = $this->getUserManager()->findByPasswordResetToken($token);
 
         if (!$user) {
             return $this->renderTemplate(
@@ -150,5 +151,19 @@ class PasswordController extends AbstractController
                 'success' => $success,
             ]
         );
+    }
+
+    protected function getUserManager(): UserManagerInterface
+    {
+        return $this->container->get('sulu_community.user_manager');
+    }
+
+    public static function getSubscribedServices()
+    {
+        $subscribedServices = parent::getSubscribedServices();
+
+        $subscribedServices['sulu_community.user_manager'] = UserManagerInterface::class;
+
+        return $subscribedServices;
     }
 }

@@ -20,6 +20,7 @@
                  public="true">
             <argument type="collection"/>
         </service>
+        <service id="Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistryInterface" alias="sulu_community.community_manager.registry"/>
 
         <service id="sulu_community.community_manager"
                  class="Sulu\Bundle\CommunityBundle\Manager\CommunityManager"
@@ -44,6 +45,7 @@
             <argument type="service" id="sulu.repository.contact"/>
             <argument type="service" id="sulu_contact.contact_manager"/>
         </service>
+        <service id="Sulu\Bundle\CommunityBundle\Manager\UserManagerInterface" alias="sulu_community.user_manager"/>
 
         <!-- mail-listener -->
         <service id="sulu_community.mail_listener" class="Sulu\Bundle\CommunityBundle\EventListener\MailListener">

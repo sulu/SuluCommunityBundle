@@ -113,6 +113,18 @@ trait SaveMediaTrait
         return $this->get('sulu_media.media_manager');
     }
 
+    abstract protected function get(string $id);
+
+    public static function getSubscribedServices(): array
+    {
+        $subscribedServices = parent::getSubscribedServices();
+
+        $subscribedServices['sulu_media.system_collections.manager'] = SystemCollectionManagerInterface::class;
+        $subscribedServices['sulu_media.media_manager'] = MediaManagerInterface::class;
+
+        return $subscribedServices;
+    }
+
     /**
      * Get contact media collection.
      *
