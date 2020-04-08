@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
+use FOS\RestBundle\View\ViewHandlerInterface;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
@@ -27,6 +28,7 @@ use Sulu\Component\Rest\RequestParametersTrait;
 use Sulu\Component\Rest\RestHelperInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Provides admin-api for blacklist-items.
@@ -62,12 +64,16 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
         EntityManagerInterface $entityManager,
         RestHelperInterface $restHelper,
         DoctrineListBuilderFactoryInterface $listBuilderFactory,
-        BlacklistItemManagerInterface $blacklistItemManager
+        BlacklistItemManagerInterface $blacklistItemManager,
+        ViewHandlerInterface $viewHandler,
+        ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->entityManager = $entityManager;
         $this->restHelper = $restHelper;
         $this->listBuilderFactory = $listBuilderFactory;
         $this->blacklistItemManager = $blacklistItemManager;
+
+        parent::__construct($viewHandler, $tokenStorage);
     }
 
     /**

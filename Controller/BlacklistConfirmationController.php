@@ -17,6 +17,7 @@ use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository;
 use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager;
+use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,7 +124,7 @@ class BlacklistConfirmationController extends AbstractController
 
         $subscribedServices['sulu_community.blacklisting.user_repository'] = BlacklistUserRepository::class;
         $subscribedServices['sulu_community.blacklisting.item_repository'] = BlacklistItemRepository::class;
-        $subscribedServices['sulu_community.blacklisting.item_manager'] = BlacklistItemManager::class;
+        $subscribedServices['sulu_community.blacklisting.item_manager'] = BlacklistItemManagerInterface::class;
 
         return $subscribedServices;
     }

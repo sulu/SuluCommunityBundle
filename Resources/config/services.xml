@@ -106,16 +106,18 @@
                  public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
-            <argument type="string">SuluCommunityBundle:BlacklistItem</argument>
+            <argument type="string">Sulu\Bundle\CommunityBundle\Entity\BlacklistItem</argument>
         </service>
+        <service id="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository" alias="sulu_community.blacklisting.item_repository"/>
 
         <service id="sulu_community.blacklisting.user_repository"
                  class="Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository"
                  public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
-            <argument type="string">SuluCommunityBundle:BlacklistUser</argument>
+            <argument type="string">Sulu\Bundle\CommunityBundle\Entity\BlacklistUser</argument>
         </service>
+        <service id="Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository" alias="sulu_community.blacklisting.user_repository"/>
 
         <!-- email-confirmation -->
         <service id="sulu_community.email_confirmation.listener"
@@ -133,8 +135,9 @@
                  public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
-            <argument type="string">SuluCommunityBundle:EmailConfirmationToken</argument>
+            <argument type="string">Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken</argument>
         </service>
+        <service id="Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository" alias="sulu_community.email_confirmation.repository"/>
 
         <!-- mailing -->
         <service id="sulu_community.mail_factory" class="Sulu\Bundle\CommunityBundle\Mail\MailFactory">
@@ -142,6 +145,7 @@
             <argument type="service" id="twig"/>
             <argument type="service" id="translator"/>
         </service>
+        <service id="Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface" alias="sulu_community.mail_factory"/>
 
         <!-- Controller -->
         <service id="Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController" class="Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController">
@@ -149,6 +153,85 @@
             <argument type="service" id="sulu_core.doctrine_rest_helper"/>
             <argument type="service" id="sulu_core.doctrine_list_builder_factory"/>
             <argument type="service" id="sulu_community.blacklisting.item_manager"/>
+            <argument type="service" id="fos_rest.view_handler.default"/>
+            <argument type="service" id="security.token_storage"/>
         </service>
+
+        <!-- Website Controllers -->
+        <service id="Sulu\Bundle\CommunityBundle\Controller\ProfileController" class="Sulu\Bundle\CommunityBundle\Controller\ProfileController" public="true">
+            <tag name="container.service_subscriber" />
+            <tag name="controller.service_arguments" />
+            <tag name="sulu.context" context="website" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
+
+        <service id="Sulu\Bundle\CommunityBundle\Controller\BlacklistConfirmationController" class="Sulu\Bundle\CommunityBundle\Controller\BlacklistConfirmationController" public="true">
+            <tag name="container.service_subscriber" />
+            <tag name="controller.service_arguments" />
+            <tag name="sulu.context" context="website" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
+
+        <service id="Sulu\Bundle\CommunityBundle\Controller\CompletionController" class="Sulu\Bundle\CommunityBundle\Controller\CompletionController" public="true">
+            <tag name="container.service_subscriber" />
+            <tag name="controller.service_arguments" />
+            <tag name="sulu.context" context="website" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
+
+        <service id="Sulu\Bundle\CommunityBundle\Controller\ConfirmationController" class="Sulu\Bundle\CommunityBundle\Controller\ConfirmationController" public="true">
+            <tag name="container.service_subscriber" />
+            <tag name="controller.service_arguments" />
+            <tag name="sulu.context" context="website" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
+
+        <service id="Sulu\Bundle\CommunityBundle\Controller\EmailConfirmationController" class="Sulu\Bundle\CommunityBundle\Controller\EmailConfirmationController" public="true">
+            <tag name="container.service_subscriber" />
+            <tag name="controller.service_arguments" />
+            <tag name="sulu.context" context="website" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
+
+        <service id="Sulu\Bundle\CommunityBundle\Controller\LoginController" class="Sulu\Bundle\CommunityBundle\Controller\LoginController" public="true">
+            <tag name="container.service_subscriber" />
+            <tag name="controller.service_arguments" />
+            <tag name="sulu.context" context="website" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
+
+        <service id="Sulu\Bundle\CommunityBundle\Controller\PasswordController" class="Sulu\Bundle\CommunityBundle\Controller\PasswordController" public="true">
+            <tag name="container.service_subscriber" />
+            <tag name="controller.service_arguments" />
+            <tag name="sulu.context" context="website" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
+
+        <service id="Sulu\Bundle\CommunityBundle\Controller\RegistrationController" class="Sulu\Bundle\CommunityBundle\Controller\RegistrationController" public="true">
+            <tag name="container.service_subscriber" />
+            <tag name="controller.service_arguments" />
+            <tag name="sulu.context" context="website" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
+
+        <!-- Should be in sulu/sulu (see https://github.com/sulu/sulu/pull/5195) -->
+        <service id="Sulu\Component\Media\SystemCollections\SystemCollectionManagerInterface" alias="sulu_media.system_collections.manager"/>
+        <service id="%sulu_security.salt_generator.class%" alias="sulu_security.salt_generator"/>
     </services>
 </container>
