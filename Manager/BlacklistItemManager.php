@@ -41,7 +41,10 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
      */
     public function find(int $id): BlacklistItem
     {
-        return $this->blacklistItemRepository->find($id);
+        /** @var BlacklistItem $blacklistItem */
+        $blacklistItem = $this->blacklistItemRepository->find($id);
+
+        return $blacklistItem;
     }
 
     /**

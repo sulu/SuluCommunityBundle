@@ -225,7 +225,13 @@ class UserManager implements UserManagerInterface
      */
     public function findByConfirmationKey(string $token): ?User
     {
-        return $this->userRepository->findOneBy(['confirmationKey' => $token]);
+        $user = $this->userRepository->findOneBy(['confirmationKey' => $token]);
+
+        if (!$user instanceof User) {
+            return null;
+        }
+
+        return $user;
     }
 
     /**

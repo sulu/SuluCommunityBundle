@@ -109,6 +109,9 @@ trait SaveMediaTrait
         return $this->get('sulu_media.media_manager');
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedServices(): array
     {
         $subscribedServices = [];
