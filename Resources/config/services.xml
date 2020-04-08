@@ -148,7 +148,7 @@
         <service id="Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface" alias="sulu_community.mail_factory"/>
 
         <!-- Controller -->
-        <service id="Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController" class="Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController">
+        <service id="sulu_community.controller.blacklist_item" class="Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController" public="true">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_core.doctrine_rest_helper"/>
             <argument type="service" id="sulu_core.doctrine_list_builder_factory"/>
