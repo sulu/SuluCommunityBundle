@@ -300,11 +300,6 @@ class SaveMediaTraitTest extends TestCase
         return $this->systemCollectionManager->reveal();
     }
 
-    protected function get(string $id)
-    {
-        return null;
-    }
-
     private function createTempnam(): string
     {
         $filename = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');

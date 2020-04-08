@@ -21,7 +21,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class CompletionController extends AbstractController
 {
-    use SaveMediaTrait;
+    use SaveMediaTrait {
+        getSubscribedServices as getSubscribedServicesOfSaveMediaTrait;
+    }
 
     const TYPE = Configuration::TYPE_COMPLETION;
 
@@ -81,5 +83,10 @@ class CompletionController extends AbstractController
                 'success' => $success,
             ]
         );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }
 }

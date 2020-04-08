@@ -20,7 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RegistrationController extends AbstractController
 {
-    use SaveMediaTrait;
+    use SaveMediaTrait {
+        getSubscribedServices as getSubscribedServicesOfSaveMediaTrait;
+    }
 
     const TYPE = Configuration::TYPE_REGISTRATION;
 
@@ -80,5 +82,10 @@ class RegistrationController extends AbstractController
                 'success' => $success,
             ]
         );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }
 }
