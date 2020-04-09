@@ -40,10 +40,6 @@ class LastLoginListener implements EventSubscriberInterface
 
     /**
      * LastLoginListener constructor.
-     *
-     * @param TokenStorageInterface $tokenStorage
-     * @param EntityManager $entityManager
-     * @param int $interval
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -64,8 +60,6 @@ class LastLoginListener implements EventSubscriberInterface
 
     /**
      * Update the last login in specific interval.
-     *
-     * @param GetResponseEvent $event
      */
     public function onRequest(GetResponseEvent $event): void
     {
@@ -96,10 +90,6 @@ class LastLoginListener implements EventSubscriberInterface
 
     /**
      * Check if user was active shortly.
-     *
-     * @param User $user
-     *
-     * @return bool
      */
     private function isActiveNow(User $user): bool
     {

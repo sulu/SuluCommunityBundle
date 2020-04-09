@@ -33,9 +33,6 @@ class EmailConfirmationToken
      */
     private $user;
 
-    /**
-     * @param UserInterface $user
-     */
     public function __construct(UserInterface $user)
     {
         $this->user = $user;
@@ -43,8 +40,6 @@ class EmailConfirmationToken
 
     /**
      * Returns id.
-     *
-     * @return int
      */
     public function getId(): int
     {
@@ -53,8 +48,6 @@ class EmailConfirmationToken
 
     /**
      * Returns token.
-     *
-     * @return string
      */
     public function getToken(): string
     {
@@ -63,10 +56,6 @@ class EmailConfirmationToken
 
     /**
      * Set token.
-     *
-     * @param string $token
-     *
-     * @return self
      */
     public function setToken(string $token): self
     {
@@ -77,8 +66,6 @@ class EmailConfirmationToken
 
     /**
      * Returns user.
-     *
-     * @return UserInterface
      */
     public function getUser(): UserInterface
     {

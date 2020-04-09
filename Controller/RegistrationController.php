@@ -12,7 +12,6 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,16 +20,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RegistrationController extends AbstractController
 {
-    use SaveMediaTrait;
+    use SaveMediaTrait {
+        getSubscribedServices as getSubscribedServicesOfSaveMediaTrait;
+    }
 
     const TYPE = Configuration::TYPE_REGISTRATION;
 
     /**
      * Handle registration form.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function indexAction(Request $request): Response
     {
@@ -85,5 +82,10 @@ class RegistrationController extends AbstractController
                 'success' => $success,
             ]
         );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }
 }

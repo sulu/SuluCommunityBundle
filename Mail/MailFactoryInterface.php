@@ -21,8 +21,6 @@ interface MailFactoryInterface
     /**
      * Send emails by specific settings.
      *
-     * @param Mail $mail
-     * @param User $user
      * @param mixed[] $parameters
      */
     public function sendEmails(Mail $mail, User $user, array $parameters = []): void;

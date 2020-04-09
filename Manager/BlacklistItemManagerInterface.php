@@ -20,17 +20,11 @@ interface BlacklistItemManagerInterface
 {
     /**
      * Returns blacklist-item.
-     *
-     * @param int $id
-     *
-     * @return BlacklistItem
      */
     public function find(int $id): BlacklistItem;
 
     /**
      * Return new blacklist-item.
-     *
-     * @return BlacklistItem
      */
     public function create(): BlacklistItem;
 

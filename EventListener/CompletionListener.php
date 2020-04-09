@@ -55,10 +55,6 @@ class CompletionListener implements EventSubscriberInterface
     /**
      * CompletionListener constructor.
      *
-     * @param RequestAnalyzerInterface $requestAnalyzer
-     * @param RouterInterface $router
-     * @param TokenStorage $tokenStorage
-     * @param string $fragmentPath
      * @param CompletionInterface[] $validators
      */
     public function __construct(
@@ -84,8 +80,6 @@ class CompletionListener implements EventSubscriberInterface
 
     /**
      * Will call a specific user completion validator of a webspace.
-     *
-     * @param GetResponseEvent $event
      */
     public function onRequest(GetResponseEvent $event): void
     {
@@ -133,20 +127,11 @@ class CompletionListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param CompletionInterface $validator
-     * @param string $webspaceKey
-     */
     public function addValidator(CompletionInterface $validator, string $webspaceKey): void
     {
         $this->validators[$webspaceKey] = $validator;
     }
 
-    /**
-     * @param string $webspaceKey
-     *
-     * @return CompletionInterface|null
-     */
     protected function getValidator(string $webspaceKey): ?CompletionInterface
     {
         if (!isset($this->validators[$webspaceKey])) {

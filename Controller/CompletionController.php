@@ -21,16 +21,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class CompletionController extends AbstractController
 {
-    use SaveMediaTrait;
+    use SaveMediaTrait {
+        getSubscribedServices as getSubscribedServicesOfSaveMediaTrait;
+    }
 
     const TYPE = Configuration::TYPE_COMPLETION;
 
     /**
      * Handle registration form.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function indexAction(Request $request): Response
     {
@@ -85,5 +83,10 @@ class CompletionController extends AbstractController
                 'success' => $success,
             ]
         );
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }
 }

@@ -340,10 +340,6 @@ class RegistrationTest extends SuluTestCase
 
     /**
      * Find user by username.
-     *
-     * @param string $username
-     *
-     * @return User|null
      */
     private function findUser(string $username = 'sulu'): ?User
     {

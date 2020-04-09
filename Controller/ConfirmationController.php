@@ -15,6 +15,7 @@ use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Handles the confirmation page.
@@ -25,11 +26,6 @@ class ConfirmationController extends AbstractController
 
     /**
      * Confirm user email address by token.
-     *
-     * @param Request $request
-     * @param string $token
-     *
-     * @return Response
      */
     public function indexAction(Request $request, string $token): Response
     {
@@ -56,7 +52,7 @@ class ConfirmationController extends AbstractController
                 if (0 === strpos($redirectTo, '/')) {
                     $url = str_replace('{localization}', $request->getLocale(), $redirectTo);
                 } else {
-                    $url = $this->get('router')->generate($redirectTo);
+                    $url = $this->getRouter()->generate($redirectTo);
                 }
 
                 return $this->redirect($url);
@@ -66,5 +62,19 @@ class ConfirmationController extends AbstractController
         }
 
         return $this->renderTemplate(Configuration::TYPE_CONFIRMATION, ['success' => $success]);
+    }
+
+    protected function getRouter(): RouterInterface
+    {
+        return $this->container->get('router');
+    }
+
+    public static function getSubscribedServices()
+    {
+        $subscribedServices = parent::getSubscribedServices();
+
+        $subscribedServices['router'] = RouterInterface::class;
+
+        return $subscribedServices;
     }
 }

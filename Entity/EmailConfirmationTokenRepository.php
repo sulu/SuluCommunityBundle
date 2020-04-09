@@ -31,7 +31,10 @@ class EmailConfirmationTokenRepository extends EntityRepository
     public function findByToken($token)
     {
         try {
-            return $this->findOneBy(['token' => $token]);
+            /** @var EmailConfirmationToken|null $emailConfirmationToken */
+            $emailConfirmationToken = $this->findOneBy(['token' => $token]);
+
+            return $emailConfirmationToken;
         } catch (NonUniqueResultException $e) {
             return null;
         } catch (NoResultException $e) {
@@ -49,7 +52,10 @@ class EmailConfirmationTokenRepository extends EntityRepository
     public function findByUser($user)
     {
         try {
-            return $this->findOneBy(['user' => $user]);
+            /** @var EmailConfirmationToken|null $emailConfirmationToken */
+            $emailConfirmationToken = $this->findOneBy(['user' => $user]);
+
+            return $emailConfirmationToken;
         } catch (NonUniqueResultException $e) {
             return null;
         } catch (NoResultException $e) {

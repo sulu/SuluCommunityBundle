@@ -28,8 +28,6 @@ class ExistValidator extends ConstraintValidator
 
     /**
      * ExistValidator constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {

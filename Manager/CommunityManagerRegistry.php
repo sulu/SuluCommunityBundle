@@ -32,12 +32,7 @@ class CommunityManagerRegistry implements CommunityManagerRegistryInterface
     public function get(string $webspaceKey): CommunityManagerInterface
     {
         if (!$this->has($webspaceKey)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Webspace "%s" is not configured.',
-                    $webspaceKey
-                )
-            );
+            throw new \InvalidArgumentException(sprintf('Webspace "%s" is not configured.', $webspaceKey));
         }
 
         return $this->managers[$webspaceKey];

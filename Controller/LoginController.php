@@ -15,6 +15,7 @@ use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\HttpCacheBundle\Cache\SuluHttpCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Handles Login and login embed page.
@@ -25,14 +26,10 @@ class LoginController extends AbstractController
 
     /**
      * Show Login page.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function indexAction(Request $request): Response
     {
-        $authenticationUtils = $this->get('security.authentication_utils');
+        $authenticationUtils = $this->getAuthenticationUtils();
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -48,10 +45,6 @@ class LoginController extends AbstractController
 
     /**
      * ESI Action to show user on every page.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function embedAction(Request $request): Response
     {
@@ -74,5 +67,19 @@ class LoginController extends AbstractController
         $response->headers->set(SuluHttpCache::HEADER_REVERSE_PROXY_TTL, 0);
 
         return $response;
+    }
+
+    protected function getAuthenticationUtils(): AuthenticationUtils
+    {
+        return $this->container->get('security.authentication_utils');
+    }
+
+    public static function getSubscribedServices()
+    {
+        $subscribedServices = parent::getSubscribedServices();
+
+        $subscribedServices['security.authentication_utils'] = AuthenticationUtils::class;
+
+        return $subscribedServices;
     }
 }

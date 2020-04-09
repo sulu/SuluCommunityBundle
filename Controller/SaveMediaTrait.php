@@ -95,8 +95,6 @@ trait SaveMediaTrait
 
     /**
      * Get system collection manager.
-     *
-     * @return SystemCollectionManagerInterface
      */
     private function getSystemCollectionManager(): SystemCollectionManagerInterface
     {
@@ -105,8 +103,6 @@ trait SaveMediaTrait
 
     /**
      * Get media manager.
-     *
-     * @return MediaManagerInterface
      */
     private function getMediaManager(): MediaManagerInterface
     {
@@ -114,9 +110,20 @@ trait SaveMediaTrait
     }
 
     /**
+     * @return array<string, string>
+     */
+    public static function getSubscribedServices(): array
+    {
+        $subscribedServices = [];
+
+        $subscribedServices['sulu_media.system_collections.manager'] = SystemCollectionManagerInterface::class;
+        $subscribedServices['sulu_media.media_manager'] = MediaManagerInterface::class;
+
+        return $subscribedServices;
+    }
+
+    /**
      * Get contact media collection.
-     *
-     * @return int
      */
     private function getContactMediaCollection(): int
     {

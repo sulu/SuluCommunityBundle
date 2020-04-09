@@ -12,8 +12,8 @@
 namespace Sulu\Bundle\CommunityBundle\Mail;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Send emails for a specific type.
@@ -26,24 +26,19 @@ class MailFactory implements MailFactoryInterface
     protected $mailer;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    protected $engine;
+    protected $twig;
 
     /**
      * @var TranslatorInterface
      */
     protected $translator;
 
-    /**
-     * @param \Swift_Mailer $mailer
-     * @param EngineInterface $engine
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(\Swift_Mailer $mailer, EngineInterface $engine, TranslatorInterface $translator)
+    public function __construct(\Swift_Mailer $mailer, Environment $twig, TranslatorInterface $translator)
     {
         $this->mailer = $mailer;
-        $this->engine = $engine;
+        $this->twig = $twig;
         $this->translator = $translator;
     }
 
@@ -79,13 +74,11 @@ class MailFactory implements MailFactoryInterface
      *
      * @param string|array $from
      * @param string|array $to
-     * @param string $subject
-     * @param string $template
      * @param mixed[] $data
      */
     protected function sendEmail($from, $to, string $subject, string $template, array $data): void
     {
-        $body = $this->engine->render($template, $data);
+        $body = $this->twig->render($template, $data);
 
         $message = new \Swift_Message();
         $message->setSubject($this->translator->trans($subject));

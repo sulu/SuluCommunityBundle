@@ -33,9 +33,6 @@ class MailListener implements EventSubscriberInterface
      */
     private $mailFactory;
 
-    /**
-     * @param MailFactoryInterface $mailFactory
-     */
     public function __construct(MailFactoryInterface $mailFactory)
     {
         $this->mailFactory = $mailFactory;
@@ -55,8 +52,6 @@ class MailListener implements EventSubscriberInterface
 
     /**
      * Send registration emails.
-     *
-     * @param AbstractCommunityEvent $event
      */
     public function sendRegistrationEmails(AbstractCommunityEvent $event): void
     {
@@ -65,8 +60,6 @@ class MailListener implements EventSubscriberInterface
 
     /**
      * Send confirmation emails.
-     *
-     * @param AbstractCommunityEvent $event
      */
     public function sendConfirmationEmails(AbstractCommunityEvent $event): void
     {
@@ -75,8 +68,6 @@ class MailListener implements EventSubscriberInterface
 
     /**
      * Send password forget emails.
-     *
-     * @param AbstractCommunityEvent $event
      */
     public function sendPasswordForgetEmails(AbstractCommunityEvent $event): void
     {
@@ -85,8 +76,6 @@ class MailListener implements EventSubscriberInterface
 
     /**
      * Send password reset emails.
-     *
-     * @param AbstractCommunityEvent $event
      */
     public function sendPasswordResetEmails(AbstractCommunityEvent $event): void
     {
@@ -95,8 +84,6 @@ class MailListener implements EventSubscriberInterface
 
     /**
      * Send password reset emails.
-     *
-     * @param AbstractCommunityEvent $event
      */
     public function sendCompletionEmails(AbstractCommunityEvent $event): void
     {
@@ -105,8 +92,6 @@ class MailListener implements EventSubscriberInterface
 
     /**
      * Send notification email for profile save.
-     *
-     * @param AbstractCommunityEvent $event
      */
     public function sendNotificationSaveProfile(AbstractCommunityEvent $event): void
     {
@@ -115,9 +100,6 @@ class MailListener implements EventSubscriberInterface
 
     /**
      * Send emails for specific type.
-     *
-     * @param AbstractCommunityEvent $event
-     * @param string $type
      */
     protected function sendTypeEmails(AbstractCommunityEvent $event, string $type): void
     {

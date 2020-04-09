@@ -47,11 +47,6 @@ class BlacklistUser
      */
     private $user;
 
-    /**
-     * @param string $token
-     * @param string $webspaceKey
-     * @param UserInterface $user
-     */
     public function __construct(string $token, string $webspaceKey, UserInterface $user)
     {
         $this->token = $token;
@@ -63,8 +58,6 @@ class BlacklistUser
 
     /**
      * Returns id.
-     *
-     * @return int
      */
     public function getId(): int
     {
@@ -73,8 +66,6 @@ class BlacklistUser
 
     /**
      * Returns token.
-     *
-     * @return string|null
      */
     public function getToken(): ?string
     {
@@ -83,8 +74,6 @@ class BlacklistUser
 
     /**
      * Returns type.
-     *
-     * @return int
      */
     public function getType(): int
     {
@@ -93,8 +82,6 @@ class BlacklistUser
 
     /**
      * Returns webspace-key.
-     *
-     * @return string
      */
     public function getWebspaceKey(): string
     {
@@ -103,8 +90,6 @@ class BlacklistUser
 
     /**
      * Returns user.
-     *
-     * @return UserInterface
      */
     public function getUser(): UserInterface
     {
@@ -113,8 +98,6 @@ class BlacklistUser
 
     /**
      * Set type to denied.
-     *
-     * @return self
      */
     public function deny(): self
     {
@@ -126,8 +109,6 @@ class BlacklistUser
 
     /**
      * Set type to denied.
-     *
-     * @return self
      */
     public function confirm(): self
     {

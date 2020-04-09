@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
+use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\User;
@@ -28,15 +29,11 @@ class EmailConfirmationController extends AbstractController
 
     /**
      * Overwrite user email with contact email.
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
     public function indexAction(Request $request): Response
     {
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $repository = $this->get('sulu_community.email_confirmation.repository');
+        $entityManager = $this->getEntityManager();
+        $repository = $this->getEmailConfirmationTokenRepository();
 
         $success = false;
         /** @var EmailConfirmationToken $token */
@@ -64,5 +61,19 @@ class EmailConfirmationController extends AbstractController
         }
 
         return $this->renderTemplate(self::TYPE, ['success' => $success]);
+    }
+
+    protected function getEmailConfirmationTokenRepository(): EmailConfirmationTokenRepository
+    {
+        return $this->container->get('sulu_community.email_confirmation.repository');
+    }
+
+    public static function getSubscribedServices()
+    {
+        $subscribedServices = parent::getSubscribedServices();
+
+        $subscribedServices['sulu_community.email_confirmation.repository'] = EmailConfirmationTokenRepository::class;
+
+        return $subscribedServices;
     }
 }

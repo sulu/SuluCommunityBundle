@@ -1,42 +1,42 @@
 sulu_community.registration:
     path: /registration
-    controller: SuluCommunityBundle:Registration:index
+    controller: Sulu\Bundle\CommunityBundle\Controller\RegistrationController::indexAction
 
 sulu_community.confirmation:
     path: /confirmation/{token}
-    controller: SuluCommunityBundle:Confirmation:index
+    controller: Sulu\Bundle\CommunityBundle\Controller\ConfirmationController::indexAction
 
 sulu_community.completion:
     path: /completion
-    controller: SuluCommunityBundle:Completion:index
+    controller: Sulu\Bundle\CommunityBundle\Controller\CompletionController::indexAction
 
 sulu_community.password_forget:
     path: /password-forget
-    controller: SuluCommunityBundle:Password:forget
+    controller: Sulu\Bundle\CommunityBundle\Controller\PasswordController::forgetAction
 
 sulu_community.password_reset:
     path: /password-reset/{token}
-    controller: SuluCommunityBundle:Password:reset
+    controller: Sulu\Bundle\CommunityBundle\Controller\PasswordController::resetAction
 
 sulu_community.profile:
     path: /profile
-    controller: SuluCommunityBundle:Profile:index
+    controller: Sulu\Bundle\CommunityBundle\Controller\ProfileController::indexAction
 
 sulu_community.email_confirmation:
     path: /profile/email-confirmation
-    controller: SuluCommunityBundle:EmailConfirmation:index
+    controller: Sulu\Bundle\CommunityBundle\Controller\EmailConfirmationController::indexAction
 
 sulu_community.login:
     path: /login
-    controller: SuluCommunityBundle:Login:index
+    controller: Sulu\Bundle\CommunityBundle\Controller\LoginController::indexAction
 
 sulu_community.logout:
     path: /logout
 
 sulu_community.user_confirm:
     path: /_community/confirm
-    controller: SuluCommunityBundle:BlacklistConfirmation:confirm
+    controller: Sulu\Bundle\CommunityBundle\Controller\BlacklistConfirmationController::confirmAction
 
 sulu_community.user_deny:
     path: /_community/deny
-    controller: SuluCommunityBundle:BlacklistConfirmation:deny
+    controller: Sulu\Bundle\CommunityBundle\Controller\BlacklistConfirmationController::denyAction

@@ -29,7 +29,7 @@ class BlacklistItemRepositoryTest extends SuluTestCase
 
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getEntityManager();
-        $repository = $entityManager->getRepository('SuluCommunityBundle:BlacklistItem');
+        $repository = $entityManager->getRepository(BlacklistItem::class);
 
         $entityManager->persist($item1);
         $entityManager->persist($item2);

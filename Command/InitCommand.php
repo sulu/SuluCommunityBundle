@@ -97,9 +97,6 @@ class InitCommand extends ContainerAwareCommand
     /**
      * Create role for specific webspace.
      *
-     * @param Webspace $webspace
-     * @param OutputInterface $output
-     *
      * @throws \Exception
      */
     protected function initWebspace(Webspace $webspace, OutputInterface $output): void
@@ -129,11 +126,6 @@ class InitCommand extends ContainerAwareCommand
 
     /**
      * Create a role for a specific system if not exists.
-     *
-     * @param string $roleName
-     * @param string $system
-     *
-     * @return string
      */
     protected function createRoleIfNotExists(string $roleName, string $system): string
     {

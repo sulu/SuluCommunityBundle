@@ -1,3 +1,3 @@
 sulu_community.blacklist_item:
     type: rest
-    resource: Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController
+    resource: sulu_community.controller.blacklist_item

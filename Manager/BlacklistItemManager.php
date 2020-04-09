@@ -30,10 +30,6 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
      */
     private $blacklistItemRepository;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param BlacklistItemRepository $blacklistItemRepository
-     */
     public function __construct(EntityManagerInterface $entityManager, BlacklistItemRepository $blacklistItemRepository)
     {
         $this->entityManager = $entityManager;
@@ -45,7 +41,10 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
      */
     public function find(int $id): BlacklistItem
     {
-        return $this->blacklistItemRepository->find($id);
+        /** @var BlacklistItem $blacklistItem */
+        $blacklistItem = $this->blacklistItemRepository->find($id);
+
+        return $blacklistItem;
     }
 
     /**

@@ -11,21 +11,27 @@
 
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistryInterface;
 use Sulu\Bundle\ContactBundle\Entity\Address;
 use Sulu\Bundle\ContactBundle\Entity\AddressType;
 use Sulu\Bundle\ContactBundle\Entity\ContactAddress;
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sulu\Bundle\WebsiteBundle\Resolver\TemplateAttributeResolverInterface;
+use Sulu\Component\Security\Authentication\SaltGenerator;
+use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Contains helper function for all controllers.
  */
-abstract class AbstractController extends Controller
+abstract class AbstractController extends SymfonyAbstractController
 {
     /**
      * @var string
@@ -34,25 +40,19 @@ abstract class AbstractController extends Controller
 
     /**
      * Returns current or specific communityManager.
-     *
-     * @param string $webspaceKey
-     *
-     * @return CommunityManagerInterface
      */
     protected function getCommunityManager(string $webspaceKey): CommunityManagerInterface
     {
-        return $this->get('sulu_community.community_manager.registry')->get($webspaceKey);
+        return $this->getCommunityManagerRegistry()->get($webspaceKey);
     }
 
     /**
      * Returns current webspace key.
-     *
-     * @return string
      */
     protected function getWebspaceKey(): string
     {
         if (null === $this->webspaceKey) {
-            return $this->get('sulu_core.webspace.request_analyzer')->getWebspace()->getKey();
+            return $this->getRequestAnalyzer()->getWebspace()->getKey();
         }
 
         return $this->webspaceKey;
@@ -60,11 +60,6 @@ abstract class AbstractController extends Controller
 
     /**
      * Set Password and Salt by a Symfony Form.
-     *
-     * @param User $user
-     * @param FormInterface $form
-     *
-     * @return User
      */
     protected function setUserPasswordAndSalt(User $user, FormInterface $form): User
     {
@@ -75,11 +70,11 @@ abstract class AbstractController extends Controller
 
         $salt = $user->getSalt();
         if (!$salt) {
-            $salt = $this->get('sulu_security.salt_generator')->getRandomSalt();
+            $salt = $this->getSaltGenerator()->getRandomSalt();
         }
 
         $user->setSalt($salt);
-        $password = $this->get('security.password_encoder')->encodePassword($user, $plainPassword);
+        $password = $this->getUserPasswordEncoder()->encodePassword($user, $plainPassword);
         $user->setPassword($password);
 
         return $user;
@@ -87,10 +82,6 @@ abstract class AbstractController extends Controller
 
     /**
      * Check if user should be logged in.
-     *
-     * @param string $type
-     *
-     * @return bool
      */
     protected function checkAutoLogin(string $type): bool
     {
@@ -103,10 +94,7 @@ abstract class AbstractController extends Controller
     /**
      * Render a specific type template.
      *
-     * @param string $type
      * @param mixed[] $data
-     *
-     * @return Response
      */
     protected function renderTemplate(string $type, array $data = []): Response
     {
@@ -124,7 +112,7 @@ abstract class AbstractController extends Controller
      */
     protected function saveEntities(): void
     {
-        $this->get('doctrine.orm.entity_manager')->flush();
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -136,7 +124,7 @@ abstract class AbstractController extends Controller
      */
     private function getTemplateAttributes(array $custom = []): array
     {
-        return $this->get('sulu_website.resolver.template_attribute')->resolve($custom);
+        return $this->getTemplateAttributeResolver()->resolve($custom);
     }
 
     /**
@@ -162,19 +150,16 @@ abstract class AbstractController extends Controller
 
     /**
      * Add address to user.
-     *
-     * @param User $user
      */
     private function addAddress(User $user): void
     {
-        $entityManager = $this->get('doctrine.orm.entity_manager');
         $contact = $user->getContact();
 
         $address = new Address();
         $address->setPrimaryAddress(true);
         $address->setNote('');
         /** @var AddressType $addressType */
-        $addressType = $entityManager->getReference(AddressType::class, 1);
+        $addressType = $this->getEntityManager()->getReference(AddressType::class, 1);
         $address->setAddressType($addressType);
         $contactAddress = new ContactAddress();
         $contactAddress->setMain(true);
@@ -202,5 +187,49 @@ abstract class AbstractController extends Controller
     public function renderView(string $view, array $parameters = []): string
     {
         return parent::renderView($view, $this->getTemplateAttributes($parameters));
+    }
+
+    protected function getCommunityManagerRegistry(): CommunityManagerRegistryInterface
+    {
+        return $this->container->get('sulu_community.community_manager.registry');
+    }
+
+    protected function getRequestAnalyzer(): RequestAnalyzerInterface
+    {
+        return $this->container->get('sulu_core.webspace.request_analyzer');
+    }
+
+    protected function getSaltGenerator(): SaltGenerator
+    {
+        return $this->container->get('sulu_security.salt_generator');
+    }
+
+    protected function getUserPasswordEncoder(): UserPasswordEncoderInterface
+    {
+        return $this->container->get('security.password_encoder');
+    }
+
+    protected function getTemplateAttributeResolver(): TemplateAttributeResolverInterface
+    {
+        return $this->container->get('sulu_website.resolver.template_attribute');
+    }
+
+    protected function getEntityManager(): EntityManagerInterface
+    {
+        return $this->container->get('doctrine.orm.entity_manager');
+    }
+
+    public static function getSubscribedServices()
+    {
+        $subscribedServices = parent::getSubscribedServices();
+
+        $subscribedServices['sulu_community.community_manager.registry'] = CommunityManagerRegistryInterface::class;
+        $subscribedServices['sulu_core.webspace.request_analyzer'] = RequestAnalyzerInterface::class;
+        $subscribedServices['sulu_security.salt_generator'] = SaltGenerator::class;
+        $subscribedServices['security.password_encoder'] = UserPasswordEncoderInterface::class;
+        $subscribedServices['sulu_website.resolver.template_attribute'] = TemplateAttributeResolverInterface::class;
+        $subscribedServices['doctrine.orm.entity_manager'] = EntityManagerInterface::class;
+
+        return $subscribedServices;
     }
 }
