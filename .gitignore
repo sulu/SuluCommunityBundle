@@ -30,3 +30,4 @@ npm-debug.log
 
 # tests
 Tests/Application/var
+Tests/Application/.env.test.local

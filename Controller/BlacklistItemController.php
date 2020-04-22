@@ -99,7 +99,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
             $this->view(
                 new ListRepresentation(
                     $listResponse,
-                    'items',
+                    'blacklist_items',
                     'sulu_community.get_blacklist-items',
                     $request->query->all(),
                     $listBuilder->getCurrentPage(),

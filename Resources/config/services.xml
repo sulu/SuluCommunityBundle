@@ -56,7 +56,7 @@
 
         <!-- black-listener -->
         <service id="sulu_community.black_listener" class="Sulu\Bundle\CommunityBundle\EventListener\BlacklistListener">
-            <argument type="service" id="sulu_community.blacklisting.item_repository"/>
+            <argument type="service" id="sulu.repository.blacklist_item"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_security.token_generator"/>
             <argument type="service" id="sulu_community.mail_factory"/>
@@ -81,6 +81,7 @@
         <service id="sulu_community.admin" class="Sulu\Bundle\CommunityBundle\Admin\CommunityAdmin">
             <argument type="service" id="sulu_security.security_checker"/>
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument type="service" id="sulu_admin.view_builder_factory"/>
             <argument>%sulu_community.webspaces_config%</argument>
 
             <tag name="sulu.admin"/>
@@ -97,7 +98,7 @@
                  class="Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager"
                  public="true">
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="sulu_community.blacklisting.item_repository"/>
+            <argument type="service" id="sulu.repository.blacklist_item"/>
         </service>
         <service id="Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManagerInterface" alias="sulu_community.blacklisting.item_manager"/>
 
