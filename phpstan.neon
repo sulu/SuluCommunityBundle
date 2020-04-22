@@ -23,5 +23,4 @@ parameters:
         -
             path: Controller/LoginController.php
             message: '#Parameter \#2 \$values of method Symfony\\Component\\HttpFoundation\\ResponseHeaderBag::set\(\) expects array<string>|string, int given.#'
-        - '#Call to an undefined method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest::get\(\).#'
         - '#Parameter \#3 \$userId of method Sulu\\Bundle\\MediaBundle\\Media\\Manager\\MediaManagerInterface::save\(\) expects int, int|null given.#'
