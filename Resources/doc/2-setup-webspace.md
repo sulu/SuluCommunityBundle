@@ -32,10 +32,7 @@ sulu_community:
 
 security:
     encoders:
-        Sulu\Bundle\SecurityBundle\Entity\User:
-            algorithm: sha512
-            iterations: 5000
-            encode_as_base64: false
+        Sulu\Bundle\SecurityBundle\Entity\User: bcrypt
 
     providers:
         sulu:
@@ -54,7 +51,7 @@ security:
     firewalls:
         <webspace_key>: # Replace <webspace_key> with the key of your webspace
             pattern: ^/
-            anonymous: ~
+            anonymous: lazy
             form_login:
                 login_path: sulu_community.login
                 check_path: sulu_community.login
@@ -77,13 +74,6 @@ For functional tests you need to activate the security in the website test confi
 # config/packages/test/security_website.yml
 
 security:
-    access_decision_manager:
-        strategy: unanimous # normally affirmative but https://github.com/sulu/sulu/issues/2756
-
-    encoders:
-        legacy_encoder: plaintext
-        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
-
     providers:
         testprovider:
             id: test_user_provider
@@ -91,7 +81,6 @@ security:
     firewalls:
         <webspace_key>: # Replace <webspace_key> with the key of your webspace
              http_basic: ~
-             anonymous: ~
 ```
 
 ## Create Role
