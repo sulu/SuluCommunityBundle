@@ -17,7 +17,6 @@
             name="pattern"
             visibility="always"
             searchability="yes"
-            filter-type="string"
             translation="sulu_community.pattern"
         >
             <field-name>pattern</field-name>
@@ -28,7 +27,6 @@
             name="type"
             visibility="always"
             searchability="yes"
-            filter-type="string"
             translation="sulu_community.type"
         >
             <field-name>type</field-name>
