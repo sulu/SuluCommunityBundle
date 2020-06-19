@@ -60,7 +60,7 @@ class InitCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(): void
     {
         $this->setDescription('Create the user roles for the community.')
             ->addArgument('webspace', null, 'A specific webspace key.');
@@ -71,7 +71,7 @@ class InitCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var string $webspaceKey */
+        /** @var string|null $webspaceKey */
         $webspaceKey = $input->getArgument('webspace');
 
         if (null !== $webspaceKey) {
@@ -92,6 +92,8 @@ class InitCommand extends Command
             $this->initWebspace($webspace, $output);
             $this->entityManager->flush();
         }
+
+        return 0;
     }
 
     /**

@@ -30,7 +30,7 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -60,7 +60,7 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
     /**
      * {@inheritdoc}
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         if ($container->hasExtension('sulu_admin')) {
             $container->prependExtensionConfig(

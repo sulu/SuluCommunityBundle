@@ -69,7 +69,10 @@ class ConfirmationController extends AbstractController
         return $this->container->get('router');
     }
 
-    public static function getSubscribedServices()
+    /**
+     * @return array<string|int, string>
+     */
+    public static function getSubscribedServices(): array
     {
         $subscribedServices = parent::getSubscribedServices();
 

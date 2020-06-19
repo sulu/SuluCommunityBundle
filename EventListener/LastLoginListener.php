@@ -14,7 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\EventListener;
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -51,6 +51,9 @@ class LastLoginListener implements EventSubscriberInterface
         $this->interval = $interval;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -61,7 +64,7 @@ class LastLoginListener implements EventSubscriberInterface
     /**
      * Update the last login in specific interval.
      */
-    public function onRequest(GetResponseEvent $event): void
+    public function onRequest(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

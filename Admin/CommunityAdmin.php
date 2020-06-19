@@ -48,7 +48,7 @@ class CommunityAdmin extends Admin
     private $viewBuilderFactory;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $webspacesConfiguration;
 

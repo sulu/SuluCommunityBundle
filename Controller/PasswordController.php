@@ -149,7 +149,10 @@ class PasswordController extends AbstractController
         return $this->container->get('sulu_community.user_manager');
     }
 
-    public static function getSubscribedServices()
+    /**
+     * @return array<string|int, string>
+     */
+    public static function getSubscribedServices(): array
     {
         $subscribedServices = parent::getSubscribedServices();
 

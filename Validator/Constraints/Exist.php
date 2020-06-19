@@ -24,7 +24,7 @@ class Exist extends Constraint
     public $message = 'The value "%string%" was not found.';
 
     /**
-     * @var array
+     * @var string[]
      */
     public $columns = [];
 

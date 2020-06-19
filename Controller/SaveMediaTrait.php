@@ -110,7 +110,7 @@ trait SaveMediaTrait
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string|int, string>
      */
     public static function getSubscribedServices(): array
     {

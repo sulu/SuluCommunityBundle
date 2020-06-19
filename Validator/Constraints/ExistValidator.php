@@ -37,11 +37,13 @@ class ExistValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if ($constraint instanceof Exist && $constraint->entity) {
+            /** @var class-string $class */
+            $class = $constraint->entity;
             /** @var EntityRepository $repository */
-            $repository = $this->entityManager->getRepository($constraint->entity);
+            $repository = $this->entityManager->getRepository($class);
             $qb = $repository->createQueryBuilder('u');
 
             foreach ($constraint->columns as $column) {

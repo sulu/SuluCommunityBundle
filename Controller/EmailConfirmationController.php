@@ -49,7 +49,7 @@ class EmailConfirmationController extends AbstractController
                 $emailType = $entityManager->getReference(EmailType::class, 1);
 
                 $contactEmail = new Email();
-                $contactEmail->setEmail($user->getContact()->getMainEmail());
+                $contactEmail->setEmail((string) $user->getContact()->getMainEmail());
                 $contactEmail->setEmailType($emailType);
                 $userContact->addEmail($contactEmail);
             }
@@ -68,7 +68,10 @@ class EmailConfirmationController extends AbstractController
         return $this->container->get('sulu_community.email_confirmation.repository');
     }
 
-    public static function getSubscribedServices()
+    /**
+     * @return array<string|int, string>
+     */
+    public static function getSubscribedServices(): array
     {
         $subscribedServices = parent::getSubscribedServices();
 

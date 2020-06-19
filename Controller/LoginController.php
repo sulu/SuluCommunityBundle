@@ -64,7 +64,7 @@ class LoginController extends AbstractController
         $response->setSharedMaxAge(0);
         $response->headers->addCacheControlDirective('must-revalidate', true);
         $response->headers->addCacheControlDirective('no-store', true);
-        $response->headers->set(SuluHttpCache::HEADER_REVERSE_PROXY_TTL, 0);
+        $response->headers->set(SuluHttpCache::HEADER_REVERSE_PROXY_TTL, '0');
 
         return $response;
     }
@@ -74,7 +74,10 @@ class LoginController extends AbstractController
         return $this->container->get('security.authentication_utils');
     }
 
-    public static function getSubscribedServices()
+    /**
+     * @return array<string|int, string>
+     */
+    public static function getSubscribedServices(): array
     {
         $subscribedServices = parent::getSubscribedServices();
 

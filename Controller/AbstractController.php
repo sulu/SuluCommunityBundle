@@ -171,6 +171,8 @@ abstract class AbstractController extends SymfonyAbstractController
 
     /**
      * {@inheritdoc}
+     *
+     * @param mixed[] $parameters
      */
     public function render(string $view, array $parameters = [], Response $response = null): Response
     {
@@ -183,6 +185,8 @@ abstract class AbstractController extends SymfonyAbstractController
 
     /**
      * {@inheritdoc}
+     *
+     * @param mixed[] $parameters
      */
     public function renderView(string $view, array $parameters = []): string
     {
@@ -219,7 +223,10 @@ abstract class AbstractController extends SymfonyAbstractController
         return $this->container->get('doctrine.orm.entity_manager');
     }
 
-    public static function getSubscribedServices()
+    /**
+     * @return array<string|int, string>
+     */
+    public static function getSubscribedServices(): array
     {
         $subscribedServices = parent::getSubscribedServices();
 

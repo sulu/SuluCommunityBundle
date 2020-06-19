@@ -84,7 +84,7 @@ class BlacklistConfirmationController extends AbstractController
             $entityManager->remove($blacklistUser);
         }
 
-        $item = $this->getBlacklistItemRepository()->findOneByPattern($user->getEmail());
+        $item = $this->getBlacklistItemRepository()->findOneBy(['pattern' => $user->getEmail()]);
 
         if (!$item) {
             $item = $this->getBlacklistItemManager()->create();
@@ -118,7 +118,10 @@ class BlacklistConfirmationController extends AbstractController
         return $this->container->get('sulu_community.blacklisting.item_manager');
     }
 
-    public static function getSubscribedServices()
+    /**
+     * @return array<string|int, string>
+     */
+    public static function getSubscribedServices(): array
     {
         $subscribedServices = parent::getSubscribedServices();
 
