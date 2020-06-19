@@ -20,14 +20,14 @@ use Sulu\Component\Security\Authentication\RoleInterface;
 use Sulu\Component\Webspace\Manager\WebspaceManagerInterface;
 use Sulu\Component\Webspace\Security;
 use Sulu\Component\Webspace\Webspace;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Create the user roles for the community.
  */
-class InitCommand extends ContainerAwareCommand
+class InitCommand extends Command
 {
     const NAME = 'sulu:community:init';
 
@@ -148,9 +148,7 @@ class InitCommand extends ContainerAwareCommand
         $role->setSystem($system);
         $role->setName($roleName);
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $entityManager->persist($role);
+        $this->entityManager->persist($role);
 
         return $outputMessage;
     }

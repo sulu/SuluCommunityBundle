@@ -21,13 +21,19 @@ use Sulu\Bundle\SecurityBundle\Entity\UserRepository;
 use Sulu\Bundle\SecurityBundle\Entity\UserRole;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 use Sulu\Component\HttpKernel\SuluKernel;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class ProfileControllerTest extends SuluTestCase
 {
-    protected function setUp(): void
+    /**
+     * @var KernelBrowser
+     */
+    private $client;
+
+    public function setUp(): void
     {
         parent::setUp();
-
+        $this->client = $this->createAuthenticatedClient();
         $this->purgeDatabase();
 
         /** @var EntityManagerInterface $entityManager */
@@ -87,10 +93,8 @@ class ProfileControllerTest extends SuluTestCase
      */
     private function submitProfile(array $data): User
     {
-        $client = $this->createAuthenticatedClient();
-
-        $crawler = $client->request('GET', '/profile');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $crawler = $this->client->request('GET', '/profile');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('#profile_formOfAddress'));
         $this->assertCount(1, $crawler->filter('#profile_firstName'));
@@ -110,8 +114,8 @@ class ProfileControllerTest extends SuluTestCase
             ]
         ));
 
-        $crawler = $client->submit($form);
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $crawler = $this->client->submit($form);
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('.success'));
 

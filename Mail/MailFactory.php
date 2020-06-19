@@ -12,7 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Mail;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**

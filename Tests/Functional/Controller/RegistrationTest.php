@@ -21,6 +21,7 @@ use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 use Sulu\Component\HttpKernel\SuluKernel;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,10 +33,15 @@ class RegistrationTest extends SuluTestCase
 {
     use BlacklistItemTrait;
 
-    protected function setUp(): void
+    /**
+     * @var KernelBrowser
+     */
+    private $client;
+
+    public function setUp(): void
     {
         parent::setUp();
-
+        $this->client = $this->createClient();
         $this->purgeDatabase();
 
         /** @var EntityManagerInterface $entityManager */
@@ -59,9 +65,7 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegister(): void
     {
-        $client = $this->createClient();
-
-        $crawler = $client->request('GET', '/registration');
+        $crawler = $this->client->request('GET', '/registration');
 
         $this->assertCount(1, $crawler->filter('input[name="registration[username]"]'));
         $this->assertCount(1, $crawler->filter('input[name="registration[email]"]'));
@@ -83,8 +87,8 @@ class RegistrationTest extends SuluTestCase
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]
         );
-        $client->submit($form);
-        $this->assertHttpStatusCode(302, $client->getResponse());
+        $this->client->submit($form);
+        $this->assertHttpStatusCode(302, $this->client->getResponse());
     }
 
     public function testConfirmation(): User
@@ -95,10 +99,8 @@ class RegistrationTest extends SuluTestCase
 
         $confirmationKey = $user->getConfirmationKey();
 
-        $client = $this->createClient();
-
-        $client->request('GET', '/confirmation/' . $confirmationKey);
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->client->request('GET', '/confirmation/' . $confirmationKey);
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var User $user */
         $user = $this->findUser();
@@ -111,10 +113,8 @@ class RegistrationTest extends SuluTestCase
     {
         $this->testConfirmation();
 
-        $client = $this->createClient();
-
-        $crawler = $client->request('GET', '/login');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $crawler = $this->client->request('GET', '/login');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('input[name="_username"]'));
         $this->assertCount(1, $crawler->filter('input[name="_password"]'));
@@ -125,21 +125,19 @@ class RegistrationTest extends SuluTestCase
                 '_password' => 'my-sulu',
             ]
         );
-        $client->submit($form);
+        $this->client->submit($form);
 
-        $this->assertHttpStatusCode(302, $client->getResponse());
-        $this->assertInstanceOf(RedirectResponse::class, $client->getResponse());
-        $this->assertEquals('http://localhost/profile', $client->getResponse()->getTargetUrl());
+        $this->assertHttpStatusCode(302, $this->client->getResponse());
+        $this->assertInstanceOf(RedirectResponse::class, $this->client->getResponse());
+        $this->assertEquals('http://localhost/profile', $this->client->getResponse()->getTargetUrl());
     }
 
     public function testLoginWrongPassword(): void
     {
         $this->testConfirmation();
 
-        $client = $this->createClient();
-
-        $crawler = $client->request('GET', '/login');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $crawler = $this->client->request('GET', '/login');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('input[name="_username"]'));
         $this->assertCount(1, $crawler->filter('input[name="_password"]'));
@@ -150,20 +148,18 @@ class RegistrationTest extends SuluTestCase
                 '_password' => 'your-sulu',
             ]
         );
-        $client->submit($form);
+        $this->client->submit($form);
 
-        $this->assertHttpStatusCode(302, $client->getResponse());
-        $this->assertInstanceOf(RedirectResponse::class, $client->getResponse());
-        $this->assertEquals('http://localhost/login', $client->getResponse()->getTargetUrl());
+        $this->assertHttpStatusCode(302, $this->client->getResponse());
+        $this->assertInstanceOf(RedirectResponse::class, $this->client->getResponse());
+        $this->assertEquals('http://localhost/login', $this->client->getResponse()->getTargetUrl());
     }
 
     public function testRegistrationBlacklistedBlocked(): void
     {
         $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_BLOCK);
 
-        $client = $this->createClient();
-
-        $crawler = $client->request('GET', '/registration');
+        $crawler = $this->client->request('GET', '/registration');
         $form = $crawler->selectButton('registration[submit]')->form(
             [
                 'registration[username]' => 'sulu',
@@ -175,9 +171,9 @@ class RegistrationTest extends SuluTestCase
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]
         );
-        $client->submit($form);
-        $this->assertHttpStatusCode(200, $client->getResponse());
-        $content = $client->getResponse()->getContent();
+        $this->client->submit($form);
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
+        $content = $this->client->getResponse()->getContent();
 
         $this->assertIsString($content);
         $this->assertStringContainsString('is blocked', $content);
@@ -188,10 +184,8 @@ class RegistrationTest extends SuluTestCase
     {
         $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_REQUEST);
 
-        $client = $this->createClient();
-
-        $crawler = $client->request('GET', '/registration');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $crawler = $this->client->request('GET', '/registration');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         $form = $crawler->selectButton('registration[submit]')->form(
             [
@@ -204,13 +198,13 @@ class RegistrationTest extends SuluTestCase
                 'registration[_token]' => $crawler->filter('*[name="registration[_token]"]')->first()->attr('value'),
             ]
         );
-        $client->submit($form);
-        $this->assertHttpStatusCode(302, $client->getResponse());
+        $this->client->submit($form);
+        $this->assertHttpStatusCode(302, $this->client->getResponse());
 
         $this->assertNotNull($this->findUser());
 
         // check email to admin
-        $profile = $client->getProfile();
+        $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
         /** @var MessageDataCollector $mailCollector */
@@ -234,16 +228,14 @@ class RegistrationTest extends SuluTestCase
         $this->assertIsString($firstLink);
         $this->assertStringContainsString('/_community/confirm', $firstLink);
 
-        $client = $this->createClient();
-
-        $client->request('GET', $firstLink);
-        $content = $client->getResponse()->getContent();
+        $this->client->request('GET', $firstLink);
+        $content = $this->client->getResponse()->getContent();
 
         $this->assertIsString($content);
         $this->assertStringContainsString('User "hikaru@sulu.io" confirmed', $content);
 
         // check email to user
-        $profile = $client->getProfile();
+        $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
         /** @var MessageDataCollector $mailCollector */
@@ -265,16 +257,14 @@ class RegistrationTest extends SuluTestCase
         $this->assertIsString($lastLink);
         $this->assertStringContainsString('/_community/deny', $lastLink);
 
-        $client = $this->createClient();
-
-        $client->request('GET', $lastLink);
-        $content = $client->getResponse()->getContent();
+        $this->client->request('GET', $lastLink);
+        $content = $this->client->getResponse()->getContent();
 
         $this->assertIsString($content);
         $this->assertStringContainsString('User "hikaru@sulu.io" denied', $content);
 
         // check email to user
-        $profile = $client->getProfile();
+        $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
         /** @var MessageDataCollector $mailCollector */
@@ -286,8 +276,7 @@ class RegistrationTest extends SuluTestCase
     {
         $user = $this->testConfirmation();
 
-        $client = $this->createClient();
-        $crawler = $client->request('GET', '/password-forget');
+        $crawler = $this->client->request('GET', '/password-forget');
 
         $this->assertCount(1, $crawler->filter('input[name="password_forget[email_username]"]'));
 
@@ -298,10 +287,10 @@ class RegistrationTest extends SuluTestCase
                     ->first()->attr('value'),
             ]
         );
-        $client->submit($form);
+        $this->client->submit($form);
 
         // check email to user
-        $profile = $client->getProfile();
+        $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
         /** @var MessageDataCollector $mailCollector */
@@ -318,7 +307,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertIsString($firstLink);
         $this->assertStringContainsString('/password-reset/', $firstLink);
 
-        $crawler = $client->request('GET', $firstLink);
+        $crawler = $this->client->request('GET', $firstLink);
 
         $this->assertCount(1, $crawler->filter('input[name="password_reset[plainPassword]"]'));
 
@@ -329,7 +318,7 @@ class RegistrationTest extends SuluTestCase
                     ->first()->attr('value'),
             ]
         );
-        $client->submit($form);
+        $this->client->submit($form);
 
         $this->getEntityManager()->clear();
 

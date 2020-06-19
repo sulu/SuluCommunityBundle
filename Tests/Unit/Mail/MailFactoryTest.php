@@ -16,7 +16,7 @@ use Prophecy\Argument;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactory;
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\Translator;
 use Twig\Environment;
 
 class MailFactoryTest extends TestCase
@@ -31,7 +31,8 @@ class MailFactoryTest extends TestCase
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
         $this->twig = $this->prophesize(Environment::class);
-        $this->translator = $this->prophesize(TranslatorInterface::class);
+        $this->translator = $this->prophesize(Translator::class);
+        $this->translator->getLocale()->willReturn('en');
         $this->user = $this->prophesize(User::class);
         $this->user->getEmail()->willReturn('test@example.com');
         $this->user->getLocale()->willReturn('de');
@@ -68,6 +69,8 @@ class MailFactoryTest extends TestCase
         )->shouldBeCalledTimes(1);
 
         $mail = new Mail('test@sulu.io', 'user@sulu.io', 'testcase', 'user-template', 'admin-template');
+        $this->translator->trans('testcase')->shouldBeCalled();
+        $this->translator->setLocale(Argument::type('string'))->shouldBeCalled();
         $this->mailFactory->sendEmails($mail, $this->user->reveal());
     }
 
@@ -96,6 +99,8 @@ class MailFactoryTest extends TestCase
         )->shouldNotBeCalled();
 
         $mail = new Mail('test@sulu.io', 'user@sulu.io', 'testcase', 'user-template', null);
+        $this->translator->trans('testcase')->shouldBeCalled();
+        $this->translator->setLocale(Argument::type('string'))->shouldBeCalled();
         $this->mailFactory->sendEmails($mail, $this->user->reveal());
     }
 
@@ -124,6 +129,7 @@ class MailFactoryTest extends TestCase
         )->shouldBeCalledTimes(1);
 
         $mail = new Mail('test@sulu.io', 'user@sulu.io', 'testcase', null, 'admin-template');
+        $this->translator->trans('testcase')->shouldBeCalled();
         $this->mailFactory->sendEmails($mail, $this->user->reveal());
     }
 }

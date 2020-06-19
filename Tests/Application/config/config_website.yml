@@ -2,7 +2,7 @@ imports:
     - config.yml
 
 framework:
-    router: { resource: '%kernel.root_dir%/config/routing_website.yml' }
+    router: { resource: '%kernel.project_dir%/config/routing_website.yml' }
     profiler: { only_exceptions: false }
 
 security:
