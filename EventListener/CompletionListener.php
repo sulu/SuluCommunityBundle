@@ -16,7 +16,7 @@ use Sulu\Bundle\CommunityBundle\Validator\User\CompletionInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -71,6 +71,9 @@ class CompletionListener implements EventSubscriberInterface
         $this->fragmentPath = $fragmentPath;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -81,7 +84,7 @@ class CompletionListener implements EventSubscriberInterface
     /**
      * Will call a specific user completion validator of a webspace.
      */
-    public function onRequest(GetResponseEvent $event): void
+    public function onRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $completionUrl = $this->router->generate('sulu_community.completion');

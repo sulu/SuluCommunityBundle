@@ -38,6 +38,9 @@ class MailListener implements EventSubscriberInterface
         $this->mailFactory = $mailFactory;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function getSubscribedEvents()
     {
         return [

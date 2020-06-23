@@ -12,7 +12,8 @@
 namespace Sulu\Bundle\CommunityBundle\Mail;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**
@@ -54,13 +55,15 @@ class MailFactory implements MailFactoryInterface
         $data = array_merge($parameters, ['user' => $user]);
 
         // Send User Email
-        if (null !== $mail->getUserTemplate()) {
+        if (null !== $mail->getUserTemplate() && $email) {
+            /** @var LocaleAwareInterface $translator */
+            $translator = $this->translator;
             // Render Email in specific locale
-            $locale = $this->translator->getLocale();
-            $this->translator->setLocale($user->getLocale());
+            $locale = $translator->getLocale();
+            $translator->setLocale($user->getLocale());
 
             $this->sendEmail($mail->getFrom(), $email, $mail->getSubject(), $mail->getUserTemplate(), $data);
-            $this->translator->setLocale($locale);
+            $translator->setLocale($locale);
         }
 
         // Send Admin Email
@@ -72,8 +75,8 @@ class MailFactory implements MailFactoryInterface
     /**
      * Create and send email.
      *
-     * @param string|array $from
-     * @param string|array $to
+     * @param string|array<string, string> $from
+     * @param string|array<string, string> $to
      * @param mixed[] $data
      */
     protected function sendEmail($from, $to, string $subject, string $template, array $data): void

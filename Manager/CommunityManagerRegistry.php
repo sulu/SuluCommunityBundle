@@ -14,7 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\Manager;
 class CommunityManagerRegistry implements CommunityManagerRegistryInterface
 {
     /**
-     * @var array
+     * @var CommunityManagerInterface[]
      */
     private $managers;
 
@@ -41,7 +41,7 @@ class CommunityManagerRegistry implements CommunityManagerRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function has($webspaceKey): bool
+    public function has(string $webspaceKey): bool
     {
         return array_key_exists($webspaceKey, $this->managers);
     }

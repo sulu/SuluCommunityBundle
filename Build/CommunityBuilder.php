@@ -29,13 +29,15 @@ class CommunityBuilder extends SuluBuilder
 
     /**
      * {@inheritdoc}
+     *
+     * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return ['fixtures'];
     }
 
-    public function build()
+    public function build(): void
     {
         $this->execCommand('Init community', InitCommand::NAME);
     }

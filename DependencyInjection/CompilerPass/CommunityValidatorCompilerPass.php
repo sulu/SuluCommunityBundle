@@ -26,7 +26,7 @@ class CommunityValidatorCompilerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // If no listener exists do nothing
         if (!$container->hasDefinition(self::COMPLETION_LISTENER_SERVICE_ID)) {

@@ -59,6 +59,9 @@ class BlacklistListener implements EventSubscriberInterface
         $this->mailFactory = $mailFactory;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -71,7 +74,7 @@ class BlacklistListener implements EventSubscriberInterface
      */
     public function validateEmail(UserRegisteredEvent $event): void
     {
-        if (BlacklistItem::TYPE_REQUEST !== $this->getType($event->getUser()->getEmail())) {
+        if (BlacklistItem::TYPE_REQUEST !== $this->getType((string) $event->getUser()->getEmail())) {
             return;
         }
 

@@ -60,6 +60,9 @@ class EmailConfirmationListener implements EventSubscriberInterface
         $this->tokenGenerator = $tokenGenerator;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function getSubscribedEvents()
     {
         return [

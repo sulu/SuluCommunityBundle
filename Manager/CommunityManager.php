@@ -37,7 +37,7 @@ use Symfony\Component\Security\Http\SecurityEvents;
 class CommunityManager implements CommunityManagerInterface
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $config;
 
@@ -276,7 +276,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigProperty($property)
+    public function getConfigProperty(string $property)
     {
         if (!array_key_exists($property, $this->config)) {
             throw new \InvalidArgumentException(sprintf('Property "%s" not found for webspace "%s" in Community Manager.', $property, $this->webspaceKey));
@@ -288,7 +288,7 @@ class CommunityManager implements CommunityManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTypeProperty($type, $property)
+    public function getConfigTypeProperty(string $type, string $property)
     {
         if (!array_key_exists($type, $this->config) || !array_key_exists($property, $this->config[$type])) {
             throw new \InvalidArgumentException(sprintf('Property "%s" from type "%s" not found for webspace "%s" in Community Manager.', $property, $type, $this->webspaceKey));

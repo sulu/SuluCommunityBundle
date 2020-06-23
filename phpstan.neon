@@ -1,5 +1,5 @@
 includes:
-    - vendor/jangregor/phpstan-prophecy/src/extension.neon
+    - vendor/jangregor/phpstan-prophecy/extension.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-doctrine/extension.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
@@ -15,12 +15,5 @@ parameters:
         - %currentWorkingDirectory%/vendor/*
         - %currentWorkingDirectory%/Tests/*
     symfony:
-        container_xml_path: %currentWorkingDirectory%/Tests/Application/var/cache/admin/dev/adminAdminDevDebugProjectContainer.xml
-    ignoreErrors:
-        -
-            path: Manager/CommunityManager.php
-            message: '#Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch()#'
-        -
-            path: Controller/LoginController.php
-            message: '#Parameter \#2 \$values of method Symfony\\Component\\HttpFoundation\\ResponseHeaderBag::set\(\) expects array<string>|string, int given.#'
-        - '#Parameter \#3 \$userId of method Sulu\\Bundle\\MediaBundle\\Media\\Manager\\MediaManagerInterface::save\(\) expects int, int|null given.#'
+        container_xml_path: %currentWorkingDirectory%/Tests/Application/var/cache/admin/dev/Sulu_Bundle_CommunityBundle_Tests_Application_KernelDevDebugContainer.xml
+    checkGenericClassInNonGenericObjectType: false

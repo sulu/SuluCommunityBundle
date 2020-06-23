@@ -19,15 +19,21 @@ matrix:
     - php: 7.2
       env:
         - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction --prefer-lowest --prefer-stable"
-    - php: 7.3
+    - php: 7.4
       env:
         - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction"
         - CODE_COVERAGE=true
         - PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
         - LINT_CODE=true
+        - PECL_INSTALL="imagick pcov"
 
 before_install:
-  - phpenv config-add Tests/travis.php.ini
+  - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - |
+    if [[ $PECL_INSTALL ]]; then
+        printf "\n" | pecl install $PECL_INSTALL
+    fi
+  - phpenv config-rm xdebug.ini
   - composer self-update
 
 install:

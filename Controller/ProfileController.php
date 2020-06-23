@@ -79,7 +79,10 @@ class ProfileController extends AbstractController
         );
     }
 
-    public static function getSubscribedServices()
+    /**
+     * @return array<string|int, string>
+     */
+    public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }

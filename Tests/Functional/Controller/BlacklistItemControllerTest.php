@@ -13,23 +13,29 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class BlacklistItemControllerTest extends SuluTestCase
 {
+    /**
+     * @var KernelBrowser
+     */
+    private $client;
+
     public function setUp(): void
     {
+        parent::setUp();
+        $this->client = $this->createAuthenticatedClient();
         $this->purgeDatabase();
     }
 
     public function testCgetEmpty(): void
     {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/admin/api/blacklist-items');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->client->request('GET', '/admin/api/blacklist-items');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
-        $content = $client->getResponse()->getContent();
+        $content = $this->client->getResponse()->getContent();
         $result = json_decode($content, true);
 
         $this->assertIsArray($result);
@@ -42,17 +48,15 @@ class BlacklistItemControllerTest extends SuluTestCase
      */
     public function testPost(string $pattern = '*@sulu.io'): array
     {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request(
+        $this->client->request(
             'POST',
             '/admin/api/blacklist-items',
             ['pattern' => $pattern, 'type' => BlacklistItem::TYPE_REQUEST]
         );
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
-        $content = $client->getResponse()->getContent();
+        $content = $this->client->getResponse()->getContent();
         $result = json_decode($content, true);
 
         $this->assertIsArray($result);
@@ -69,13 +73,11 @@ class BlacklistItemControllerTest extends SuluTestCase
     {
         $item = $this->testPost();
 
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/admin/api/blacklist-items/' . $item['id']);
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->client->request('GET', '/admin/api/blacklist-items/' . $item['id']);
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
-        $content = $client->getResponse()->getContent();
+        $content = $this->client->getResponse()->getContent();
         $result = json_decode($content, true);
 
         $this->assertIsArray($result);
@@ -90,13 +92,11 @@ class BlacklistItemControllerTest extends SuluTestCase
     {
         $item = $this->testPost();
 
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/admin/api/blacklist-items');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->client->request('GET', '/admin/api/blacklist-items');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
-        $content = $client->getResponse()->getContent();
+        $content = $this->client->getResponse()->getContent();
         $result = json_decode($content, true);
 
         $this->assertIsArray($result);
@@ -111,16 +111,14 @@ class BlacklistItemControllerTest extends SuluTestCase
     {
         $item = $this->testPost();
 
-        $client = $this->createAuthenticatedClient();
+        $this->client->request('DELETE', '/admin/api/blacklist-items/' . $item['id']);
+        $this->assertHttpStatusCode(204, $this->client->getResponse());
 
-        $client->request('DELETE', '/admin/api/blacklist-items/' . $item['id']);
-        $this->assertHttpStatusCode(204, $client->getResponse());
-
-        $client->request('GET', '/admin/api/blacklist-items');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->client->request('GET', '/admin/api/blacklist-items');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
-        $content = $client->getResponse()->getContent();
+        $content = $this->client->getResponse()->getContent();
         $result = json_decode($content, true);
 
         $this->assertIsArray($result);
@@ -133,16 +131,14 @@ class BlacklistItemControllerTest extends SuluTestCase
         $item1 = $this->testPost();
         $item2 = $this->testPost('test@sulu.io');
 
-        $client = $this->createAuthenticatedClient();
+        $this->client->request('DELETE', '/admin/api/blacklist-items?ids=' . implode(',', [$item1['id'], $item2['id']]));
+        $this->assertHttpStatusCode(204, $this->client->getResponse());
 
-        $client->request('DELETE', '/admin/api/blacklist-items?ids=' . implode(',', [$item1['id'], $item2['id']]));
-        $this->assertHttpStatusCode(204, $client->getResponse());
-
-        $client->request('GET', '/admin/api/blacklist-items');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->client->request('GET', '/admin/api/blacklist-items');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
-        $content = $client->getResponse()->getContent();
+        $content = $this->client->getResponse()->getContent();
         $result = json_decode($content, true);
 
         $this->assertIsArray($result);
@@ -152,31 +148,27 @@ class BlacklistItemControllerTest extends SuluTestCase
 
     public function testPostInvalidType(): void
     {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request(
+        $this->client->request(
             'POST',
             '/admin/api/blacklist-items',
             ['pattern' => '*@sulu.io', 'type' => 'test']
         );
-        $this->assertHttpStatusCode(409, $client->getResponse());
+        $this->assertHttpStatusCode(409, $this->client->getResponse());
     }
 
     public function testPut(): void
     {
         $item = $this->testPost();
 
-        $client = $this->createAuthenticatedClient();
-
-        $client->request(
+        $this->client->request(
             'PUT',
             '/admin/api/blacklist-items/' . $item['id'],
             ['pattern' => 'test@sulu.io', 'type' => BlacklistItem::TYPE_BLOCK]
         );
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
-        $content = $client->getResponse()->getContent();
+        $content = $this->client->getResponse()->getContent();
         $result = json_decode($content, true);
 
         $this->assertIsArray($result);
@@ -188,13 +180,11 @@ class BlacklistItemControllerTest extends SuluTestCase
     {
         $item = $this->testPost();
 
-        $client = $this->createAuthenticatedClient();
-
-        $client->request(
+        $this->client->request(
             'PUT',
             '/admin/api/blacklist-items/' . $item['id'],
             ['pattern' => 'test@sulu.io', 'type' => 'test']
         );
-        $this->assertHttpStatusCode(409, $client->getResponse());
+        $this->assertHttpStatusCode(409, $this->client->getResponse());
     }
 }

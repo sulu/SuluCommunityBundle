@@ -25,7 +25,7 @@ abstract class AbstractCommunityEvent extends Event
     protected $user;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $config;
 

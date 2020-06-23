@@ -21,6 +21,7 @@ use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 use Sulu\Component\HttpKernel\SuluKernel;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class EmailConfirmationControllerTest extends SuluTestCase
 {
@@ -29,9 +30,15 @@ class EmailConfirmationControllerTest extends SuluTestCase
      */
     private $user;
 
+    /**
+     * @var KernelBrowser
+     */
+    private $client;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->client = $this->createAuthenticatedClient();
 
         $this->purgeDatabase();
 
@@ -80,10 +87,8 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
     public function testConfirm(): User
     {
-        $client = $this->createAuthenticatedClient();
-
-        $crawler = $client->request('GET', '/profile/email-confirmation?token=123-123-123');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $crawler = $this->client->request('GET', '/profile/email-confirmation?token=123-123-123');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('.success'));
         $this->assertCount(0, $crawler->filter('.fail'));
@@ -105,10 +110,8 @@ class EmailConfirmationControllerTest extends SuluTestCase
 
     public function testConfirmWrongToken(): void
     {
-        $client = $this->createAuthenticatedClient();
-
-        $crawler = $client->request('GET', '/profile/email-confirmation?token=312-312-312');
-        $this->assertHttpStatusCode(200, $client->getResponse());
+        $crawler = $this->client->request('GET', '/profile/email-confirmation?token=312-312-312');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         $this->assertCount(0, $crawler->filter('.success'));
         $this->assertCount(1, $crawler->filter('.fail'));

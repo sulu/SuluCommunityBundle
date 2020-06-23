@@ -34,7 +34,7 @@ class BlockedValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Blocked) {
             return;
@@ -44,7 +44,8 @@ class BlockedValidator extends ConstraintValidator
 
         foreach ($items as $item) {
             if (BlacklistItem::TYPE_BLOCK === $item->getType()) {
-                return $this->context->addViolation($constraint->message, ['%email%' => $value]);
+                $this->context->addViolation($constraint->message, ['%email%' => $value]);
+                break;
             }
         }
     }

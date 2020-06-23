@@ -150,7 +150,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
     {
         $ids = array_map(function($id) {
             return (int) $id;
-        }, array_filter(explode(',', $request->query->get('ids', ''))));
+        }, array_filter(explode(',', (string) $request->query->get('ids', ''))));
 
         $this->blacklistItemManager->delete($ids);
         $this->entityManager->flush();

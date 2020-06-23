@@ -25,7 +25,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $webspacesConfig = $container->getParameter('sulu_community.webspaces_config');
 
