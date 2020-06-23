@@ -50,7 +50,7 @@ sulu_community_api:
 Execute the following command to get the sqls to update your database.
 
 ```bash
-php bin/console doctrine:schema:update --dump-sql
+php bin/adminconsole doctrine:schema:update --dump-sql
 ``` 
 
 You can use `--force` to run the sqls but be carefully which other sql statements are executed.
@@ -62,3 +62,5 @@ Execute the following command to install the community bundle assets:
 ```bash
 php bin/adminconsole assets:install --symlink --relative
 ```
+
+## The next required step is to [Setup your Webspace](2-setup-webspace.md)
