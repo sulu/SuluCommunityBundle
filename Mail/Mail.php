@@ -69,8 +69,8 @@ class Mail
     private $adminTemplate;
 
     /**
-     * @param string|string[] $from
-     * @param string|string[] $to
+     * @param string|array<string, string> $from
+     * @param string|array<string, string> $to
      */
     public function __construct($from, $to, string $subject, ?string $userTemplate = null, ?string $adminTemplate = null)
     {
@@ -84,7 +84,7 @@ class Mail
     /**
      * Returns from.
      *
-     * @return string|string[]
+     * @return string|array<string, string>
      */
     public function getFrom()
     {
@@ -94,7 +94,7 @@ class Mail
     /**
      * Returns to.
      *
-     * @return string|string[]
+     * @return string|array<string, string>
      */
     public function getTo()
     {
