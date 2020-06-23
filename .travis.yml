@@ -19,18 +19,23 @@ matrix:
     - php: 7.2
       env:
         - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction --prefer-lowest --prefer-stable"
-    - php: 7.3
+    - php: 7.4
       env:
         - COMPOSER_FLAGS="--optimize-autoloader --prefer-dist --no-interaction"
         - CODE_COVERAGE=true
         - PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
         - LINT_CODE=true
+        - PECL_INSTALL=imagick
 
 before_install:
   - phpenv config-add Tests/travis.php.ini
   - composer self-update
 
 install:
+  - |
+    if [[ $PECL_INSTALL ]]; then
+        printf "\n" | pecl install $PECL_INSTALL
+    fi
   - travis_retry composer update $COMPOSER_FLAGS
   - composer validate --strict
   - composer info -i
