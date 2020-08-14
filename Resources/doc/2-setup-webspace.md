@@ -75,12 +75,15 @@ For functional tests you need to activate the security in the website test confi
 
 security:
     providers:
-        testprovider:
+        sulu:
             id: test_user_provider
 
     firewalls:
         <webspace_key>: # Replace <webspace_key> with the key of your webspace
-             http_basic: ~
+            http_basic: ~
+
+sulu_test:
+    enable_test_user_provider: true
 ```
 
 ## Create Role

@@ -101,7 +101,7 @@ class InitCommand extends Command
      *
      * @throws \Exception
      */
-    protected function initWebspace(Webspace $webspace, OutputInterface $output): void
+    private function initWebspace(Webspace $webspace, OutputInterface $output): void
     {
         $webspaceKey = $webspace->getKey();
 
@@ -129,12 +129,17 @@ class InitCommand extends Command
     /**
      * Create a role for a specific system if not exists.
      */
-    protected function createRoleIfNotExists(string $roleName, string $system): string
+    private function createRoleIfNotExists(string $roleName, string $system): string
     {
         /** @var RoleRepository $roleRepository */
         $roleRepository = $this->entityManager->getRepository(RoleInterface::class);
 
-        $role = $roleRepository->findOneBy(['name' => $roleName, 'system' => $system]);
+        if (\method_exists(Role::class, 'setKey')) {
+            $role = $roleRepository->findOneBy(['key' => $roleName, 'system' => $system]);
+        } else {
+            // can be removed when min requirement sulu 2.1
+            $role = $roleRepository->findOneBy(['name' => $roleName, 'system' => $system]);
+        }
 
         $outputMessage = 'Role "%s" for system "%s" already exists.';
 
@@ -149,6 +154,10 @@ class InitCommand extends Command
         $role = $roleRepository->createNew();
         $role->setSystem($system);
         $role->setName($roleName);
+        if (\method_exists(Role::class, 'setKey')) {
+            // can be removed when min requirement sulu 2.1
+            $role->setKey($roleName);
+        }
 
         $this->entityManager->persist($role);
 
