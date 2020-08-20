@@ -16,7 +16,7 @@ sulu_community:
                     user_template: ~
                     admin_template: ~
                 redirect_to: /
-                service: app.completion_validator
+                service: App\Community\CompletionValidator
                 template: community/completion-form.html.twig
                 type: App\Form\CompletionType
 ```
@@ -40,9 +40,9 @@ It is possible that an email is also sent after the completion.
 The service which validates the user data and checks if a completion form should be displayed.
 
 ```php
-// src/Validator/CompletionValidator.php
+// src/Community/CompletionValidator.php
 
-namespace App\Validator;
+namespace App\Community;
 
 use Sulu\Bundle\CommunityBundle\Validator\User\CompletionInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
