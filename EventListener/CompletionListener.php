@@ -11,9 +11,11 @@
 
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
+use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Validator\User\CompletionInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
+use Sulu\Component\Webspace\Webspace;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -24,6 +26,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * Validates the current user entity.
+ *
+ * @internal Register a validator of type CompletionInterface to change the validation
  */
 class CompletionListener implements EventSubscriberInterface
 {
@@ -53,22 +57,30 @@ class CompletionListener implements EventSubscriberInterface
     protected $validators;
 
     /**
+     * @var mixed[]
+     */
+    protected $config;
+
+    /**
      * CompletionListener constructor.
      *
      * @param CompletionInterface[] $validators
+     * @param mixed[] $config
      */
     public function __construct(
         RequestAnalyzerInterface $requestAnalyzer,
         RouterInterface $router,
         TokenStorageInterface $tokenStorage,
         string $fragmentPath,
-        array $validators
+        array $validators,
+        array $config
     ) {
         $this->requestAnalyzer = $requestAnalyzer;
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
         $this->validators = $validators;
         $this->fragmentPath = $fragmentPath;
+        $this->config = $config;
     }
 
     /**
@@ -98,6 +110,37 @@ class CompletionListener implements EventSubscriberInterface
             return;
         }
 
+        /** @var Webspace|null $webspace */
+        $webspace = $this->requestAnalyzer->getWebspace();
+
+        if (!$webspace) {
+            return;
+        }
+
+        $webspaceKey = $webspace->getKey();
+
+        if (!isset($this->config[$webspaceKey])) {
+            return;
+        }
+
+        $validator = $this->getValidator($webspaceKey);
+
+        if (!$validator) {
+            return;
+        }
+
+        $expectedFirewall = $this->config[$webspaceKey][Configuration::FIREWALL] ?? null;
+        // TODO find a better way to detect the current firewall
+        $currentFirewall = str_replace(
+            'security.firewall.map.context.',
+            '',
+            $request->attributes->get('_firewall_context', '')
+        );
+
+        if ($expectedFirewall !== $currentFirewall) {
+            return;
+        }
+
         $token = $this->tokenStorage->getToken();
 
         if (!$token instanceof TokenInterface) {
@@ -112,15 +155,12 @@ class CompletionListener implements EventSubscriberInterface
             return;
         }
 
-        $uriParameters = [];
-        if ('sulu_community.confirmation' !== $request->attributes->get('_route')) {
-            $uriParameters['re'] = $request->getRequestUri();
-        }
+        if (!$validator->validate($user, $webspaceKey)) {
+            $uriParameters = [];
+            if ('sulu_community.confirmation' !== $request->attributes->get('_route')) {
+                $uriParameters['re'] = $request->getRequestUri();
+            }
 
-        $webspaceKey = $this->requestAnalyzer->getWebspace()->getKey();
-        $validator = $this->getValidator($webspaceKey);
-
-        if ($validator && !$validator->validate($user, $webspaceKey)) {
             $completionUrl = $this->router->generate('sulu_community.completion', $uriParameters);
 
             $response = new RedirectResponse($completionUrl);
