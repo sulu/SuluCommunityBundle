@@ -72,6 +72,7 @@
             <argument type="service" id="security.token_storage"/>
             <argument>%fragment.path%</argument>
             <argument type="collection"/>
+            <argument>%sulu_community.webspaces_config%</argument>
 
             <tag name="kernel.event_subscriber"/>
             <tag name="sulu.context" context="website"/>
