@@ -12,8 +12,10 @@
 namespace Sulu\Bundle\CommunityBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Sulu\Bundle\AdminBundle\Admin\AdminPool;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistryInterface;
+use Sulu\Bundle\SecurityBundle\Entity\Permission;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\RoleRepository;
 use Sulu\Component\Security\Authentication\RoleInterface;
@@ -46,14 +48,21 @@ class InitCommand extends Command
      */
     private $communityManagerRegistry;
 
+    /**
+     * @var AdminPool
+     */
+    private $adminPool;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         WebspaceManagerInterface $webspaceManager,
-        CommunityManagerRegistryInterface $communityManagerRegistry
+        CommunityManagerRegistryInterface $communityManagerRegistry,
+        AdminPool $adminPool
     ) {
         $this->entityManager = $entityManager;
         $this->webspaceManager = $webspaceManager;
         $this->communityManagerRegistry = $communityManagerRegistry;
+        $this->adminPool = $adminPool;
         parent::__construct(self::NAME);
     }
 
@@ -119,7 +128,7 @@ class InitCommand extends Command
         // Create role if not exists
         $output->writeln(
             sprintf(
-                $this->createRoleIfNotExists($roleName, $system),
+                $this->createRoleIfNotExists($roleName, $system, $webspaceKey),
                 $roleName,
                 $system
             )
@@ -129,25 +138,29 @@ class InitCommand extends Command
     /**
      * Create a role for a specific system if not exists.
      */
-    private function createRoleIfNotExists(string $roleName, string $system): string
+    private function createRoleIfNotExists(string $roleName, string $system, string $webspaceKey): string
     {
         /** @var RoleRepository $roleRepository */
         $roleRepository = $this->entityManager->getRepository(RoleInterface::class);
 
         if (\method_exists(Role::class, 'setKey')) {
+            /** @var RoleInterface|null $role */
             $role = $roleRepository->findOneBy(['key' => $roleName, 'system' => $system]);
         } else {
             // can be removed when min requirement sulu 2.1
+            /** @var RoleInterface|null $role */
             $role = $roleRepository->findOneBy(['name' => $roleName, 'system' => $system]);
         }
 
-        $outputMessage = 'Role "%s" for system "%s" already exists.';
-
-        // Create Role
         if ($role) {
-            return $outputMessage;
+            if ($this->addPermissions($role, $system, $webspaceKey)) {
+                return 'Role "%s" for system "%s" was updated with new permissions.';
+            }
+
+            return 'Role "%s" for system "%s" already exists.';
         }
 
+        // Create Role
         $outputMessage = 'Create role <info>"%s"</info> for system <info>"%s"</info>';
 
         /** @var Role $role */
@@ -159,8 +172,55 @@ class InitCommand extends Command
             $role->setKey($roleName);
         }
 
+        $this->addPermissions($role, $system, $webspaceKey);
+
         $this->entityManager->persist($role);
 
         return $outputMessage;
+    }
+
+    private function addPermissions(RoleInterface $role, string $system, string $webspaceKey): bool
+    {
+        $securityContexts = $this->adminPool->getSecurityContexts();
+        $securityContextsFlat = [];
+        foreach ($securityContexts[$system] as $section => $contexts) {
+            foreach ($contexts as $context => $permissionTypes) {
+                if (\is_array($permissionTypes)) {
+                    $securityContextsFlat[] = $context;
+                } else {
+                    // FIXME here for BC reasons, because the array used to only contain values without permission types
+                    $securityContextsFlat[] = $permissionTypes;
+                }
+            }
+        }
+
+        $webspaceSecurityContext = 'sulu.webspaces.' . $webspaceKey;
+        $permissionsAdded = false;
+        foreach ($securityContextsFlat as $securityContext) {
+            foreach ($role->getPermissions() as $permission) {
+                if ($permission->getContext() === $securityContext) {
+                    continue 2;
+                }
+            }
+
+            if (0 === strpos($securityContext, 'sulu.webspaces.')
+                && $webspaceSecurityContext !== $securityContext
+            ) {
+                // Do not add permissions for other webspaces
+                continue;
+            }
+
+            $permission = new Permission();
+            $permission->setRole($role);
+            $permission->setContext($securityContext);
+            $permission->setPermissions(127);
+            $role->addPermission($permission);
+
+            $this->entityManager->persist($permission);
+
+            $permissionsAdded = true;
+        }
+
+        return $permissionsAdded;
     }
 }

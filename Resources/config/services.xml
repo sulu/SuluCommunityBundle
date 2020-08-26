@@ -10,7 +10,9 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_core.webspace.webspace_manager"/>
             <argument type="service" id="sulu_community.community_manager.registry"/>
+            <argument type="service" id="sulu_admin.admin_pool"/>
 
+            <tag name="sulu.context" context="admin"/>
             <tag name="console.command"/>
         </service>
 
