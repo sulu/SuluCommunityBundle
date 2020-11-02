@@ -238,3 +238,16 @@ Type: `string`
 Example: App\Form\RegistrationType
 
 The form type which is used to build the form.
+
+### Example customizations
+
+ - [Login](4-login.md)
+ - [Registration](5-registration.md)
+ - [Confirmation](6-confirmation.md)
+ - [Password Forget](7-password-forget.md)
+ - [Password Reset](8-password-reset.md)
+ - [Profile](9-profile.md)
+ - [Email Confirmation](10-email-confirmation.md)
+ - [Completion](11-completion.md)
+ - [Blacklisting](12-blacklisting.md)
+ - [Maintenance](13-maintenance.md)
