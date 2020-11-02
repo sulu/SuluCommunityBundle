@@ -47,7 +47,7 @@ sulu_community_api:
 
 ## Configure security
 
-The security needs now be configure in the `security_website.yaml`:
+Enable and configure the security for the website in the `security_website.yaml`:
 
 ```yml
 # config/packages/security_website.yml
@@ -90,7 +90,7 @@ sulu_security:
         enabled: true
 ```
 
-For functional tests you need to activate the security in the website test configuration:
+When implementing functional tests, website security needs to enabled in the test environment:
 
 ```yaml
 # config/packages/test/security_website.yml
@@ -110,7 +110,7 @@ sulu_test:
 
 ## Clear cache
 
-That the new config is loaded the caches need to be cleared:
+In order to use the new configuration, the caches need to be cleared:
 
 ```bash
 php bin/adminconsole cache:clear
