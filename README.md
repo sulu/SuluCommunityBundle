@@ -1,9 +1,15 @@
 # SuluCommunityBundle
 
-[![Build Status](https://travis-ci.org/sulu/SuluCommunityBundle.svg)](https://travis-ci.org/sulu/SuluCommunityBundle)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sulu/SuluCommunityBundle/badges/quality-score.png)](https://scrutinizer-ci.com/g/sulu/SuluCommunityBundle/)
-[![Code Coverage](https://scrutinizer-ci.com/g/sulu/SuluCommunityBundle/badges/coverage.png)](https://scrutinizer-ci.com/g/sulu/SuluCommunityBundle/)
-[![StyleCI](https://styleci.io/repos/61038808/shield)](https://styleci.io/repos/61038808)
+<p align="center">
+    <a href="https://sulu.io/" target="_blank">
+        <img width="30%" src="https://sulu.io/uploads/media/800x/00/230-Official%20Bundle%20Seal.svg?v=2-6&inline=1" alt="Official Sulu Bundle Badge">
+    </a>
+</p>
+<p align="center">
+    <a href="https://github.com/sulu/SuluCommunityBundle/actions" target="_blank">
+        <img src="https://img.shields.io/github/workflow/status/sulu/SuluCommunityBundle/Test%20application/1.1.svg?label=github-actions" alt="GitHub actions status">
+    </a>
+</p>
 
 The SuluCommunityBundle adds following features to a webspace:
 
