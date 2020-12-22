@@ -65,8 +65,16 @@
     },
     "scripts": {
         "lint": [
+            "@lint-composer",
+            "@lint-yaml",
+            "@lint-twig",
+            "@lint-schema",
             "@phpstan"
         ],
+        "lint-composer": "@composer validate --strict",
+        "lint-yaml": "@php Tests/Application/bin/adminconsole lint:yaml Resources/config",
+        "lint-twig": "@php Tests/Application/bin/adminconsole lint:yaml Resources/views",
+        "lint-schema": "@php Tests/Application/bin/adminconsole doctrine:schema:validate",
         "test": [
             "@phpunit"
         ],
