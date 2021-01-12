@@ -83,10 +83,5 @@
     },
     "config": {
         "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "2.0-dev"
-        }
     }
 }
