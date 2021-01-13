@@ -130,12 +130,4 @@ You can use `--force` to run the sqls but be carefully which other sql statement
 It's recommended to use [DoctrineMigrationsBundle](https://symfony.com/doc/current/bundles/DoctrineMigrationsBundle/index.html)
 for this kind of database migrations.
 
-## Install assets
-
-Execute the following command to install the community bundle assets:
-
-```bash
-php bin/adminconsole assets:install --symlink --relative
-```
-
 ## The next required step is to [Setup your Webspace](2-setup-webspace.md)
