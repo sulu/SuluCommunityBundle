@@ -17,7 +17,7 @@
         "symfony/monolog-bundle": "^2.8.7 || ^3.0",
         "massive/search-bundle": "@dev",
         "zendframework/zend-stdlib": "~2.3",
-        "zendframework/zendsearch": "@dev",
+        "handcraftedinthealps/zendsearch": "^2.0",
         "phpunit/phpunit": ">=4.8, <6.0",
         "doctrine/data-fixtures": "^1.0"
     },
