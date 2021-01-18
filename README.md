@@ -6,8 +6,14 @@
     </a>
 </p>
 <p align="center">
+    <a href="https://github.com/sulu/SuluCommunityBundle/blob/2.x/LICENSE" target="_blank">
+        <img src="https://img.shields.io/github/license/sulu/SuluCommunityBundle.svg" alt="GitHub license">
+    </a>
     <a href="https://github.com/sulu/SuluCommunityBundle/actions" target="_blank">
-        <img src="https://img.shields.io/github/workflow/status/sulu/SuluCommunityBundle/Test%20application?label=github-actions" alt="GitHub actions status">
+        <img src="https://img.shields.io/github/workflow/status/sulu/SuluCommunityBundle/Test%20application?label=test-workflow" alt="Test workflow status">
+    </a>
+    <a href="https://github.com/sulu/sulu/releases" target="_blank">
+        <img src="https://img.shields.io/badge/sulu%20compatibility-%3E=2.0-52b6ca.svg" alt="Sulu compatibility">
     </a>
 </p>
 
