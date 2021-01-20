@@ -9,7 +9,7 @@ on:
 
 jobs:
     test:
-        name: 'Run tests with php ${{ matrix.php-version }}'
+        name: 'PHP ${{ matrix.php-version }} (${{ matrix.dependency-versions }})'
         runs-on: ubuntu-latest
 
         env:
@@ -21,14 +21,14 @@ jobs:
                 include:
                     - php-version: '7.2'
                       lint: false
-                      composer-flags: '--prefer-lowest --prefer-dist --no-interaction'
+                      dependency-versions: 'lowest'
                       tools: 'composer:v1'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
                     - php-version: '7.4'
                       lint: true
-                      composer-flags: '--prefer-dist --no-interaction'
+                      dependency-versions: 'highest'
                       tools: 'composer:v2'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
@@ -53,21 +53,10 @@ jobs:
                   extensions: 'mysql, gd'
                   tools: ${{ matrix.tools }}
 
-            - name: Get composer cache directory
-              id: composer-cache-dir
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache dependencies
-              uses: actions/cache@v2
+            - name: Install composer dependencies
+              uses: ramsey/composer-install@v1
               with:
-                  path: ${{ steps.composer-cache-dir.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-composer-
-
-            - name: Install dependencies
-              run: composer update ${{ matrix.composer-flags }}
-              env: ${{ matrix.env }}
+                  dependency-versions: ${{matrix.dependency-versions}}
 
             - name: Bootstrap test environment
               run: composer bootstrap-test-environment
