@@ -27,6 +27,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container): void
     {
+        /** @var mixed[] $webspacesConfig */
         $webspacesConfig = $container->getParameter('sulu_community.webspaces_config');
 
         $references = [];

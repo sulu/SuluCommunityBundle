@@ -9,7 +9,7 @@ on:
 
 jobs:
     test:
-        name: 'PHP ${{ matrix.php-version }} (${{ matrix.dependency-versions }})'
+        name: 'PHP ${{ matrix.php-version }} (${{ matrix.dependency-versions }}, Lint ${{ matrix.lint }})'
         runs-on: ubuntu-latest
 
         env:
@@ -30,6 +30,14 @@ jobs:
                       lint: true
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.0'
+                      lint: false
+                      dependency-versions: 'highest'
+                      tools: 'composer:v2'
+                      composer-options: '--ignore-platform-reqs'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
@@ -57,6 +65,7 @@ jobs:
               uses: ramsey/composer-install@v1
               with:
                   dependency-versions: ${{matrix.dependency-versions}}
+                  composer-options: ${{ matrix.composer-options }}
 
             - name: Bootstrap test environment
               run: composer bootstrap-test-environment
