@@ -5,7 +5,7 @@
 Run the following command to install:
 
 ```bash
-composer require sulu/community-bundle --no-scripts
+composer require sulu/community-bundle:^2.0@dev --no-scripts
 ```
 
 ## Enable Bundle
