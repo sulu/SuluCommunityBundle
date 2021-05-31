@@ -53,7 +53,11 @@ class EmailConfirmationController extends AbstractController
                 $contactEmail->setEmailType($emailType);
                 $userContact->addEmail($contactEmail);
             }
-            $userContact->getEmails()->first()->setEmail($userContact->getMainEmail());
+            $email = $userContact->getEmails()->first();
+            $mainEmail = $userContact->getMainEmail();
+            if ($email && $mainEmail) {
+                $email->setEmail($mainEmail);
+            }
             $entityManager->remove($token);
             $this->saveEntities();
 
