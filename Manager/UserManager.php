@@ -180,7 +180,7 @@ class UserManager implements UserManagerInterface
     protected function createUserRole(User $user, string $webspaceKey, string $roleName): UserRole
     {
         /** @var RoleInterface $role */
-        $role = $this->roleRepository->findOneBy(['name' => $roleName]);
+        $role = $this->roleRepository->findOneBy(['key' => $roleName]);
         $userRole = new UserRole();
 
         $locales = [];
