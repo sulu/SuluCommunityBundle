@@ -239,7 +239,11 @@ class UserManager implements UserManagerInterface
      */
     public function findUser(string $identifier): ?User
     {
-        $user = $this->userRepository->findUserByIdentifier($identifier);
+        try {
+            $user = $this->userRepository->findUserByIdentifier($identifier);
+        } catch (NoResultException $e) {
+            return null;
+        }
 
         if (!$user instanceof User) {
             return null;
