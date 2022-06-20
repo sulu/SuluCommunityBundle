@@ -148,7 +148,7 @@
             <argument type="service" id="mailer"/>
             <argument type="service" id="twig"/>
             <argument type="service" id="translator"/>
-            <argument>%sulu_community.user_locale_translated%</argument>
+            <argument>%sulu_community.translated_by_user_locale%</argument>
         </service>
         <service id="Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface" alias="sulu_community.mail_factory"/>
 
