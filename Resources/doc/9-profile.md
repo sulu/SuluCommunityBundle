@@ -98,7 +98,6 @@ class ProfileType extends AbstractType
                 'sulu_contact.female_form_of_address' => 1,
             ],
             'translation_domain' => 'admin',
-            'translation_domain' => 'backend',
             'expanded' => true,
         ]);
 
