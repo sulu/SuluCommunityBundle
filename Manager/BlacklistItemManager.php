@@ -69,9 +69,10 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
         }
 
         foreach ($ids as $id) {
-            $this->entityManager->remove(
-                $this->entityManager->getReference($this->blacklistItemRepository->getClassName(), $id)
-            );
+            /** @var BlacklistItem $object */
+            $object = $this->entityManager->getReference($this->blacklistItemRepository->getClassName(), $id);
+
+            $this->entityManager->remove($object);
         }
     }
 }
