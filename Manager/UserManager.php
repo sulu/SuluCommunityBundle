@@ -100,14 +100,6 @@ class UserManager implements UserManagerInterface
             $user->setContact($contact);
         }
 
-        if (null === $contact->getFirstName()) {
-            $contact->setFirstName('');
-        }
-
-        if (null === $contact->getLastName()) {
-            $contact->setLastName('');
-        }
-
         $contact->setMainEmail($user->getEmail());
         $user = $this->updateUser($user);
 

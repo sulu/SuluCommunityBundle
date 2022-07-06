@@ -84,14 +84,18 @@ class BlacklistConfirmationController extends AbstractController
             $entityManager->remove($blacklistUser);
         }
 
+        /** @var BlacklistItem|null $item */
         $item = $this->getBlacklistItemRepository()->findOneBy(['pattern' => $user->getEmail()]);
 
         if (!$item) {
             $item = $this->getBlacklistItemManager()->create();
         }
 
+        /** @var string $email */
+        $email = $user->getEmail();
+
         $item->setType(BlacklistItem::TYPE_BLOCK)
-            ->setPattern($user->getEmail());
+            ->setPattern($email);
 
         $entityManager->flush();
 

@@ -15,6 +15,8 @@ use Sulu\Component\Persistence\Repository\ORM\EntityRepository;
 
 /**
  * Entity-Repository for blacklist-items.
+ *
+ * @method BlacklistItem createNew()
  */
 class BlacklistItemRepository extends EntityRepository
 {
