@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NoResultException;
 use Sulu\Bundle\ContactBundle\Contact\ContactManagerInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactInterface;
 use Sulu\Bundle\ContactBundle\Entity\ContactRepositoryInterface;
@@ -231,7 +232,11 @@ class UserManager implements UserManagerInterface
      */
     public function findUser(string $identifier): ?User
     {
-        $user = $this->userRepository->findUserByIdentifier($identifier);
+        try {
+            $user = $this->userRepository->findUserByIdentifier($identifier);
+        } catch (NoResultException $e) {
+            return null;
+        }
 
         if (!$user instanceof User) {
             return null;
