@@ -36,11 +36,21 @@ class MailFactory implements MailFactoryInterface
      */
     protected $translator;
 
-    public function __construct(\Swift_Mailer $mailer, Environment $twig, TranslatorInterface $translator)
-    {
+    /**
+     * @var bool
+     */
+    protected $translatedByUserLocale;
+
+    public function __construct(
+        \Swift_Mailer $mailer,
+        Environment $twig,
+        TranslatorInterface $translator,
+        bool $translatedByUserLocale
+    ) {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->translator = $translator;
+        $this->translatedByUserLocale = $translatedByUserLocale;
     }
 
     /**
@@ -60,7 +70,10 @@ class MailFactory implements MailFactoryInterface
             $translator = $this->translator;
             // Render Email in specific locale
             $locale = $translator->getLocale();
-            $translator->setLocale($user->getLocale());
+
+            if ($this->translatedByUserLocale) {
+                $translator->setLocale($user->getLocale());
+            }
 
             $this->sendEmail($mail->getFrom(), $email, $mail->getSubject(), $mail->getUserTemplate(), $data);
             $translator->setLocale($locale);

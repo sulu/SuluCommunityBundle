@@ -45,6 +45,9 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
         $loader->load('services.xml');
         $loader->load('validator.xml');
 
+        $translatedByUserLocale = $config[Configuration::TRANSLATED_BY_USER_LOCALE];
+        $container->setParameter('sulu_community.translated_by_user_locale', $translatedByUserLocale);
+
         if ($lastLoginEnabled) {
             $lastLoginRefreshInterval = $config[Configuration::LAST_LOGIN][Configuration::REFRESH_INTERVAL];
 

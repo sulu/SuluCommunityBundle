@@ -90,6 +90,7 @@ class Configuration implements ConfigurationInterface
     // Other configurations
     const LAST_LOGIN = 'last_login';
     const REFRESH_INTERVAL = 'refresh_interval';
+    const TRANSLATED_BY_USER_LOCALE = 'translated_by_user_locale';
 
     /**
      * {@inheritdoc}
@@ -126,6 +127,7 @@ class Configuration implements ConfigurationInterface
                         ->integerNode(self::REFRESH_INTERVAL)->defaultValue(600)->end()
                     ->end()
                 ->end()
+                ->booleanNode(self::TRANSLATED_BY_USER_LOCALE)->defaultTrue()->end()
                 ->arrayNode('webspaces')
                     ->normalizeKeys(false)
                     ->useAttributeAsKey('webspaceKey')
