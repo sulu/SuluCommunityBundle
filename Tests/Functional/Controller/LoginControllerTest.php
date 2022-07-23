@@ -40,6 +40,11 @@ class LoginControllerTest extends SuluTestCase
         $this->assertCount(1, $crawler->filter('button'));
     }
 
+    /**
+     * @return array{
+     *     'sulu.context': SuluKernel::CONTEXT_WEBSITE,
+     * }
+     */
     protected static function getKernelConfiguration(): array
     {
         return [

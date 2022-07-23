@@ -124,6 +124,7 @@ class ProfileControllerTest extends SuluTestCase
         /** @var UserRepository $repository */
         $repository = $this->getEntityManager()->getRepository(User::class);
 
+        /** @var User */
         return $repository->findOneBy(['username' => 'test']);
     }
 
@@ -135,8 +136,8 @@ class ProfileControllerTest extends SuluTestCase
             'profile[lastName]' => 'Sulu',
             'profile[mainEmail]' => 'sulu@example.org',
             'profile[street]' => 'Rathausstraße',
-            'profile[number]' => 16,
-            'profile[zip]' => 12351,
+            'profile[number]' => '16',
+            'profile[zip]' => '12351',
             'profile[city]' => 'USS Excelsior',
             'profile[countryCode]' => 'AT',
             'profile[note]' => 'Test',
@@ -144,11 +145,13 @@ class ProfileControllerTest extends SuluTestCase
 
         $this->assertSame(0, $user->getContact()->getFormOfAddress());
         $this->assertSame('Hikaru Sulu', $user->getFullname());
-        $this->assertSame('Rathausstraße', $user->getContact()->getMainAddress()->getStreet());
-        $this->assertSame('USS Excelsior', $user->getContact()->getMainAddress()->getCity());
-        $this->assertSame(16, $user->getContact()->getMainAddress()->getNumber());
-        $this->assertSame(12351, $user->getContact()->getMainAddress()->getZip());
-        $this->assertSame('AT', $user->getContact()->getMainAddress()->getCountryCode());
+        $mainAddress = $user->getContact()->getMainAddress();
+        $this->assertNotNull($mainAddress);
+        $this->assertSame('Rathausstraße', $mainAddress->getStreet());
+        $this->assertSame('USS Excelsior', $mainAddress->getCity());
+        $this->assertSame('16', $mainAddress->getNumber());
+        $this->assertSame('12351', $mainAddress->getZip());
+        $this->assertSame('AT', $mainAddress->getCountryCode());
         $this->assertSame('Test', $user->getContact()->getNote());
     }
 
@@ -160,8 +163,8 @@ class ProfileControllerTest extends SuluTestCase
             'profile[lastName]' => 'Sulu',
             'profile[mainEmail]' => 'sulu@example.org',
             'profile[street]' => 'Rathausstraße',
-            'profile[number]' => 16,
-            'profile[zip]' => 12351,
+            'profile[number]' => '16',
+            'profile[zip]' => '12351',
             'profile[city]' => 'USS Excelsior',
             'profile[countryCode]' => 'AT',
         ]);
@@ -169,6 +172,11 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertNull($user->getContact()->getNote());
     }
 
+    /**
+     * @return array{
+     *     'sulu.context': SuluKernel::CONTEXT_WEBSITE,
+     * }
+     */
     protected static function getKernelConfiguration(): array
     {
         return [

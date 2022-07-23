@@ -64,6 +64,7 @@ trait SaveMediaTrait
             return null;
         }
 
+        /** @var UploadedFile|null $uploadedFile */
         $uploadedFile = $form->get('avatar')->getData();
         if (null === $uploadedFile) {
             return null;

@@ -24,6 +24,7 @@ class CompletionContactType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var Contact $contact */
         $contact = $builder->getData();
 
         if (!$contact->getFirstName()) {

@@ -16,6 +16,47 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Handles registration, confirmation, password reset and forget.
+ *
+ * @phpstan-type TypeConfigProperties array{
+ *      enabled: bool,
+ *      template: string,
+ *      service: string|null,
+ *      embed_template: string,
+ *      type: string,
+ *      options: mixed[],
+ *      activate_user: bool,
+ *      auto_login: bool,
+ *      redirect_to: string|null,
+ *      email: array{
+ *          subject: string,
+ *          admin_template: string|null,
+ *          user_template: string|null,
+ *      },
+ *      delete_user: bool,
+ * }
+ *
+ * @phpstan-type Config array{
+ *     from: string|string[],
+ *     to: string|string[],
+ *     webspace_key: string,
+ *     role: string,
+ *     firewall: string,
+ *     maintenance: array{
+ *         enabled: bool,
+ *         template: string,
+ *     },
+ *     login: TypeConfigProperties,
+ *     registration: TypeConfigProperties,
+ *     completion: TypeConfigProperties,
+ *     confirmation: TypeConfigProperties,
+ *     password_forget: TypeConfigProperties,
+ *     password_reset: TypeConfigProperties,
+ *     profile: TypeConfigProperties,
+ *     blacklisted: TypeConfigProperties,
+ *     blacklist_confirmed: TypeConfigProperties,
+ *     blacklist_denied: TypeConfigProperties,
+ *     email_confirmation: TypeConfigProperties,
+ * }
  */
 interface CommunityManagerInterface
 {
@@ -57,25 +98,35 @@ interface CommunityManagerInterface
     /**
      * Get community webspace config.
      *
-     * @return mixed[]
+     * @return Config
      */
     public function getConfig(): array;
 
     /**
      * Get community webspace config property.
      *
-     * @throws \Exception
+     * @template TConfig of string&key-of<Config>
      *
-     * @return mixed
+     * @param TConfig $property
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Config[TTypeConfig]
      */
     public function getConfigProperty(string $property);
 
     /**
      * Get community webspace config type property.
      *
-     * @throws \Exception
+     * @template TConfig of string&key-of<Config>
+     * @template TTypeConfigProperty of string&key-of<TypeConfigProperties>
      *
-     * @return mixed
+     * @param TConfig $type
+     * @param TTypeConfigProperty $property
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return Config[TConfig][TTypeConfigProperty]
      */
     public function getConfigTypeProperty(string $type, string $property);
 

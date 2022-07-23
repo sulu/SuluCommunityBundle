@@ -33,8 +33,11 @@ class BlacklistConfirmationController extends AbstractController
      */
     public function confirmAction(Request $request): Response
     {
+        /** @var string $token */
+        $token = $request->get('token');
+
         /** @var BlacklistUser|null $blacklistUser */
-        $blacklistUser = $this->getBlacklistUserRepository()->findByToken($request->get('token'));
+        $blacklistUser = $this->getBlacklistUserRepository()->findByToken($token);
 
         if (null === $blacklistUser) {
             throw new NotFoundHttpException();
@@ -62,8 +65,11 @@ class BlacklistConfirmationController extends AbstractController
     {
         $entityManager = $this->getEntityManager();
 
+        /** @var string $token */
+        $token = $request->get('token');
+
         /** @var BlacklistUser|null $blacklistUser */
-        $blacklistUser = $this->getBlacklistUserRepository()->findByToken($request->get('token'));
+        $blacklistUser = $this->getBlacklistUserRepository()->findByToken($token);
 
         if (null === $blacklistUser) {
             throw new NotFoundHttpException();

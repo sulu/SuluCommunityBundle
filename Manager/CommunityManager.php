@@ -33,11 +33,14 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 /**
  * Handles registration, confirmation, password reset and forget.
+ *
+ * @phpstan-import-type Config from CommunityManagerInterface
+ * @phpstan-import-type TypeConfigProperties from CommunityManagerInterface
  */
 class CommunityManager implements CommunityManagerInterface
 {
     /**
-     * @var mixed[]
+     * @var Config
      */
     protected $config;
 
@@ -82,7 +85,7 @@ class CommunityManager implements CommunityManagerInterface
     protected $mailFactory;
 
     /**
-     * @param mixed[] $config
+     * @param Config $config
      */
     public function __construct(
         array $config,

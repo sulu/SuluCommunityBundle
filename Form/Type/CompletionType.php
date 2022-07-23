@@ -26,6 +26,7 @@ class CompletionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var User $user */
         $user = $builder->getData();
 
         if (!$user->getUsername()) {

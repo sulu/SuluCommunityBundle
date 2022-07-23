@@ -14,6 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Listener;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
@@ -27,14 +28,49 @@ use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class EmailConfirmationListenerTest extends TestCase
 {
+    /**
+     * @var ObjectProphecy<MailFactoryInterface>
+     */
     private $mailFactory;
+
+    /**
+     * @var ObjectProphecy<EntityManagerInterface>
+     */
     private $entityManager;
+
+    /**
+     * @var ObjectProphecy<EmailConfirmationTokenRepository>
+     */
     private $repository;
+
+    /**
+     * @var ObjectProphecy<TokenGeneratorInterface>
+     */
     private $tokenGenerator;
+
+    /**
+     * @var EmailConfirmationListener
+     */
     private $listener;
+
+    /**
+     * @var ObjectProphecy<UserProfileSavedEvent>
+     */
     private $event;
+
+    /**
+     * @var ObjectProphecy<User>
+     */
     private $user;
+
+    /**
+     * @var ObjectProphecy<Contact>
+     */
     private $contact;
+
+    /**
+     * @var ObjectProphecy<EmailConfirmationToken>
+     */
     private $token;
 
     protected function setUp(): void

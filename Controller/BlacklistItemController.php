@@ -222,6 +222,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
      */
     private function prepareListResponse(Request $request, ListBuilderInterface $listBuilder, array $fieldDescriptors)
     {
+        /** @var string $idsParameter */
         $idsParameter = $request->get('ids');
         $ids = \array_filter(\explode(',', $idsParameter));
         if (null !== $idsParameter && 0 === \count($ids)) {

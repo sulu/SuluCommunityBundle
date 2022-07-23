@@ -36,8 +36,9 @@ class EmailConfirmationController extends AbstractController
         $repository = $this->getEmailConfirmationTokenRepository();
 
         $success = false;
-        /** @var EmailConfirmationToken $token */
-        $token = $repository->findByToken($request->get('token'));
+        /** @var string $token */
+        $token = $request->get('token');
+        $token = $repository->findByToken($token);
 
         if (null !== $token) {
             /** @var User $user */

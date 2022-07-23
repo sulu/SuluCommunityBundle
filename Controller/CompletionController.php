@@ -40,6 +40,8 @@ class CompletionController extends AbstractController
 
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
 
+        $formType = $communityManager->getConfigTypeProperty(self::TYPE, Configuration::FORM_TYPE);
+
         // Create Form
         $form = $this->createForm(
             $communityManager->getConfigTypeProperty(self::TYPE, Configuration::FORM_TYPE),

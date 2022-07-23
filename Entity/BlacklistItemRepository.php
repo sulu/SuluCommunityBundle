@@ -33,6 +33,7 @@ class BlacklistItemRepository extends EntityRepository
             ->where('REGEXP(:email, entity.regexp) = true')
             ->setParameter('email', $email);
 
+        /** @var BlacklistItem[] */
         return $queryBuilder->getQuery()->getResult();
     }
 }

@@ -23,7 +23,11 @@ class Mail
      *
      * @param string|string[] $from
      * @param string|string[] $to
-     * @param mixed[] $config
+     * @param array{
+     *     subject: string,
+     *     user_template: string|null,
+     *     admin_template: string|null,
+     * } $config
      *
      * @return Mail
      */

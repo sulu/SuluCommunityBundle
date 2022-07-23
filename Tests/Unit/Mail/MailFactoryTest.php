@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Mail;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactory;
 use Sulu\Bundle\SecurityBundle\Entity\User;
@@ -21,10 +22,29 @@ use Twig\Environment;
 
 class MailFactoryTest extends TestCase
 {
+    /**
+     * @var ObjectProphecy<\Swift_Mailer>
+     */
     private $mailer;
+
+    /**
+     * @var ObjectProphecy<Environment>
+     */
     private $twig;
+
+    /**
+     * @var ObjectProphecy<Translator>
+     */
     private $translator;
+
+    /**
+     * @var MailFactory
+     */
     private $mailFactory;
+
+    /**
+     * @var ObjectProphecy<User>
+     */
     private $user;
 
     protected function setUp(): void

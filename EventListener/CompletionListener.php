@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\CommunityBundle\Validator\User\CompletionInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Component\Webspace\Analyzer\RequestAnalyzerInterface;
@@ -28,6 +29,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  * Validates the current user entity.
  *
  * @internal Register a validator of type CompletionInterface to change the validation
+ *
+ * @phpstan-import-type Config from CommunityManagerInterface
  */
 class CompletionListener implements EventSubscriberInterface
 {
@@ -57,7 +60,7 @@ class CompletionListener implements EventSubscriberInterface
     protected $validators;
 
     /**
-     * @var mixed[]
+     * @var array<string, Config>
      */
     protected $config;
 
@@ -65,7 +68,7 @@ class CompletionListener implements EventSubscriberInterface
      * CompletionListener constructor.
      *
      * @param CompletionInterface[] $validators
-     * @param mixed[] $config
+     * @param array<string, Config> $config
      */
     public function __construct(
         RequestAnalyzerInterface $requestAnalyzer,
@@ -131,10 +134,12 @@ class CompletionListener implements EventSubscriberInterface
 
         $expectedFirewall = $this->config[$webspaceKey][Configuration::FIREWALL] ?? null;
         // TODO find a better way to detect the current firewall
+        /** @var string $firewallContext */
+        $firewallContext = $request->attributes->get('_firewall_context', '');
         $currentFirewall = \str_replace(
             'security.firewall.map.context.',
             '',
-            $request->attributes->get('_firewall_context', '')
+            $firewallContext
         );
 
         if ($expectedFirewall !== $currentFirewall) {

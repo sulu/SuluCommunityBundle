@@ -13,14 +13,26 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager;
 
 class BlacklistItemManagerTest extends TestCase
 {
+    /**
+     * @var ObjectProphecy<BlacklistItemRepository>
+     */
     private $repository;
+
+    /**
+     * @var ObjectProphecy<EntityManagerInterface>
+     */
     private $entityManager;
+
+    /**
+     * @var BlacklistItemManager
+     */
     private $manager;
 
     protected function setUp(): void

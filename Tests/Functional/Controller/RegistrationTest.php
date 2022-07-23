@@ -25,6 +25,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /**
  * This testcases covers the whole registration, confirmation and login process.
@@ -204,6 +205,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertNotNull($this->findUser());
 
         // check email to admin
+        /** @var Profile $profile */
         $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
@@ -235,6 +237,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertStringContainsString('User "hikaru@sulu.io" confirmed', $content);
 
         // check email to user
+        /** @var Profile $profile */
         $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
@@ -264,6 +267,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertStringContainsString('User "hikaru@sulu.io" denied', $content);
 
         // check email to user
+        /** @var Profile $profile */
         $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
@@ -290,6 +294,7 @@ class RegistrationTest extends SuluTestCase
         $this->client->submit($form);
 
         // check email to user
+        /** @var Profile $profile */
         $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
@@ -324,7 +329,9 @@ class RegistrationTest extends SuluTestCase
 
         /** @var User $user */
         $user = $this->findUser();
-        $this->assertStringStartsWith('my-new-password', $user->getPassword());
+        $password = $user->getPassword();
+        $this->assertNotNull($password);
+        $this->assertStringStartsWith('my-new-password', $password);
     }
 
     /**
@@ -347,6 +354,11 @@ class RegistrationTest extends SuluTestCase
         }
     }
 
+    /**
+     * @return array{
+     *     'sulu.context': SuluKernel::CONTEXT_WEBSITE,
+     * }
+     */
     protected static function getKernelConfiguration(): array
     {
         return [

@@ -116,6 +116,7 @@ class InitCommand extends Command
         }
 
         $communityManager = $this->communityManagerRegistry->get($webspaceKey);
+        /** @var string $roleName */
         $roleName = $communityManager->getConfigProperty(Configuration::ROLE);
         $system = $security->getSystem();
 

@@ -31,17 +31,17 @@ class SaveMediaTraitTest extends TestCase
     }
 
     /**
-     * @var ObjectProphecy|MediaManagerInterface
+     * @var ObjectProphecy<MediaManagerInterface>
      */
     private $mediaManager;
 
     /**
-     * @var ObjectProphecy|SystemCollectionManagerInterface
+     * @var ObjectProphecy<SystemCollectionManagerInterface>
      */
     private $systemCollectionManager;
 
     /**
-     * @var ObjectProphecy|User
+     * @var ObjectProphecy<User>
      */
     private $user;
 
@@ -51,17 +51,17 @@ class SaveMediaTraitTest extends TestCase
     private $locale;
 
     /**
-     * @var ObjectProphecy|FormInterface
+     * @var ObjectProphecy<FormInterface>
      */
     private $form;
 
     /**
-     * @var ObjectProphecy|FormInterface
+     * @var ObjectProphecy<FormInterface>
      */
     private $avatarForm;
 
     /**
-     * @var ObjectProphecy|FormInterface
+     * @var ObjectProphecy<FormInterface>
      */
     private $mediasForm;
 
@@ -71,17 +71,17 @@ class SaveMediaTraitTest extends TestCase
     private $tempFilePaths = [];
 
     /**
-     * @var ObjectProphecy|Contact
+     * @var ObjectProphecy<Contact>
      */
     private $contact;
 
     /**
-     * @var ObjectProphecy|Media
+     * @var ObjectProphecy<Media>
      */
     private $media;
 
     /**
-     * @var ObjectProphecy|ApiMedia
+     * @var ObjectProphecy<ApiMedia>
      */
     private $apiMedia;
 
