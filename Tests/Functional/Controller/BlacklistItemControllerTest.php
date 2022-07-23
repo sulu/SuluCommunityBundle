@@ -22,7 +22,7 @@ class BlacklistItemControllerTest extends SuluTestCase
      */
     private $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = $this->createAuthenticatedClient();
@@ -36,10 +36,10 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         /** @var string $content */
         $content = $this->client->getResponse()->getContent();
-        $result = json_decode($content, true);
+        $result = \json_decode($content, true);
 
         $this->assertIsArray($result);
-        $this->assertEquals(0, $result['total']);
+        $this->assertSame(0, $result['total']);
         $this->assertCount(0, $result['_embedded']['blacklist_items']);
     }
 
@@ -57,11 +57,11 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         /** @var string $content */
         $content = $this->client->getResponse()->getContent();
-        $result = json_decode($content, true);
+        $result = \json_decode($content, true);
 
         $this->assertIsArray($result);
-        $this->assertEquals($pattern, $result['pattern']);
-        $this->assertEquals(BlacklistItem::TYPE_REQUEST, $result['type']);
+        $this->assertSame($pattern, $result['pattern']);
+        $this->assertSame(BlacklistItem::TYPE_REQUEST, $result['type']);
 
         return $result;
     }
@@ -78,12 +78,12 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         /** @var string $content */
         $content = $this->client->getResponse()->getContent();
-        $result = json_decode($content, true);
+        $result = \json_decode($content, true);
 
         $this->assertIsArray($result);
-        $this->assertEquals($item['id'], $result['id']);
-        $this->assertEquals($item['pattern'], $result['pattern']);
-        $this->assertEquals($item['type'], $result['type']);
+        $this->assertSame($item['id'], $result['id']);
+        $this->assertSame($item['pattern'], $result['pattern']);
+        $this->assertSame($item['type'], $result['type']);
 
         return $result;
     }
@@ -97,14 +97,14 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         /** @var string $content */
         $content = $this->client->getResponse()->getContent();
-        $result = json_decode($content, true);
+        $result = \json_decode($content, true);
 
         $this->assertIsArray($result);
-        $this->assertEquals(1, $result['total']);
+        $this->assertSame(1, $result['total']);
         $this->assertCount(1, $result['_embedded']['blacklist_items']);
-        $this->assertEquals($item['id'], $result['_embedded']['blacklist_items'][0]['id']);
-        $this->assertEquals($item['pattern'], $result['_embedded']['blacklist_items'][0]['pattern']);
-        $this->assertEquals($item['type'], $result['_embedded']['blacklist_items'][0]['type']);
+        $this->assertSame($item['id'], $result['_embedded']['blacklist_items'][0]['id']);
+        $this->assertSame($item['pattern'], $result['_embedded']['blacklist_items'][0]['pattern']);
+        $this->assertSame($item['type'], $result['_embedded']['blacklist_items'][0]['type']);
     }
 
     public function testDelete(): void
@@ -119,10 +119,10 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         /** @var string $content */
         $content = $this->client->getResponse()->getContent();
-        $result = json_decode($content, true);
+        $result = \json_decode($content, true);
 
         $this->assertIsArray($result);
-        $this->assertEquals(0, $result['total']);
+        $this->assertSame(0, $result['total']);
         $this->assertCount(0, $result['_embedded']['blacklist_items']);
     }
 
@@ -131,7 +131,7 @@ class BlacklistItemControllerTest extends SuluTestCase
         $item1 = $this->testPost();
         $item2 = $this->testPost('test@sulu.io');
 
-        $this->client->request('DELETE', '/admin/api/blacklist-items?ids=' . implode(',', [$item1['id'], $item2['id']]));
+        $this->client->request('DELETE', '/admin/api/blacklist-items?ids=' . \implode(',', [$item1['id'], $item2['id']]));
         $this->assertHttpStatusCode(204, $this->client->getResponse());
 
         $this->client->request('GET', '/admin/api/blacklist-items');
@@ -139,10 +139,10 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         /** @var string $content */
         $content = $this->client->getResponse()->getContent();
-        $result = json_decode($content, true);
+        $result = \json_decode($content, true);
 
         $this->assertIsArray($result);
-        $this->assertEquals(0, $result['total']);
+        $this->assertSame(0, $result['total']);
         $this->assertCount(0, $result['_embedded']['blacklist_items']);
     }
 
@@ -169,11 +169,11 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         /** @var string $content */
         $content = $this->client->getResponse()->getContent();
-        $result = json_decode($content, true);
+        $result = \json_decode($content, true);
 
         $this->assertIsArray($result);
-        $this->assertEquals('test@sulu.io', $result['pattern']);
-        $this->assertEquals(BlacklistItem::TYPE_BLOCK, $result['type']);
+        $this->assertSame('test@sulu.io', $result['pattern']);
+        $this->assertSame(BlacklistItem::TYPE_BLOCK, $result['type']);
     }
 
     public function testPutInvalidType(): void

@@ -30,32 +30,32 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    const WEBSPACES = 'webspaces';
+    public const WEBSPACES = 'webspaces';
 
     // Basic Webspace configuration
-    const EMAIL_FROM = 'from';
-    const EMAIL_FROM_NAME = 'name';
-    const EMAIL_FROM_EMAIL = 'email';
-    const EMAIL_TO = 'to';
-    const EMAIL_TO_NAME = 'name';
-    const EMAIL_TO_EMAIL = 'email';
-    const ROLE = 'role';
-    const WEBSPACE_KEY = 'webspace_key';
-    const FIREWALL = 'firewall';
-    const MAINTENANCE = 'maintenance';
+    public const EMAIL_FROM = 'from';
+    public const EMAIL_FROM_NAME = 'name';
+    public const EMAIL_FROM_EMAIL = 'email';
+    public const EMAIL_TO = 'to';
+    public const EMAIL_TO_NAME = 'name';
+    public const EMAIL_TO_EMAIL = 'email';
+    public const ROLE = 'role';
+    public const WEBSPACE_KEY = 'webspace_key';
+    public const FIREWALL = 'firewall';
+    public const MAINTENANCE = 'maintenance';
 
     // Form types
-    const TYPE_LOGIN = 'login';
-    const TYPE_REGISTRATION = 'registration';
-    const TYPE_COMPLETION = 'completion';
-    const TYPE_CONFIRMATION = 'confirmation';
-    const TYPE_PASSWORD_FORGET = 'password_forget';
-    const TYPE_PASSWORD_RESET = 'password_reset';
-    const TYPE_BLACKLISTED = 'blacklisted';
-    const TYPE_BLACKLIST_CONFIRMED = 'blacklist_confirmed';
-    const TYPE_BLACKLIST_DENIED = 'blacklist_denied';
-    const TYPE_PROFILE = 'profile';
-    const TYPE_EMAIL_CONFIRMATION = 'email_confirmation';
+    public const TYPE_LOGIN = 'login';
+    public const TYPE_REGISTRATION = 'registration';
+    public const TYPE_COMPLETION = 'completion';
+    public const TYPE_CONFIRMATION = 'confirmation';
+    public const TYPE_PASSWORD_FORGET = 'password_forget';
+    public const TYPE_PASSWORD_RESET = 'password_reset';
+    public const TYPE_BLACKLISTED = 'blacklisted';
+    public const TYPE_BLACKLIST_CONFIRMED = 'blacklist_confirmed';
+    public const TYPE_BLACKLIST_DENIED = 'blacklist_denied';
+    public const TYPE_PROFILE = 'profile';
+    public const TYPE_EMAIL_CONFIRMATION = 'email_confirmation';
 
     public static $TYPES = [
         self::TYPE_LOGIN,
@@ -72,28 +72,25 @@ class Configuration implements ConfigurationInterface
     ];
 
     // Type configurations
-    const ENABLED = 'enabled';
-    const TEMPLATE = 'template';
-    const SERVICE = 'service';
-    const EMBED_TEMPLATE = 'embed_template';
-    const FORM_TYPE = 'type';
-    const FORM_TYPE_OPTIONS = 'options';
-    const ACTIVATE_USER = 'activate_user';
-    const AUTO_LOGIN = 'auto_login';
-    const REDIRECT_TO = 'redirect_to';
-    const EMAIL = 'email';
-    const EMAIL_SUBJECT = 'subject';
-    const EMAIL_ADMIN_TEMPLATE = 'admin_template';
-    const EMAIL_USER_TEMPLATE = 'user_template';
-    const DELETE_USER = 'delete_user';
+    public const ENABLED = 'enabled';
+    public const TEMPLATE = 'template';
+    public const SERVICE = 'service';
+    public const EMBED_TEMPLATE = 'embed_template';
+    public const FORM_TYPE = 'type';
+    public const FORM_TYPE_OPTIONS = 'options';
+    public const ACTIVATE_USER = 'activate_user';
+    public const AUTO_LOGIN = 'auto_login';
+    public const REDIRECT_TO = 'redirect_to';
+    public const EMAIL = 'email';
+    public const EMAIL_SUBJECT = 'subject';
+    public const EMAIL_ADMIN_TEMPLATE = 'admin_template';
+    public const EMAIL_USER_TEMPLATE = 'user_template';
+    public const DELETE_USER = 'delete_user';
 
     // Other configurations
-    const LAST_LOGIN = 'last_login';
-    const REFRESH_INTERVAL = 'refresh_interval';
+    public const LAST_LOGIN = 'last_login';
+    public const REFRESH_INTERVAL = 'refresh_interval';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('sulu_community');
@@ -139,7 +136,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->beforeNormalization()
                                 ->ifString()
-                                    ->then(function($value) {
+                                    ->then(function ($value) {
                                         return [
                                             self::EMAIL_FROM_NAME => $value,
                                             self::EMAIL_FROM_EMAIL => $value,
@@ -154,7 +151,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->beforeNormalization()
                                 ->ifString()
-                                    ->then(function($value) {
+                                    ->then(function ($value) {
                                         return [
                                             self::EMAIL_TO_NAME => $value,
                                             self::EMAIL_TO_EMAIL => $value,

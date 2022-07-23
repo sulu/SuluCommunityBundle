@@ -31,9 +31,6 @@ class BlockedValidator extends ConstraintValidator
         $this->blacklistItemRepository = $blacklistItemRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Blocked) {

@@ -43,16 +43,13 @@ class MailFactory implements MailFactoryInterface
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendEmails(Mail $mail, User $user, array $parameters = []): void
     {
         $email = $mail->getUserEmail();
         if (!$email) {
             $email = $user->getEmail();
         }
-        $data = array_merge($parameters, ['user' => $user]);
+        $data = \array_merge($parameters, ['user' => $user]);
 
         // Send User Email
         if (null !== $mail->getUserTemplate() && $email) {

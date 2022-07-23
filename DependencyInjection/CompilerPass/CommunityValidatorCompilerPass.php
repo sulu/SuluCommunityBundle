@@ -21,11 +21,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class CommunityValidatorCompilerPass implements CompilerPassInterface
 {
-    const COMPLETION_LISTENER_SERVICE_ID = 'sulu_community.completion_listener';
+    public const COMPLETION_LISTENER_SERVICE_ID = 'sulu_community.completion_listener';
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
         // If no listener exists do nothing

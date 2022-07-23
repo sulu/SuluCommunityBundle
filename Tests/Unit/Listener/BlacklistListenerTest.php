@@ -33,7 +33,7 @@ class BlacklistListenerTest extends TestCase
     private $mailFactory;
     private $listener;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->repository = $this->prophesize(BlacklistItemRepository::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
@@ -72,7 +72,7 @@ class BlacklistListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function(BlacklistUser $item) use ($user) {
+                function (BlacklistUser $item) use ($user) {
                     return '123-123-123' === $item->getToken()
                     && 'sulu-io' === $item->getWebspaceKey()
                     && $item->getUser() === $user->reveal();

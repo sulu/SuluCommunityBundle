@@ -17,7 +17,7 @@ use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class BlacklistItemRepositoryTest extends SuluTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->purgeDatabase();
     }
@@ -36,8 +36,8 @@ class BlacklistItemRepositoryTest extends SuluTestCase
         $entityManager->flush();
         $entityManager->clear();
 
-        $items = array_map(
-            function(BlacklistItem $item) {
+        $items = \array_map(
+            function (BlacklistItem $item) {
                 return ['pattern' => $item->getPattern(), 'type' => $item->getType()];
             },
             $repository->findBySender('test@sulu.io')

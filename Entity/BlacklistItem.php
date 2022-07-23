@@ -16,8 +16,8 @@ namespace Sulu\Bundle\CommunityBundle\Entity;
  */
 class BlacklistItem
 {
-    const TYPE_REQUEST = 'request';
-    const TYPE_BLOCK = 'block';
+    public const TYPE_REQUEST = 'request';
+    public const TYPE_BLOCK = 'block';
 
     /**
      * @var string[]
@@ -79,7 +79,7 @@ class BlacklistItem
     public function setPattern(string $pattern): self
     {
         $this->pattern = $pattern;
-        $this->regexp = str_replace('\*', '[^@]*', preg_quote($pattern));
+        $this->regexp = \str_replace('\*', '[^@]*', \preg_quote($pattern));
 
         return $this;
     }
@@ -105,7 +105,7 @@ class BlacklistItem
      */
     public function setType(string $type): self
     {
-        if (!in_array($type, self::$types)) {
+        if (!\in_array($type, self::$types, true)) {
             throw new InvalidTypeException(self::$types, $type);
         }
 

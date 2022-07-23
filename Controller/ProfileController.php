@@ -24,7 +24,7 @@ class ProfileController extends AbstractController
         getSubscribedServices as getSubscribedServicesOfSaveMediaTrait;
     }
 
-    const TYPE = Configuration::TYPE_PROFILE;
+    public const TYPE = Configuration::TYPE_PROFILE;
 
     /**
      * Handle profile form.
@@ -84,6 +84,6 @@ class ProfileController extends AbstractController
      */
     public static function getSubscribedServices(): array
     {
-        return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
+        return \array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }
 }

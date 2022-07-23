@@ -75,9 +75,9 @@ class BlacklistConfirmationController extends AbstractController
 
         $communityManager = $this->getCommunityManager($blacklistUser->getWebspaceKey());
         if (true === $communityManager->getConfigTypeProperty(
-                Configuration::TYPE_BLACKLIST_DENIED,
-                Configuration::DELETE_USER
-            )
+            Configuration::TYPE_BLACKLIST_DENIED,
+            Configuration::DELETE_USER
+        )
         ) {
             $entityManager->remove($user->getContact());
             $entityManager->remove($user);

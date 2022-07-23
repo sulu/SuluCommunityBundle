@@ -87,9 +87,6 @@ class UserManager implements UserManagerInterface
         $this->contactManager = $contactManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createUser(User $user, string $webspaceKey, string $roleName): User
     {
         // User needs contact
@@ -116,9 +113,6 @@ class UserManager implements UserManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateUser(User $user): User
     {
         $contact = $user->getContact();
@@ -152,9 +146,6 @@ class UserManager implements UserManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUniqueToken(string $field): string
     {
         $token = $this->tokenGenerator->generateToken();
@@ -181,7 +172,7 @@ class UserManager implements UserManagerInterface
         $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
 
         if (!$webspace) {
-            throw new \InvalidArgumentException(sprintf('Webspace with key "%s" could not be found.', $webspaceKey));
+            throw new \InvalidArgumentException(\sprintf('Webspace with key "%s" could not be found.', $webspaceKey));
         }
 
         foreach ($webspace->getLocalizations() as $localization) {
@@ -189,7 +180,7 @@ class UserManager implements UserManagerInterface
         }
 
         /** @var string $localeString */
-        $localeString = json_encode($locales);
+        $localeString = \json_encode($locales);
 
         $userRole->setLocale($localeString);
         $userRole->setRole($role);
@@ -198,9 +189,6 @@ class UserManager implements UserManagerInterface
         return $userRole;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findByPasswordResetToken(string $token): ?User
     {
         /** @var User|null $user */
@@ -213,9 +201,6 @@ class UserManager implements UserManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findByConfirmationKey(string $token): ?User
     {
         $user = $this->userRepository->findOneBy(['confirmationKey' => $token]);
@@ -227,9 +212,6 @@ class UserManager implements UserManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findUser(string $identifier): ?User
     {
         try {

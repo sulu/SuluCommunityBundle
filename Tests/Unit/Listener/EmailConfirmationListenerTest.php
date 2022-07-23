@@ -37,10 +37,7 @@ class EmailConfirmationListenerTest extends TestCase
     private $contact;
     private $token;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->mailFactory = $this->prophesize(MailFactoryInterface::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
@@ -81,7 +78,7 @@ class EmailConfirmationListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function(EmailConfirmationToken $token) {
+                function (EmailConfirmationToken $token) {
                     return '123-123-123' === $token->getToken() && $token->getUser() === $this->user->reveal();
                 }
             )

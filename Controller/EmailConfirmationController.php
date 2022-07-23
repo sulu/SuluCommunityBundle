@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EmailConfirmationController extends AbstractController
 {
-    const TYPE = Configuration::TYPE_EMAIL_CONFIRMATION;
+    public const TYPE = Configuration::TYPE_EMAIL_CONFIRMATION;
 
     /**
      * Overwrite user email with contact email.
@@ -44,7 +44,7 @@ class EmailConfirmationController extends AbstractController
             $user = $token->getUser();
             $user->setEmail($user->getContact()->getMainEmail());
             $userContact = $user->getContact();
-            if (0 === count($userContact->getEmails())) {
+            if (0 === \count($userContact->getEmails())) {
                 /** @var EmailType $emailType */
                 $emailType = $entityManager->getReference(EmailType::class, 1);
 

@@ -64,18 +64,18 @@ interface CommunityManagerInterface
     /**
      * Get community webspace config property.
      *
-     * @return mixed
-     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function getConfigProperty(string $property);
 
     /**
      * Get community webspace config type property.
      *
-     * @return mixed
-     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function getConfigTypeProperty(string $type, string $property);
 

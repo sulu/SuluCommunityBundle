@@ -24,7 +24,7 @@ class RegistrationController extends AbstractController
         getSubscribedServices as getSubscribedServicesOfSaveMediaTrait;
     }
 
-    const TYPE = Configuration::TYPE_REGISTRATION;
+    public const TYPE = Configuration::TYPE_REGISTRATION;
 
     /**
      * Handle registration form.
@@ -89,6 +89,6 @@ class RegistrationController extends AbstractController
      */
     public static function getSubscribedServices(): array
     {
-        return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
+        return \array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }
 }

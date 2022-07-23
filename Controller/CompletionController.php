@@ -25,7 +25,7 @@ class CompletionController extends AbstractController
         getSubscribedServices as getSubscribedServicesOfSaveMediaTrait;
     }
 
-    const TYPE = Configuration::TYPE_COMPLETION;
+    public const TYPE = Configuration::TYPE_COMPLETION;
 
     /**
      * Handle registration form.
@@ -90,6 +90,6 @@ class CompletionController extends AbstractController
      */
     public static function getSubscribedServices(): array
     {
-        return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
+        return \array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }
 }

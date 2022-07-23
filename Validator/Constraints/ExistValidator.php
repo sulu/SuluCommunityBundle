@@ -34,9 +34,6 @@ class ExistValidator extends ConstraintValidator
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         if ($constraint instanceof Exist && $constraint->entity) {

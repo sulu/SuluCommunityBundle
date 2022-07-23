@@ -42,7 +42,7 @@ trait SaveMediaTrait
             return [];
         }
 
-        if (!is_array($uploadedFiles)) {
+        if (!\is_array($uploadedFiles)) {
             $uploadedFiles = [$uploadedFiles];
         }
 
@@ -72,7 +72,7 @@ trait SaveMediaTrait
         $avatar = $user->getContact()->getAvatar();
 
         /** @var MediaInterface|null $avatar */
-        $apiMedia = $this->saveMedia($uploadedFile, (null !== $avatar ? $avatar->getId() : null), $locale, $user->getId());
+        $apiMedia = $this->saveMedia($uploadedFile, null !== $avatar ? $avatar->getId() : null, $locale, $user->getId());
 
         $user->getContact()->setAvatar($apiMedia->getEntity());
 

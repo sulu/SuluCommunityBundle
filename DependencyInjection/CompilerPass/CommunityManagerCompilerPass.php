@@ -22,9 +22,6 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class CommunityManagerCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
         /** @var mixed[] $webspacesConfig */
@@ -39,14 +36,14 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             $definition->replaceArgument(0, $webspaceConfig);
             $definition->replaceArgument(1, $webspaceKey);
 
-            $id = sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey));
+            $id = \sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey));
             $references[$webspaceKey] = new Reference($id);
             $container->setDefinition($id, $definition);
 
-            if (false !== strpos($webspaceKey, '-')) {
+            if (false !== \strpos($webspaceKey, '-')) {
                 $container->setAlias(
-                    sprintf('sulu_community.%s.community_manager', $webspaceKey),
-                    sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey))
+                    \sprintf('sulu_community.%s.community_manager', $webspaceKey),
+                    \sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey))
                 );
             }
         }
@@ -77,7 +74,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
 
         // Set role by webspace key
         if (null === $webspaceConfig[Configuration::ROLE]) {
-            $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';
+            $webspaceConfig[Configuration::ROLE] = \ucfirst($webspaceKey) . 'User';
         }
 
         // Set email from

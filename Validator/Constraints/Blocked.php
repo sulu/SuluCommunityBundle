@@ -23,9 +23,6 @@ class Blocked extends Constraint
      */
     public $message = 'The email "%email%" is blocked.';
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy()
     {
         return 'blocked_validator';

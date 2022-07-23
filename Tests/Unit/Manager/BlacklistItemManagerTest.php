@@ -23,7 +23,7 @@ class BlacklistItemManagerTest extends TestCase
     private $entityManager;
     private $manager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->repository = $this->prophesize(BlacklistItemRepository::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
@@ -38,7 +38,7 @@ class BlacklistItemManagerTest extends TestCase
         $this->repository->createNew()->willReturn($entity)->shouldBeCalled();
         $this->entityManager->persist($entity)->shouldBeCalled();
 
-        $this->assertEquals($entity, $this->manager->create());
+        $this->assertSame($entity, $this->manager->create());
     }
 
     public function testFind(): void
@@ -46,7 +46,7 @@ class BlacklistItemManagerTest extends TestCase
         $entity = new BlacklistItem();
         $this->repository->find(1)->willReturn($entity)->shouldBeCalled();
 
-        $this->assertEquals($entity, $this->manager->find(1));
+        $this->assertSame($entity, $this->manager->find(1));
     }
 
     public function testDeleteSingle(): void

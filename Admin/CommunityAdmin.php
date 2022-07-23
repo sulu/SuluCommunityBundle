@@ -27,10 +27,10 @@ use Sulu\Component\Webspace\Security;
  */
 class CommunityAdmin extends Admin
 {
-    const BLACKLIST_ITEM_SECURITY_CONTEXT = 'sulu.community.blacklist_items';
-    const BLACKLIST_ITEM_LIST_VIEW = 'sulu_community.blacklist_item';
-    const BLACKLIST_ITEM_ADD_FORM_VIEW = 'sulu_community.blacklist_item.add_form';
-    const BLACKLIST_ITEM_EDIT_FORM_VIEW = 'sulu_community.blacklist_item.edit_form';
+    public const BLACKLIST_ITEM_SECURITY_CONTEXT = 'sulu.community.blacklist_items';
+    public const BLACKLIST_ITEM_LIST_VIEW = 'sulu_community.blacklist_item';
+    public const BLACKLIST_ITEM_ADD_FORM_VIEW = 'sulu_community.blacklist_item.add_form';
+    public const BLACKLIST_ITEM_EDIT_FORM_VIEW = 'sulu_community.blacklist_item.edit_form';
 
     /**
      * @var SecurityCheckerInterface
@@ -142,36 +142,33 @@ class CommunityAdmin extends Admin
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSecurityContexts()
     {
         $systems = [];
 
         $webspaceCollection = $this->webspaceManager->getWebspaceCollection();
 
-        $webspaceKeys = array_keys($webspaceCollection->getWebspaces());
+        $webspaceKeys = \array_keys($webspaceCollection->getWebspaces());
 
         foreach ($this->webspacesConfiguration as $webspaceKey => $webspaceConfig) {
             $webspace = $webspaceCollection->getWebspace($webspaceKey);
 
             if (!$webspace) {
-                throw new \InvalidArgumentException(sprintf('Webspace "%s" not found for "sulu_community" expected one of %s.', $webspaceKey, '"' . implode('", "', $webspaceKeys) . '"'));
+                throw new \InvalidArgumentException(\sprintf('Webspace "%s" not found for "sulu_community" expected one of %s.', $webspaceKey, '"' . \implode('", "', $webspaceKeys) . '"'));
             }
 
             /** @var Security|null $security */
             $security = $webspace->getSecurity();
 
             if (!$security) {
-                throw new \InvalidArgumentException(sprintf('Missing "<security><system>Website</system><security>" configuration in webspace "%s" for "sulu_community".', $webspaceKey));
+                throw new \InvalidArgumentException(\sprintf('Missing "<security><system>Website</system><security>" configuration in webspace "%s" for "sulu_community".', $webspaceKey));
             }
 
             $system = $security->getSystem();
             $systems[$system] = [];
         }
 
-        return array_merge(
+        return \array_merge(
             $systems,
             [
                 'Sulu' => [

@@ -131,7 +131,7 @@ class CompletionListener implements EventSubscriberInterface
 
         $expectedFirewall = $this->config[$webspaceKey][Configuration::FIREWALL] ?? null;
         // TODO find a better way to detect the current firewall
-        $currentFirewall = str_replace(
+        $currentFirewall = \str_replace(
             'security.firewall.map.context.',
             '',
             $request->attributes->get('_firewall_context', '')

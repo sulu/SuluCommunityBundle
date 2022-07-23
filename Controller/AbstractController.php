@@ -128,8 +128,6 @@ abstract class AbstractController extends SymfonyAbstractController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return User
      */
     public function getUser(): ?User
@@ -170,8 +168,6 @@ abstract class AbstractController extends SymfonyAbstractController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param mixed[] $parameters
      */
     public function render(string $view, array $parameters = [], Response $response = null): Response
@@ -184,8 +180,6 @@ abstract class AbstractController extends SymfonyAbstractController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param mixed[] $parameters
      */
     public function renderView(string $view, array $parameters = []): string

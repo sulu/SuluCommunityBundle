@@ -35,7 +35,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
      */
     private $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = $this->createAuthenticatedClient();
@@ -103,7 +103,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $this->assertInstanceOf(User::class, $user);
         $contact = $user->getContact();
 
-        $this->assertEquals($user->getEmail(), $contact->getMainEmail());
+        $this->assertSame($user->getEmail(), $contact->getMainEmail());
 
         return $user;
     }
@@ -132,7 +132,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $user = $this->testConfirm();
 
         $this->assertCount(1, $user->getContact()->getEmails());
-        $this->assertEquals($user->getEmail(), $user->getContact()->getEmails()->first()->getEmail());
+        $this->assertSame($user->getEmail(), $user->getContact()->getEmails()->first()->getEmail());
     }
 
     protected static function getKernelConfiguration(): array

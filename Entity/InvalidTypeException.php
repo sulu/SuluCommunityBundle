@@ -32,7 +32,7 @@ class InvalidTypeException extends \InvalidArgumentException
     public function __construct(array $validTypes, string $type)
     {
         parent::__construct(
-            sprintf('Invalid type "%s" given. Valid types are [%s]', $type, implode(', ', $validTypes)),
+            \sprintf('Invalid type "%s" given. Valid types are [%s]', $type, \implode(', ', $validTypes)),
             10000
         );
 
