@@ -62,13 +62,13 @@ use Symfony\Component\DependencyInjection\Reference;
  *     email_confirmation: TypeConfigProperties,
  * }
  *
- * @phpstan-import-type CommunityConfig from CommunityManagerInterface
+ * @phpstan-import-type Config from CommunityManagerInterface as CommunityConfig
  */
 class CommunityManagerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        /** @var mixed[] $webspacesConfig */
+        /** @var array<string, Config> $webspacesConfig */
         $webspacesConfig = $container->getParameter('sulu_community.webspaces_config');
 
         $references = [];
