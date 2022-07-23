@@ -27,7 +27,7 @@ jobs:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
                     - php-version: '7.4'
-                      lint: true
+                      lint: false
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
                       env:
@@ -35,6 +35,13 @@ jobs:
 
                     - php-version: '8.0'
                       lint: false
+                      dependency-versions: 'highest'
+                      tools: 'composer:v2'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.1'
+                      lint: true
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
                       env:
