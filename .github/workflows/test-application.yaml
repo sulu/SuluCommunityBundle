@@ -60,6 +60,10 @@ jobs:
                   extensions: 'mysql, gd'
                   tools: ${{ matrix.tools }}
 
+            - name: Install and configure PHP
+              if: ${{ matrix.php-version == '7.2' }}
+              run: composer remove php-cs-fixer/shim --no-interaction
+
             - name: Install composer dependencies
               uses: ramsey/composer-install@v1
               with:
