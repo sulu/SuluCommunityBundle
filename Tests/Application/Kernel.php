@@ -21,7 +21,7 @@ class Kernel extends SuluTestKernel
     public function registerBundles(): iterable
     {
         $bundles = parent::registerBundles();
-        $bundles = is_array($bundles) ? $bundles : \iterator_to_array($bundles);
+        $bundles = \is_array($bundles) ? $bundles : \iterator_to_array($bundles);
         $bundles[] = new SuluCommunityBundle();
 
         if (SuluTestKernel::CONTEXT_WEBSITE === $this->getContext()) {
