@@ -67,9 +67,9 @@ jobs:
                   extensions: 'mysql, gd'
                   tools: ${{ matrix.tools }}
 
-            - name: Install and configure PHP
+            - name: Remove php-cs-fixer/shim package
               if: ${{ matrix.php-version == '7.2' }}
-              run: composer remove php-cs-fixer/shim --no-interaction
+              run: composer remove php-cs-fixer/shim --dev --no-interaction
 
             - name: Install composer dependencies
               uses: ramsey/composer-install@v1
