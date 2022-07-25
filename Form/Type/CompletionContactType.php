@@ -22,11 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CompletionContactType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var Contact $contact */
         $contact = $builder->getData();
 
         if (!$contact->getFirstName()) {
@@ -38,9 +36,6 @@ class CompletionContactType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -49,9 +44,6 @@ class CompletionContactType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'contact';

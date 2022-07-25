@@ -25,7 +25,7 @@ class CompletionController extends AbstractController
         getSubscribedServices as getSubscribedServicesOfSaveMediaTrait;
     }
 
-    const TYPE = Configuration::TYPE_COMPLETION;
+    public const TYPE = Configuration::TYPE_COMPLETION;
 
     /**
      * Handle registration form.
@@ -39,6 +39,8 @@ class CompletionController extends AbstractController
         }
 
         $communityManager = $this->getCommunityManager($this->getWebspaceKey());
+
+        $formType = $communityManager->getConfigTypeProperty(self::TYPE, Configuration::FORM_TYPE);
 
         // Create Form
         $form = $this->createForm(
@@ -90,6 +92,6 @@ class CompletionController extends AbstractController
      */
     public static function getSubscribedServices(): array
     {
-        return array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
+        return \array_merge(parent::getSubscribedServices(), self::getSubscribedServicesOfSaveMediaTrait());
     }
 }

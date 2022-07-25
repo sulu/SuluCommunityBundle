@@ -13,11 +13,12 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Entity;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
+use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
 class BlacklistItemRepositoryTest extends SuluTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->purgeDatabase();
     }
@@ -29,6 +30,7 @@ class BlacklistItemRepositoryTest extends SuluTestCase
 
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getEntityManager();
+        /** @var BlacklistItemRepository $repository */
         $repository = $entityManager->getRepository(BlacklistItem::class);
 
         $entityManager->persist($item1);
@@ -36,8 +38,8 @@ class BlacklistItemRepositoryTest extends SuluTestCase
         $entityManager->flush();
         $entityManager->clear();
 
-        $items = array_map(
-            function(BlacklistItem $item) {
+        $items = \array_map(
+            function (BlacklistItem $item) {
                 return ['pattern' => $item->getPattern(), 'type' => $item->getType()];
             },
             $repository->findBySender('test@sulu.io')

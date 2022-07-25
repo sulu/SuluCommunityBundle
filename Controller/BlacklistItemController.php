@@ -81,7 +81,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
      */
     public function fieldsAction(): Response
     {
-        return $this->handleView($this->view(array_values($this->getFieldDescriptors()), 200));
+        return $this->handleView($this->view(\array_values($this->getFieldDescriptors()), 200));
     }
 
     /**
@@ -148,9 +148,9 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
      */
     public function cdeleteAction(Request $request): Response
     {
-        $ids = array_map(function($id) {
+        $ids = \array_map(function ($id) {
             return (int) $id;
-        }, array_filter(explode(',', (string) $request->query->get('ids', ''))));
+        }, \array_filter(\explode(',', (string) $request->query->get('ids', ''))));
 
         $this->blacklistItemManager->delete($ids);
         $this->entityManager->flush();
@@ -222,9 +222,10 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
      */
     private function prepareListResponse(Request $request, ListBuilderInterface $listBuilder, array $fieldDescriptors)
     {
+        /** @var string $idsParameter */
         $idsParameter = $request->get('ids');
-        $ids = array_filter(explode(',', $idsParameter));
-        if (null !== $idsParameter && 0 === count($ids)) {
+        $ids = \array_filter(\explode(',', $idsParameter));
+        if (null !== $idsParameter && 0 === \count($ids)) {
             return [];
         }
 

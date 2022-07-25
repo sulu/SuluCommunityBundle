@@ -22,7 +22,7 @@ class CommunityManagerRegistryTest extends TestCase
         $manager = $this->prophesize(CommunityManager::class);
         $registry = new CommunityManagerRegistry(['sulu_io' => $manager->reveal()]);
 
-        $this->assertEquals($manager->reveal(), $registry->get('sulu_io'));
+        $this->assertSame($manager->reveal(), $registry->get('sulu_io'));
     }
 
     public function testGetNotExists(): void

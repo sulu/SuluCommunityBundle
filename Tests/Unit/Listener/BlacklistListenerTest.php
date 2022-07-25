@@ -14,6 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Listener;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
@@ -27,13 +28,32 @@ use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class BlacklistListenerTest extends TestCase
 {
+    /**
+     * @var ObjectProphecy<BlacklistItemRepository>
+     */
     private $repository;
+
+    /**
+     * @var ObjectProphecy<EntityManagerInterface>
+     */
     private $entityManager;
+
+    /**
+     * @var ObjectProphecy<TokenGeneratorInterface>
+     */
     private $tokenGenerator;
+
+    /**
+     * @var ObjectProphecy<MailFactoryInterface>
+     */
     private $mailFactory;
+
+    /**
+     * @var BlacklistListener
+     */
     private $listener;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->repository = $this->prophesize(BlacklistItemRepository::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
@@ -72,7 +92,7 @@ class BlacklistListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function(BlacklistUser $item) use ($user) {
+                function (BlacklistUser $item) use ($user) {
                     return '123-123-123' === $item->getToken()
                     && 'sulu-io' === $item->getWebspaceKey()
                     && $item->getUser() === $user->reveal();

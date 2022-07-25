@@ -11,11 +11,15 @@
 
 namespace Sulu\Bundle\CommunityBundle\Event;
 
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event for community actions with config and the user which throw the event.
+ *
+ * @phpstan-import-type Config from CommunityManagerInterface
+ * @phpstan-import-type TypeConfigProperties from CommunityManagerInterface
  */
 abstract class AbstractCommunityEvent extends Event
 {
@@ -25,14 +29,14 @@ abstract class AbstractCommunityEvent extends Event
     protected $user;
 
     /**
-     * @var mixed[]
+     * @var Config
      */
     protected $config;
 
     /**
      * CommunityEvent constructor.
      *
-     * @param mixed[] $config
+     * @param Config $config
      */
     public function __construct(User $user, array $config)
     {
@@ -51,7 +55,7 @@ abstract class AbstractCommunityEvent extends Event
     /**
      * Get config.
      *
-     * @return mixed[]
+     * @return Config
      */
     public function getConfig(): array
     {
@@ -61,7 +65,11 @@ abstract class AbstractCommunityEvent extends Event
     /**
      * Get config property.
      *
-     * @return mixed
+     * @template TConfig of string&key-of<Config>
+     *
+     * @param TConfig $property
+     *
+     * @return Config[TTypeConfig]
      */
     public function getConfigProperty(string $property)
     {
@@ -71,7 +79,13 @@ abstract class AbstractCommunityEvent extends Event
     /**
      * Get config type property.
      *
-     * @return mixed
+     * @template TConfig of string&key-of<Config>
+     * @template TTypeConfigProperty of string&key-of<TypeConfigProperties>
+     *
+     * @param TConfig $type
+     * @param TTypeConfigProperty $property
+     *
+     * @return Config[TConfig][TTypeConfigProperty]
      */
     public function getConfigTypeProperty(string $type, string $property)
     {

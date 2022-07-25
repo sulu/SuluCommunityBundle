@@ -5,15 +5,20 @@ includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-phpunit/rules.neon
     - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
+    - phpstan-baseline.neon
 
 parameters:
     paths:
         - .
     level: max
-    excludes_analyse:
+    excludePaths:
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
+        - %currentWorkingDirectory%/Tests/Application/var/*
         - %currentWorkingDirectory%/vendor/*
-        - %currentWorkingDirectory%/Tests/*
     symfony:
         container_xml_path: %currentWorkingDirectory%/Tests/Application/var/cache/admin/dev/Sulu_Bundle_CommunityBundle_Tests_Application_KernelDevDebugContainer.xml
+        console_application_loader: Tests/phpstan/console-application.php
+        constant_hassers: false
     checkGenericClassInNonGenericObjectType: false
+    doctrine:
+        objectManagerLoader: Tests/phpstan/object-manager.php

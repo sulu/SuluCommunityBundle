@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  */
 class LoginController extends AbstractController
 {
-    const TYPE = Configuration::TYPE_LOGIN;
+    public const TYPE = Configuration::TYPE_LOGIN;
 
     /**
      * Show Login page.

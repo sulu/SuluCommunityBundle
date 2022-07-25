@@ -22,7 +22,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class ConfirmationController extends AbstractController
 {
-    const TYPE = Configuration::TYPE_CONFIRMATION;
+    public const TYPE = Configuration::TYPE_CONFIRMATION;
 
     /**
      * Confirm user email address by token.
@@ -49,8 +49,8 @@ class ConfirmationController extends AbstractController
             $redirectTo = $communityManager->getConfigTypeProperty(self::TYPE, Configuration::REDIRECT_TO);
 
             if ($redirectTo) {
-                if (0 === strpos($redirectTo, '/')) {
-                    $url = str_replace('{localization}', $request->getLocale(), $redirectTo);
+                if (0 === \strpos($redirectTo, '/')) {
+                    $url = \str_replace('{localization}', $request->getLocale(), $redirectTo);
                 } else {
                     $url = $this->getRouter()->generate($redirectTo);
                 }

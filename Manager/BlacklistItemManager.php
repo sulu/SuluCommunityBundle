@@ -36,9 +36,6 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
         $this->blacklistItemRepository = $blacklistItemRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function find(int $id): BlacklistItem
     {
         /** @var BlacklistItem $blacklistItem */
@@ -47,9 +44,6 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
         return $blacklistItem;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(): BlacklistItem
     {
         $item = $this->blacklistItemRepository->createNew();
@@ -59,12 +53,9 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
         return $item;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($ids): void
     {
-        if (!is_array($ids)) {
+        if (!\is_array($ids)) {
             $ids = [$ids];
         }
 

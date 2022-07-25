@@ -33,9 +33,6 @@ class Exist extends Constraint
      */
     public $entity = '';
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy()
     {
         return 'exist_validator';

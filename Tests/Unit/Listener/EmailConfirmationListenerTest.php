@@ -14,6 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Listener;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
@@ -27,20 +28,52 @@ use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class EmailConfirmationListenerTest extends TestCase
 {
+    /**
+     * @var ObjectProphecy<MailFactoryInterface>
+     */
     private $mailFactory;
-    private $entityManager;
-    private $repository;
-    private $tokenGenerator;
-    private $listener;
-    private $event;
-    private $user;
-    private $contact;
-    private $token;
 
     /**
-     * {@inheritdoc}
+     * @var ObjectProphecy<EntityManagerInterface>
      */
-    public function setUp(): void
+    private $entityManager;
+
+    /**
+     * @var ObjectProphecy<EmailConfirmationTokenRepository>
+     */
+    private $repository;
+
+    /**
+     * @var ObjectProphecy<TokenGeneratorInterface>
+     */
+    private $tokenGenerator;
+
+    /**
+     * @var EmailConfirmationListener
+     */
+    private $listener;
+
+    /**
+     * @var ObjectProphecy<UserProfileSavedEvent>
+     */
+    private $event;
+
+    /**
+     * @var ObjectProphecy<User>
+     */
+    private $user;
+
+    /**
+     * @var ObjectProphecy<Contact>
+     */
+    private $contact;
+
+    /**
+     * @var ObjectProphecy<EmailConfirmationToken>
+     */
+    private $token;
+
+    protected function setUp(): void
     {
         $this->mailFactory = $this->prophesize(MailFactoryInterface::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
@@ -81,7 +114,7 @@ class EmailConfirmationListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function(EmailConfirmationToken $token) {
+                function (EmailConfirmationToken $token) {
                     return '123-123-123' === $token->getToken() && $token->getUser() === $this->user->reveal();
                 }
             )

@@ -18,12 +18,10 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends SuluTestKernel
 {
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles(): iterable
     {
         $bundles = parent::registerBundles();
+        $bundles = \is_array($bundles) ? $bundles : \iterator_to_array($bundles);
         $bundles[] = new SuluCommunityBundle();
 
         if (SuluTestKernel::CONTEXT_WEBSITE === $this->getContext()) {
@@ -33,22 +31,24 @@ class Kernel extends SuluTestKernel
         return $bundles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         parent::registerContainerConfiguration($loader);
 
         $loader->load(__DIR__ . '/config/config_' . $this->getContext() . '.yml');
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getKernelParameters(): array
     {
         $parameters = parent::getKernelParameters();
 
         $gedmoReflection = new \ReflectionClass(\Gedmo\Exception::class);
-        $parameters['gedmo_directory'] = \dirname($gedmoReflection->getFileName());
+        /** @var string $fileName */
+        $fileName = $gedmoReflection->getFileName();
+        $parameters['gedmo_directory'] = \dirname($fileName);
 
         return $parameters;
     }

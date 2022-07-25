@@ -27,7 +27,7 @@ jobs:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
                     - php-version: '7.4'
-                      lint: true
+                      lint: false
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
                       env:
@@ -35,6 +35,13 @@ jobs:
 
                     - php-version: '8.0'
                       lint: false
+                      dependency-versions: 'highest'
+                      tools: 'composer:v2'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.1'
+                      lint: true
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
                       env:
@@ -59,6 +66,10 @@ jobs:
                   php-version: ${{ matrix.php-version }}
                   extensions: 'mysql, gd'
                   tools: ${{ matrix.tools }}
+
+            - name: Remove php-cs-fixer/shim package
+              if: ${{ matrix.php-version == '7.2' }}
+              run: composer remove php-cs-fixer/shim --dev --no-interaction
 
             - name: Install composer dependencies
               uses: ramsey/composer-install@v1

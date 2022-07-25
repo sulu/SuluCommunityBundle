@@ -23,9 +23,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PasswordResetType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -39,9 +36,6 @@ class PasswordResetType extends AbstractType
         $builder->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

@@ -18,9 +18,9 @@ use Sulu\Component\Security\Authentication\UserInterface;
  */
 class BlacklistUser
 {
-    const TYPE_NEW = 0;
-    const TYPE_CONFIRMED = 1;
-    const TYPE_DENIED = 2;
+    public const TYPE_NEW = 0;
+    public const TYPE_CONFIRMED = 1;
+    public const TYPE_DENIED = 2;
 
     /**
      * @var int

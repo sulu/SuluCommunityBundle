@@ -106,7 +106,7 @@ class BlacklistListener implements EventSubscriberInterface
     {
         $items = $this->blacklistItemRepository->findBySender($email);
 
-        if (0 === count($items)) {
+        if (0 === \count($items)) {
             return null;
         }
 

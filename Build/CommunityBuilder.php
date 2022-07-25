@@ -19,17 +19,12 @@ use Sulu\Bundle\CoreBundle\Build\SuluBuilder;
  */
 class CommunityBuilder extends SuluBuilder
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'community';
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return string[]
      */
     public function getDependencies(): array

@@ -24,11 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CompletionType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var User $user */
         $user = $builder->getData();
 
         if (!$user->getUsername()) {
@@ -54,9 +52,6 @@ class CompletionType extends AbstractType
         $builder->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

@@ -20,17 +20,17 @@ class BlacklistItemTest extends TestCase
     public function testConstructor(): void
     {
         $item = new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_REQUEST);
-        $this->assertEquals('*@sulu.io', $item->getPattern());
-        $this->assertEquals('[^@]*@sulu\.io', $item->getRegexp());
-        $this->assertEquals(BlacklistItem::TYPE_REQUEST, $item->getType());
+        $this->assertSame('*@sulu.io', $item->getPattern());
+        $this->assertSame('[^@]*@sulu\.io', $item->getRegexp());
+        $this->assertSame(BlacklistItem::TYPE_REQUEST, $item->getType());
     }
 
     public function testEmptyConstructor(): void
     {
         $item = new BlacklistItem();
-        $this->assertEquals(null, $item->getPattern());
-        $this->assertEquals(null, $item->getRegexp());
-        $this->assertEquals(null, $item->getType());
+        $this->assertNull($item->getPattern());
+        $this->assertNull($item->getRegexp());
+        $this->assertNull($item->getType());
     }
 
     public function testSetPattern(): void
@@ -38,8 +38,8 @@ class BlacklistItemTest extends TestCase
         $item = new BlacklistItem();
         $item->setPattern('*@sulu.io');
 
-        $this->assertEquals('*@sulu.io', $item->getPattern());
-        $this->assertEquals('[^@]*@sulu\.io', $item->getRegexp());
+        $this->assertSame('*@sulu.io', $item->getPattern());
+        $this->assertSame('[^@]*@sulu\.io', $item->getRegexp());
     }
 
     public function testSetPatternNoWildcard(): void
@@ -47,8 +47,8 @@ class BlacklistItemTest extends TestCase
         $item = new BlacklistItem();
         $item->setPattern('test@sulu.io');
 
-        $this->assertEquals('test@sulu.io', $item->getPattern());
-        $this->assertEquals('test@sulu\.io', $item->getRegexp());
+        $this->assertSame('test@sulu.io', $item->getPattern());
+        $this->assertSame('test@sulu\.io', $item->getRegexp());
     }
 
     public function testSetTypeRequest(): void
@@ -56,7 +56,7 @@ class BlacklistItemTest extends TestCase
         $item = new BlacklistItem();
         $item->setType(BlacklistItem::TYPE_REQUEST);
 
-        $this->assertEquals(BlacklistItem::TYPE_REQUEST, $item->getType());
+        $this->assertSame(BlacklistItem::TYPE_REQUEST, $item->getType());
     }
 
     public function testSetTypeBlock(): void
@@ -64,7 +64,7 @@ class BlacklistItemTest extends TestCase
         $item = new BlacklistItem();
         $item->setType(BlacklistItem::TYPE_BLOCK);
 
-        $this->assertEquals(BlacklistItem::TYPE_BLOCK, $item->getType());
+        $this->assertSame(BlacklistItem::TYPE_BLOCK, $item->getType());
     }
 
     public function testSetTypeBlockInvalid(): void

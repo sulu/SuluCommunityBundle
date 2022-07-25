@@ -27,9 +27,6 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
 {
     use PersistenceExtensionTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -57,9 +54,6 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepend(ContainerBuilder $container): void
     {
         if ($container->hasExtension('sulu_admin')) {

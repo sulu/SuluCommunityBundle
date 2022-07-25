@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
+use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,15 +20,55 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Create foreach configured webspace a community manager.
+ *
+ * @phpstan-type TypeConfigProperties array{
+ *      enabled: bool,
+ *      template: string,
+ *      service: string|null,
+ *      embed_template: string,
+ *      type: string,
+ *      options: mixed[],
+ *      activate_user: bool,
+ *      auto_login: bool,
+ *      redirect_to: string|null,
+ *      email: array{
+ *          subject: string,
+ *          admin_template: string|null,
+ *          user_template: string|null,
+ *      },
+ *      delete_user: bool,
+ * }
+ *
+ * @phpstan-type Config array{
+ *     from: string|string[],
+ *     to: string|string[],
+ *     webspace_key: string,
+ *     role: string|null,
+ *     firewall: string|null,
+ *     maintenance: array{
+ *         enabled: bool,
+ *         template: string,
+ *     },
+ *     login: TypeConfigProperties,
+ *     registration: TypeConfigProperties,
+ *     completion: TypeConfigProperties,
+ *     confirmation: TypeConfigProperties,
+ *     password_forget: TypeConfigProperties,
+ *     password_reset: TypeConfigProperties,
+ *     profile: TypeConfigProperties,
+ *     blacklisted: TypeConfigProperties,
+ *     blacklist_confirmed: TypeConfigProperties,
+ *     blacklist_denied: TypeConfigProperties,
+ *     email_confirmation: TypeConfigProperties,
+ * }
+ *
+ * @phpstan-import-type Config from CommunityManagerInterface as CommunityConfig
  */
 class CommunityManagerCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
-        /** @var mixed[] $webspacesConfig */
+        /** @var array<string, Config> $webspacesConfig */
         $webspacesConfig = $container->getParameter('sulu_community.webspaces_config');
 
         $references = [];
@@ -39,14 +80,14 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
             $definition->replaceArgument(0, $webspaceConfig);
             $definition->replaceArgument(1, $webspaceKey);
 
-            $id = sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey));
+            $id = \sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey));
             $references[$webspaceKey] = new Reference($id);
             $container->setDefinition($id, $definition);
 
-            if (false !== strpos($webspaceKey, '-')) {
+            if (false !== \strpos($webspaceKey, '-')) {
                 $container->setAlias(
-                    sprintf('sulu_community.%s.community_manager', $webspaceKey),
-                    sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey))
+                    \sprintf('sulu_community.%s.community_manager', $webspaceKey),
+                    \sprintf('sulu_community.%s.community_manager', Normalizer::normalize($webspaceKey))
                 );
             }
         }
@@ -58,9 +99,9 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
     /**
      * Update webspace config.
      *
-     * @param mixed[] $webspaceConfig
+     * @param Config $webspaceConfig
      *
-     * @return mixed[]
+     * @return CommunityConfig
      */
     private function updateWebspaceConfig(
         ContainerBuilder $container,
@@ -77,7 +118,7 @@ class CommunityManagerCompilerPass implements CompilerPassInterface
 
         // Set role by webspace key
         if (null === $webspaceConfig[Configuration::ROLE]) {
-            $webspaceConfig[Configuration::ROLE] = ucfirst($webspaceKey) . 'User';
+            $webspaceConfig[Configuration::ROLE] = \ucfirst($webspaceKey) . 'User';
         }
 
         // Set email from

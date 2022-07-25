@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AssignedGenerator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
+use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
@@ -35,7 +36,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
      */
     private $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = $this->createAuthenticatedClient();
@@ -103,7 +104,7 @@ class EmailConfirmationControllerTest extends SuluTestCase
         $this->assertInstanceOf(User::class, $user);
         $contact = $user->getContact();
 
-        $this->assertEquals($user->getEmail(), $contact->getMainEmail());
+        $this->assertSame($user->getEmail(), $contact->getMainEmail());
 
         return $user;
     }
@@ -119,22 +120,36 @@ class EmailConfirmationControllerTest extends SuluTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getEntityManager();
 
-        $this->assertNotNull($entityManager->getRepository(EmailConfirmationToken::class)->findByToken('123-123-123'));
+        /** @var EmailConfirmationTokenRepository $respository */
+        $respository = $entityManager->getRepository(EmailConfirmationToken::class);
+
+        $this->assertNotNull($respository->findByToken('123-123-123'));
     }
 
     public function testConfirmWithoutEmail(): void
     {
-        $this->getEntityManager()->remove($this->user->getContact()->getEmails()->first());
+        /** @var Contact $contact */
+        $contact = $this->user->getContact();
+        /** @var Email $email */
+        $email = $contact->getEmails()->first();
+        $this->getEntityManager()->remove($email);
         $this->user->getContact()->getEmails()->clear();
         $this->getEntityManager()->flush();
 
         /** @var User $user */
         $user = $this->testConfirm();
 
-        $this->assertCount(1, $user->getContact()->getEmails());
-        $this->assertEquals($user->getEmail(), $user->getContact()->getEmails()->first()->getEmail());
+        $this->assertCount(1, $contact->getEmails());
+        /** @var Email $email */
+        $email = $contact->getEmails()->first();
+        $this->assertSame($user->getEmail(), $email->getEmail());
     }
 
+    /**
+     * @return array{
+     *     'sulu.context': SuluKernel::CONTEXT_WEBSITE,
+     * }
+     */
     protected static function getKernelConfiguration(): array
     {
         return [

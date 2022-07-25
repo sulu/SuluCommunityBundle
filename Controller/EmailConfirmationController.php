@@ -12,7 +12,6 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationTokenRepository;
 use Sulu\Bundle\ContactBundle\Entity\Email;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
@@ -25,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EmailConfirmationController extends AbstractController
 {
-    const TYPE = Configuration::TYPE_EMAIL_CONFIRMATION;
+    public const TYPE = Configuration::TYPE_EMAIL_CONFIRMATION;
 
     /**
      * Overwrite user email with contact email.
@@ -36,15 +35,16 @@ class EmailConfirmationController extends AbstractController
         $repository = $this->getEmailConfirmationTokenRepository();
 
         $success = false;
-        /** @var EmailConfirmationToken $token */
-        $token = $repository->findByToken($request->get('token'));
+        /** @var string $token */
+        $token = $request->get('token');
+        $token = $repository->findByToken($token);
 
         if (null !== $token) {
             /** @var User $user */
             $user = $token->getUser();
             $user->setEmail($user->getContact()->getMainEmail());
             $userContact = $user->getContact();
-            if (0 === count($userContact->getEmails())) {
+            if (0 === \count($userContact->getEmails())) {
                 /** @var EmailType $emailType */
                 $emailType = $entityManager->getReference(EmailType::class, 1);
 

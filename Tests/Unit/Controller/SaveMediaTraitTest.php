@@ -31,17 +31,17 @@ class SaveMediaTraitTest extends TestCase
     }
 
     /**
-     * @var ObjectProphecy|MediaManagerInterface
+     * @var ObjectProphecy<MediaManagerInterface>
      */
     private $mediaManager;
 
     /**
-     * @var ObjectProphecy|SystemCollectionManagerInterface
+     * @var ObjectProphecy<SystemCollectionManagerInterface>
      */
     private $systemCollectionManager;
 
     /**
-     * @var ObjectProphecy|User
+     * @var ObjectProphecy<User>
      */
     private $user;
 
@@ -51,17 +51,17 @@ class SaveMediaTraitTest extends TestCase
     private $locale;
 
     /**
-     * @var ObjectProphecy|FormInterface
+     * @var ObjectProphecy<FormInterface>
      */
     private $form;
 
     /**
-     * @var ObjectProphecy|FormInterface
+     * @var ObjectProphecy<FormInterface>
      */
     private $avatarForm;
 
     /**
-     * @var ObjectProphecy|FormInterface
+     * @var ObjectProphecy<FormInterface>
      */
     private $mediasForm;
 
@@ -71,17 +71,17 @@ class SaveMediaTraitTest extends TestCase
     private $tempFilePaths = [];
 
     /**
-     * @var ObjectProphecy|Contact
+     * @var ObjectProphecy<Contact>
      */
     private $contact;
 
     /**
-     * @var ObjectProphecy|Media
+     * @var ObjectProphecy<Media>
      */
     private $media;
 
     /**
-     * @var ObjectProphecy|ApiMedia
+     * @var ObjectProphecy<ApiMedia>
      */
     private $apiMedia;
 
@@ -105,7 +105,7 @@ class SaveMediaTraitTest extends TestCase
     protected function tearDown(): void
     {
         foreach ($this->tempFilePaths as $tempFilePath) {
-            unlink($tempFilePath);
+            \unlink($tempFilePath);
         }
     }
 
@@ -302,10 +302,10 @@ class SaveMediaTraitTest extends TestCase
 
     private function createTempnam(): string
     {
-        $filename = tempnam(sys_get_temp_dir(), 'sulu_community_test_media');
+        $filename = \tempnam(\sys_get_temp_dir(), 'sulu_community_test_media');
 
         if (false === $filename) {
-            throw new \RuntimeException('Could not create tempnam in: ' . sys_get_temp_dir());
+            throw new \RuntimeException('Could not create tempnam in: ' . \sys_get_temp_dir());
         }
 
         $this->tempFilePaths[] = $filename;

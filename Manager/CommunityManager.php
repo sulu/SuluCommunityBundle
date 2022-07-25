@@ -33,11 +33,14 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 /**
  * Handles registration, confirmation, password reset and forget.
+ *
+ * @phpstan-import-type Config from CommunityManagerInterface
+ * @phpstan-import-type TypeConfigProperties from CommunityManagerInterface
  */
 class CommunityManager implements CommunityManagerInterface
 {
     /**
-     * @var mixed[]
+     * @var Config
      */
     protected $config;
 
@@ -82,7 +85,7 @@ class CommunityManager implements CommunityManagerInterface
     protected $mailFactory;
 
     /**
-     * @param mixed[] $config
+     * @param Config $config
      */
     public function __construct(
         array $config,
@@ -100,17 +103,11 @@ class CommunityManager implements CommunityManagerInterface
         $this->mailFactory = $mailFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getWebspaceKey(): string
     {
         return $this->webspaceKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function register(User $user): User
     {
         /** @var string|null $userLocale */
@@ -139,9 +136,6 @@ class CommunityManager implements CommunityManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function completion(User $user): User
     {
         // Event
@@ -151,9 +145,6 @@ class CommunityManager implements CommunityManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function login(User $user, Request $request): void
     {
         if (!$user->getEnabled()) {
@@ -173,9 +164,6 @@ class CommunityManager implements CommunityManagerInterface
         $this->eventDispatcher->dispatch($event, SecurityEvents::INTERACTIVE_LOGIN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function confirm(string $token): ?User
     {
         $user = $this->userManager->findByConfirmationKey($token);
@@ -195,9 +183,6 @@ class CommunityManager implements CommunityManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function passwordForget(string $emailUsername): ?User
     {
         $user = $this->userManager->findUser($emailUsername);
@@ -220,9 +205,6 @@ class CommunityManager implements CommunityManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function passwordReset(User $user): User
     {
         $user->setPasswordResetTokenExpiresAt(null);
@@ -236,9 +218,6 @@ class CommunityManager implements CommunityManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendEmails(string $type, User $user): void
     {
         $this->mailFactory->sendEmails(
@@ -251,9 +230,6 @@ class CommunityManager implements CommunityManagerInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function saveProfile(User $user): ?User
     {
         $this->userManager->updateUser($user);
@@ -265,33 +241,24 @@ class CommunityManager implements CommunityManagerInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfig(): array
     {
         return $this->config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigProperty(string $property)
     {
-        if (!array_key_exists($property, $this->config)) {
-            throw new \InvalidArgumentException(sprintf('Property "%s" not found for webspace "%s" in Community Manager.', $property, $this->webspaceKey));
+        if (!\array_key_exists($property, $this->config)) {
+            throw new \InvalidArgumentException(\sprintf('Property "%s" not found for webspace "%s" in Community Manager.', $property, $this->webspaceKey));
         }
 
         return $this->config[$property];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTypeProperty(string $type, string $property)
     {
-        if (!array_key_exists($type, $this->config) || !array_key_exists($property, $this->config[$type])) {
-            throw new \InvalidArgumentException(sprintf('Property "%s" from type "%s" not found for webspace "%s" in Community Manager.', $property, $type, $this->webspaceKey));
+        if (!\array_key_exists($type, $this->config) || !\array_key_exists($property, $this->config[$type])) {
+            throw new \InvalidArgumentException(\sprintf('Property "%s" from type "%s" not found for webspace "%s" in Community Manager.', $property, $type, $this->webspaceKey));
         }
 
         return $this->config[$type][$property];

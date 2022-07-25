@@ -32,7 +32,7 @@ class BlockedValidator extends ConstraintValidator
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $value
      */
     public function validate($value, Constraint $constraint): void
     {

@@ -29,9 +29,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class RegistrationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('username', TextType::class);
@@ -70,16 +67,13 @@ class RegistrationType extends AbstractType
         $builder->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
                 'data_class' => User::class,
                 'validation_groups' => ['registration'],
-                'empty_data' => function(FormInterface $form) {
+                'empty_data' => function (FormInterface $form) {
                     $user = new User();
                     $user->setContact(new Contact());
 

@@ -31,7 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InitCommand extends Command
 {
-    const NAME = 'sulu:community:init';
+    public const NAME = 'sulu:community:init';
 
     /**
      * @var EntityManagerInterface
@@ -66,18 +66,12 @@ class InitCommand extends Command
         parent::__construct(self::NAME);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(): void
     {
         $this->setDescription('Create the user roles for the community.')
             ->addArgument('webspace', null, 'A specific webspace key.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var string|null $webspaceKey */
@@ -87,7 +81,7 @@ class InitCommand extends Command
             $webspace = $this->webspaceManager->findWebspaceByKey($webspaceKey);
 
             if (!$webspace) {
-                throw new \InvalidArgumentException(sprintf('Given webspace "%s" is invalid', $webspaceKey));
+                throw new \InvalidArgumentException(\sprintf('Given webspace "%s" is invalid', $webspaceKey));
             }
 
             $this->initWebspace($webspace, $output);
@@ -122,12 +116,13 @@ class InitCommand extends Command
         }
 
         $communityManager = $this->communityManagerRegistry->get($webspaceKey);
+        /** @var string $roleName */
         $roleName = $communityManager->getConfigProperty(Configuration::ROLE);
         $system = $security->getSystem();
 
         // Create role if not exists
         $output->writeln(
-            sprintf(
+            \sprintf(
                 $this->createRoleIfNotExists($roleName, $system, $webspaceKey),
                 $roleName,
                 $system
@@ -203,7 +198,7 @@ class InitCommand extends Command
                 }
             }
 
-            if (0 === strpos($securityContext, 'sulu.webspaces.')
+            if (0 === \strpos($securityContext, 'sulu.webspaces.')
                 && $webspaceSecurityContext !== $securityContext
             ) {
                 // Do not add permissions for other webspaces

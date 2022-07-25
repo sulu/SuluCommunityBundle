@@ -30,7 +30,7 @@ class ProfileControllerTest extends SuluTestCase
      */
     private $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = $this->createAuthenticatedClient();
@@ -43,14 +43,14 @@ class ProfileControllerTest extends SuluTestCase
         $addressType->setName('Home');
         $addressType->setId(1);
 
-        $metadata = $entityManager->getClassMetadata(get_class($addressType));
+        $metadata = $entityManager->getClassMetadata(\get_class($addressType));
         $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $emailType = new EmailType();
         $emailType->setName('work');
         $emailType->setId(1);
 
-        $metadata = $entityManager->getClassMetadata(get_class($emailType));
+        $metadata = $entityManager->getClassMetadata(\get_class($emailType));
         $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
 
         $entityManager->persist($addressType);
@@ -107,7 +107,7 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertCount(1, $crawler->filter('#profile_countryCode'));
         $this->assertCount(1, $crawler->filter('#profile_note'));
 
-        $form = $crawler->selectButton('profile[submit]')->form(array_merge(
+        $form = $crawler->selectButton('profile[submit]')->form(\array_merge(
             $data,
             [
                 'profile[_token]' => $crawler->filter('#profile__token')->first()->attr('value'),
@@ -124,6 +124,7 @@ class ProfileControllerTest extends SuluTestCase
         /** @var UserRepository $repository */
         $repository = $this->getEntityManager()->getRepository(User::class);
 
+        /** @var User */
         return $repository->findOneBy(['username' => 'test']);
     }
 
@@ -135,21 +136,23 @@ class ProfileControllerTest extends SuluTestCase
             'profile[lastName]' => 'Sulu',
             'profile[mainEmail]' => 'sulu@example.org',
             'profile[street]' => 'Rathausstraße',
-            'profile[number]' => 16,
-            'profile[zip]' => 12351,
+            'profile[number]' => '16',
+            'profile[zip]' => '12351',
             'profile[city]' => 'USS Excelsior',
             'profile[countryCode]' => 'AT',
             'profile[note]' => 'Test',
         ]);
 
-        $this->assertEquals(0, $user->getContact()->getFormOfAddress());
-        $this->assertEquals('Hikaru Sulu', $user->getFullname());
-        $this->assertEquals('Rathausstraße', $user->getContact()->getMainAddress()->getStreet());
-        $this->assertEquals('USS Excelsior', $user->getContact()->getMainAddress()->getCity());
-        $this->assertEquals(16, $user->getContact()->getMainAddress()->getNumber());
-        $this->assertEquals(12351, $user->getContact()->getMainAddress()->getZip());
-        $this->assertEquals('AT', $user->getContact()->getMainAddress()->getCountryCode());
-        $this->assertEquals('Test', $user->getContact()->getNote());
+        $this->assertSame(0, $user->getContact()->getFormOfAddress());
+        $this->assertSame('Hikaru Sulu', $user->getFullname());
+        $mainAddress = $user->getContact()->getMainAddress();
+        $this->assertNotNull($mainAddress);
+        $this->assertSame('Rathausstraße', $mainAddress->getStreet());
+        $this->assertSame('USS Excelsior', $mainAddress->getCity());
+        $this->assertSame('16', $mainAddress->getNumber());
+        $this->assertSame('12351', $mainAddress->getZip());
+        $this->assertSame('AT', $mainAddress->getCountryCode());
+        $this->assertSame('Test', $user->getContact()->getNote());
     }
 
     public function testProfileWithoutNote(): void
@@ -160,8 +163,8 @@ class ProfileControllerTest extends SuluTestCase
             'profile[lastName]' => 'Sulu',
             'profile[mainEmail]' => 'sulu@example.org',
             'profile[street]' => 'Rathausstraße',
-            'profile[number]' => 16,
-            'profile[zip]' => 12351,
+            'profile[number]' => '16',
+            'profile[zip]' => '12351',
             'profile[city]' => 'USS Excelsior',
             'profile[countryCode]' => 'AT',
         ]);
@@ -169,6 +172,11 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertNull($user->getContact()->getNote());
     }
 
+    /**
+     * @return array{
+     *     'sulu.context': SuluKernel::CONTEXT_WEBSITE,
+     * }
+     */
     protected static function getKernelConfiguration(): array
     {
         return [

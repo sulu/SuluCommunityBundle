@@ -34,7 +34,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 abstract class AbstractController extends SymfonyAbstractController
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $webspaceKey;
 
@@ -52,7 +52,7 @@ abstract class AbstractController extends SymfonyAbstractController
     protected function getWebspaceKey(): string
     {
         if (null === $this->webspaceKey) {
-            return $this->getRequestAnalyzer()->getWebspace()->getKey();
+            $this->webspaceKey = $this->getRequestAnalyzer()->getWebspace()->getKey();
         }
 
         return $this->webspaceKey;
@@ -63,6 +63,7 @@ abstract class AbstractController extends SymfonyAbstractController
      */
     protected function setUserPasswordAndSalt(User $user, FormInterface $form): User
     {
+        /** @var string|null $plainPassword */
         $plainPassword = $form->get('plainPassword')->getData();
         if (null === $plainPassword) {
             return $user;
@@ -85,6 +86,7 @@ abstract class AbstractController extends SymfonyAbstractController
      */
     protected function checkAutoLogin(string $type): bool
     {
+        /** @var bool */
         return $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(
             $type,
             Configuration::AUTO_LOGIN
@@ -98,11 +100,14 @@ abstract class AbstractController extends SymfonyAbstractController
      */
     protected function renderTemplate(string $type, array $data = []): Response
     {
+        /** @var string $template */
+        $template = $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(
+            $type,
+            Configuration::TEMPLATE
+        );
+
         return $this->render(
-            $this->getCommunityManager($this->getWebspaceKey())->getConfigTypeProperty(
-                $type,
-                Configuration::TEMPLATE
-            ),
+            $template,
             $data
         );
     }
@@ -128,8 +133,6 @@ abstract class AbstractController extends SymfonyAbstractController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return User
      */
     public function getUser(): ?User
@@ -170,8 +173,6 @@ abstract class AbstractController extends SymfonyAbstractController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param mixed[] $parameters
      */
     public function render(string $view, array $parameters = [], Response $response = null): Response
@@ -184,8 +185,6 @@ abstract class AbstractController extends SymfonyAbstractController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param mixed[] $parameters
      */
     public function renderView(string $view, array $parameters = []): string

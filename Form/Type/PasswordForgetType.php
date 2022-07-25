@@ -24,9 +24,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PasswordForgetType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('email_username', TextType::class, [
@@ -40,9 +37,6 @@ class PasswordForgetType extends AbstractType
         $builder->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
