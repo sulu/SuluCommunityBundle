@@ -1,4 +1,4 @@
-# Blacklisting
+# RegistrationRuleing
 
 ## Config
 
@@ -10,21 +10,21 @@ sulu_community:
         <webspace_key>: # Replace <webspace_key> with the key of your webspace
             blacklisted:
                 email:
-                    subject: Blacklisted
-                    admin_template: community/blacklist-email.html.twig
+                    subject: RegistrationRuleed
+                    admin_template: community/registration-rule-email.html.twig
                     user_template: ~
             blacklist_denied:
                 email:
                     subject: Denied
                     admin_template: ~
                     user_template: ~
-                template: community/blacklist-denied.html.twig
+                template: community/registration-rule-denied.html.twig
             blacklist_confirmed:
                 email:
                     subject: Registration
                     admin_template: ~
                     user_template: community/registration-email.html.twig
-                template: community/blacklist-confirmed.html.twig
+                template: community/registration-rule-confirmed.html.twig
 ```
 
 ## Backend Config
@@ -32,7 +32,7 @@ sulu_community:
 To enable the blacklisting feature add the permissions for blacklisting to your role.  
 For this go to `Settings -> Roles -> YourRole` in the sulu backend and add the permissions.  
   
-When you successfully enabled it email addresses can be set to `block` or on `request` under `Settings -> Blacklist`. 
+When you successfully enabled it email addresses can be set to `block` or on `request` under `Settings -> RegistrationRule`. 
 It is possible to use wildcards e.g. `*@test.com` to set the state for a whole domain.
 
 ## blacklist.email
@@ -42,7 +42,7 @@ The admin of the page will receive the blacklisted email when a user email addre
 **Example Template**:
 
 ```twig
-{# community/blacklist-email.html.twig #}
+{# community/registration-rule-email.html.twig #}
 
 {% extends 'base-email.html.twig' %}
 
@@ -64,7 +64,7 @@ When the admin clicks on the link a template is rendered which can show specific
 **Example Template**:
 
 ```twig
-{# community/blacklist-denied.html.twig / community/blacklist-confirmed.html.twig #}
+{# community/registration-rule-denied.html.twig / community/registration-rule-confirmed.html.twig #}
 
 {% extends 'base.html.twig' %}
 

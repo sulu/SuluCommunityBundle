@@ -11,10 +11,10 @@
 
 namespace Sulu\Bundle\CommunityBundle\DependencyInjection;
 
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleUser;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleUserRepository;
 use Sulu\Bundle\CommunityBundle\Form\Type\CompletionType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordForgetType;
 use Sulu\Bundle\CommunityBundle\Form\Type\PasswordResetType;
@@ -51,9 +51,9 @@ class Configuration implements ConfigurationInterface
     public const TYPE_CONFIRMATION = 'confirmation';
     public const TYPE_PASSWORD_FORGET = 'password_forget';
     public const TYPE_PASSWORD_RESET = 'password_reset';
-    public const TYPE_BLACKLISTED = 'blacklisted';
-    public const TYPE_BLACKLIST_CONFIRMED = 'blacklist_confirmed';
-    public const TYPE_BLACKLIST_DENIED = 'blacklist_denied';
+    public const TYPE_REGISTRATION_RULEED = 'blacklisted';
+    public const TYPE_REGISTRATION_RULE_CONFIRMED = 'blacklist_confirmed';
+    public const TYPE_REGISTRATION_RULE_DENIED = 'blacklist_denied';
     public const TYPE_PROFILE = 'profile';
     public const TYPE_EMAIL_CONFIRMATION = 'email_confirmation';
 
@@ -64,9 +64,9 @@ class Configuration implements ConfigurationInterface
         self::TYPE_REGISTRATION,
         self::TYPE_PASSWORD_FORGET,
         self::TYPE_PASSWORD_RESET,
-        self::TYPE_BLACKLISTED,
-        self::TYPE_BLACKLIST_CONFIRMED,
-        self::TYPE_BLACKLIST_DENIED,
+        self::TYPE_REGISTRATION_RULEED,
+        self::TYPE_REGISTRATION_RULE_CONFIRMED,
+        self::TYPE_REGISTRATION_RULE_DENIED,
         self::TYPE_PROFILE,
         self::TYPE_EMAIL_CONFIRMATION,
     ];
@@ -101,18 +101,18 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('objects')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('blacklist_item')
+                        ->arrayNode('registration_rule_item')
                             ->addDefaultsIfNotSet()
                             ->children()
-                                ->scalarNode('model')->defaultValue(BlacklistItem::class)->end()
-                                ->scalarNode('repository')->defaultValue(BlacklistItemRepository::class)->end()
+                                ->scalarNode('model')->defaultValue(RegistrationRuleItem::class)->end()
+                                ->scalarNode('repository')->defaultValue(RegistrationRuleItemRepository::class)->end()
                             ->end()
                         ->end()
-                        ->arrayNode('blacklist_user')
+                        ->arrayNode('registration_rule_user')
                             ->addDefaultsIfNotSet()
                             ->children()
-                                ->scalarNode('model')->defaultValue(BlacklistUser::class)->end()
-                                ->scalarNode('repository')->defaultValue(BlacklistUserRepository::class)->end()
+                                ->scalarNode('model')->defaultValue(RegistrationRuleUser::class)->end()
+                                ->scalarNode('repository')->defaultValue(RegistrationRuleUserRepository::class)->end()
                             ->end()
                         ->end()
                     ->end()
@@ -256,27 +256,27 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            // Blacklisted
-                            ->arrayNode(self::TYPE_BLACKLISTED)
+                            // RegistrationRuleed
+                            ->arrayNode(self::TYPE_REGISTRATION_RULEED)
                                 ->addDefaultsIfNotSet()
                                 ->children()
-                                    // Blacklisted configuration
+                                    // RegistrationRuleed configuration
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()
-                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Blacklisted')->end()
-                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue('@SuluCommunity/blacklist-email.html.twig')->end()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('RegistrationRuleed')->end()
+                                            ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue('@SuluCommunity/registration-rule-email.html.twig')->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
                                         ->end()
                                     ->end()
                                 ->end()
                             ->end()
-                            // Blacklist denied
-                            ->arrayNode(self::TYPE_BLACKLIST_DENIED)
+                            // RegistrationRule denied
+                            ->arrayNode(self::TYPE_REGISTRATION_RULE_DENIED)
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Denied configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('@SuluCommunity/blacklist-denied.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('@SuluCommunity/registration-rule-denied.html.twig')->end()
                                     ->scalarNode(self::DELETE_USER)->defaultTrue()->end()
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
@@ -288,12 +288,12 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            // Blacklist confirmed
-                            ->arrayNode(self::TYPE_BLACKLIST_CONFIRMED)
+                            // RegistrationRule confirmed
+                            ->arrayNode(self::TYPE_REGISTRATION_RULE_CONFIRMED)
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     // Confirmed configuration
-                                    ->scalarNode(self::TEMPLATE)->defaultValue('@SuluCommunity/blacklist-confirmed.html.twig')->end()
+                                    ->scalarNode(self::TEMPLATE)->defaultValue('@SuluCommunity/registration-rule-confirmed.html.twig')->end()
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()

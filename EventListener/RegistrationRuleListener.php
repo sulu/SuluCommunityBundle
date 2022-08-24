@@ -13,9 +13,9 @@ namespace Sulu\Bundle\CommunityBundle\EventListener;
 
 use Doctrine\Persistence\ObjectManager;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleUser;
 use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
@@ -25,12 +25,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Interrupts registration to avoid register request-type emails.
  */
-class BlacklistListener implements EventSubscriberInterface
+class RegistrationRuleListener implements EventSubscriberInterface
 {
     /**
-     * @var BlacklistItemRepository
+     * @var RegistrationRuleItemRepository
      */
-    private $blacklistItemRepository;
+    private $registrationRuleRepository;
 
     /**
      * @var ObjectManager
@@ -48,12 +48,12 @@ class BlacklistListener implements EventSubscriberInterface
     private $mailFactory;
 
     public function __construct(
-        BlacklistItemRepository $blacklistItemRepository,
+        RegistrationRuleItemRepository $registrationRuleRepository,
         ObjectManager $objectManager,
         TokenGeneratorInterface $tokenGenerator,
         MailFactoryInterface $mailFactory
     ) {
-        $this->blacklistItemRepository = $blacklistItemRepository;
+        $this->registrationRuleRepository = $registrationRuleRepository;
         $this->objectManager = $objectManager;
         $this->tokenGenerator = $tokenGenerator;
         $this->mailFactory = $mailFactory;
@@ -74,11 +74,11 @@ class BlacklistListener implements EventSubscriberInterface
      */
     public function validateEmail(UserRegisteredEvent $event): void
     {
-        if (BlacklistItem::TYPE_REQUEST !== $this->getType((string) $event->getUser()->getEmail())) {
+        if (RegistrationRuleItem::TYPE_REQUEST !== $this->getType((string) $event->getUser()->getEmail())) {
             return;
         }
 
-        $blacklistUser = new BlacklistUser(
+        $blacklistUser = new RegistrationRuleUser(
             $this->tokenGenerator->generateToken(),
             $event->getConfigProperty(Configuration::WEBSPACE_KEY),
             $event->getUser()
@@ -90,7 +90,7 @@ class BlacklistListener implements EventSubscriberInterface
             Mail::create(
                 $event->getConfigProperty(Configuration::EMAIL_FROM),
                 $event->getConfigProperty(Configuration::EMAIL_TO),
-                $event->getConfigTypeProperty(Configuration::TYPE_BLACKLISTED, Configuration::EMAIL)
+                $event->getConfigTypeProperty(Configuration::TYPE_REGISTRATION_RULEED, Configuration::EMAIL)
             ),
             $event->getUser(),
             ['token' => $blacklistUser->getToken()]
@@ -104,18 +104,18 @@ class BlacklistListener implements EventSubscriberInterface
      */
     private function getType(string $email): ?string
     {
-        $items = $this->blacklistItemRepository->findBySender($email);
+        $items = $this->registrationRuleRepository->findBySender($email);
 
         if (0 === \count($items)) {
             return null;
         }
 
         foreach ($items as $item) {
-            if (BlacklistItem::TYPE_BLOCK === $item->getType()) {
-                return BlacklistItem::TYPE_BLOCK;
+            if (RegistrationRuleItem::TYPE_BLOCK === $item->getType()) {
+                return RegistrationRuleItem::TYPE_BLOCK;
             }
         }
 
-        return BlacklistItem::TYPE_REQUEST;
+        return RegistrationRuleItem::TYPE_REQUEST;
     }
 }

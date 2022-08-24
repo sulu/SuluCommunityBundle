@@ -13,8 +13,8 @@ namespace Sulu\Bundle\CommunityBundle;
 
 use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\CommunityManagerCompilerPass;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\CompilerPass\CommunityValidatorCompilerPass;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleUser;
 use Sulu\Bundle\PersistenceBundle\PersistenceBundleTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -30,8 +30,8 @@ class SuluCommunityBundle extends Bundle
     {
         $this->buildPersistence(
             [
-                BlacklistItem::class => 'sulu.model.blacklist_item.class',
-                BlacklistUser::class => 'sulu.model.blacklist_user.class',
+                RegistrationRuleItem::class => 'sulu.model.registration_rule_item.class',
+                RegistrationRuleUser::class => 'sulu.model.registration_rule_user.class',
             ],
             $container
         );

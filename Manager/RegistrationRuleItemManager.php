@@ -12,13 +12,13 @@
 namespace Sulu\Bundle\CommunityBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
 
 /**
- * Manages blacklist-items.
+ * Manages registration-rule-items.
  */
-class BlacklistItemManager implements BlacklistItemManagerInterface
+class RegistrationRuleItemManager implements RegistrationRuleItemManagerInterface
 {
     /**
      * @var EntityManagerInterface
@@ -26,25 +26,25 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
     private $entityManager;
 
     /**
-     * @var BlacklistItemRepository
+     * @var RegistrationRuleItemRepository
      */
     private $blacklistItemRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, BlacklistItemRepository $blacklistItemRepository)
+    public function __construct(EntityManagerInterface $entityManager, RegistrationRuleItemRepository $blacklistItemRepository)
     {
         $this->entityManager = $entityManager;
         $this->blacklistItemRepository = $blacklistItemRepository;
     }
 
-    public function find(int $id): BlacklistItem
+    public function find(int $id): RegistrationRuleItem
     {
-        /** @var BlacklistItem $blacklistItem */
+        /** @var RegistrationRuleItem $blacklistItem */
         $blacklistItem = $this->blacklistItemRepository->find($id);
 
         return $blacklistItem;
     }
 
-    public function create(): BlacklistItem
+    public function create(): RegistrationRuleItem
     {
         $item = $this->blacklistItemRepository->createNew();
 
@@ -60,7 +60,7 @@ class BlacklistItemManager implements BlacklistItemManagerInterface
         }
 
         foreach ($ids as $id) {
-            /** @var BlacklistItem $object */
+            /** @var RegistrationRuleItem $object */
             $object = $this->entityManager->getReference($this->blacklistItemRepository->getClassName(), $id);
 
             $this->entityManager->remove($object);

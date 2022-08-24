@@ -16,8 +16,8 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\ViewHandlerInterface;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManagerInterface;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Manager\RegistrationRuleItemManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilderFactoryInterface;
 use Sulu\Component\Rest\ListBuilder\Doctrine\FieldDescriptor\DoctrineFieldDescriptor;
@@ -31,13 +31,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * Provides admin-api for blacklist-items.
+ * Provides admin-api for registration-rule-items.
  *
  * @NamePrefix("sulu_community.")
- *
- * @RouteResource("blacklist-item")
- */
-class BlacklistItemController extends AbstractRestController implements ClassResourceInterface
+
+ * @RouteResource("registration-rule-item")
+*/
+class RegistrationRuleItemController extends AbstractRestController implements ClassResourceInterface
 {
     use RequestParametersTrait;
 
@@ -57,22 +57,22 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
     protected $listBuilderFactory;
 
     /**
-     * @var BlacklistItemManagerInterface
+     * @var RegistrationRuleItemManagerInterface
      */
-    protected $blacklistItemManager;
+    protected $registrationRuleItemManager;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         RestHelperInterface $restHelper,
         DoctrineListBuilderFactoryInterface $listBuilderFactory,
-        BlacklistItemManagerInterface $blacklistItemManager,
+        RegistrationRuleItemManagerInterface $registrationRuleItemManager,
         ViewHandlerInterface $viewHandler,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->entityManager = $entityManager;
         $this->restHelper = $restHelper;
         $this->listBuilderFactory = $listBuilderFactory;
-        $this->blacklistItemManager = $blacklistItemManager;
+        $this->registrationRuleItemManager = $registrationRuleItemManager;
 
         parent::__construct($viewHandler, $tokenStorage);
     }
@@ -91,7 +91,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
     public function cgetAction(Request $request): Response
     {
         $fieldDescriptors = $this->getFieldDescriptors();
-        $listBuilder = $this->listBuilderFactory->create(BlacklistItem::class);
+        $listBuilder = $this->listBuilderFactory->create(RegistrationRuleItem::class);
         $this->restHelper->initializeListBuilder($listBuilder, $fieldDescriptors);
 
         $listResponse = $this->prepareListResponse($request, $listBuilder, $fieldDescriptors);
@@ -100,8 +100,8 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
             $this->view(
                 new ListRepresentation(
                     $listResponse,
-                    'blacklist_items',
-                    'sulu_community.get_blacklist-items',
+                    'registration_rule_items',
+                    'sulu_community.get_registration_rule-items',
                     $request->query->all(),
                     $listBuilder->getCurrentPage(),
                     $listBuilder->getLimit(),
@@ -116,7 +116,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
      */
     public function getAction(int $id): Response
     {
-        return $this->handleView($this->view($this->blacklistItemManager->find($id)));
+        return $this->handleView($this->view($this->registrationRuleItemManager->find($id)));
     }
 
     /**
@@ -124,7 +124,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
      */
     public function postAction(Request $request): Response
     {
-        $item = $this->blacklistItemManager->create()
+        $item = $this->registrationRuleItemManager->create()
             ->setPattern($this->getRequestParameter($request, 'pattern', true))
             ->setType($this->getRequestParameter($request, 'type', true));
 
@@ -138,7 +138,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
      */
     public function deleteAction(int $id): Response
     {
-        $this->blacklistItemManager->delete($id);
+        $this->registrationRuleItemManager->delete($id);
         $this->entityManager->flush();
 
         return $this->handleView($this->view(null));
@@ -153,7 +153,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
             return (int) $id;
         }, \array_filter(\explode(',', (string) $request->query->get('ids', ''))));
 
-        $this->blacklistItemManager->delete($ids);
+        $this->registrationRuleItemManager->delete($ids);
         $this->entityManager->flush();
 
         return $this->handleView($this->view(null));
@@ -164,7 +164,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
      */
     public function putAction(int $id, Request $request): Response
     {
-        $item = $this->blacklistItemManager->find($id)
+        $item = $this->registrationRuleItemManager->find($id)
             ->setPattern($this->getRequestParameter($request, 'pattern', true))
             ->setType($this->getRequestParameter($request, 'type', true));
 
@@ -174,7 +174,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
     }
 
     /**
-     * Creates the field-descriptors for blacklist-items.
+     * Creates the field-descriptors for registration_rule-items.
      *
      * @return DoctrineFieldDescriptor[]
      */
@@ -184,7 +184,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
             'id' => new DoctrineFieldDescriptor(
                 'id',
                 'id',
-                BlacklistItem::class,
+                RegistrationRuleItem::class,
                 'public.id',
                 [],
                 FieldDescriptorInterface::VISIBILITY_NO
@@ -192,7 +192,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
             'pattern' => new DoctrineFieldDescriptor(
                 'pattern',
                 'pattern',
-                BlacklistItem::class,
+                RegistrationRuleItem::class,
                 'community.blacklist.pattern',
                 [],
                 FieldDescriptorInterface::VISIBILITY_ALWAYS,
@@ -203,7 +203,7 @@ class BlacklistItemController extends AbstractRestController implements ClassRes
             'type' => new DoctrineFieldDescriptor(
                 'type',
                 'type',
-                BlacklistItem::class,
+                RegistrationRuleItem::class,
                 'public.type',
                 [],
                 FieldDescriptorInterface::VISIBILITY_ALWAYS,

@@ -16,20 +16,20 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistUser;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleUser;
 use Sulu\Bundle\CommunityBundle\Event\UserRegisteredEvent;
-use Sulu\Bundle\CommunityBundle\EventListener\BlacklistListener;
+use Sulu\Bundle\CommunityBundle\EventListener\RegistrationRuleListener;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
-class BlacklistListenerTest extends TestCase
+class RegistrationRuleListenerTest extends TestCase
 {
     /**
-     * @var ObjectProphecy<BlacklistItemRepository>
+     * @var ObjectProphecy<RegistrationRuleItemRepository>
      */
     private $repository;
 
@@ -49,18 +49,18 @@ class BlacklistListenerTest extends TestCase
     private $mailFactory;
 
     /**
-     * @var BlacklistListener
+     * @var RegistrationRuleListener
      */
     private $listener;
 
     protected function setUp(): void
     {
-        $this->repository = $this->prophesize(BlacklistItemRepository::class);
+        $this->repository = $this->prophesize(RegistrationRuleItemRepository::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
         $this->tokenGenerator = $this->prophesize(TokenGeneratorInterface::class);
         $this->mailFactory = $this->prophesize(MailFactoryInterface::class);
 
-        $this->listener = new BlacklistListener(
+        $this->listener = new RegistrationRuleListener(
             $this->repository->reveal(),
             $this->entityManager->reveal(),
             $this->tokenGenerator->reveal(),
@@ -71,7 +71,7 @@ class BlacklistListenerTest extends TestCase
     public function testValidateEmail(): void
     {
         $this->repository->findBySender('test@sulu.io')
-            ->willReturn([new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_REQUEST)]);
+            ->willReturn([new RegistrationRuleItem('*@sulu.io', RegistrationRuleItem::TYPE_REQUEST)]);
         $this->tokenGenerator->generateToken()->willReturn('123-123-123');
 
         $user = $this->prophesize(User::class);
@@ -81,7 +81,7 @@ class BlacklistListenerTest extends TestCase
         $event->getConfigProperty(Configuration::WEBSPACE_KEY)->willReturn('sulu-io');
         $event->getConfigProperty(Configuration::EMAIL_TO)->willReturn(['admin@sulu.io' => 'admin@sulu.io']);
         $event->getConfigProperty(Configuration::EMAIL_FROM)->willReturn(['from@sulu.io' => 'from@sulu.io']);
-        $event->getConfigTypeProperty(Configuration::TYPE_BLACKLISTED, Configuration::EMAIL)->willReturn(
+        $event->getConfigTypeProperty(Configuration::TYPE_REGISTRATION_RULEED, Configuration::EMAIL)->willReturn(
             [
                 Configuration::EMAIL_SUBJECT => 'subject',
                 Configuration::EMAIL_USER_TEMPLATE => 'user_template',
@@ -92,7 +92,7 @@ class BlacklistListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function(BlacklistUser $item) use ($user) {
+                function(RegistrationRuleUser $item) use ($user) {
                     return '123-123-123' === $item->getToken()
                     && 'sulu-io' === $item->getWebspaceKey()
                     && $item->getUser() === $user->reveal();

@@ -12,7 +12,7 @@
         <!-- Blocked Validator -->
         <service id="sulu_community.validator.blocked"
                  class="Sulu\Bundle\CommunityBundle\Validator\Constraints\BlockedValidator">
-            <argument type="service" id="sulu.repository.blacklist_item"/>
+            <argument type="service" id="sulu.repository.registration_rule_item"/>
 
             <tag name="validator.constraint_validator" alias="blocked_validator"/>
         </service>

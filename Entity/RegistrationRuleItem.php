@@ -12,9 +12,9 @@
 namespace Sulu\Bundle\CommunityBundle\Entity;
 
 /**
- * Represents a single item in the blacklist.
+ * Represents a single item in the registration rule.
  */
-class BlacklistItem
+class RegistrationRuleItem
 {
     public const TYPE_REQUEST = 'request';
     public const TYPE_BLOCK = 'block';

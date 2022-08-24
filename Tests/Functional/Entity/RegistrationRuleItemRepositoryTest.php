@@ -12,11 +12,11 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Entity;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 
-class BlacklistItemRepositoryTest extends SuluTestCase
+class RegistrationRuleItemRepositoryTest extends SuluTestCase
 {
     protected function setUp(): void
     {
@@ -25,13 +25,13 @@ class BlacklistItemRepositoryTest extends SuluTestCase
 
     public function testFindBySender(): void
     {
-        $item1 = new BlacklistItem('*@sulu.io', BlacklistItem::TYPE_BLOCK);
-        $item2 = new BlacklistItem('test@sulu.io', BlacklistItem::TYPE_REQUEST);
+        $item1 = new RegistrationRuleItem('*@sulu.io', RegistrationRuleItem::TYPE_BLOCK);
+        $item2 = new RegistrationRuleItem('test@sulu.io', RegistrationRuleItem::TYPE_REQUEST);
 
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getEntityManager();
-        /** @var BlacklistItemRepository $repository */
-        $repository = $entityManager->getRepository(BlacklistItem::class);
+        /** @var RegistrationRuleItemRepository $repository */
+        $repository = $entityManager->getRepository(RegistrationRuleItem::class);
 
         $entityManager->persist($item1);
         $entityManager->persist($item2);
@@ -39,13 +39,13 @@ class BlacklistItemRepositoryTest extends SuluTestCase
         $entityManager->clear();
 
         $items = \array_map(
-            function(BlacklistItem $item) {
+            function (RegistrationRuleItem $item) {
                 return ['pattern' => $item->getPattern(), 'type' => $item->getType()];
             },
             $repository->findBySender('test@sulu.io')
         );
 
-        $this->assertContains(['pattern' => '*@sulu.io', 'type' => BlacklistItem::TYPE_BLOCK], $items);
-        $this->assertContains(['pattern' => 'test@sulu.io', 'type' => BlacklistItem::TYPE_REQUEST], $items);
+        $this->assertContains(['pattern' => '*@sulu.io', 'type' => RegistrationRuleItem::TYPE_BLOCK], $items);
+        $this->assertContains(['pattern' => 'test@sulu.io', 'type' => RegistrationRuleItem::TYPE_REQUEST], $items);
     }
 }

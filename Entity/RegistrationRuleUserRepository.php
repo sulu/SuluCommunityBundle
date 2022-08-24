@@ -15,14 +15,14 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Sulu\Component\Persistence\Repository\ORM\EntityRepository;
 
-class BlacklistUserRepository extends EntityRepository
+class RegistrationRuleUserRepository extends EntityRepository
 {
     /**
      * Return blacklist-user for given token.
      *
      * @param string $token
      *
-     * @return BlacklistUser|object|null
+     * @return RegistrationRuleUser|object|null
      */
     public function findByToken($token)
     {

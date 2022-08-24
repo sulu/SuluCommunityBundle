@@ -23,7 +23,7 @@ The SuluCommunityBundle adds following features to a webspace:
  - Registration
  - Password Forget/Reset
  - Profile
- - Blacklisting
+ - RegistrationRuleing
 
 ## Documentation
 

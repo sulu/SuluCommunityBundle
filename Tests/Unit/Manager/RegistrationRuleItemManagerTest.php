@@ -14,14 +14,14 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Manager;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
-use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
+use Sulu\Bundle\CommunityBundle\Manager\RegistrationRuleItemManager;
 
-class BlacklistItemManagerTest extends TestCase
+class RegistrationRuleItemManagerTest extends TestCase
 {
     /**
-     * @var ObjectProphecy<BlacklistItemRepository>
+     * @var ObjectProphecy<RegistrationRuleItemRepository>
      */
     private $repository;
 
@@ -31,21 +31,21 @@ class BlacklistItemManagerTest extends TestCase
     private $entityManager;
 
     /**
-     * @var BlacklistItemManager
+     * @var RegistrationRuleItemManager
      */
     private $manager;
 
     protected function setUp(): void
     {
-        $this->repository = $this->prophesize(BlacklistItemRepository::class);
+        $this->repository = $this->prophesize(RegistrationRuleItemRepository::class);
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
 
-        $this->manager = new BlacklistItemManager($this->entityManager->reveal(), $this->repository->reveal());
+        $this->manager = new RegistrationRuleItemManager($this->entityManager->reveal(), $this->repository->reveal());
     }
 
     public function testCreate(): void
     {
-        $entity = new BlacklistItem();
+        $entity = new RegistrationRuleItem();
 
         $this->repository->createNew()->willReturn($entity)->shouldBeCalled();
         $this->entityManager->persist($entity)->shouldBeCalled();
@@ -55,7 +55,7 @@ class BlacklistItemManagerTest extends TestCase
 
     public function testFind(): void
     {
-        $entity = new BlacklistItem();
+        $entity = new RegistrationRuleItem();
         $this->repository->find(1)->willReturn($entity)->shouldBeCalled();
 
         $this->assertSame($entity, $this->manager->find(1));
@@ -63,10 +63,10 @@ class BlacklistItemManagerTest extends TestCase
 
     public function testDeleteSingle(): void
     {
-        $className = BlacklistItem::class;
+        $className = RegistrationRuleItem::class;
         $this->repository->getClassName()->willReturn($className);
 
-        $entity = new BlacklistItem();
+        $entity = new RegistrationRuleItem();
         $this->entityManager->getReference($className, 1)->willReturn($entity);
         $this->entityManager->remove($entity)->shouldBeCalled();
 
@@ -75,11 +75,11 @@ class BlacklistItemManagerTest extends TestCase
 
     public function testDeleteList(): void
     {
-        $className = BlacklistItem::class;
+        $className = RegistrationRuleItem::class;
         $this->repository->getClassName()->willReturn($className);
 
-        $entity1 = new BlacklistItem();
-        $entity2 = new BlacklistItem();
+        $entity1 = new RegistrationRuleItem();
+        $entity2 = new RegistrationRuleItem();
         $this->entityManager->getReference($className, 1)->willReturn($entity1);
         $this->entityManager->getReference($className, 2)->willReturn($entity2);
         $this->entityManager->remove($entity1)->shouldBeCalled();
