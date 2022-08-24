@@ -11,11 +11,11 @@
 
 namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
-class BlacklistItemControllerTest extends SuluTestCase
+class RegistrationRuleItemControllerTest extends SuluTestCase
 {
     /**
      * @var KernelBrowser
@@ -31,7 +31,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
     public function testCgetEmpty(): void
     {
-        $this->client->request('GET', '/admin/api/blacklist-items');
+        $this->client->request('GET', '/admin/api/registration-rule-items');
         $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
@@ -40,7 +40,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertSame(0, $result['total']);
-        $this->assertCount(0, $result['_embedded']['blacklist_items']);
+        $this->assertCount(0, $result['_embedded']['registration_rule_items']);
     }
 
     /**
@@ -50,8 +50,8 @@ class BlacklistItemControllerTest extends SuluTestCase
     {
         $this->client->request(
             'POST',
-            '/admin/api/blacklist-items',
-            ['pattern' => $pattern, 'type' => BlacklistItem::TYPE_REQUEST]
+            '/admin/api/registration-rule-items',
+            ['pattern' => $pattern, 'type' => RegistrationRuleItem::TYPE_REQUEST]
         );
         $this->assertHttpStatusCode(200, $this->client->getResponse());
 
@@ -61,7 +61,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertSame($pattern, $result['pattern']);
-        $this->assertSame(BlacklistItem::TYPE_REQUEST, $result['type']);
+        $this->assertSame(RegistrationRuleItem::TYPE_REQUEST, $result['type']);
 
         return $result;
     }
@@ -73,7 +73,7 @@ class BlacklistItemControllerTest extends SuluTestCase
     {
         $item = $this->testPost();
 
-        $this->client->request('GET', '/admin/api/blacklist-items/' . $item['id']);
+        $this->client->request('GET', '/admin/api/registration-rule-items/' . $item['id']);
         $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
@@ -92,7 +92,7 @@ class BlacklistItemControllerTest extends SuluTestCase
     {
         $item = $this->testPost();
 
-        $this->client->request('GET', '/admin/api/blacklist-items');
+        $this->client->request('GET', '/admin/api/registration-rule-items');
         $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
@@ -101,20 +101,20 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertSame(1, $result['total']);
-        $this->assertCount(1, $result['_embedded']['blacklist_items']);
-        $this->assertSame($item['id'], $result['_embedded']['blacklist_items'][0]['id']);
-        $this->assertSame($item['pattern'], $result['_embedded']['blacklist_items'][0]['pattern']);
-        $this->assertSame($item['type'], $result['_embedded']['blacklist_items'][0]['type']);
+        $this->assertCount(1, $result['_embedded']['registration_rule_items']);
+        $this->assertSame($item['id'], $result['_embedded']['registration_rule_items'][0]['id']);
+        $this->assertSame($item['pattern'], $result['_embedded']['registration_rule_items'][0]['pattern']);
+        $this->assertSame($item['type'], $result['_embedded']['registration_rule_items'][0]['type']);
     }
 
     public function testDelete(): void
     {
         $item = $this->testPost();
 
-        $this->client->request('DELETE', '/admin/api/blacklist-items/' . $item['id']);
+        $this->client->request('DELETE', '/admin/api/registration-rule-items/' . $item['id']);
         $this->assertHttpStatusCode(204, $this->client->getResponse());
 
-        $this->client->request('GET', '/admin/api/blacklist-items');
+        $this->client->request('GET', '/admin/api/registration-rule-items');
         $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
@@ -123,7 +123,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertSame(0, $result['total']);
-        $this->assertCount(0, $result['_embedded']['blacklist_items']);
+        $this->assertCount(0, $result['_embedded']['registration_rule_items']);
     }
 
     public function testCDelete(): void
@@ -131,10 +131,10 @@ class BlacklistItemControllerTest extends SuluTestCase
         $item1 = $this->testPost();
         $item2 = $this->testPost('test@sulu.io');
 
-        $this->client->request('DELETE', '/admin/api/blacklist-items?ids=' . \implode(',', [$item1['id'], $item2['id']]));
+        $this->client->request('DELETE', '/admin/api/registration-rule-items?ids=' . \implode(',', [$item1['id'], $item2['id']]));
         $this->assertHttpStatusCode(204, $this->client->getResponse());
 
-        $this->client->request('GET', '/admin/api/blacklist-items');
+        $this->client->request('GET', '/admin/api/registration-rule-items');
         $this->assertHttpStatusCode(200, $this->client->getResponse());
 
         /** @var string $content */
@@ -143,14 +143,14 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertSame(0, $result['total']);
-        $this->assertCount(0, $result['_embedded']['blacklist_items']);
+        $this->assertCount(0, $result['_embedded']['registration_rule_items']);
     }
 
     public function testPostInvalidType(): void
     {
         $this->client->request(
             'POST',
-            '/admin/api/blacklist-items',
+            '/admin/api/registration-rule-items',
             ['pattern' => '*@sulu.io', 'type' => 'test']
         );
         $this->assertHttpStatusCode(409, $this->client->getResponse());
@@ -162,8 +162,8 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->client->request(
             'PUT',
-            '/admin/api/blacklist-items/' . $item['id'],
-            ['pattern' => 'test@sulu.io', 'type' => BlacklistItem::TYPE_BLOCK]
+            '/admin/api/registration-rule-items/' . $item['id'],
+            ['pattern' => 'test@sulu.io', 'type' => RegistrationRuleItem::TYPE_BLOCK]
         );
         $this->assertHttpStatusCode(200, $this->client->getResponse());
 
@@ -173,7 +173,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->assertIsArray($result);
         $this->assertSame('test@sulu.io', $result['pattern']);
-        $this->assertSame(BlacklistItem::TYPE_BLOCK, $result['type']);
+        $this->assertSame(RegistrationRuleItem::TYPE_BLOCK, $result['type']);
     }
 
     public function testPutInvalidType(): void
@@ -182,7 +182,7 @@ class BlacklistItemControllerTest extends SuluTestCase
 
         $this->client->request(
             'PUT',
-            '/admin/api/blacklist-items/' . $item['id'],
+            '/admin/api/registration-rule-items/' . $item['id'],
             ['pattern' => 'test@sulu.io', 'type' => 'test']
         );
         $this->assertHttpStatusCode(409, $this->client->getResponse());

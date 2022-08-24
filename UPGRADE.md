@@ -4,13 +4,13 @@
 
 ### ListRepresentation relation name changed
 
-The name of the relation inside of the `_embedded` field has been changed from `items` to `blacklist_items`.
+The name of the relation inside of the `_embedded` field has been changed from `items` to `registration_rule_items`.
 
-### BlacklistUser and BlacklistItem repository service identification changed
+### RegistrationRuleUser and RegistrationRuleItem repository service identification changed
 
- - BlacklistUserRepository has been changed from `sulu_community.blacklisting.user_repository` to `sulu.repository.blacklist_user`.
+ - RegistrationRuleUserRepository has been changed from `sulu_community.registration_rule.user_repository` to `sulu.repository.blacklist_user`.
 
- - BlacklistItemRepository has been changed from `sulu_community.blacklisting.item_repository` to `sulu.repository.blacklist_item`.
+ - RegistrationRuleItemRepository has been changed from `sulu_community.registration_rule.item_repository` to `sulu.repository.blacklist_item`.
 
 ### Typehints added to the codebase
 

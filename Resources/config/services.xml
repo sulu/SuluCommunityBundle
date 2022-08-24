@@ -57,8 +57,8 @@
         </service>
 
         <!-- black-listener -->
-        <service id="sulu_community.black_listener" class="Sulu\Bundle\CommunityBundle\EventListener\BlacklistListener">
-            <argument type="service" id="sulu.repository.blacklist_item"/>
+        <service id="sulu_community.registration_rule_listener" class="Sulu\Bundle\CommunityBundle\EventListener\RegistrationRuleListener">
+            <argument type="service" id="sulu.repository.registration_rule_item"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_security.token_generator"/>
             <argument type="service" id="sulu_community.mail_factory"/>
@@ -96,32 +96,32 @@
             <tag name="massive_build.builder"/>
         </service>
 
-        <!-- blacklisting -->
-        <service id="sulu_community.blacklisting.item_manager"
-                 class="Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManager"
+        <!-- registration_rule -->
+        <service id="sulu_community.registration_rule.item_manager"
+                 class="Sulu\Bundle\CommunityBundle\Manager\RegistrationRuleItemManager"
                  public="true">
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="sulu.repository.blacklist_item"/>
+            <argument type="service" id="sulu.repository.registration_rule_item"/>
         </service>
-        <service id="Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManagerInterface" alias="sulu_community.blacklisting.item_manager"/>
+        <service id="Sulu\Bundle\CommunityBundle\Manager\RegistrationRuleItemManagerInterface" alias="sulu_community.registration_rule.item_manager"/>
 
-        <service id="sulu_community.blacklisting.item_repository"
-                 class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository"
+        <service id="sulu_community.registration_rule.item_repository"
+                 class="Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository"
                  public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
-            <argument type="string">Sulu\Bundle\CommunityBundle\Entity\BlacklistItem</argument>
+            <argument type="string">Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem</argument>
         </service>
-        <service id="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository" alias="sulu_community.blacklisting.item_repository"/>
+        <service id="Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository" alias="sulu_community.registration_rule.item_repository"/>
 
-        <service id="sulu_community.blacklisting.user_repository"
-                 class="Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository"
+        <service id="sulu_community.registration_rule.user_repository"
+                 class="Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleUserRepository"
                  public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository"/>
 
-            <argument type="string">Sulu\Bundle\CommunityBundle\Entity\BlacklistUser</argument>
+            <argument type="string">Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleUser</argument>
         </service>
-        <service id="Sulu\Bundle\CommunityBundle\Entity\BlacklistUserRepository" alias="sulu_community.blacklisting.user_repository"/>
+        <service id="Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleUserRepository" alias="sulu_community.registration_rule.user_repository"/>
 
         <!-- email-confirmation -->
         <service id="sulu_community.email_confirmation.listener"
@@ -152,11 +152,11 @@
         <service id="Sulu\Bundle\CommunityBundle\Mail\MailFactoryInterface" alias="sulu_community.mail_factory"/>
 
         <!-- Controller -->
-        <service id="sulu_community.controller.blacklist_item" class="Sulu\Bundle\CommunityBundle\Controller\BlacklistItemController" public="true">
+        <service id="sulu_community.controller.registration_rule_item" class="Sulu\Bundle\CommunityBundle\Controller\RegistrationRuleItemController" public="true">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_core.doctrine_rest_helper"/>
             <argument type="service" id="sulu_core.doctrine_list_builder_factory"/>
-            <argument type="service" id="sulu_community.blacklisting.item_manager"/>
+            <argument type="service" id="sulu_community.registration_rule.item_manager"/>
             <argument type="service" id="fos_rest.view_handler.default"/>
             <argument type="service" id="security.token_storage"/>
         </service>
@@ -171,7 +171,7 @@
             </call>
         </service>
 
-        <service id="Sulu\Bundle\CommunityBundle\Controller\BlacklistConfirmationController" class="Sulu\Bundle\CommunityBundle\Controller\BlacklistConfirmationController" public="true">
+        <service id="Sulu\Bundle\CommunityBundle\Controller\RegistrationRuleConfirmationController" class="Sulu\Bundle\CommunityBundle\Controller\RegistrationRuleConfirmationController" public="true">
             <tag name="container.service_subscriber" />
             <tag name="controller.service_arguments" />
             <tag name="sulu.context" context="website" />

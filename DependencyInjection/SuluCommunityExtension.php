@@ -71,10 +71,10 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
                         ],
                     ],
                     'resources' => [
-                        'blacklist_items' => [
+                        'registration-rule-items' => [
                             'routes' => [
-                                'list' => 'sulu_community.get_blacklist-items',
-                                'detail' => 'sulu_community.get_blacklist-item',
+                                'list' => 'sulu_community.get_registration-rule-items',
+                                'detail' => 'sulu_community.get_registration-rule-item',
                             ],
                         ],
                     ],

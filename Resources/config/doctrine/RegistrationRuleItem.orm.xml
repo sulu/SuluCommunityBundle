@@ -2,8 +2,8 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="Sulu\Bundle\CommunityBundle\Entity\BlacklistItem" table="com_blacklist_item"
-            repository-class="Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository">
+    <entity name="Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem" table="com_registration_rule_item"
+            repository-class="Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository">
         <indexes>
             <index columns="regexpPattern"/>
         </indexes>

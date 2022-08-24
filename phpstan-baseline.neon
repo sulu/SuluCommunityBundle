@@ -3,7 +3,7 @@ parameters:
 		-
 			message: "#^Strict comparison using \\=\\=\\= between true and array\\{from\\: array\\<string\\>\\|string, to\\: array\\<string\\>\\|string, webspace_key\\: string, role\\: string, firewall\\: string, maintenance\\: array\\{enabled\\: bool, template\\: string\\}, login\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, registration\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, \\.\\.\\.\\} will always evaluate to false\\.$#"
 			count: 1
-			path: Controller/BlacklistConfirmationController.php
+			path: Controller/RegistrationRuleConfirmationController.php
 
 		-
 			message: "#^If condition is always true\\.$#"
@@ -208,22 +208,22 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$from of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<string, array\\<array\\|bool\\|string\\|null\\>\\|string\\> given\\.$#"
 			count: 1
-			path: EventListener/BlacklistListener.php
+			path: EventListener/RegistrationRuleListener.php
 
 		-
 			message: "#^Parameter \\#2 \\$to of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<string, array\\<array\\|bool\\|string\\|null\\>\\|string\\> given\\.$#"
 			count: 1
-			path: EventListener/BlacklistListener.php
+			path: EventListener/RegistrationRuleListener.php
 
 		-
-			message: "#^Parameter \\#2 \\$webspaceKey of class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\BlacklistUser constructor expects string, array\\<string, array\\<array\\|bool\\|string\\|null\\>\\|string\\> given\\.$#"
+			message: "#^Parameter \\#2 \\$webspaceKey of class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\RegistrationRuleUser constructor expects string, array\\<string, array\\<array\\|bool\\|string\\|null\\>\\|string\\> given\\.$#"
 			count: 1
-			path: EventListener/BlacklistListener.php
+			path: EventListener/RegistrationRuleListener.php
 
 		-
 			message: "#^Parameter \\#3 \\$config of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\{subject\\: string, user_template\\: string\\|null, admin_template\\: string\\|null\\}, array\\{from\\: array\\<string\\>\\|string, to\\: array\\<string\\>\\|string, webspace_key\\: string, role\\: string, firewall\\: string, maintenance\\: array\\{enabled\\: bool, template\\: string\\}, login\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, registration\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, \\.\\.\\.\\} given\\.$#"
 			count: 1
-			path: EventListener/BlacklistListener.php
+			path: EventListener/RegistrationRuleListener.php
 
 		-
 			message: "#^Parameter \\#1 \\$from of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<string, array\\<array\\|bool\\|string\\|null\\>\\|string\\> given\\.$#"
