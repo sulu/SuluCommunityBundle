@@ -17,13 +17,15 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactory;
 use Sulu\Bundle\SecurityBundle\Entity\User;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Translation\Translator;
 use Twig\Environment;
 
 class MailFactoryTest extends TestCase
 {
     /**
-     * @var ObjectProphecy<\Swift_Mailer>
+     * @var ObjectProphecy<MailerInterface>
      */
     private $mailer;
 
@@ -49,10 +51,11 @@ class MailFactoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->mailer = $this->prophesize(\Swift_Mailer::class);
+        $this->mailer = $this->prophesize(MailerInterface::class);
         $this->twig = $this->prophesize(Environment::class);
         $this->translator = $this->prophesize(Translator::class);
         $this->translator->getLocale()->willReturn('en');
+        $this->translator->trans('testcase')->willReturn('Test case');
         $this->user = $this->prophesize(User::class);
         $this->user->getEmail()->willReturn('test@example.com');
         $this->user->getLocale()->willReturn('de');
@@ -70,22 +73,18 @@ class MailFactoryTest extends TestCase
         $this->twig->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
-            Argument::that(
-                function (\Swift_Message $message) {
-                    return 'User-Template' === $message->getBody()
-                    && $message->getFrom() === ['test@sulu.io' => null]
-                    && $message->getTo() === ['test@example.com' => null];
-                }
-            )
+            (new Email())
+                ->subject('Test case')
+                ->from('test@sulu.io')
+                ->to('test@example.com')
+                ->html('User-Template')
         )->shouldBeCalledTimes(1);
         $this->mailer->send(
-            Argument::that(
-                function (\Swift_Message $message) {
-                    return 'Admin-Template' === $message->getBody()
-                    && $message->getFrom() === ['test@sulu.io' => null]
-                    && $message->getTo() === ['user@sulu.io' => null];
-                }
-            )
+            (new Email())
+                ->subject('Test case')
+                ->from('test@sulu.io')
+                ->to('user@sulu.io')
+                ->html('Admin-Template')
         )->shouldBeCalledTimes(1);
 
         $mail = new Mail('test@sulu.io', 'user@sulu.io', 'testcase', 'user-template', 'admin-template');
@@ -100,22 +99,18 @@ class MailFactoryTest extends TestCase
         $this->twig->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
-            Argument::that(
-                function (\Swift_Message $message) {
-                    return 'User-Template' === $message->getBody()
-                    && $message->getFrom() === ['test@sulu.io' => null]
-                    && $message->getTo() === ['test@example.com' => null];
-                }
-            )
+            (new Email())
+                ->subject('Test case')
+                ->from('test@sulu.io')
+                ->to('test@example.com')
+                ->html('User-Template')
         )->shouldBeCalledTimes(1);
         $this->mailer->send(
-            Argument::that(
-                function (\Swift_Message $message) {
-                    return 'Admin-Template' === $message->getBody()
-                    && $message->getFrom() === ['test@sulu.io' => null]
-                    && $message->getTo() === ['user@sulu.io' => null];
-                }
-            )
+            (new Email())
+                ->subject('Test case')
+                ->from('test@sulu.io')
+                ->to('user@sulu.io')
+                ->html('Admin-Template')
         )->shouldNotBeCalled();
 
         $mail = new Mail('test@sulu.io', 'user@sulu.io', 'testcase', 'user-template', null);
@@ -130,22 +125,18 @@ class MailFactoryTest extends TestCase
         $this->twig->render('admin-template', Argument::any())->willReturn('Admin-Template');
 
         $this->mailer->send(
-            Argument::that(
-                function (\Swift_Message $message) {
-                    return 'User-Template' === $message->getBody()
-                    && $message->getFrom() === ['test@sulu.io' => null]
-                    && $message->getTo() === ['test@example.com' => null];
-                }
-            )
+            (new Email())
+                ->subject('Test case')
+                ->from('test@sulu.io')
+                ->to('test@example.com')
+                ->html('User-Template')
         )->shouldNotBeCalled();
         $this->mailer->send(
-            Argument::that(
-                function (\Swift_Message $message) {
-                    return 'Admin-Template' === $message->getBody()
-                    && $message->getFrom() === ['test@sulu.io' => null]
-                    && $message->getTo() === ['user@sulu.io' => null];
-                }
-            )
+            (new Email())
+                ->subject('Test case')
+                ->from('test@sulu.io')
+                ->to('user@sulu.io')
+                ->html('Admin-Template')
         )->shouldBeCalledTimes(1);
 
         $mail = new Mail('test@sulu.io', 'user@sulu.io', 'testcase', null, 'admin-template');

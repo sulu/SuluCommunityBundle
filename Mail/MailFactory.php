@@ -12,6 +12,9 @@
 namespace Sulu\Bundle\CommunityBundle\Mail;
 
 use Sulu\Bundle\SecurityBundle\Entity\User;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -22,7 +25,7 @@ use Twig\Environment;
 class MailFactory implements MailFactoryInterface
 {
     /**
-     * @var \Swift_Mailer
+     * @var MailerInterface
      */
     protected $mailer;
 
@@ -36,7 +39,7 @@ class MailFactory implements MailFactoryInterface
      */
     protected $translator;
 
-    public function __construct(\Swift_Mailer $mailer, Environment $twig, TranslatorInterface $translator)
+    public function __construct(MailerInterface $mailer, Environment $twig, TranslatorInterface $translator)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -69,6 +72,7 @@ class MailFactory implements MailFactoryInterface
         }
     }
 
+
     /**
      * Create and send email.
      *
@@ -80,12 +84,38 @@ class MailFactory implements MailFactoryInterface
     {
         $body = $this->twig->render($template, $data);
 
-        $message = new \Swift_Message();
-        $message->setSubject($this->translator->trans($subject));
-        $message->setFrom($from);
-        $message->setTo($to);
-        $message->setBody($body, 'text/html');
+        $email = (new Email())
+            ->subject($this->translator->trans($subject))
+            ->from($this->getAddress($from))
+            ->to($this->getAddress($to))
+            ->html($body);
 
-        $this->mailer->send($message);
+        $this->mailer->send($email);
+    }
+
+    /**
+     * Convert string/array email address to an Address object
+     *
+     * @param $address
+     * @return Address
+     */
+    protected function getAddress($address): ?Address
+    {
+        $name = '';
+
+        if (is_array($address)) {
+            if(empty($address)) {
+                return null;
+            } else if (!isset($address['email'])) {
+                $email = $address[array_keys($address)[0]];
+            } else {
+                $email = $address['email'];
+                $name = $address['name'] ?? '';
+            }
+        } else {
+            $email = $address;
+        }
+
+        return new Address($email, $name);
     }
 }
