@@ -153,7 +153,6 @@ class CommunityManager implements CommunityManagerInterface
 
         $token = new UsernamePasswordToken(
             $user,
-            null,
             $this->getConfigProperty(Configuration::FIREWALL),
             $user->getRoles()
         );
