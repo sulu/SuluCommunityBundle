@@ -1,0 +1,29 @@
+security:
+    access_decision_manager:
+        strategy: affirmative
+
+    encoders:
+        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
+
+    providers:
+        testprovider:
+            id: test_user_provider
+
+    access_control:
+        - { path: /profile, roles: ROLE_USER }
+        - { path: /completion, roles: ROLE_USER }
+
+    firewalls:
+        sulu-io:
+            pattern: ^/
+            http_basic:
+                provider: testprovider
+            anonymous: ~
+            form_login:
+                login_path: sulu_community.login
+                check_path: sulu_community.login
+                default_target_path: sulu_community.profile
+                always_use_default_target_path: true
+            logout:
+                path: sulu_community.logout
+                target: /

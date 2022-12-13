@@ -1,16 +1,9 @@
-imports:
-    - config.yml
-
-framework:
-    router: { resource: '%kernel.project_dir%/config/routing_website.yml' }
-    profiler: { only_exceptions: false }
-
 security:
     access_decision_manager:
         strategy: affirmative
 
-    encoders:
-        Sulu\Bundle\SecurityBundle\Entity\User: plaintext
+    password_hashers:
+        Sulu\Bundle\SecurityBundle\Entity\User: 'plaintext'
 
     providers:
         testprovider:
@@ -23,9 +16,9 @@ security:
     firewalls:
         sulu-io:
             pattern: ^/
+            entry_point: http_basic
             http_basic:
                 provider: testprovider
-            anonymous: ~
             form_login:
                 login_path: sulu_community.login
                 check_path: sulu_community.login
@@ -34,6 +27,3 @@ security:
             logout:
                 path: sulu_community.logout
                 target: /
-
-sulu_test:
-    enable_test_user_provider: true

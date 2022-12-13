@@ -1,5 +1,5 @@
 imports:
-    - config.yml
+    - { resource: sulu.yml }
 
 parameters:
     secret: test
