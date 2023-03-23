@@ -17,7 +17,7 @@
 
         <property name="type" type="single_select" mandatory="true">
             <meta>
-                <title>sulu_communty.type</title>
+                <title>sulu_community.type</title>
             </meta>
 
             <params>
