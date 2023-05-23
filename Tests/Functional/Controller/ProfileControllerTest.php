@@ -172,6 +172,19 @@ class ProfileControllerTest extends SuluTestCase
         $this->assertNull($user->getContact()->getNote());
     }
 
+    public function testProfileInvalid(): void
+    {
+        $crawler = $this->client->request('GET', '/profile');
+        $this->assertHttpStatusCode(200, $this->client->getResponse());
+
+        $form = $crawler->selectButton('profile[submit]')->form([
+            'profile[firstName]' => null,
+        ]);
+
+        $this->client->submit($form);
+        $this->assertHttpStatusCode(422, $this->client->getResponse());
+    }
+
     /**
      * @return array{
      *     'sulu.context': SuluKernel::CONTEXT_WEBSITE,

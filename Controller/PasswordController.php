@@ -67,7 +67,7 @@ class PasswordController extends AbstractController
         return $this->renderTemplate(
             Configuration::TYPE_PASSWORD_FORGET,
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'success' => $success,
             ]
         );
@@ -138,7 +138,7 @@ class PasswordController extends AbstractController
         return $this->renderTemplate(
             Configuration::TYPE_PASSWORD_RESET,
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'success' => $success,
             ]
         );

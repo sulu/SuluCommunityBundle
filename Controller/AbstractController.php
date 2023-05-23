@@ -106,9 +106,25 @@ abstract class AbstractController extends SymfonyAbstractController
             Configuration::TEMPLATE
         );
 
+        $response = new Response();
+
+        // Reuse logic from Symfony AbstractController.
+        // See: https://github.com/symfony/symfony/blob/6.3/src/Symfony/Bundle/FrameworkBundle/Controller/AbstractController.php#L239-L243
+        // See: https://github.com/symfony/symfony/blob/6.3/src/Symfony/Bundle/FrameworkBundle/Controller/AbstractController.php#L260-L265
+        foreach ($data as $k => $v) {
+            if ($v instanceof FormInterface) {
+                if ($v->isSubmitted() && !$v->isValid()) {
+                    $response->setStatusCode(422);
+                }
+
+                $data[$k] = $v->createView();
+            }
+        }
+
         return $this->render(
             $template,
-            $data
+            $data,
+            $response,
         );
     }
 
