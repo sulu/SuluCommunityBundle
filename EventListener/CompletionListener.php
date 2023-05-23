@@ -104,7 +104,7 @@ class CompletionListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $completionUrl = $this->router->generate('sulu_community.completion');
 
-        if (!$event->isMasterRequest()
+        if (!$event->isMainRequest()
             || !$request->isMethodSafe()
             || $request->isXmlHttpRequest()
             || $request->getPathInfo() === $completionUrl
