@@ -73,7 +73,7 @@ class ProfileController extends AbstractController
         return $this->renderTemplate(
             self::TYPE,
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'success' => $success,
             ]
         );

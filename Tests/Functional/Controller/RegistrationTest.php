@@ -92,6 +92,17 @@ class RegistrationTest extends SuluTestCase
         $this->assertHttpStatusCode(302, $this->client->getResponse());
     }
 
+    public function testRegisterInvalid(): void
+    {
+        $crawler = $this->client->request('GET', '/registration');
+
+        $form = $crawler->selectButton('registration[submit]')->form([
+            'registration[username]' => null,
+        ]);
+        $this->client->submit($form);
+        $this->assertHttpStatusCode(422, $this->client->getResponse());
+    }
+
     public function testConfirmation(): User
     {
         $this->testRegister();
@@ -173,7 +184,7 @@ class RegistrationTest extends SuluTestCase
             ]
         );
         $this->client->submit($form);
-        $this->assertHttpStatusCode(200, $this->client->getResponse());
+        $this->assertHttpStatusCode(422, $this->client->getResponse());
         $content = $this->client->getResponse()->getContent();
 
         $this->assertIsString($content);
@@ -332,6 +343,17 @@ class RegistrationTest extends SuluTestCase
         $password = $user->getPassword();
         $this->assertNotNull($password);
         $this->assertStringStartsWith('my-new-password', $password);
+    }
+
+    public function testPasswordForgetInvalid(): void
+    {
+        $crawler = $this->client->request('GET', '/password-forget');
+
+        $form = $crawler->selectButton('password_forget[submit]')->form([
+            'password_forget[email_username]' => 'hikaru@sulu.io',
+        ]);
+        $this->client->submit($form);
+        $this->assertHttpStatusCode(422, $this->client->getResponse());
     }
 
     /**
