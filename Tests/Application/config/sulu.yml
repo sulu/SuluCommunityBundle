@@ -1,5 +1,6 @@
-swiftmailer:
-    disable_delivery:  true
+framework:
+    mailer:
+        dsn: 'null://null'
 
 doctrine:
     orm:

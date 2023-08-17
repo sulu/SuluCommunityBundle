@@ -22,10 +22,10 @@ use Sulu\Bundle\SecurityBundle\Entity\User;
 use Sulu\Bundle\TestBundle\Testing\SuluTestCase;
 use Sulu\Component\HttpKernel\SuluKernel;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Profiler\Profile;
+use Symfony\Component\Mime\RawMessage;
 
 /**
  * This testcases covers the whole registration, confirmation and login process.
@@ -181,7 +181,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertNull($this->findUser());
     }
 
-    public function testRegistrationBlacklistedRequested(): \Swift_Message
+    public function testRegistrationBlacklistedRequested(): RawMessage
     {
         $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_REQUEST);
 
@@ -209,11 +209,10 @@ class RegistrationTest extends SuluTestCase
         $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
-        /** @var MessageDataCollector $mailCollector */
-        $mailCollector = $profile->getCollector('swiftmailer');
-        $this->assertSame(1, $mailCollector->getMessageCount());
-        $message = $mailCollector->getMessages()[0];
-        $this->assertSame('admin@localhost', \key($message->getTo()));
+        $this->assertEmailCount(1);
+
+        $message = $this->getMailerMessage();
+        $this->assertSame('admin@localhost', $message->getTo()[0]->getAddress());
 
         return $message;
     }
@@ -223,7 +222,7 @@ class RegistrationTest extends SuluTestCase
         $message = $this->testRegistrationBlacklistedRequested();
 
         $emailCrawler = new Crawler();
-        $emailCrawler->addContent($message->getBody());
+        $emailCrawler->addContent($message->getHtmlBody());
 
         $links = $emailCrawler->filter('a');
         $firstLink = $links->first()->attr('href');
@@ -241,11 +240,10 @@ class RegistrationTest extends SuluTestCase
         $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
-        /** @var MessageDataCollector $mailCollector */
-        $mailCollector = $profile->getCollector('swiftmailer');
-        $this->assertSame(1, $mailCollector->getMessageCount());
-        $message = $mailCollector->getMessages()[0];
-        $this->assertSame('hikaru@sulu.io', \key($message->getTo()));
+        $this->assertEmailCount(1);
+
+        $message = $this->getMailerMessage();
+        $this->assertSame('hikaru@sulu.io', $message->getTo()[0]->getAddress());
     }
 
     public function testBlacklistBlocked(): void
@@ -253,7 +251,7 @@ class RegistrationTest extends SuluTestCase
         $message = $this->testRegistrationBlacklistedRequested();
 
         $emailCrawler = new Crawler();
-        $emailCrawler->addContent($message->getBody());
+        $emailCrawler->addContent($message->getHtmlBody());
 
         $links = $emailCrawler->filter('a');
         $lastLink = $links->last()->attr('href');
@@ -271,9 +269,7 @@ class RegistrationTest extends SuluTestCase
         $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
-        /** @var MessageDataCollector $mailCollector */
-        $mailCollector = $profile->getCollector('swiftmailer');
-        $this->assertSame(0, $mailCollector->getMessageCount());
+        $this->assertEmailCount(0);
     }
 
     public function testPasswordForget(): void
@@ -298,14 +294,13 @@ class RegistrationTest extends SuluTestCase
         $profile = $this->client->getProfile();
         $this->assertNotFalse($profile, 'Could not found response profile, is profiler activated?');
 
-        /** @var MessageDataCollector $mailCollector */
-        $mailCollector = $profile->getCollector('swiftmailer');
-        $this->assertSame(1, $mailCollector->getMessageCount());
-        $message = $mailCollector->getMessages()[0];
-        $this->assertSame('hikaru@sulu.io', \key($message->getTo()));
+        $this->assertEmailCount(1);
+
+        $message = $this->getMailerMessage();
+        $this->assertSame('hikaru@sulu.io', $message->getTo()[0]->getAddress());
 
         $emailCrawler = new Crawler();
-        $emailCrawler->addContent($message->getBody());
+        $emailCrawler->addContent($message->getHtmlBody());
         $links = $emailCrawler->filter('a');
 
         $firstLink = $links->first()->attr('href');

@@ -99,7 +99,7 @@ trait SaveMediaTrait
      */
     private function getSystemCollectionManager(): SystemCollectionManagerInterface
     {
-        return $this->get('sulu_media.system_collections.manager');
+        return $this->container->get('sulu_media.system_collections.manager');
     }
 
     /**
@@ -107,7 +107,7 @@ trait SaveMediaTrait
      */
     private function getMediaManager(): MediaManagerInterface
     {
-        return $this->get('sulu_media.media_manager');
+        return $this->container->get('sulu_media.media_manager');
     }
 
     /**

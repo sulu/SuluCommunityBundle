@@ -26,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstr
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Contains helper function for all controllers.
@@ -75,10 +75,25 @@ abstract class AbstractController extends SymfonyAbstractController
         }
 
         $user->setSalt($salt);
-        $password = $this->getUserPasswordEncoder()->encodePassword($user, $plainPassword);
+        $password = $this->encodePassword($user, $plainPassword);
         $user->setPassword($password);
 
         return $user;
+    }
+
+    protected function encodePassword(User $user, string $plainPassword): string
+    {
+        if ($this->container->has('?security.password_hasher')) {
+            /** @var UserPasswordHasherInterface $hasher */
+            $hasher = $this->container->get('?security.password_hasher');
+
+            return $hasher->hashPassword($user, $plainPassword);
+        } else {
+            /** @var \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $encoder */
+            $encoder = $this->container->get('?security.password_encoder');
+
+            return $encoder->encodePassword($user, $plainPassword);
+        }
     }
 
     /**
@@ -207,11 +222,6 @@ abstract class AbstractController extends SymfonyAbstractController
         return $this->container->get('sulu_security.salt_generator');
     }
 
-    protected function getUserPasswordEncoder(): UserPasswordEncoderInterface
-    {
-        return $this->container->get('security.password_encoder');
-    }
-
     protected function getTemplateAttributeResolver(): TemplateAttributeResolverInterface
     {
         return $this->container->get('sulu_website.resolver.template_attribute');
@@ -232,9 +242,13 @@ abstract class AbstractController extends SymfonyAbstractController
         $subscribedServices['sulu_community.community_manager.registry'] = CommunityManagerRegistryInterface::class;
         $subscribedServices['sulu_core.webspace.request_analyzer'] = RequestAnalyzerInterface::class;
         $subscribedServices['sulu_security.salt_generator'] = SaltGenerator::class;
-        $subscribedServices['security.password_encoder'] = UserPasswordEncoderInterface::class;
         $subscribedServices['sulu_website.resolver.template_attribute'] = TemplateAttributeResolverInterface::class;
         $subscribedServices['doctrine.orm.entity_manager'] = EntityManagerInterface::class;
+        $subscribedServices['?security.password_hasher'] = UserPasswordHasherInterface::class;
+
+        if (\class_exists('Symfony\\Component\\Security\\Core\\Encoder\\UserPasswordEncoderInterface')) {
+            $subscribedServices['?security.password_encoder'] = 'Symfony\\Component\\Security\\Core\\Encoder\\UserPasswordEncoderInterface';
+        }
 
         return $subscribedServices;
     }

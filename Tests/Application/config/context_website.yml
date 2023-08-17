@@ -1,0 +1,9 @@
+imports:
+    - { resource: sulu.yml }
+
+framework:
+    router: { resource: '%kernel.project_dir%/config/routing_website.yml' }
+    profiler: { only_exceptions: false }
+
+sulu_test:
+    enable_test_user_provider: true
