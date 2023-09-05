@@ -12,20 +12,20 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Traits;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
 
-trait BlacklistItemTrait
+trait RegistrationRuleItemTrait
 {
-    private function createBlacklistItem(
+    private function createRegistrationRuleItem(
         EntityManagerInterface $entityManager,
         string $pattern,
         string $type
-    ): BlacklistItem {
-        /** @var BlacklistItemRepository $blackListItemRepository */
-        $blackListItemRepository = $entityManager->getRepository(BlacklistItem::class);
+    ): RegistrationRuleItem {
+        /** @var RegistrationRuleItemRepository $blackListItemRepository */
+        $blackListItemRepository = $entityManager->getRepository(RegistrationRuleItem::class);
 
-        /** @var BlacklistItem $blackListItem */
+        /** @var RegistrationRuleItem $blackListItem */
         $blackListItem = $blackListItemRepository->createNew();
         $blackListItem->setPattern($pattern)
             ->setType($type);

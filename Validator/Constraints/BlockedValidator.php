@@ -11,8 +11,8 @@
 
 namespace Sulu\Bundle\CommunityBundle\Validator\Constraints;
 
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItemRepository;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -22,13 +22,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 class BlockedValidator extends ConstraintValidator
 {
     /**
-     * @var BlacklistItemRepository
+     * @var RegistrationRuleItemRepository
      */
-    protected $blacklistItemRepository;
+    protected $registrationRuleItemRepository;
 
-    public function __construct(BlacklistItemRepository $blacklistItemRepository)
+    public function __construct(RegistrationRuleItemRepository $registrationRuleItemRepository)
     {
-        $this->blacklistItemRepository = $blacklistItemRepository;
+        $this->registrationRuleItemRepository = $registrationRuleItemRepository;
     }
 
     /**
@@ -40,10 +40,10 @@ class BlockedValidator extends ConstraintValidator
             return;
         }
 
-        $items = $this->blacklistItemRepository->findBySender($value);
+        $items = $this->registrationRuleItemRepository->findBySender($value);
 
         foreach ($items as $item) {
-            if (BlacklistItem::TYPE_BLOCK === $item->getType()) {
+            if (RegistrationRuleItem::TYPE_BLOCK === $item->getType()) {
                 $this->context->addViolation($constraint->message, ['%email%' => $value]);
                 break;
             }

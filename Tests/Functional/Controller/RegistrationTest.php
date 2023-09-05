@@ -14,8 +14,8 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Functional\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\NoResultException;
-use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
-use Sulu\Bundle\CommunityBundle\Tests\Functional\Traits\BlacklistItemTrait;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
+use Sulu\Bundle\CommunityBundle\Tests\Functional\Traits\RegistrationRuleItemTrait;
 use Sulu\Bundle\ContactBundle\Entity\EmailType;
 use Sulu\Bundle\SecurityBundle\Entity\Role;
 use Sulu\Bundle\SecurityBundle\Entity\User;
@@ -32,7 +32,7 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
  */
 class RegistrationTest extends SuluTestCase
 {
-    use BlacklistItemTrait;
+    use RegistrationRuleItemTrait;
 
     /**
      * @var KernelBrowser
@@ -156,9 +156,9 @@ class RegistrationTest extends SuluTestCase
         $this->assertSame('http://localhost/login', $this->client->getResponse()->getTargetUrl());
     }
 
-    public function testRegistrationBlacklistedBlocked(): void
+    public function testRegistrationRegistrationRuleedBlocked(): void
     {
-        $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_BLOCK);
+        $this->createRegistrationRuleItem($this->getEntityManager(), '*@sulu.io', RegistrationRuleItem::TYPE_BLOCK);
 
         $crawler = $this->client->request('GET', '/registration');
         $form = $crawler->selectButton('registration[submit]')->form(
@@ -181,9 +181,9 @@ class RegistrationTest extends SuluTestCase
         $this->assertNull($this->findUser());
     }
 
-    public function testRegistrationBlacklistedRequested(): \Swift_Message
+    public function testRegistrationRegistrationRuleedRequested(): \Swift_Message
     {
-        $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', BlacklistItem::TYPE_REQUEST);
+        $this->createRegistrationRuleItem($this->getEntityManager(), '*@sulu.io', RegistrationRuleItem::TYPE_REQUEST);
 
         $crawler = $this->client->request('GET', '/registration');
         $this->assertHttpStatusCode(200, $this->client->getResponse());
@@ -218,9 +218,9 @@ class RegistrationTest extends SuluTestCase
         return $message;
     }
 
-    public function testBlacklistConfirm(): void
+    public function testRegistrationRuleConfirm(): void
     {
-        $message = $this->testRegistrationBlacklistedRequested();
+        $message = $this->testRegistrationRegistrationRuleedRequested();
 
         $emailCrawler = new Crawler();
         $emailCrawler->addContent($message->getBody());
@@ -248,9 +248,9 @@ class RegistrationTest extends SuluTestCase
         $this->assertSame('hikaru@sulu.io', \key($message->getTo()));
     }
 
-    public function testBlacklistBlocked(): void
+    public function testRegistrationRuleBlocked(): void
     {
-        $message = $this->testRegistrationBlacklistedRequested();
+        $message = $this->testRegistrationRegistrationRuleedRequested();
 
         $emailCrawler = new Crawler();
         $emailCrawler->addContent($message->getBody());
