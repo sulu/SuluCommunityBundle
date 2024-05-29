@@ -39,7 +39,7 @@ class RegistrationRuleItemRepositoryTest extends SuluTestCase
         $entityManager->clear();
 
         $items = \array_map(
-            function (RegistrationRuleItem $item) {
+            function(RegistrationRuleItem $item) {
                 return ['pattern' => $item->getPattern(), 'type' => $item->getType()];
             },
             $repository->findBySender('test@sulu.io')

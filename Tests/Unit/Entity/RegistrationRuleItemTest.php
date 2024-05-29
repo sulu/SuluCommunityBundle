@@ -12,8 +12,8 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Entity;
 
 use PHPUnit\Framework\TestCase;
-use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
 use Sulu\Bundle\CommunityBundle\Entity\InvalidTypeException;
+use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
 
 class RegistrationRuleItemTest extends TestCase
 {

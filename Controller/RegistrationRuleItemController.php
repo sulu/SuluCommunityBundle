@@ -34,9 +34,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * Provides admin-api for registration-rule-items.
  *
  * @NamePrefix("sulu_community.")
-
+ *
  * @RouteResource("registration-rule-item")
-*/
+ */
 class RegistrationRuleItemController extends AbstractRestController implements ClassResourceInterface
 {
     use RequestParametersTrait;
