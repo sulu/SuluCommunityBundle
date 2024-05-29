@@ -205,7 +205,7 @@ class RegistrationTest extends SuluTestCase
             $this->markTestSkipped('Skip test for swift mailer.');
         }
 
-        $this->createBlacklistItem($this->getEntityManager(), '*@sulu.io', RegistrationRule::TYPE_REQUEST);
+        $this->createRegistrationRuleItem($this->getEntityManager(), '*@sulu.io', RegistrationRuleItem::TYPE_REQUEST);
 
         $crawler = $this->client->request('GET', '/registration');
         $this->assertHttpStatusCode(200, $this->client->getResponse());
@@ -241,7 +241,7 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationRuleConfirm(): void
     {
-        $message = $this->testRegistrationRegistrationRuleedRequested();
+        $message = $this->testRegistrationRegistrationRuleRequested();
 
         $emailCrawler = new Crawler();
         $emailCrawler->addContent($message->getHtmlBody());
@@ -270,7 +270,7 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationRuleBlocked(): void
     {
-        $message = $this->testRegistrationRegistrationRuleedRequested();
+        $message = $this->testRegistrationRegistrationRuleRequested();
 
         $emailCrawler = new Crawler();
         $emailCrawler->addContent($message->getHtmlBody());

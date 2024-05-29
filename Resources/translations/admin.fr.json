@@ -1,5 +1,5 @@
 {
-    "sulu_community.blacklist": "RegistrationRule",
+    "sulu_community.registration_rule": "RegistrationRule",
     "sulu_community.pattern": "Expéditeur",
     "sulu_community.type": "Type",
     "sulu_community.request": "Confirmer",
