@@ -40,7 +40,6 @@ Register the admin routes:
 # config/routes/sulu_community_admin.yaml
 
 sulu_community_api:
-    type: rest
     resource: "@SuluCommunityBundle/Resources/config/routing_api.yaml"
     prefix: /admin/api
 ```

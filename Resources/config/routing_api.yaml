@@ -1,3 +1,55 @@
-sulu_community.blacklist_item:
-    type: rest
-    resource: sulu_community.controller.blacklist_item
+sulu_community.fields_blacklist-item:
+    path: '/blacklist-items/fields.{_format}'
+    methods: GET
+    controller: 'sulu_community.controller.blacklist_item::fieldsAction'
+    format: json
+    defaults: { _format: json }
+    requirements: { _format: json|csv }
+
+sulu_community.get_blacklist-items:
+    path: '/blacklist-items.{_format}'
+    methods: GET
+    controller: 'sulu_community.controller.blacklist_item::cgetAction'
+    format: json
+    defaults: { _format: json }
+    requirements: { _format: json|csv }
+
+sulu_community.get_blacklist-item:
+    path: '/blacklist-items/{id}.{_format}'
+    methods: GET
+    controller: 'sulu_community.controller.blacklist_item::getAction'
+    format: json
+    defaults: { _format: json }
+    requirements: { _format: json|csv }
+
+sulu_community.post_blacklist-item:
+    path: '/blacklist-items.{_format}'
+    methods: POST
+    controller: 'sulu_community.controller.blacklist_item::postAction'
+    format: json
+    defaults: { _format: json }
+    requirements: { _format: json|csv }
+
+sulu_community.delete_blacklist-item:
+    path: '/blacklist-items/{id}.{_format}'
+    methods: DELETE
+    controller: 'sulu_community.controller.blacklist_item::deleteAction'
+    format: json
+    defaults: { _format: json }
+    requirements: { _format: json|csv }
+
+sulu_community.delete_blacklist-items:
+    path: '/blacklist-items.{_format}'
+    methods: DELETE
+    controller: 'sulu_community.controller.blacklist_item::cdeleteAction'
+    format: json
+    defaults: { _format: json }
+    requirements: { _format: json|csv }
+
+sulu_community.put_blacklist-item:
+    path: '/blacklist-items/{id}.{_format}'
+    methods: PUT
+    controller: 'sulu_community.controller.blacklist_item::putAction'
+    format: json
+    defaults: { _format: json }
+    requirements: { _format: json|csv }

@@ -12,9 +12,6 @@
 namespace Sulu\Bundle\CommunityBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\Annotations\NamePrefix;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Sulu\Bundle\CommunityBundle\Entity\BlacklistItem;
 use Sulu\Bundle\CommunityBundle\Manager\BlacklistItemManagerInterface;
@@ -32,12 +29,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 /**
  * Provides admin-api for blacklist-items.
- *
- * @NamePrefix("sulu_community.")
- *
- * @RouteResource("blacklist-item")
  */
-class BlacklistItemController extends AbstractRestController implements ClassResourceInterface
+class BlacklistItemController extends AbstractRestController
 {
     use RequestParametersTrait;
 

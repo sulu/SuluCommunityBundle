@@ -2,6 +2,22 @@
 
 ## 2.0.0 (unreleased)
 
+### FOSRestRouting Bundle removed
+
+As announced in Sulu [2.6.10](https://github.com/sulu/sulu/blob/2.6/UPGRADE-2.x.md)
+the `type: rest` / [FOSRestRouting](https://github.com/handcraftedinthealps/RestRoutingBundle) was removed.
+
+The following change is needed in your application:
+
+```diff
+# config/routes/sulu_community_admin.yaml
+
+sulu_community_api:
+-    type: rest
+     resource: "@SuluCommunityBundle/Resources/config/routing_api.yaml"
+     prefix:   /admin/api
+```
+
 ### ListRepresentation relation name changed
 
 The name of the relation inside of the `_embedded` field has been changed from `items` to `blacklist_items`.
