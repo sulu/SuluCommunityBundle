@@ -118,7 +118,8 @@ class MailFactory implements MailFactoryInterface
             if (empty($address)) {
                 return null;
             } elseif (!isset($address['email'])) {
-                $email = $address[\array_keys($address)[0]];
+                $email = \array_keys($address)[0];
+                $name = $address[\array_keys($address)[0]];
             } else {
                 $email = $address['email'];
                 $name = $address['name'] ?? '';
