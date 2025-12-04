@@ -22,7 +22,8 @@ jobs:
                     - php-version: '7.2'
                       lint: false
                       dependency-versions: 'lowest'
-                      tools: 'composer:v1'
+                      tools: 'composer:v2'
+                      composer-block-insecure: false
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
@@ -30,6 +31,7 @@ jobs:
                       lint: false
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
+                      composer-block-insecure: false
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
@@ -79,6 +81,10 @@ jobs:
                   php-version: ${{ matrix.php-version }}
                   extensions: 'mysql, gd'
                   tools: ${{ matrix.tools }}
+
+            - name: Set composer block-insecure
+              if: ${{ matrix.composer-block-insecure == false }}
+              run: composer config "audit.block-insecure" false
 
             - name: Remove php-cs-fixer/shim package
               if: ${{ matrix.php-version == '7.2' }}
