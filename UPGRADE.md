@@ -2,6 +2,20 @@
 
 ## 2.0.0 (unreleased)
 
+### Blacklist replaced with RegistrationRule
+
+This means that any occurance of "blacklist" has been replaced with "registrationrule".
+
+This also includes the renames of the following entities and tables in the database:
+
+* BlacklistRuleItem -> RegistrationRuleItem
+* BlacklistUser -> RegistrationRuleUser
+
+```sql
+ALTER TABLE com_blacklist_item RENAME com_registration_rule_item;
+ALTER TABLE com_blacklist_user RENAME com_registration_rule_user;
+```
+
 ### ListRepresentation relation name changed
 
 The name of the relation inside of the `_embedded` field has been changed from `items` to `registration_rule_items`.
