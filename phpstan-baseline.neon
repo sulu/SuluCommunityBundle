@@ -1,291 +1,902 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+			message: '#^Binary operation "\." between mixed and ''\.details'' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$addView of method Sulu\\Bundle\\AdminBundle\\Admin\\View\\ListViewBuilderInterface\:\:setAddView\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$backView of method Sulu\\Bundle\\AdminBundle\\Admin\\View\\ResourceTabViewBuilderInterface\:\:setBackView\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$editView of method Sulu\\Bundle\\AdminBundle\\Admin\\View\\FormViewBuilderInterface\:\:setEditView\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$editView of method Sulu\\Bundle\\AdminBundle\\Admin\\View\\ListViewBuilderInterface\:\:setEditView\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Sulu\\Bundle\\AdminBundle\\Admin\\View\\ViewBuilderFactoryInterface\:\:createListViewBuilder\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Sulu\\Bundle\\AdminBundle\\Admin\\View\\ViewBuilderFactoryInterface\:\:createResourceTabViewBuilder\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$parent of method Sulu\\Bundle\\AdminBundle\\Admin\\View\\ViewBuilderInterface\:\:setParent\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Parameter \#1 \$view of method Sulu\\Bundle\\AdminBundle\\Admin\\Navigation\\NavigationItem\:\:setView\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Admin/CommunityAdmin.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<string\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: Command/InitCommand.php
 
 		-
-			message: "#^Call to method encodePassword\\(\\) on an unknown class Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\UserPasswordEncoderInterface\\.$#"
+			message: '#^Call to function method_exists\(\) with ''Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\Role'' and ''setKey'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: Command/InitCommand.php
+
+		-
+			message: '#^Call to method encodePassword\(\) on an unknown class Symfony\\Component\\Security\\Core\\Encoder\\UserPasswordEncoderInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^If condition is always false\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\AbstractController\:\:encodePassword\(\) should return string but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^Method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\AbstractController\\:\\:getSubscribedServices\\(\\) should return array\\<int\\|string, string\\> but returns array\\<string\\|Symfony\\\\Contracts\\\\Service\\\\Attribute\\\\SubscribedService\\>\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\AbstractController\:\:getSubscribedServices\(\) should return array\<int\|string, string\> but returns array\<string\|Symfony\\Contracts\\Service\\Attribute\\SubscribedService\>\.$#'
+			identifier: return.type
 			count: 1
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^PHPDoc tag @var for variable \\$encoder contains unknown class Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\UserPasswordEncoderInterface\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\AbstractController\:\:setUserPasswordAndSalt\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:getConfigTypeProperty\\(\\) expects 'completion'\\|'confirmation'\\|'email_confirmation'\\|'firewall'\\|'from'\\|'login'\\|'maintenance'\\|'password_forget'\\|'password_reset'\\|'profile'\\|'registration'\\|'registration_rule'\\|'registration_rule…'\\|'role'\\|'to'\\|'webspace_key', string given\\.$#"
+			message: '#^PHPDoc tag @var for variable \$encoder contains unknown class Symfony\\Component\\Security\\Core\\Encoder\\UserPasswordEncoderInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Controller/AbstractController.php
+
+		-
+			message: '#^Parameter \#1 \$type of method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManagerInterface\:\:getConfigTypeProperty\(\) expects ''blacklist_confirmed''\|''blacklist_denied''\|''blacklisted''\|''completion''\|''confirmation''\|''email_confirmation''\|''firewall''\|''from''\|''login''\|''maintenance''\|''password_forget''\|''password_reset''\|''profile''\|''registration''\|''role''\|''to''\|''webspace_key'', string given\.$#'
+			identifier: argument.type
 			count: 2
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^Unable to resolve the template type TConfig in call to method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:getConfigTypeProperty\\(\\)$#"
+			message: '#^Unable to resolve the template type TConfig in call to method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManagerInterface\:\:getConfigTypeProperty\(\)$#'
+			identifier: argument.templateType
 			count: 2
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User\\>\\>, string given\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\BlacklistConfirmationController\:\:getBlacklistItemManager\(\) should return Sulu\\Bundle\\CommunityBundle\\Manager\\BlacklistItemManager but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Controller/BlacklistConfirmationController.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\BlacklistConfirmationController\:\:getBlacklistItemRepository\(\) should return Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistItemRepository but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Controller/BlacklistConfirmationController.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\BlacklistConfirmationController\:\:getBlacklistUserRepository\(\) should return Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistUserRepository but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Controller/BlacklistConfirmationController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and string will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: Controller/BlacklistItemController.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\CompletionController\:\:saveAvatar\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
 			path: Controller/CompletionController.php
 
 		-
-			message: "#^Parameter \\#1 \\$emailUsername of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:passwordForget\\(\\) expects string, mixed given\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\CompletionController\:\:saveDocuments\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\CompletionController\:\:saveMediaFields\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Parameter \#1 \$avatar of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:setAvatar\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Parameter \#1 \$media of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:addMedia\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Parameter \#1 \$type of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects class\-string\<Symfony\\Component\\Form\\FormTypeInterface\<Sulu\\Bundle\\SecurityBundle\\Entity\\User\>\>, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Parameter \#1 \$uploadedFile of method Sulu\\Bundle\\CommunityBundle\\Controller\\CompletionController\:\:saveMedia\(\) expects Symfony\\Component\\HttpFoundation\\File\\UploadedFile, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Parameter \#3 \$options of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Parameter \#1 \$emailUsername of method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManagerInterface\:\:passwordForget\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Controller/PasswordController.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User\\>\\>, string given\\.$#"
+			message: '#^Parameter \#1 \$type of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects class\-string\<Symfony\\Component\\Form\\FormTypeInterface\<Sulu\\Bundle\\SecurityBundle\\Entity\\User\>\>, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Controller/PasswordController.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<array\\{\\}\\>\\>, string given\\.$#"
+			message: '#^Parameter \#1 \$type of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects class\-string\<Symfony\\Component\\Form\\FormTypeInterface\<array\{\}\>\>, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Controller/PasswordController.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User\\|null\\>\\>, string given\\.$#"
+			message: '#^Parameter \#3 \$options of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Controller/PasswordController.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\ProfileController\:\:saveAvatar\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
 			path: Controller/ProfileController.php
 
 		-
-			message: "#^Parameter \\#1 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\AbstractController\\:\\:setUserPasswordAndSalt\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User\\|null given\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\ProfileController\:\:saveDocuments\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
 			path: Controller/ProfileController.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<null\\>\\>, string given\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\ProfileController\:\:saveMediaFields\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$avatar of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:setAvatar\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$media of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:addMedia\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$type of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects class\-string\<Symfony\\Component\\Form\\FormTypeInterface\<Sulu\\Bundle\\SecurityBundle\\Entity\\User\|null\>\>, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$uploadedFile of method Sulu\\Bundle\\CommunityBundle\\Controller\\ProfileController\:\:saveMedia\(\) expects Symfony\\Component\\HttpFoundation\\File\\UploadedFile, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Sulu\\Bundle\\CommunityBundle\\Controller\\AbstractController\:\:setUserPasswordAndSalt\(\) expects Sulu\\Bundle\\SecurityBundle\\Entity\\User, Sulu\\Bundle\\SecurityBundle\\Entity\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#3 \$options of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\RegistrationController\:\:saveAvatar\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
 			path: Controller/RegistrationController.php
 
 		-
-			message: "#^Parameter \\#1 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\AbstractController\\:\\:setUserPasswordAndSalt\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, null given\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\RegistrationController\:\:saveDocuments\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
 			path: Controller/RegistrationController.php
 
 		-
-			message: "#^Cannot access offset 'template' on mixed\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\RegistrationController\:\:saveMediaFields\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Parameter \#1 \$avatar of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:setAvatar\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Parameter \#1 \$media of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:addMedia\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Parameter \#1 \$type of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects class\-string\<Symfony\\Component\\Form\\FormTypeInterface\<null\>\>, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Parameter \#1 \$uploadedFile of method Sulu\\Bundle\\CommunityBundle\\Controller\\RegistrationController\:\:saveMedia\(\) expects Symfony\\Component\\HttpFoundation\\File\\UploadedFile, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Sulu\\Bundle\\CommunityBundle\\Controller\\AbstractController\:\:setUserPasswordAndSalt\(\) expects Sulu\\Bundle\\SecurityBundle\\Entity\\User, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Parameter \#3 \$options of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
+
+		-
+			message: '#^Cannot access offset ''template'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 2
 			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
 
 		-
-			message: "#^Method Sulu\\\\Bundle\\\\CommunityBundle\\\\DependencyInjection\\\\CompilerPass\\\\CommunityManagerCompilerPass\\:\\:updateWebspaceConfig\\(\\) should return array\\{from\\: array\\<string\\>\\|string, to\\: array\\<string\\>\\|string, webspace_key\\: string, role\\: string, firewall\\: string, maintenance\\: array\\{enabled\\: bool, template\\: string\\}, login\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, registration\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, \\.\\.\\.\\} but returns non\\-empty\\-array\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\DependencyInjection\\CompilerPass\\CommunityManagerCompilerPass\:\:updateWebspaceConfig\(\) should return array\{from\: array\<string\>\|string, to\: array\<string\>\|string, webspace_key\: string, role\: string, firewall\: string, maintenance\: array\{enabled\: bool, template\: string\}, login\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, registration\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, \.\.\.\} but returns non\-empty\-array\.$#'
+			identifier: return.type
 			count: 1
 			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
 
 		-
-			message: "#^Offset 'email' does not exist on array\\<string\\>\\|string\\.$#"
+			message: '#^Offset ''email'' might not exist on array\<string\>\|string\.$#'
+			identifier: offsetAccess.notFound
 			count: 2
 			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
 
 		-
-			message: "#^Offset 'from' on array\\{from\\: array\\<string\\>\\|string, to\\: array\\<string\\>\\|string, webspace_key\\: string, role\\: string, firewall\\: string, maintenance\\: array\\{enabled\\: bool, template\\: string\\}, login\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, registration\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, \\.\\.\\.\\} in isset\\(\\) always exists and is not nullable\\.$#"
+			message: '#^Offset ''from'' on array\{from\: array\<string\>\|string, to\: array\<string\>\|string, webspace_key\: string, role\: string, firewall\: string, maintenance\: array\{enabled\: bool, template\: string\}, login\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, registration\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, \.\.\.\} in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.offset
 			count: 1
 			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
 
 		-
-			message: "#^Offset 'name' does not exist on array\\<string\\>\\|string\\.$#"
+			message: '#^Offset ''name'' might not exist on array\<string\>\|string\.$#'
+			identifier: offsetAccess.notFound
 			count: 2
 			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
 
 		-
-			message: "#^Offset 'to' on array\\{from\\: non\\-empty\\-array\\<string, string\\>, to\\: array\\<string\\>\\|string, webspace_key\\: string, role\\: string, firewall\\: string, maintenance\\: array\\{enabled\\: bool, template\\: string\\}, login\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, registration\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, \\.\\.\\.\\} in isset\\(\\) always exists and is not nullable\\.$#"
+			message: '#^Offset ''to'' on array\{from\: non\-empty\-array\<string, string\>, to\: array\<string\>\|string, webspace_key\: string, role\: string, firewall\: string, maintenance\: array\{enabled\: bool, template\: string\}, login\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, registration\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, \.\.\.\} in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.offset
 			count: 1
 			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
 
 		-
-			message: "#^Cannot access offset 'completion' on mixed\\.$#"
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
+			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
+
+		-
+			message: '#^Cannot access offset ''completion'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: DependencyInjection/CompilerPass/CommunityValidatorCompilerPass.php
 
 		-
-			message: "#^Cannot access offset 'service' on mixed\\.$#"
+			message: '#^Cannot access offset ''service'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: DependencyInjection/CompilerPass/CommunityValidatorCompilerPass.php
 
 		-
-			message: "#^Parameter \\#1 \\$id of class Symfony\\\\Component\\\\DependencyInjection\\\\Reference constructor expects string, mixed given\\.$#"
+			message: '#^Parameter \#1 \$id of class Symfony\\Component\\DependencyInjection\\Reference constructor expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: DependencyInjection/CompilerPass/CommunityValidatorCompilerPass.php
 
 		-
-			message: "#^Class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\EmailConfirmationTokenRepository extends generic class Sulu\\\\Component\\\\Persistence\\\\Repository\\\\ORM\\\\EntityRepository but does not specify its types\\: T$#"
+			message: '#^Cannot access offset ''enabled'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: DependencyInjection/SuluCommunityExtension.php
+
+		-
+			message: '#^Cannot access offset ''refresh_interval'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: DependencyInjection/SuluCommunityExtension.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: DependencyInjection/SuluCommunityExtension.php
+
+		-
+			message: '#^Parameter \#1 \$objects of method Sulu\\Bundle\\CommunityBundle\\DependencyInjection\\SuluCommunityExtension\:\:configurePersistence\(\) expects array\<string, array\{model\: class\-string, repository\?\: class\-string\}\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: DependencyInjection/SuluCommunityExtension.php
+
+		-
+			message: '#^Parameter \#2 \$value of method Symfony\\Component\\DependencyInjection\\Container\:\:setParameter\(\) expects array\|bool\|float\|int\|string\|UnitEnum\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: DependencyInjection/SuluCommunityExtension.php
+
+		-
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistItemRepository extends generic class Sulu\\Component\\Persistence\\Repository\\ORM\\EntityRepository but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: Entity/BlacklistItemRepository.php
+
+		-
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistUserRepository extends generic class Sulu\\Component\\Persistence\\Repository\\ORM\\EntityRepository but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: Entity/BlacklistUserRepository.php
+
+		-
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Entity\\EmailConfirmationTokenRepository extends generic class Sulu\\Component\\Persistence\\Repository\\ORM\\EntityRepository but does not specify its types\: T$#'
+			identifier: missingType.generics
 			count: 1
 			path: Entity/EmailConfirmationTokenRepository.php
 
 		-
-			message: "#^Class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\RegistrationRuleItemRepository extends generic class Sulu\\\\Component\\\\Persistence\\\\Repository\\\\ORM\\\\EntityRepository but does not specify its types\\: T$#"
-			count: 1
-			path: Entity/RegistrationRuleItemRepository.php
-
-		-
-			message: "#^Class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\RegistrationRuleUserRepository extends generic class Sulu\\\\Component\\\\Persistence\\\\Repository\\\\ORM\\\\EntityRepository but does not specify its types\\: T$#"
-			count: 1
-			path: Entity/RegistrationRuleUserRepository.php
-
-		-
-			message: "#^Method Sulu\\\\Bundle\\\\CommunityBundle\\\\Event\\\\AbstractCommunityEvent\\:\\:getConfigProperty\\(\\) has invalid return type Sulu\\\\Bundle\\\\CommunityBundle\\\\Event\\\\TTypeConfig\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Event\\AbstractCommunityEvent\:\:getConfigProperty\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: Event/AbstractCommunityEvent.php
 
 		-
-			message: "#^Offset TTypeConfigProperty of 'activate_user'\\|'auto_login'\\|'delete_user'\\|'email'\\|'embed_template'\\|'enabled'\\|'options'\\|'redirect_to'\\|'service'\\|'template'\\|'type' does not exist on array\\<array\\|bool\\|string\\|null\\>\\|string\\.$#"
+			message: '#^Offset TTypeConfigProperty of ''activate_user''\|''auto_login''\|''delete_user''\|''email''\|''embed_template''\|''enabled''\|''options''\|''redirect_to''\|''service''\|''template''\|''type'' \(method Sulu\\Bundle\\CommunityBundle\\Event\\AbstractCommunityEvent\:\:getConfigTypeProperty\(\), argument\) might not exist on array\<array\<mixed\>\|bool\|string\|null\>\|string\.$#'
+			identifier: offsetAccess.notFound
 			count: 1
 			path: Event/AbstractCommunityEvent.php
 
 		-
-			message: "#^Offset 'firewall' on array\\{from\\: array\\<string\\>\\|string, to\\: array\\<string\\>\\|string, webspace_key\\: string, role\\: string, firewall\\: string, maintenance\\: array\\{enabled\\: bool, template\\: string\\}, login\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, registration\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			message: '#^PHPDoc tag @return contains unresolvable type\.$#'
+			identifier: return.unresolvableType
+			count: 1
+			path: Event/AbstractCommunityEvent.php
+
+		-
+			message: '#^Parameter \#1 \$from of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: EventListener/BlacklistListener.php
+
+		-
+			message: '#^Parameter \#2 \$to of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: EventListener/BlacklistListener.php
+
+		-
+			message: '#^Parameter \#2 \$webspaceKey of class Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistUser constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: EventListener/BlacklistListener.php
+
+		-
+			message: '#^Instanceof between Sulu\\Bundle\\SecurityBundle\\Entity\\User and Sulu\\Bundle\\SecurityBundle\\Entity\\User will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
 			count: 1
 			path: EventListener/CompletionListener.php
 
 		-
-			message: "#^Parameter \\#1 \\$from of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Offset ''firewall'' on array\{from\: array\<string\>\|string, to\: array\<string\>\|string, webspace_key\: string, role\: string, firewall\: string, maintenance\: array\{enabled\: bool, template\: string\}, login\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, registration\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, \.\.\.\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: EventListener/CompletionListener.php
+
+		-
+			message: '#^Instanceof between Sulu\\Bundle\\SecurityBundle\\Entity\\User and Sulu\\Bundle\\SecurityBundle\\Entity\\User will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
 			count: 1
 			path: EventListener/EmailConfirmationListener.php
 
 		-
-			message: "#^Parameter \\#2 \\$to of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Parameter \#1 \$from of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: EventListener/EmailConfirmationListener.php
 
 		-
-			message: "#^Offset 'email' does not exist on array\\<array\\|bool\\|string\\|null\\>\\|string\\.$#"
+			message: '#^Parameter \#2 \$to of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: EventListener/EmailConfirmationListener.php
+
+		-
+			message: '#^Offset ''email'' might not exist on array\<array\<mixed\>\|bool\|string\|null\>\|string\.$#'
+			identifier: offsetAccess.notFound
 			count: 1
 			path: EventListener/MailListener.php
 
 		-
-			message: "#^Parameter \\#3 \\$config of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\{subject\\: string, user_template\\: string\\|null, admin_template\\: string\\|null\\}, array\\|bool\\|string\\|null given\\.$#"
+			message: '#^Parameter \#3 \$config of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\{subject\: string, user_template\: string\|null, admin_template\: string\|null\}, array\<mixed\>\|bool\|string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: EventListener/MailListener.php
 
 		-
-			message: "#^Parameter \\#1 \\$from of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Form\\Type\\CompletionContactType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
-			path: EventListener/RegistrationRuleListener.php
+			path: Form/Type/CompletionContactType.php
 
 		-
-			message: "#^Parameter \\#2 \\$to of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Form\\Type\\CompletionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
-			path: EventListener/RegistrationRuleListener.php
+			path: Form/Type/CompletionType.php
 
 		-
-			message: "#^Parameter \\#2 \\$webspaceKey of class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\RegistrationRuleUser constructor expects string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Form\\Type\\PasswordForgetType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
 			count: 1
-			path: EventListener/RegistrationRuleListener.php
+			path: Form/Type/PasswordForgetType.php
 
 		-
-			message: "#^Call to method createMessage\\(\\) on an unknown class Swift_Mailer\\.$#"
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Form\\Type\\PasswordResetType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Form/Type/PasswordResetType.php
+
+		-
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Form\\Type\\ProfileType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Form/Type/ProfileType.php
+
+		-
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Form\\Type\\RegistrationType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Form/Type/RegistrationType.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:getFrom\(\) should return array\<string, string\>\|string but returns array\<string\>\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: Mail/Mail.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:getTo\(\) should return array\<string, string\>\|string but returns array\<string\>\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: Mail/Mail.php
+
+		-
+			message: '#^Parameter \#1 \$from of class Sulu\\Bundle\\CommunityBundle\\Mail\\Mail constructor expects array\<string, string\>\|string, array\<string\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Mail/Mail.php
+
+		-
+			message: '#^Parameter \#2 \$to of class Sulu\\Bundle\\CommunityBundle\\Mail\\Mail constructor expects array\<string, string\>\|string, array\<string\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Mail/Mail.php
+
+		-
+			message: '#^Call to method createMessage\(\) on an unknown class Swift_Mailer\.$#'
+			identifier: class.notFound
 			count: 1
 			path: Mail/MailFactory.php
 
 		-
-			message: "#^Call to method send\\(\\) on an unknown class Swift_Mailer\\.$#"
+			message: '#^Call to method send\(\) on an unknown class Swift_Mailer\.$#'
+			identifier: class.notFound
 			count: 1
 			path: Mail/MailFactory.php
 
 		-
-			message: "#^Class Swift_Mailer not found\\.$#"
+			message: '#^Cannot call method setBody\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: Mail/MailFactory.php
 
 		-
-			message: "#^Method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\MailFactory\\:\\:__construct\\(\\) has parameter \\$mailer with no type specified\\.$#"
+			message: '#^Cannot call method setFrom\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: Mail/MailFactory.php
 
 		-
-			message: "#^Property Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\MailFactory\\:\\:\\$mailer has unknown class Swift_Mailer as its type\\.$#"
+			message: '#^Cannot call method setSubject\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: Mail/MailFactory.php
 
 		-
-			message: "#^Method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManager\\:\\:getConfigProperty\\(\\) has invalid return type Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\TTypeConfig\\.$#"
+			message: '#^Cannot call method setTo\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Mail/MailFactory.php
+
+		-
+			message: '#^Class Swift_Mailer not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Mail/MailFactory.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Mail\\MailFactory\:\:__construct\(\) has parameter \$mailer with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Mail/MailFactory.php
+
+		-
+			message: '#^Parameter \#1 \$address of class Symfony\\Component\\Mime\\Address constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Mail/MailFactory.php
+
+		-
+			message: '#^Parameter \#2 \$name of class Symfony\\Component\\Mime\\Address constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Mail/MailFactory.php
+
+		-
+			message: '#^Property Sulu\\Bundle\\CommunityBundle\\Mail\\MailFactory\:\:\$mailer \(Swift_Mailer\|Symfony\\Component\\Mailer\\MailerInterface\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Mail/MailFactory.php
+
+		-
+			message: '#^Property Sulu\\Bundle\\CommunityBundle\\Mail\\MailFactory\:\:\$mailer has unknown class Swift_Mailer as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Mail/MailFactory.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManager\:\:getConfigProperty\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#1 \\$from of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Parameter \#1 \$from of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManager\\:\\:getConfigTypeProperty\\(\\) expects TConfig of 'completion'\\|'confirmation'\\|'email_confirmation'\\|'firewall'\\|'from'\\|'login'\\|'maintenance'\\|'password_forget'\\|'password_reset'\\|'profile'\\|'registration'\\|'registration_rule'\\|'registration_rule…'\\|'role'\\|'to'\\|'webspace_key', string given\\.$#"
+			message: '#^Parameter \#1 \$type of method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManager\:\:getConfigTypeProperty\(\) expects TConfig of ''blacklist_confirmed''\|''blacklist_denied''\|''blacklisted''\|''completion''\|''confirmation''\|''email_confirmation''\|''firewall''\|''from''\|''login''\|''maintenance''\|''password_forget''\|''password_reset''\|''profile''\|''registration''\|''role''\|''to''\|''webspace_key'', string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#2 \\$array of function array_key_exists expects array, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Parameter \#2 \$array of function array_key_exists expects array, array\<array\<mixed\>\|bool\|string\|null\>\|string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#2 \\$firewallName of class Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\UsernamePasswordToken constructor expects string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Parameter \#2 \$firewallName of class Symfony\\Component\\Security\\Core\\Authentication\\Token\\UsernamePasswordToken constructor expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#2 \\$to of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Parameter \#2 \$to of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#3 \\$config of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\{subject\\: string, user_template\\: string\\|null, admin_template\\: string\\|null\\}, array\\|bool\\|string\\|null given\\.$#"
+			message: '#^Parameter \#3 \$config of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\{subject\: string, user_template\: string\|null, admin_template\: string\|null\}, array\<mixed\>\|bool\|string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#3 \\$roleName of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\UserManagerInterface\\:\\:createUser\\(\\) expects string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			message: '#^Parameter \#3 \$roleName of method Sulu\\Bundle\\CommunityBundle\\Manager\\UserManagerInterface\:\:createUser\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:getConfigProperty\\(\\) has invalid return type Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\TTypeConfig\\.$#"
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManagerInterface\:\:getConfigProperty\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: Manager/CommunityManagerInterface.php
 
 		-
-			message: "#^Method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\UserManager\\:\\:__construct\\(\\) has parameter \\$contactManager with generic interface Sulu\\\\Bundle\\\\ContactBundle\\\\Contact\\\\ContactManagerInterface but does not specify its types\\: DoctrineEntity, ApiEntity, AddressRelationEntity$#"
+			message: '#^PHPDoc tag @return contains unresolvable type\.$#'
+			identifier: return.unresolvableType
+			count: 1
+			path: Manager/CommunityManagerInterface.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Manager\\UserManager\:\:__construct\(\) has parameter \$contactManager with generic interface Sulu\\Bundle\\ContactBundle\\Contact\\ContactManagerInterface but does not specify its types\: DoctrineEntity, ApiEntity, AddressRelationEntity$#'
+			identifier: missingType.generics
 			count: 1
 			path: Manager/UserManager.php
 
 		-
-			message: "#^Property Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\UserManager\\:\\:\\$contactManager with generic interface Sulu\\\\Bundle\\\\ContactBundle\\\\Contact\\\\ContactManagerInterface does not specify its types\\: DoctrineEntity, ApiEntity, AddressRelationEntity$#"
+			message: '#^PHPDoc tag @var with type string is not subtype of native type non\-empty\-string\|false\.$#'
+			identifier: varTag.nativeType
 			count: 1
 			path: Manager/UserManager.php
 
 		-
-			message: "#^If condition is always true\\.$#"
+			message: '#^Property Sulu\\Bundle\\CommunityBundle\\Manager\\UserManager\:\:\$contactManager with generic interface Sulu\\Bundle\\ContactBundle\\Contact\\ContactManagerInterface does not specify its types\: DoctrineEntity, ApiEntity, AddressRelationEntity$#'
+			identifier: missingType.generics
+			count: 1
+			path: Manager/UserManager.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: Tests/Application/config/bootstrap.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
 			count: 1
 			path: Tests/Application/config/config.php
 
 		-
-			message: "#^Cannot call method getHtmlBody\\(\\) on Symfony\\\\Component\\\\Mime\\\\RawMessage\\|null\\.$#"
+			message: '#^Binary operation "\." between ''/admin/api…'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 4
+			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''blacklist_items'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 7
+			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''pattern'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''type'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 4
+			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotFalse\(\) with Symfony\\Component\\HttpKernel\\Profiler\\Profile and ''Could not found…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 4
+			path: Tests/Functional/Controller/RegistrationTest.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 3
 			path: Tests/Functional/Controller/RegistrationTest.php
 
 		-
-			message: "#^Cannot call method getTo\\(\\) on Symfony\\\\Component\\\\Mime\\\\RawMessage\\|null\\.$#"
+			message: '#^Cannot call method getAddress\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 3
 			path: Tests/Functional/Controller/RegistrationTest.php
 
 		-
-			message: "#^Access to an undefined property Sulu\\\\Bundle\\\\CommunityBundle\\\\Tests\\\\Unit\\\\Controller\\\\SaveMediaTraitTest\\:\\:\\$container\\.$#"
+			message: '#^Cannot call method getHtmlBody\(\) on Symfony\\Component\\Mime\\RawMessage\|null\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: Tests/Functional/Controller/RegistrationTest.php
+
+		-
+			message: '#^Cannot call method getTo\(\) on Symfony\\Component\\Mime\\RawMessage\|null\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: Tests/Functional/Controller/RegistrationTest.php
+
+		-
+			message: '#^Parameter \#1 \$content of method Symfony\\Component\\DomCrawler\\Crawler\:\:addContent\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: Tests/Functional/Controller/RegistrationTest.php
+
+		-
+			message: '#^Access to an undefined property Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:\$container\.$#'
+			identifier: property.notFound
 			count: 2
 			path: Tests/Unit/Controller/SaveMediaTraitTest.php
 
 		-
-			message: "#^PHPDoc tag @var for variable \\$repository contains generic class Doctrine\\\\ORM\\\\EntityRepository but does not specify its types\\: TEntityClass$#"
+			message: '#^Cannot call method get\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:mockedGetMediaManager\(\) should return Sulu\\Bundle\\MediaBundle\\Media\\Manager\\MediaManagerInterface but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:mockedGetSystemCollectionManager\(\) should return Sulu\\Component\\Media\\SystemCollections\\SystemCollectionManagerInterface but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:saveAvatar\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:saveDocuments\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:saveMediaFields\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Parameter \#1 \$avatar of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:setAvatar\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Parameter \#1 \$media of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:addMedia\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Parameter \#1 \$uploadedFile of method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:saveMedia\(\) expects Symfony\\Component\\HttpFoundation\\File\\UploadedFile, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Property Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:\$avatarForm with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Property Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:\$form with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Property Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:\$mediasForm with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Parameter \#1 \$environment of class Sulu\\Bundle\\CommunityBundle\\Tests\\Application\\Kernel constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Tests/phpstan/console-application.php
+
+		-
+			message: '#^Parameter \#1 \$environment of class Sulu\\Bundle\\CommunityBundle\\Tests\\Application\\Kernel constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Tests/phpstan/object-manager.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$repository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: TEntityClass$#'
+			identifier: missingType.generics
 			count: 1
 			path: Validator/Constraints/ExistValidator.php
+

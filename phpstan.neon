@@ -10,6 +10,7 @@ parameters:
     paths:
         - .
     level: max
+    reportUnmatchedIgnoredErrors: false
     excludePaths:
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/Tests/Application/var/*
