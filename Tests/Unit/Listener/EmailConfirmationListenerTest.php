@@ -14,6 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Listener;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Entity\EmailConfirmationToken;
@@ -28,6 +29,8 @@ use Sulu\Bundle\SecurityBundle\Util\TokenGeneratorInterface;
 
 class EmailConfirmationListenerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy<MailFactoryInterface>
      */

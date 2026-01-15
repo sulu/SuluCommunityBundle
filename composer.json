@@ -32,6 +32,7 @@
         "handcraftedinthealps/zendsearch": "^2.0",
         "jackalope/jackalope-doctrine-dbal": "^1.6 || ^2.0",
         "jangregor/phpstan-prophecy": "^2.0",
+        "phpspec/prophecy-phpunit": "^2.0",
         "massive/search-bundle": "^2.8.2",
         "php-cs-fixer/shim": "^3.14",
         "phpspec/prophecy": "^1.16",
