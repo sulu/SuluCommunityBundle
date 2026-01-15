@@ -36,12 +36,7 @@ parameters:
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^Parameter \\#1 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:completion\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, mixed given\\.$#"
-			count: 1
-			path: Controller/CompletionController.php
-
-		-
-			message: "#^Parameter \\#2 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\CompletionController\\:\\:saveMediaFields\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, mixed given\\.$#"
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User\\>\\>, string given\\.$#"
 			count: 1
 			path: Controller/CompletionController.php
 
@@ -51,17 +46,32 @@ parameters:
 			path: Controller/PasswordController.php
 
 		-
-			message: "#^Parameter \\#1 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\AbstractController\\:\\:setUserPasswordAndSalt\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, mixed given\\.$#"
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User\\>\\>, string given\\.$#"
 			count: 1
 			path: Controller/PasswordController.php
 
 		-
-			message: "#^Parameter \\#1 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\AbstractController\\:\\:setUserPasswordAndSalt\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, mixed given\\.$#"
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<array\\{\\}\\>\\>, string given\\.$#"
+			count: 1
+			path: Controller/PasswordController.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User\\|null\\>\\>, string given\\.$#"
 			count: 1
 			path: Controller/ProfileController.php
 
 		-
-			message: "#^Parameter \\#1 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\AbstractController\\:\\:setUserPasswordAndSalt\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, mixed given\\.$#"
+			message: "#^Parameter \\#1 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\AbstractController\\:\\:setUserPasswordAndSalt\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User\\|null given\\.$#"
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:createForm\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<null\\>\\>, string given\\.$#"
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Controller\\\\AbstractController\\:\\:setUserPasswordAndSalt\\(\\) expects Sulu\\\\Bundle\\\\SecurityBundle\\\\Entity\\\\User, null given\\.$#"
 			count: 1
 			path: Controller/RegistrationController.php
 
