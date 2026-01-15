@@ -19,29 +19,29 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: '8.0'
-                      lint: false
-                      dependency-versions: 'lowest'
-                      tools: 'composer:v2'
-                      composer-block-insecure: false
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: weak
-
-                    - php-version: '8.1'
-                      lint: false
-                      dependency-versions: 'highest'
-                      tools: 'composer:v2'
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: weak
-
                     - php-version: '8.2'
                       lint: false
-                      dependency-versions: 'highest'
+                      dependency-versions: 'lowest'
+                      composer-block-insecure: false
                       tools: 'composer:v2'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
                     - php-version: '8.3'
+                      lint: true
+                      dependency-versions: 'highest'
+                      tools: 'composer:v2'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.4'
+                      lint: true
+                      dependency-versions: 'highest'
+                      tools: 'composer:v2'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.5'
                       lint: true
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
