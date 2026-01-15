@@ -19,26 +19,11 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: '7.2'
+                    - php-version: '8.0'
                       lint: false
                       dependency-versions: 'lowest'
                       tools: 'composer:v2'
                       composer-block-insecure: false
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: disabled
-
-                    - php-version: '7.4'
-                      lint: false
-                      dependency-versions: 'highest'
-                      tools: 'composer:v2'
-                      composer-block-insecure: false
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: weak
-
-                    - php-version: '8.0'
-                      lint: false
-                      dependency-versions: 'highest'
-                      tools: 'composer:v2'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
