@@ -4,7 +4,7 @@
 
 ### Blacklist replaced with RegistrationRule
 
-This means that any occurance of "blacklist" has been replaced with "registrationrule".
+For clearer naming all occurrences of "blacklist" have been replaced with "registration-rule".
 
 This also includes the renames of the following entities and tables in the database:
 
@@ -14,6 +14,11 @@ This also includes the renames of the following entities and tables in the datab
 ```sql
 ALTER TABLE com_blacklist_item RENAME com_registration_rule_item;
 ALTER TABLE com_blacklist_user RENAME com_registration_rule_user;
+```
+
+Routes:
+```
+/admin/api/blacklist-items/ -> /admin/api/registration-rule-items/
 ```
 
 ### ListRepresentation relation name changed
