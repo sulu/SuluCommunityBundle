@@ -25,3 +25,5 @@
 7. [Email Confirmation](10-email-confirmation.md)
 8. [Completion](11-completion.md)
 9. [Blacklisting](12-blacklisting.md)
+10. [Maintenance](13-maintenance.md)
+11. [User entity](14-user-entity.md)

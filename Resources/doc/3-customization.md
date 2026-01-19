@@ -32,7 +32,7 @@ sulu_community:
             login:
                 embed_template: community/login-embed.html.twig
                 template: community/login.html.twig
-                
+
             # Registration
             registration:
                 activate_user: false
@@ -44,9 +44,9 @@ sulu_community:
                 redirect_to: ?send=true
                 template: community/registration-form.html.twig
                 type: App\Form\RegistrationType
-                    
+
             # Confirmation
-            confirmation: 
+            confirmation:
                 activate_user: true
                 auto_login: true
                 email:
@@ -55,7 +55,7 @@ sulu_community:
                     admin_template: ~
                 redirect_to: ~
                 template: community/confirmation-message.html.twig
-                    
+
             # Completion
             completion:
                 email:
@@ -66,7 +66,7 @@ sulu_community:
                 service: ~
                 template: community/completion-form.html.twig
                 type: App\Form\CompletionType
-                    
+
             # Password Forget / Reset
             password_forget:
                 email:
@@ -85,7 +85,7 @@ sulu_community:
                 redirect_to: ?send=true
                 template: community/reset-form.html.twig
                 type: App\Form\PasswordResetType
-                    
+
             # Profile
             profile:
                 email:
@@ -95,7 +95,7 @@ sulu_community:
                 redirect_to: ~
                 template: community/profile-form.html.twig
                 type: App\Form\ProfileType
-                
+
             # Email Confirmation
             email_confirmation:
                 email:
@@ -103,7 +103,7 @@ sulu_community:
                     user_template: community/email-confirmation-email.html.twig
                     admin_template: ~
                 template: community/email-confirmation-success.html.twig
-                
+
             # Blacklist
             blacklisted:
                 email:
@@ -131,7 +131,7 @@ sulu_community:
 Type: `integer`
 Example: 600
 
-When used cookie based login the last login timestamp will never 
+When used cookie based login the last login timestamp will never
 be refreshed you can activate the last login refresh interval
 which will refresh every given seconds the last login timestamp
 to show example active users in your application.
@@ -141,7 +141,7 @@ to show example active users in your application.
 Type: `string`
 Example: test@test.com
 
-Will be used as sender of all emails in this webspace. 
+Will be used as sender of all emails in this webspace.
 
 #### to
 
@@ -156,7 +156,7 @@ If not configured it will fallback to the from configuration.
 Type: `string`
 Example: website
 
-You can change the role name. 
+You can change the role name.
 If not set it will generate it by webspace key and add 'User' as postfix.
 
 #### firewall
@@ -215,7 +215,7 @@ The template used to render the user email, set to null to deactivate it.
 Type: `string`
 Example: ?send=true, app.redirect_route
 
-redirect_to can be a url or a route_name. When containing `{localization}` 
+redirect_to can be a url or a route_name. When containing `{localization}`
 it will be replaced with the current locale.
 
 #### service
@@ -223,7 +223,8 @@ it will be replaced with the current locale.
 Type: `string`
 Example: app.completion_validator
 
-Service from interface `CompletionInterface` to validate if a user needs to add additional information before using your application. 
+Service from interface `CompletionInterface` to validate if a user needs to add additional information before using
+your application.
 
 #### template
 
@@ -251,3 +252,4 @@ The form type which is used to build the form.
  - [Completion](11-completion.md)
  - [Blacklisting](12-blacklisting.md)
  - [Maintenance](13-maintenance.md)
+ - [User entity](14-user-entity.md)
