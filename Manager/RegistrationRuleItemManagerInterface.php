@@ -21,7 +21,7 @@ interface RegistrationRuleItemManagerInterface
     /**
      * Returns registration-rule-item.
      */
-    public function find(int $id): RegistrationRuleItem;
+    public function find(int $id): ?RegistrationRuleItem;
 
     /**
      * Return new registration-rule-item.

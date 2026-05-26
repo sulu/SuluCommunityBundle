@@ -164,8 +164,12 @@ class RegistrationRuleItemController extends AbstractRestController implements C
      */
     public function putAction(int $id, Request $request): Response
     {
-        $item = $this->registrationRuleItemManager->find($id)
-            ->setPattern($this->getRequestParameter($request, 'pattern', true))
+        $item = $this->registrationRuleItemManager->find($id);
+        if (null === $item) {
+            return $this->handleView($this->view(null, Response::HTTP_NOT_FOUND));
+        }
+
+        $item->setPattern($this->getRequestParameter($request, 'pattern', true))
             ->setType($this->getRequestParameter($request, 'type', true));
 
         $this->entityManager->flush();

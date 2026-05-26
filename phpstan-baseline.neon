@@ -26,7 +26,7 @@ parameters:
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:getConfigTypeProperty\\(\\) expects .*, string given\\.$#"
+			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:getConfigTypeProperty\\(\\) expects 'completion'\\|'confirmation'\\|'email_confirmation'\\|'firewall'\\|'from'\\|'login'\\|'maintenance'\\|'password_forget'\\|'password_reset'\\|'profile'\\|'registration'\\|'registration_rule'\\|'registration_rule…'\\|'role'\\|'to'\\|'webspace_key', string given\\.$#"
 			count: 2
 			path: Controller/AbstractController.php
 
@@ -221,7 +221,7 @@ parameters:
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManager\\:\\:getConfigTypeProperty\\(\\) expects TConfig of .*, string given\\.$#"
+			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManager\\:\\:getConfigTypeProperty\\(\\) expects TConfig of 'completion'\\|'confirmation'\\|'email_confirmation'\\|'firewall'\\|'from'\\|'login'\\|'maintenance'\\|'password_forget'\\|'password_reset'\\|'profile'\\|'registration'\\|'registration_rule'\\|'registration_rule…'\\|'role'\\|'to'\\|'webspace_key', string given\\.$#"
 			count: 1
 			path: Manager/CommunityManager.php
 

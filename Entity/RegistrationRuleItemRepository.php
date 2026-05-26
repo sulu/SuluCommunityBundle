@@ -17,6 +17,7 @@ use Sulu\Component\Persistence\Repository\ORM\EntityRepository;
  * Entity-Repository for registration-rule-items.
  *
  * @method RegistrationRuleItem createNew()
+ * @method RegistrationRuleItem|null find(int|string $id)
  */
 class RegistrationRuleItemRepository extends EntityRepository
 {

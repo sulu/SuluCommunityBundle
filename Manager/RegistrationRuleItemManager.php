@@ -36,12 +36,9 @@ class RegistrationRuleItemManager implements RegistrationRuleItemManagerInterfac
         $this->registrationRuleItemRepository = $registrationRuleItemRepository;
     }
 
-    public function find(int $id): RegistrationRuleItem
+    public function find(int $id): ?RegistrationRuleItem
     {
-        /** @var RegistrationRuleItem $registrationRuleItem */
-        $registrationRuleItem = $this->registrationRuleItemRepository->find($id);
-
-        return $registrationRuleItem;
+        return $this->registrationRuleItemRepository->find($id);
     }
 
     public function create(): RegistrationRuleItem

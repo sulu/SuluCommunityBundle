@@ -19,8 +19,9 @@ This also includes the renames of the following entities and tables in the datab
 * BlacklistItemManagerInterface -> RegistrationRuleItemManagerInterface
 
 ```sql
-ALTER TABLE com_blacklist_item RENAME com_registration_rule_item;
-ALTER TABLE com_blacklist_user RENAME com_registration_rule_user;
+RENAME TABLE
+    com_blacklist_item TO com_registration_rule_item,
+    com_blacklist_user TO com_registration_rule_user;
 ```
 
 Routes:

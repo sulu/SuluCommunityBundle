@@ -129,7 +129,7 @@ class CommunityAdmin extends Admin
                 $this->viewBuilderFactory->createResourceTabViewBuilder(static::REGISTRATION_RULE_ITEM_EDIT_FORM_VIEW, '/registration-rule/:id')
                     ->setResourceKey('registration_rule_items')
                     ->setBackView(static::REGISTRATION_RULE_ITEM_LIST_VIEW)
-                    ->setTitleProperty('name')
+                    ->setTitleProperty('pattern')
             );
             $viewCollection->add(
                 $this->viewBuilderFactory->createFormViewBuilder(static::REGISTRATION_RULE_ITEM_EDIT_FORM_VIEW . '.details', '/details')

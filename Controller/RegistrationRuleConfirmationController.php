@@ -115,16 +115,19 @@ class RegistrationRuleConfirmationController extends AbstractController
 
     protected function getRegistrationRuleUserRepository(): RegistrationRuleUserRepository
     {
+        /** @var RegistrationRuleUserRepository */
         return $this->container->get('sulu_community.registration_rule.user_repository');
     }
 
     protected function getRegistrationRuleItemRepository(): RegistrationRuleItemRepository
     {
+        /** @var RegistrationRuleItemRepository */
         return $this->container->get('sulu_community.registration_rule.item_repository');
     }
 
     protected function getRegistrationRuleItemManager(): RegistrationRuleItemManager
     {
+        /** @var RegistrationRuleItemManager */
         return $this->container->get('sulu_community.registration_rule.item_manager');
     }
 
