@@ -1,4 +1,4 @@
-# RegistrationRuleing
+# Registration rules
 
 ## Config
 
@@ -8,18 +8,18 @@
 sulu_community:
     webspaces:
         <webspace_key>: # Replace <webspace_key> with the key of your webspace
-            blacklisted:
+            registration_rule:
                 email:
-                    subject: RegistrationRuleed
+                    subject: Registration rule
                     admin_template: community/registration-rule-email.html.twig
                     user_template: ~
-            blacklist_denied:
+            registration_rule_denied:
                 email:
                     subject: Denied
                     admin_template: ~
                     user_template: ~
                 template: community/registration-rule-denied.html.twig
-            blacklist_confirmed:
+            registration_rule_confirmed:
                 email:
                     subject: Registration
                     admin_template: ~
@@ -29,15 +29,15 @@ sulu_community:
 
 ## Backend Config
 
-To enable the blacklisting feature add the permissions for blacklisting to your role.  
-For this go to `Settings -> Roles -> YourRole` in the sulu backend and add the permissions.  
-  
-When you successfully enabled it email addresses can be set to `block` or on `request` under `Settings -> RegistrationRule`. 
+To enable the registration rule feature add the permissions for registration rules to your role.
+For this go to `Settings -> Roles -> YourRole` in the sulu backend and add the permissions.
+
+When you successfully enabled it email addresses can be set to `block` or on `request` under `Settings -> Registration rules`.
 It is possible to use wildcards e.g. `*@test.com` to set the state for a whole domain.
 
-## blacklist.email
+## registration_rule.email
 
-The admin of the page will receive the blacklisted email when a user email address is set to `request`.
+The admin of the page will receive the registration rule email when a user email address is set to `request`.
 
 **Example Template**:
 
@@ -57,7 +57,7 @@ The admin of the page will receive the blacklisted email when a user email addre
 {% endblock %}
 ```
 
-## blacklist_denied.template / blacklist_confirmed.template
+## registration_rule_denied.template / registration_rule_confirmed.template
 
 When the admin clicks on the link a template is rendered which can show specific content:
 
@@ -73,7 +73,7 @@ When the admin clicks on the link a template is rendered which can show specific
 {% endblock %}
 ```
 
-## blacklist_confirmed.email
+## registration_rule_confirmed.email
 
 If the user is confirmed he will receive an email with the confirmation link:
 

@@ -101,7 +101,7 @@ class RegistrationRuleItemController extends AbstractRestController implements C
                 new ListRepresentation(
                     $listResponse,
                     'registration_rule_items',
-                    'sulu_community.get_registration_rule-items',
+                    'sulu_community.get_registration-rule-items',
                     $request->query->all(),
                     $listBuilder->getCurrentPage(),
                     $listBuilder->getLimit(),
@@ -193,7 +193,7 @@ class RegistrationRuleItemController extends AbstractRestController implements C
                 'pattern',
                 'pattern',
                 RegistrationRuleItem::class,
-                'community.blacklist.pattern',
+                'sulu_community.pattern',
                 [],
                 FieldDescriptorInterface::VISIBILITY_ALWAYS,
                 FieldDescriptorInterface::SEARCHABILITY_YES,

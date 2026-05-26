@@ -70,7 +70,7 @@ class RegistrationRuleListener implements EventSubscriberInterface
     }
 
     /**
-     * Validates email and interrupts registration process if email matches blacklist.
+     * Validates email and interrupts registration process if email matches registration rule.
      */
     public function validateEmail(UserRegisteredEvent $event): void
     {
@@ -78,29 +78,29 @@ class RegistrationRuleListener implements EventSubscriberInterface
             return;
         }
 
-        $blacklistUser = new RegistrationRuleUser(
+        $registrationRuleUser = new RegistrationRuleUser(
             $this->tokenGenerator->generateToken(),
             $event->getConfigProperty(Configuration::WEBSPACE_KEY),
             $event->getUser()
         );
-        $this->objectManager->persist($blacklistUser);
+        $this->objectManager->persist($registrationRuleUser);
         $this->objectManager->flush();
 
         $this->mailFactory->sendEmails(
             Mail::create(
                 $event->getConfigProperty(Configuration::EMAIL_FROM),
                 $event->getConfigProperty(Configuration::EMAIL_TO),
-                $event->getConfigTypeProperty(Configuration::TYPE_REGISTRATION_RULEED, Configuration::EMAIL)
+                $event->getConfigTypeProperty(Configuration::TYPE_REGISTRATION_RULE, Configuration::EMAIL)
             ),
             $event->getUser(),
-            ['token' => $blacklistUser->getToken()]
+            ['token' => $registrationRuleUser->getToken()]
         );
 
         $event->stopPropagation();
     }
 
     /**
-     * Returns blacklist-type of given email.
+     * Returns registration rule type of given email.
      */
     private function getType(string $email): ?string
     {

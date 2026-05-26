@@ -89,7 +89,7 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
                         ],
                     ],
                     'resources' => [
-                        'registration-rule-items' => [
+                        'registration_rule_items' => [
                             'routes' => [
                                 'list' => 'sulu_community.get_registration-rule-items',
                                 'detail' => 'sulu_community.get_registration-rule-item',

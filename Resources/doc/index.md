@@ -24,4 +24,4 @@
 6. [Profile](9-profile.md)
 7. [Email Confirmation](10-email-confirmation.md)
 8. [Completion](11-completion.md)
-9. [RegistrationRuleing](12-registration-rule.md)
+9. [Registration rules](12-registration-rule.md)

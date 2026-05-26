@@ -28,25 +28,25 @@ class RegistrationRuleItemManager implements RegistrationRuleItemManagerInterfac
     /**
      * @var RegistrationRuleItemRepository
      */
-    private $blacklistItemRepository;
+    private $registrationRuleItemRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, RegistrationRuleItemRepository $blacklistItemRepository)
+    public function __construct(EntityManagerInterface $entityManager, RegistrationRuleItemRepository $registrationRuleItemRepository)
     {
         $this->entityManager = $entityManager;
-        $this->blacklistItemRepository = $blacklistItemRepository;
+        $this->registrationRuleItemRepository = $registrationRuleItemRepository;
     }
 
     public function find(int $id): RegistrationRuleItem
     {
-        /** @var RegistrationRuleItem $blacklistItem */
-        $blacklistItem = $this->blacklistItemRepository->find($id);
+        /** @var RegistrationRuleItem $registrationRuleItem */
+        $registrationRuleItem = $this->registrationRuleItemRepository->find($id);
 
-        return $blacklistItem;
+        return $registrationRuleItem;
     }
 
     public function create(): RegistrationRuleItem
     {
-        $item = $this->blacklistItemRepository->createNew();
+        $item = $this->registrationRuleItemRepository->createNew();
 
         $this->entityManager->persist($item);
 
@@ -61,7 +61,7 @@ class RegistrationRuleItemManager implements RegistrationRuleItemManagerInterfac
 
         foreach ($ids as $id) {
             /** @var RegistrationRuleItem $object */
-            $object = $this->entityManager->getReference($this->blacklistItemRepository->getClassName(), $id);
+            $object = $this->entityManager->getReference($this->registrationRuleItemRepository->getClassName(), $id);
 
             $this->entityManager->remove($object);
         }

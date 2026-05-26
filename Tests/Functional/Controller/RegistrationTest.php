@@ -174,7 +174,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertSame('http://localhost/login', $this->client->getResponse()->getTargetUrl());
     }
 
-    public function testRegistrationRegistrationRuleedBlocked(): void
+    public function testRegistrationRuleBlockedDuringRegistration(): void
     {
         $this->createRegistrationRuleItem($this->getEntityManager(), '*@sulu.io', RegistrationRuleItem::TYPE_BLOCK);
 
@@ -199,7 +199,7 @@ class RegistrationTest extends SuluTestCase
         $this->assertNull($this->findUser());
     }
 
-    public function testRegistrationRegistrationRuleRequested(): ?RawMessage
+    public function testRegistrationRuleRequested(): ?RawMessage
     {
         if (\class_exists(\Swift_Mailer::class)) {
             $this->markTestSkipped('Skip test for swift mailer.');
@@ -241,7 +241,7 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationRuleConfirm(): void
     {
-        $message = $this->testRegistrationRegistrationRuleRequested();
+        $message = $this->testRegistrationRuleRequested();
 
         $emailCrawler = new Crawler();
         $emailCrawler->addContent($message->getHtmlBody());
@@ -270,7 +270,7 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationRuleBlocked(): void
     {
-        $message = $this->testRegistrationRegistrationRuleRequested();
+        $message = $this->testRegistrationRuleRequested();
 
         $emailCrawler = new Crawler();
         $emailCrawler->addContent($message->getHtmlBody());

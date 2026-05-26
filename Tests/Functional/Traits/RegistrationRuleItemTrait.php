@@ -22,16 +22,16 @@ trait RegistrationRuleItemTrait
         string $pattern,
         string $type
     ): RegistrationRuleItem {
-        /** @var RegistrationRuleItemRepository $blackListItemRepository */
-        $blackListItemRepository = $entityManager->getRepository(RegistrationRuleItem::class);
+        /** @var RegistrationRuleItemRepository $registrationRuleItemRepository */
+        $registrationRuleItemRepository = $entityManager->getRepository(RegistrationRuleItem::class);
 
-        /** @var RegistrationRuleItem $blackListItem */
-        $blackListItem = $blackListItemRepository->createNew();
-        $blackListItem->setPattern($pattern)
+        /** @var RegistrationRuleItem $registrationRuleItem */
+        $registrationRuleItem = $registrationRuleItemRepository->createNew();
+        $registrationRuleItem->setPattern($pattern)
             ->setType($type);
-        $entityManager->persist($blackListItem);
+        $entityManager->persist($registrationRuleItem);
         $entityManager->flush();
 
-        return $blackListItem;
+        return $registrationRuleItem;
     }
 }

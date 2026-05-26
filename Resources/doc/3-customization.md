@@ -104,19 +104,19 @@ sulu_community:
                     admin_template: ~
                 template: community/email-confirmation-success.html.twig
                 
-            # RegistrationRule
-            blacklisted:
+            # Registration rules
+            registration_rule:
                 email:
-                    subject: RegistrationRuleed
+                    subject: Registration rule
                     admin_template: community/registration-rule-email.html.twig
                     user_template: ~
-            blacklist_denied:
+            registration_rule_denied:
                 email:
                     subject: Denied
                     admin_template: ~
                     user_template: ~
                 template: community/registration-rule-denied.html.twig
-            blacklist_confirmed:
+            registration_rule_confirmed:
                 email:
                     subject: Registration
                     admin_template: ~
@@ -249,5 +249,5 @@ The form type which is used to build the form.
  - [Profile](9-profile.md)
  - [Email Confirmation](10-email-confirmation.md)
  - [Completion](11-completion.md)
- - [RegistrationRuleing](12-registration-rule.md)
+ - [Registration rules](12-registration-rule.md)
  - [Maintenance](13-maintenance.md)

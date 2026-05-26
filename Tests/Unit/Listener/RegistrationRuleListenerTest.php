@@ -81,7 +81,7 @@ class RegistrationRuleListenerTest extends TestCase
         $event->getConfigProperty(Configuration::WEBSPACE_KEY)->willReturn('sulu-io');
         $event->getConfigProperty(Configuration::EMAIL_TO)->willReturn(['admin@sulu.io' => 'admin@sulu.io']);
         $event->getConfigProperty(Configuration::EMAIL_FROM)->willReturn(['from@sulu.io' => 'from@sulu.io']);
-        $event->getConfigTypeProperty(Configuration::TYPE_REGISTRATION_RULEED, Configuration::EMAIL)->willReturn(
+        $event->getConfigTypeProperty(Configuration::TYPE_REGISTRATION_RULE, Configuration::EMAIL)->willReturn(
             [
                 Configuration::EMAIL_SUBJECT => 'subject',
                 Configuration::EMAIL_USER_TEMPLATE => 'user_template',

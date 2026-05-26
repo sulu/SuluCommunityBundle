@@ -51,9 +51,9 @@ class Configuration implements ConfigurationInterface
     public const TYPE_CONFIRMATION = 'confirmation';
     public const TYPE_PASSWORD_FORGET = 'password_forget';
     public const TYPE_PASSWORD_RESET = 'password_reset';
-    public const TYPE_REGISTRATION_RULEED = 'blacklisted';
-    public const TYPE_REGISTRATION_RULE_CONFIRMED = 'blacklist_confirmed';
-    public const TYPE_REGISTRATION_RULE_DENIED = 'blacklist_denied';
+    public const TYPE_REGISTRATION_RULE = 'registration_rule';
+    public const TYPE_REGISTRATION_RULE_CONFIRMED = 'registration_rule_confirmed';
+    public const TYPE_REGISTRATION_RULE_DENIED = 'registration_rule_denied';
     public const TYPE_PROFILE = 'profile';
     public const TYPE_EMAIL_CONFIRMATION = 'email_confirmation';
 
@@ -64,7 +64,7 @@ class Configuration implements ConfigurationInterface
         self::TYPE_REGISTRATION,
         self::TYPE_PASSWORD_FORGET,
         self::TYPE_PASSWORD_RESET,
-        self::TYPE_REGISTRATION_RULEED,
+        self::TYPE_REGISTRATION_RULE,
         self::TYPE_REGISTRATION_RULE_CONFIRMED,
         self::TYPE_REGISTRATION_RULE_DENIED,
         self::TYPE_PROFILE,
@@ -256,22 +256,22 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            // RegistrationRuleed
-                            ->arrayNode(self::TYPE_REGISTRATION_RULEED)
+                            // Registration rule
+                            ->arrayNode(self::TYPE_REGISTRATION_RULE)
                                 ->addDefaultsIfNotSet()
                                 ->children()
-                                    // RegistrationRuleed configuration
+                                    // Registration rule configuration
                                     ->arrayNode(self::EMAIL)
                                         ->addDefaultsIfNotSet()
                                         ->children()
-                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('RegistrationRuleed')->end()
+                                            ->scalarNode(self::EMAIL_SUBJECT)->defaultValue('Registration rule')->end()
                                             ->scalarNode(self::EMAIL_ADMIN_TEMPLATE)->defaultValue('@SuluCommunity/registration-rule-email.html.twig')->end()
                                             ->scalarNode(self::EMAIL_USER_TEMPLATE)->defaultValue(null)->end()
                                         ->end()
                                     ->end()
                                 ->end()
                             ->end()
-                            // RegistrationRule denied
+                            // Registration rule denied
                             ->arrayNode(self::TYPE_REGISTRATION_RULE_DENIED)
                                 ->addDefaultsIfNotSet()
                                 ->children()
@@ -288,7 +288,7 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            // RegistrationRule confirmed
+                            // Registration rule confirmed
                             ->arrayNode(self::TYPE_REGISTRATION_RULE_CONFIRMED)
                                 ->addDefaultsIfNotSet()
                                 ->children()

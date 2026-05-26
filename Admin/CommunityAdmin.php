@@ -102,17 +102,17 @@ class CommunityAdmin extends Admin
 
         if ($this->securityChecker->hasPermission(static::REGISTRATION_RULE_ITEM_SECURITY_CONTEXT, PermissionTypes::EDIT)) {
             $viewCollection->add(
-                $this->viewBuilderFactory->createListViewBuilder(static::REGISTRATION_RULE_ITEM_LIST_VIEW, '/blacklist')
+                $this->viewBuilderFactory->createListViewBuilder(static::REGISTRATION_RULE_ITEM_LIST_VIEW, '/registration-rule')
                     ->setResourceKey('registration_rule_items')
                     ->setListKey('registration_rule_items')
-                    ->setTitle('sulu_community.blacklist')
+                    ->setTitle('sulu_community.registration_rule')
                     ->addListAdapters(['table'])
                     ->setAddView(static::REGISTRATION_RULE_ITEM_ADD_FORM_VIEW)
                     ->setEditView(static::REGISTRATION_RULE_ITEM_EDIT_FORM_VIEW)
                     ->addToolbarActions($listToolbarActions)
             );
             $viewCollection->add(
-                $this->viewBuilderFactory->createResourceTabViewBuilder(static::REGISTRATION_RULE_ITEM_ADD_FORM_VIEW, '/blacklist/add')
+                $this->viewBuilderFactory->createResourceTabViewBuilder(static::REGISTRATION_RULE_ITEM_ADD_FORM_VIEW, '/registration-rule/add')
                     ->setResourceKey('registration_rule_items')
                     ->setBackView(static::REGISTRATION_RULE_ITEM_LIST_VIEW)
             );
@@ -126,15 +126,15 @@ class CommunityAdmin extends Admin
                     ->setParent(static::REGISTRATION_RULE_ITEM_ADD_FORM_VIEW)
             );
             $viewCollection->add(
-                $this->viewBuilderFactory->createResourceTabViewBuilder(static::REGISTRATION_RULE_ITEM_EDIT_FORM_VIEW, '/blacklist/:id')
-                    ->setResourceKey('registration-rule-items')
+                $this->viewBuilderFactory->createResourceTabViewBuilder(static::REGISTRATION_RULE_ITEM_EDIT_FORM_VIEW, '/registration-rule/:id')
+                    ->setResourceKey('registration_rule_items')
                     ->setBackView(static::REGISTRATION_RULE_ITEM_LIST_VIEW)
                     ->setTitleProperty('name')
             );
             $viewCollection->add(
                 $this->viewBuilderFactory->createFormViewBuilder(static::REGISTRATION_RULE_ITEM_EDIT_FORM_VIEW . '.details', '/details')
-                    ->setResourceKey('registration-rule-items')
-                    ->setFormKey('blacklist_item_details')
+                    ->setResourceKey('registration_rule_items')
+                    ->setFormKey('registration_rule_item_details')
                     ->setTabTitle('sulu_admin.details')
                     ->addToolbarActions($formToolbarActions)
                     ->setParent(static::REGISTRATION_RULE_ITEM_EDIT_FORM_VIEW)

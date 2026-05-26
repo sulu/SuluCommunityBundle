@@ -18,7 +18,7 @@ use Sulu\Component\Persistence\Repository\ORM\EntityRepository;
 class RegistrationRuleUserRepository extends EntityRepository
 {
     /**
-     * Return blacklist-user for given token.
+     * Return registration rule user for given token.
      *
      * @param string $token
      *
