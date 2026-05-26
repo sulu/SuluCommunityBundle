@@ -56,7 +56,7 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <!-- black-listener -->
+        <!-- registration-rule-listener -->
         <service id="sulu_community.registration_rule_listener" class="Sulu\Bundle\CommunityBundle\EventListener\RegistrationRuleListener">
             <argument type="service" id="sulu.repository.registration_rule_item"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
