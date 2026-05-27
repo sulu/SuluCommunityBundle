@@ -104,24 +104,24 @@ sulu_community:
                     admin_template: ~
                 template: community/email-confirmation-success.html.twig
                 
-            # Blacklist
-            blacklisted:
+            # Registration rules
+            registration_rule:
                 email:
-                    subject: Blacklisted
-                    admin_template: community/blacklist-email.html.twig
+                    subject: Registration rule
+                    admin_template: community/registration-rule-email.html.twig
                     user_template: ~
-            blacklist_denied:
+            registration_rule_denied:
                 email:
                     subject: Denied
                     admin_template: ~
                     user_template: ~
-                template: community/blacklist-denied.html.twig
-            blacklist_confirmed:
+                template: community/registration-rule-denied.html.twig
+            registration_rule_confirmed:
                 email:
                     subject: Registration
                     admin_template: ~
                     user_template: community/registration-email.html.twig
-                template: community/blacklist-confirmed.html.twig
+                template: community/registration-rule-confirmed.html.twig
 ```
 
 ### Basic Options
@@ -199,7 +199,7 @@ The subject of the emails.
 #### email.admin_template
 
 Type: `string`
-Example: community/blacklist-email.html.twig
+Example: community/registration-rule-email.html.twig
 
 The template used to render the admin email, set to null to deactivate it.
 
@@ -249,5 +249,5 @@ The form type which is used to build the form.
  - [Profile](9-profile.md)
  - [Email Confirmation](10-email-confirmation.md)
  - [Completion](11-completion.md)
- - [Blacklisting](12-blacklisting.md)
+ - [Registration rules](12-registration-rule.md)
  - [Maintenance](13-maintenance.md)

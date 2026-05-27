@@ -16,7 +16,7 @@ use Sulu\Component\Security\Authentication\UserInterface;
 /**
  * Represents a requested user which has to be confirmed.
  */
-class BlacklistUser
+class RegistrationRuleUser
 {
     public const TYPE_NEW = 0;
     public const TYPE_CONFIRMED = 1;

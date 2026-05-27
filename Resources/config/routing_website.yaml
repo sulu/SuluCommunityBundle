@@ -35,8 +35,8 @@ sulu_community.logout:
 
 sulu_community.user_confirm:
     path: /_community/confirm
-    controller: Sulu\Bundle\CommunityBundle\Controller\BlacklistConfirmationController::confirmAction
+    controller: Sulu\Bundle\CommunityBundle\Controller\RegistrationRuleConfirmationController::confirmAction
 
 sulu_community.user_deny:
     path: /_community/deny
-    controller: Sulu\Bundle\CommunityBundle\Controller\BlacklistConfirmationController::denyAction
+    controller: Sulu\Bundle\CommunityBundle\Controller\RegistrationRuleConfirmationController::denyAction

@@ -14,18 +14,19 @@ namespace Sulu\Bundle\CommunityBundle\Entity;
 use Sulu\Component\Persistence\Repository\ORM\EntityRepository;
 
 /**
- * Entity-Repository for blacklist-items.
+ * Entity-Repository for registration-rule-items.
  *
- * @method BlacklistItem createNew()
+ * @method RegistrationRuleItem createNew()
+ * @method RegistrationRuleItem|null find(int|string $id)
  */
-class BlacklistItemRepository extends EntityRepository
+class RegistrationRuleItemRepository extends EntityRepository
 {
     /**
      * Returns items which matches given email.
      *
      * @param string $email
      *
-     * @return BlacklistItem[]
+     * @return RegistrationRuleItem[]
      */
     public function findBySender($email)
     {
@@ -33,7 +34,7 @@ class BlacklistItemRepository extends EntityRepository
             ->where('REGEXP(:email, entity.regexp) = true')
             ->setParameter('email', $email);
 
-        /** @var BlacklistItem[] */
+        /** @var RegistrationRuleItem[] */
         return $queryBuilder->getQuery()->getResult();
     }
 }

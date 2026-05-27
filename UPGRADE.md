@@ -2,15 +2,137 @@
 
 ## 2.0.0 (unreleased)
 
+### Blacklist replaced with registration rules
+
+For clearer naming all occurrences of "blacklist" have been replaced with "registration rule".
+
+This also includes the renames of the following entities and tables in the database:
+
+* BlacklistItem -> RegistrationRuleItem
+* BlacklistItemRepository -> RegistrationRuleItemRepository
+* BlacklistUser -> RegistrationRuleUser
+* BlacklistUserRepository -> RegistrationRuleUserRepository
+* BlacklistItemController -> RegistrationRuleItemController
+* BlacklistConfirmationController -> RegistrationRuleConfirmationController
+* BlacklistListener -> RegistrationRuleListener
+* BlacklistItemManager -> RegistrationRuleItemManager
+* BlacklistItemManagerInterface -> RegistrationRuleItemManagerInterface
+
+```sql
+RENAME TABLE
+    com_blacklist_item TO com_registration_rule_item,
+    com_blacklist_user TO com_registration_rule_user;
+```
+
+Routes:
+```
+/admin/api/blacklist-items/ -> /admin/api/registration-rule-items/
+sulu_community.get_blacklist-items -> sulu_community.get_registration-rule-items
+sulu_community.get_blacklist-item -> sulu_community.get_registration-rule-item
+```
+
+Admin permissions:
+```
+sulu.community.blacklist_items -> sulu.community.registration_rule_items
+```
+
+Webspace configuration:
+```
+blacklisted -> registration_rule
+blacklist_denied -> registration_rule_denied
+blacklist_confirmed -> registration_rule_confirmed
+```
+
+Example:
+
+```yaml
+# Before
+sulu_community:
+    webspaces:
+        <webspace_key>:
+            blacklisted:
+                email:
+                    admin_template: community/blacklist-email.html.twig
+            blacklist_denied:
+                template: community/blacklist-denied.html.twig
+            blacklist_confirmed:
+                template: community/blacklist-confirmed.html.twig
+
+# After
+sulu_community:
+    webspaces:
+        <webspace_key>:
+            registration_rule:
+                email:
+                    admin_template: community/registration-rule-email.html.twig
+            registration_rule_denied:
+                template: community/registration-rule-denied.html.twig
+            registration_rule_confirmed:
+                template: community/registration-rule-confirmed.html.twig
+```
+
+Object configuration:
+```
+sulu_community.objects.blacklist_item -> sulu_community.objects.registration_rule_item
+sulu_community.objects.blacklist_user -> sulu_community.objects.registration_rule_user
+```
+
+Example:
+
+```yaml
+# Before
+sulu_community:
+    objects:
+        blacklist_item:
+            model: App\Entity\BlacklistItem
+            repository: App\Repository\BlacklistItemRepository
+        blacklist_user:
+            model: App\Entity\BlacklistUser
+            repository: App\Repository\BlacklistUserRepository
+
+# After
+sulu_community:
+    objects:
+        registration_rule_item:
+            model: App\Entity\RegistrationRuleItem
+            repository: App\Repository\RegistrationRuleItemRepository
+        registration_rule_user:
+            model: App\Entity\RegistrationRuleUser
+            repository: App\Repository\RegistrationRuleUserRepository
+```
+
+Admin metadata keys:
+```
+blacklist_items -> registration_rule_items
+blacklist_item_details -> registration_rule_item_details
+```
+
+Template names:
+```
+@SuluCommunity/blacklist-email.html.twig -> @SuluCommunity/registration-rule-email.html.twig
+@SuluCommunity/blacklist-denied.html.twig -> @SuluCommunity/registration-rule-denied.html.twig
+@SuluCommunity/blacklist-confirmed.html.twig -> @SuluCommunity/registration-rule-confirmed.html.twig
+```
+
 ### ListRepresentation relation name changed
 
-The name of the relation inside of the `_embedded` field has been changed from `items` to `blacklist_items`.
+The name of the relation inside of the `_embedded` field has been changed from `items` to `registration_rule_items`.
 
-### BlacklistUser and BlacklistItem repository service identification changed
+### RegistrationRule service identification changed
 
- - BlacklistUserRepository has been changed from `sulu_community.blacklisting.user_repository` to `sulu.repository.blacklist_user`.
+ - RegistrationRuleListener has been changed from `sulu_community.black_listener` to `sulu_community.registration_rule_listener`.
 
- - BlacklistItemRepository has been changed from `sulu_community.blacklisting.item_repository` to `sulu.repository.blacklist_item`.
+ - RegistrationRuleItemController has been changed from `sulu_community.controller.blacklist_item` to `sulu_community.controller.registration_rule_item`.
+
+ - RegistrationRuleItemManager has been changed from `sulu_community.blacklisting.item_manager` to `sulu_community.registration_rule.item_manager`.
+
+ - RegistrationRuleUserRepository has been changed from `sulu_community.blacklisting.user_repository` to `sulu_community.registration_rule.user_repository`.
+
+ - RegistrationRuleItemRepository has been changed from `sulu_community.blacklisting.item_repository` to `sulu_community.registration_rule.item_repository`.
+
+ - The persistence repository aliases have been changed from `sulu.repository.blacklist_user` and `sulu.repository.blacklist_item` to `sulu.repository.registration_rule_user` and `sulu.repository.registration_rule_item`.
+
+ - The model parameters have been changed from `sulu.model.blacklist_user.class` and `sulu.model.blacklist_item.class` to `sulu.model.registration_rule_user.class` and `sulu.model.registration_rule_item.class`.
 
 ### Typehints added to the codebase
 
@@ -141,4 +263,3 @@ INNER JOIN se_users AS u ON
 SET fvm.title = u.username
 WHERE co.collection_key = 'sulu_contact.contact' AND u.id IS NOT NULL;
 ```
-

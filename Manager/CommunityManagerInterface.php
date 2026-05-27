@@ -51,9 +51,9 @@ use Symfony\Component\HttpFoundation\Request;
  *     password_forget: TypeConfigProperties,
  *     password_reset: TypeConfigProperties,
  *     profile: TypeConfigProperties,
- *     blacklisted: TypeConfigProperties,
- *     blacklist_confirmed: TypeConfigProperties,
- *     blacklist_denied: TypeConfigProperties,
+ *     registration_rule: TypeConfigProperties,
+ *     registration_rule_confirmed: TypeConfigProperties,
+ *     registration_rule_denied: TypeConfigProperties,
  *     email_confirmation: TypeConfigProperties,
  * }
  */

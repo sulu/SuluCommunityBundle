@@ -26,7 +26,7 @@ parameters:
 			path: Controller/AbstractController.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:getConfigTypeProperty\\(\\) expects 'blacklist_confirmed'\\|'blacklist_denied'\\|'blacklisted'\\|'completion'\\|'confirmation'\\|'email_confirmation'\\|'firewall'\\|'from'\\|'login'\\|'maintenance'\\|'password_forget'\\|'password_reset'\\|'profile'\\|'registration'\\|'role'\\|'to'\\|'webspace_key', string given\\.$#"
+			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManagerInterface\\:\\:getConfigTypeProperty\\(\\) expects 'completion'\\|'confirmation'\\|'email_confirmation'\\|'firewall'\\|'from'\\|'login'\\|'maintenance'\\|'password_forget'\\|'password_reset'\\|'profile'\\|'registration'\\|'registration_rule'\\|'registration_rule…'\\|'role'\\|'to'\\|'webspace_key', string given\\.$#"
 			count: 2
 			path: Controller/AbstractController.php
 
@@ -121,19 +121,19 @@ parameters:
 			path: DependencyInjection/CompilerPass/CommunityValidatorCompilerPass.php
 
 		-
-			message: "#^Class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\BlacklistItemRepository extends generic class Sulu\\\\Component\\\\Persistence\\\\Repository\\\\ORM\\\\EntityRepository but does not specify its types\\: T$#"
-			count: 1
-			path: Entity/BlacklistItemRepository.php
-
-		-
-			message: "#^Class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\BlacklistUserRepository extends generic class Sulu\\\\Component\\\\Persistence\\\\Repository\\\\ORM\\\\EntityRepository but does not specify its types\\: T$#"
-			count: 1
-			path: Entity/BlacklistUserRepository.php
-
-		-
 			message: "#^Class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\EmailConfirmationTokenRepository extends generic class Sulu\\\\Component\\\\Persistence\\\\Repository\\\\ORM\\\\EntityRepository but does not specify its types\\: T$#"
 			count: 1
 			path: Entity/EmailConfirmationTokenRepository.php
+
+		-
+			message: "#^Class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\RegistrationRuleItemRepository extends generic class Sulu\\\\Component\\\\Persistence\\\\Repository\\\\ORM\\\\EntityRepository but does not specify its types\\: T$#"
+			count: 1
+			path: Entity/RegistrationRuleItemRepository.php
+
+		-
+			message: "#^Class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\RegistrationRuleUserRepository extends generic class Sulu\\\\Component\\\\Persistence\\\\Repository\\\\ORM\\\\EntityRepository but does not specify its types\\: T$#"
+			count: 1
+			path: Entity/RegistrationRuleUserRepository.php
 
 		-
 			message: "#^Method Sulu\\\\Bundle\\\\CommunityBundle\\\\Event\\\\AbstractCommunityEvent\\:\\:getConfigProperty\\(\\) has invalid return type Sulu\\\\Bundle\\\\CommunityBundle\\\\Event\\\\TTypeConfig\\.$#"
@@ -144,21 +144,6 @@ parameters:
 			message: "#^Offset TTypeConfigProperty of 'activate_user'\\|'auto_login'\\|'delete_user'\\|'email'\\|'embed_template'\\|'enabled'\\|'options'\\|'redirect_to'\\|'service'\\|'template'\\|'type' does not exist on array\\<array\\|bool\\|string\\|null\\>\\|string\\.$#"
 			count: 1
 			path: Event/AbstractCommunityEvent.php
-
-		-
-			message: "#^Parameter \\#1 \\$from of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
-			count: 1
-			path: EventListener/BlacklistListener.php
-
-		-
-			message: "#^Parameter \\#2 \\$to of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
-			count: 1
-			path: EventListener/BlacklistListener.php
-
-		-
-			message: "#^Parameter \\#2 \\$webspaceKey of class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\BlacklistUser constructor expects string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
-			count: 1
-			path: EventListener/BlacklistListener.php
 
 		-
 			message: "#^Offset 'firewall' on array\\{from\\: array\\<string\\>\\|string, to\\: array\\<string\\>\\|string, webspace_key\\: string, role\\: string, firewall\\: string, maintenance\\: array\\{enabled\\: bool, template\\: string\\}, login\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, registration\\: array\\{enabled\\: bool, template\\: string, service\\: string\\|null, embed_template\\: string, type\\: string, options\\: array, activate_user\\: bool, auto_login\\: bool, \\.\\.\\.\\}, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
@@ -184,6 +169,21 @@ parameters:
 			message: "#^Parameter \\#3 \\$config of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\{subject\\: string, user_template\\: string\\|null, admin_template\\: string\\|null\\}, array\\|bool\\|string\\|null given\\.$#"
 			count: 1
 			path: EventListener/MailListener.php
+
+		-
+			message: "#^Parameter \\#1 \\$from of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			count: 1
+			path: EventListener/RegistrationRuleListener.php
+
+		-
+			message: "#^Parameter \\#2 \\$to of static method Sulu\\\\Bundle\\\\CommunityBundle\\\\Mail\\\\Mail\\:\\:create\\(\\) expects array\\<string\\>\\|string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			count: 1
+			path: EventListener/RegistrationRuleListener.php
+
+		-
+			message: "#^Parameter \\#2 \\$webspaceKey of class Sulu\\\\Bundle\\\\CommunityBundle\\\\Entity\\\\RegistrationRuleUser constructor expects string, array\\<array\\|bool\\|string\\|null\\>\\|string given\\.$#"
+			count: 1
+			path: EventListener/RegistrationRuleListener.php
 
 		-
 			message: "#^Call to method createMessage\\(\\) on an unknown class Swift_Mailer\\.$#"
@@ -221,7 +221,7 @@ parameters:
 			path: Manager/CommunityManager.php
 
 		-
-			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManager\\:\\:getConfigTypeProperty\\(\\) expects TConfig of 'blacklist_confirmed'\\|'blacklist_denied'\\|'blacklisted'\\|'completion'\\|'confirmation'\\|'email_confirmation'\\|'firewall'\\|'from'\\|'login'\\|'maintenance'\\|'password_forget'\\|'password_reset'\\|'profile'\\|'registration'\\|'role'\\|'to'\\|'webspace_key', string given\\.$#"
+			message: "#^Parameter \\#1 \\$type of method Sulu\\\\Bundle\\\\CommunityBundle\\\\Manager\\\\CommunityManager\\:\\:getConfigTypeProperty\\(\\) expects TConfig of 'completion'\\|'confirmation'\\|'email_confirmation'\\|'firewall'\\|'from'\\|'login'\\|'maintenance'\\|'password_forget'\\|'password_reset'\\|'profile'\\|'registration'\\|'registration_rule'\\|'registration_rule…'\\|'role'\\|'to'\\|'webspace_key', string given\\.$#"
 			count: 1
 			path: Manager/CommunityManager.php
 
@@ -289,4 +289,3 @@ parameters:
 			message: "#^PHPDoc tag @var for variable \\$repository contains generic class Doctrine\\\\ORM\\\\EntityRepository but does not specify its types\\: TEntityClass$#"
 			count: 1
 			path: Validator/Constraints/ExistValidator.php
-

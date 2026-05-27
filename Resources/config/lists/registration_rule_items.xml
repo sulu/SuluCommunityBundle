@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <list xmlns="http://schemas.sulu.io/list-builder/list">
-    <key>blacklist_items</key>
+    <key>registration_rule_items</key>
 
     <properties>
         <property
@@ -10,7 +10,7 @@
             translation="sulu_admin.id"
         >
             <field-name>id</field-name>
-            <entity-name>%sulu.model.blacklist_item.class%</entity-name>
+            <entity-name>%sulu.model.registration_rule_item.class%</entity-name>
         </property>
 
         <property
@@ -20,7 +20,7 @@
             translation="sulu_community.pattern"
         >
             <field-name>pattern</field-name>
-            <entity-name>%sulu.model.blacklist_item.class%</entity-name>
+            <entity-name>%sulu.model.registration_rule_item.class%</entity-name>
         </property>
 
         <property
@@ -30,7 +30,7 @@
             translation="sulu_community.type"
         >
             <field-name>type</field-name>
-            <entity-name>%sulu.model.blacklist_item.class%</entity-name>
+            <entity-name>%sulu.model.registration_rule_item.class%</entity-name>
         </property>
     </properties>
 </list>
