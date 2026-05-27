@@ -67,14 +67,20 @@ parameters:
 			path: Command/InitCommand.php
 
 		-
-			message: '#^Call to method encodePassword\(\) on an unknown class Symfony\\Component\\Security\\Core\\Encoder\\UserPasswordEncoderInterface\.$#'
-			identifier: class.notFound
+			message: '#^Cannot call method addContactAddress\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: Controller/AbstractController.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\AbstractController\:\:encodePassword\(\) should return string but returns mixed\.$#'
-			identifier: return.type
+			message: '#^Cannot call method getKey\(\) on Sulu\\Component\\Webspace\\Webspace\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/AbstractController.php
+
+		-
+			message: '#^Cannot call method getMainAddress\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: Controller/AbstractController.php
 
@@ -91,8 +97,8 @@ parameters:
 			path: Controller/AbstractController.php
 
 		-
-			message: '#^PHPDoc tag @var for variable \$encoder contains unknown class Symfony\\Component\\Security\\Core\\Encoder\\UserPasswordEncoderInterface\.$#'
-			identifier: class.notFound
+			message: '#^Parameter \#1 \$contact of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactAddress\:\:setContact\(\) expects Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface, Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Controller/AbstractController.php
 
@@ -107,6 +113,24 @@ parameters:
 			identifier: argument.templateType
 			count: 2
 			path: Controller/AbstractController.php
+
+		-
+			message: '#^Cannot call method addMedia\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Cannot call method getAvatar\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/CompletionController.php
+
+		-
+			message: '#^Cannot call method setAvatar\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/CompletionController.php
 
 		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\CompletionController\:\:saveAvatar\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
@@ -127,18 +151,6 @@ parameters:
 			path: Controller/CompletionController.php
 
 		-
-			message: '#^Parameter \#1 \$avatar of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:setAvatar\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Controller/CompletionController.php
-
-		-
-			message: '#^Parameter \#1 \$media of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:addMedia\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Controller/CompletionController.php
-
-		-
 			message: '#^Parameter \#1 \$type of method Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController\:\:createForm\(\) expects class\-string\<Symfony\\Component\\Form\\FormTypeInterface\<Sulu\\Bundle\\SecurityBundle\\Entity\\User\>\>, string given\.$#'
 			identifier: argument.type
 			count: 1
@@ -155,6 +167,24 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: Controller/CompletionController.php
+
+		-
+			message: '#^Cannot call method addEmail\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/EmailConfirmationController.php
+
+		-
+			message: '#^Cannot call method getEmails\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: Controller/EmailConfirmationController.php
+
+		-
+			message: '#^Cannot call method getMainEmail\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: Controller/EmailConfirmationController.php
 
 		-
 			message: '#^Parameter \#1 \$emailUsername of method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManagerInterface\:\:passwordForget\(\) expects string, mixed given\.$#'
@@ -181,6 +211,24 @@ parameters:
 			path: Controller/PasswordController.php
 
 		-
+			message: '#^Cannot call method addMedia\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Cannot call method getAvatar\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
+			message: '#^Cannot call method setAvatar\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/ProfileController.php
+
+		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\ProfileController\:\:saveAvatar\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
@@ -195,18 +243,6 @@ parameters:
 		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\ProfileController\:\:saveMediaFields\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
 			identifier: missingType.generics
-			count: 1
-			path: Controller/ProfileController.php
-
-		-
-			message: '#^Parameter \#1 \$avatar of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:setAvatar\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Controller/ProfileController.php
-
-		-
-			message: '#^Parameter \#1 \$media of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:addMedia\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: Controller/ProfileController.php
 
@@ -235,6 +271,24 @@ parameters:
 			path: Controller/ProfileController.php
 
 		-
+			message: '#^Cannot call method addMedia\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Cannot call method getAvatar\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
+			message: '#^Cannot call method setAvatar\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Controller/RegistrationController.php
+
+		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\RegistrationController\:\:saveAvatar\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
@@ -249,18 +303,6 @@ parameters:
 		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\RegistrationController\:\:saveMediaFields\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
 			identifier: missingType.generics
-			count: 1
-			path: Controller/RegistrationController.php
-
-		-
-			message: '#^Parameter \#1 \$avatar of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:setAvatar\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Controller/RegistrationController.php
-
-		-
-			message: '#^Parameter \#1 \$media of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:addMedia\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: Controller/RegistrationController.php
 
@@ -289,9 +331,33 @@ parameters:
 			path: Controller/RegistrationController.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between null and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 2
+			message: '#^Parameter \#1 \$object of method Doctrine\\Persistence\\ObjectManager\:\:remove\(\) expects object, Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Controller/RegistrationRuleConfirmationController.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: Controller/RegistrationRuleItemController.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Controller/RegistrationRuleItemController.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: Controller/RegistrationRuleItemController.php
+
+		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\RegistrationRuleItemController\:\:prepareListResponse\(\) should return array\<mixed\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
 			path: Controller/RegistrationRuleItemController.php
 
 		-
@@ -439,6 +505,12 @@ parameters:
 			path: EventListener/CompletionListener.php
 
 		-
+			message: '#^Cannot call method getMainEmail\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: EventListener/EmailConfirmationListener.php
+
+		-
 			message: '#^Instanceof between Sulu\\Bundle\\SecurityBundle\\Entity\\User and Sulu\\Bundle\\SecurityBundle\\Entity\\User will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
@@ -491,6 +563,18 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Form/Type/CompletionContactType.php
+
+		-
+			message: '#^Cannot call method getFirstName\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Form/Type/CompletionType.php
+
+		-
+			message: '#^Cannot call method getLastName\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Form/Type/CompletionType.php
 
 		-
 			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Form\\Type\\CompletionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
@@ -547,50 +631,8 @@ parameters:
 			path: Mail/Mail.php
 
 		-
-			message: '#^Call to method createMessage\(\) on an unknown class Swift_Mailer\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
-			message: '#^Call to method send\(\) on an unknown class Swift_Mailer\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
-			message: '#^Cannot call method setBody\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
-			message: '#^Cannot call method setFrom\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
-			message: '#^Cannot call method setSubject\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
-			message: '#^Cannot call method setTo\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
-			message: '#^Class Swift_Mailer not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Mail\\MailFactory\:\:__construct\(\) has parameter \$mailer with no type specified\.$#'
-			identifier: missingType.parameter
+			message: '#^PHPDoc tag @var with type Symfony\\Contracts\\Translation\\LocaleAwareInterface is not subtype of native type Symfony\\Contracts\\Translation\\TranslatorInterface\.$#'
+			identifier: varTag.nativeType
 			count: 1
 			path: Mail/MailFactory.php
 
@@ -607,20 +649,14 @@ parameters:
 			path: Mail/MailFactory.php
 
 		-
-			message: '#^Property Sulu\\Bundle\\CommunityBundle\\Mail\\MailFactory\:\:\$mailer \(Swift_Mailer\|Symfony\\Component\\Mailer\\MailerInterface\) does not accept mixed\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
-			message: '#^Property Sulu\\Bundle\\CommunityBundle\\Mail\\MailFactory\:\:\$mailer has unknown class Swift_Mailer as its type\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Mail/MailFactory.php
-
-		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManager\:\:getConfigProperty\(\) has no return type specified\.$#'
 			identifier: missingType.return
+			count: 1
+			path: Manager/CommunityManager.php
+
+		-
+			message: '#^PHPDoc tag @var with type string\|null is not subtype of native type string\.$#'
+			identifier: varTag.nativeType
 			count: 1
 			path: Manager/CommunityManager.php
 
@@ -679,6 +715,24 @@ parameters:
 			path: Manager/CommunityManagerInterface.php
 
 		-
+			message: '#^Cannot call method addEmail\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Manager/UserManager.php
+
+		-
+			message: '#^Cannot call method getEmails\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: Manager/UserManager.php
+
+		-
+			message: '#^Cannot call method getMainEmail\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Manager/UserManager.php
+
+		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Manager\\UserManager\:\:__construct\(\) has parameter \$contactManager with generic interface Sulu\\Bundle\\ContactBundle\\Contact\\ContactManagerInterface but does not specify its types\: DoctrineEntity, ApiEntity, AddressRelationEntity$#'
 			identifier: missingType.generics
 			count: 1
@@ -703,10 +757,34 @@ parameters:
 			path: Tests/Application/config/bootstrap.php
 
 		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
+			message: '#^Cannot call method getEmails\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
 			count: 1
-			path: Tests/Application/config/config.php
+			path: Tests/Functional/Controller/EmailConfirmationControllerTest.php
+
+		-
+			message: '#^Cannot call method getMainEmail\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Tests/Functional/Controller/EmailConfirmationControllerTest.php
+
+		-
+			message: '#^Cannot call method getFormOfAddress\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Tests/Functional/Controller/ProfileControllerTest.php
+
+		-
+			message: '#^Cannot call method getMainAddress\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Tests/Functional/Controller/ProfileControllerTest.php
+
+		-
+			message: '#^Cannot call method getNote\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: Tests/Functional/Controller/ProfileControllerTest.php
 
 		-
 			message: '#^Binary operation "\." between ''/admin/api…'' and mixed results in an error\.$#'
@@ -799,9 +877,27 @@ parameters:
 			path: Tests/Unit/Controller/SaveMediaTraitTest.php
 
 		-
+			message: '#^Cannot call method addMedia\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
 			message: '#^Cannot call method get\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 2
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Cannot call method getAvatar\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Tests/Unit/Controller/SaveMediaTraitTest.php
+
+		-
+			message: '#^Cannot call method setAvatar\(\) on Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\|null\.$#'
+			identifier: method.nonObject
+			count: 1
 			path: Tests/Unit/Controller/SaveMediaTraitTest.php
 
 		-
@@ -835,18 +931,6 @@ parameters:
 			path: Tests/Unit/Controller/SaveMediaTraitTest.php
 
 		-
-			message: '#^Parameter \#1 \$avatar of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:setAvatar\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Tests/Unit/Controller/SaveMediaTraitTest.php
-
-		-
-			message: '#^Parameter \#1 \$media of method Sulu\\Bundle\\ContactBundle\\Entity\\ContactInterface\:\:addMedia\(\) expects Sulu\\Bundle\\MediaBundle\\Entity\\MediaInterface, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Tests/Unit/Controller/SaveMediaTraitTest.php
-
-		-
 			message: '#^Parameter \#1 \$uploadedFile of method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Controller\\SaveMediaTraitTest\:\:saveMedia\(\) expects Symfony\\Component\\HttpFoundation\\File\\UploadedFile, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -875,60 +959,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: Tests/Unit/DependencyInjection/ConfigurationTest.php
-
-		-
-			message: '#^Call to an undefined method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Validator\\BlockedValidatorTest\:\:prophesize\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
-
-		-
-			message: '#^Cannot call method addViolation\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
-
-		-
-			message: '#^Cannot call method findBySender\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
-
-		-
-			message: '#^Cannot call method reveal\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 6
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
-
-		-
-			message: '#^Cannot call method shouldBeCalled\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
-
-		-
-			message: '#^Cannot call method shouldNotBeCalled\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
-
-		-
-			message: '#^Cannot call method willReturn\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
-
-		-
-			message: '#^Parameter \#1 \$context of method Symfony\\Component\\Validator\\ConstraintValidator\:\:initialize\(\) expects Symfony\\Component\\Validator\\Context\\ExecutionContextInterface, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
-
-		-
-			message: '#^Parameter \#1 \$registrationRuleItemRepository of class Sulu\\Bundle\\CommunityBundle\\Validator\\Constraints\\BlockedValidator constructor expects Sulu\\Bundle\\CommunityBundle\\Entity\\RegistrationRuleItemRepository, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: Tests/Unit/Validator/BlockedValidatorTest.php
 
 		-
 			message: '#^Parameter \#1 \$environment of class Sulu\\Bundle\\CommunityBundle\\Tests\\Application\\Kernel constructor expects string, mixed given\.$#'

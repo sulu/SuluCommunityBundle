@@ -19,31 +19,13 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-/**
- * Send emails for a specific type.
- */
 class MailFactory implements MailFactoryInterface
 {
-    /**
-     * @var MailerInterface|\Swift_Mailer
-     */
-    protected $mailer;
-
-    /**
-     * @var Environment
-     */
-    protected $twig;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    public function __construct($mailer, Environment $twig, TranslatorInterface $translator)
-    {
-        $this->mailer = $mailer;
-        $this->twig = $twig;
-        $this->translator = $translator;
+    public function __construct(
+        protected MailerInterface $mailer,
+        protected Environment $twig,
+        protected TranslatorInterface $translator,
+    ) {
     }
 
     public function sendEmails(Mail $mail, User $user, array $parameters = []): void
@@ -73,40 +55,29 @@ class MailFactory implements MailFactoryInterface
     }
 
     /**
-     * Create and send email.
-     *
      * @param string|array<string, string> $from
      * @param string|array<string, string> $to
      * @param mixed[] $data
      */
     protected function sendEmail($from, $to, string $subject, string $template, array $data): void
     {
-        $body = $this->twig->render($template, $data);
+        $fromAddress = $this->getAddress($from);
+        $toAddress = $this->getAddress($to);
 
-        if ($this->mailer instanceof \Swift_Mailer) {
-            $email = $this->mailer->createMessage()
-                ->setSubject($this->translator->trans($subject))
-                ->setFrom($from)
-                ->setTo($to)
-                ->setBody($body, 'text/html');
-        } else {
-            if (!$this->getAddress($from) || !$this->getAddress($to)) {
-                return;
-            }
-
-            $email = (new Email())
-                ->subject($this->translator->trans($subject))
-                ->from($this->getAddress($from))
-                ->to($this->getAddress($to))
-                ->html($body);
+        if (null === $fromAddress || null === $toAddress) {
+            return;
         }
+
+        $email = (new Email())
+            ->subject($this->translator->trans($subject))
+            ->from($fromAddress)
+            ->to($toAddress)
+            ->html($this->twig->render($template, $data));
 
         $this->mailer->send($email);
     }
 
     /**
-     * Convert string/array email address to an Address object.
-     *
      * @param mixed $address
      */
     protected function getAddress($address): ?Address

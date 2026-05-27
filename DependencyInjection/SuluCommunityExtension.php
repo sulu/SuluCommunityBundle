@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Sulu.
  *
@@ -69,6 +71,11 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
                                 'alias' => 'CommunityBundle',
                             ],
                         ],
+                        'dql' => [
+                            'string_functions' => [
+                                'regexp' => Regexp::class,
+                            ],
+                        ],
                     ],
                 ]
             );
@@ -134,19 +141,6 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
             );
         }
 
-        if ($container->hasExtension('fos_rest')) {
-            $container->prependExtensionConfig(
-                'fos_rest',
-                [
-                    'exception' => [
-                        'codes' => [
-                            InvalidTypeException::class => 409,
-                        ],
-                    ],
-                ]
-            );
-        }
-
         if ($container->hasExtension('jms_serializer')) {
             $container->prependExtensionConfig(
                 'jms_serializer',
@@ -164,15 +158,13 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
             );
         }
 
-        if ($container->hasExtension('doctrine')) {
+        if ($container->hasExtension('fos_rest')) {
             $container->prependExtensionConfig(
-                'doctrine',
+                'fos_rest',
                 [
-                    'orm' => [
-                        'dql' => [
-                            'string_functions' => [
-                                'regexp' => Regexp::class,
-                            ],
+                    'exception' => [
+                        'codes' => [
+                            InvalidTypeException::class => 409,
                         ],
                     ],
                 ]

@@ -11,7 +11,6 @@
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\HttpKernel\Kernel;
 
 return static function(PhpFileLoader $loader, ContainerBuilder $container) {
     $context = $container->getParameter('sulu.context');
@@ -19,10 +18,6 @@ return static function(PhpFileLoader $loader, ContainerBuilder $container) {
     $loader->import('context_' . $context . '.yml');
 
     if ('website' === $context) {
-        if (\version_compare(Kernel::VERSION, '6.0.0', '>=')) {
-            $loader->import('security-6.yml');
-        } else {
-            $loader->import('security-5-4.yml');
-        }
+        $loader->import('security-6.yml');
     }
 };

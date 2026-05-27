@@ -28,11 +28,11 @@ class CompletionContactType extends AbstractType
         $contact = $builder->getData();
 
         if (!$contact->getFirstName()) {
-            $builder->add('firstName', TextType::class);
+            $builder->add('firstName', TextType::class, ['empty_data' => '']);
         }
 
         if (!$contact->getLastName()) {
-            $builder->add('lastName', TextType::class);
+            $builder->add('lastName', TextType::class, ['empty_data' => '']);
         }
     }
 

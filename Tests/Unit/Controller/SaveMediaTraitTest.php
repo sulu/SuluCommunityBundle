@@ -123,7 +123,7 @@ class SaveMediaTraitTest extends TestCase
 
     public function testAvatarAndNoMedias(): void
     {
-        $this->contact->setAvatar($this->media->reveal())->shouldBeCalled();
+        $this->contact->setAvatar($this->media->reveal())->willReturn($this->contact)->shouldBeCalled();
 
         $fileName = $this->createTempnam();
         $uploadedFile = new UploadedFile($fileName, 'test.jpg');
@@ -155,7 +155,7 @@ class SaveMediaTraitTest extends TestCase
 
     public function testNoAvatarAndSingleMedia(): void
     {
-        $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
+        $this->contact->addMedia($this->media->reveal())->willReturn($this->contact)->shouldBeCalled();
 
         $tempFileName = $this->createTempnam();
         $uploadedFile = new UploadedFile($tempFileName, 'test.jpg');
@@ -187,7 +187,7 @@ class SaveMediaTraitTest extends TestCase
 
     public function testNoAvatarAndMultipleMedias(): void
     {
-        $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
+        $this->contact->addMedia($this->media->reveal())->willReturn($this->contact)->shouldBeCalled();
 
         $tempFileName1 = $this->createTempnam();
         $tempFileName2 = $this->createTempnam();
@@ -233,8 +233,8 @@ class SaveMediaTraitTest extends TestCase
 
     public function testAvatarAndMultipleMedias(): void
     {
-        $this->contact->setAvatar($this->media->reveal())->shouldBeCalled();
-        $this->contact->addMedia($this->media->reveal())->shouldBeCalled();
+        $this->contact->setAvatar($this->media->reveal())->willReturn($this->contact)->shouldBeCalled();
+        $this->contact->addMedia($this->media->reveal())->willReturn($this->contact)->shouldBeCalled();
 
         $tempFileName1 = $this->createTempnam();
         $tempFileName2 = $this->createTempnam();

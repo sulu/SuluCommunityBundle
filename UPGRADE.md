@@ -1,5 +1,57 @@
 # Upgrade
 
+## 3.0.0
+
+### Sulu 3.0 compatibility
+
+This version adds support for Sulu 3.0. The bundle now requires:
+
+- PHP 8.2 or higher
+- Sulu 3.0 or higher
+- Symfony 6.4 or 7.1 or higher
+- Doctrine ORM 2.17.3 or 3.3 or higher
+
+### Removing the rest routing
+
+The Rest Routing bundle is no longer required. Remove `type: rest` from your
+admin route import and rename `.yml` to `.yaml`:
+
+```diff
+# config/routes/sulu_community_admin.yaml
+ sulu_community_api:
+-    type: rest
+     resource: "@SuluCommunityBundle/Resources/config/routing_api.yaml"
+     prefix: /admin/api
+```
+
+### REST list response changed
+
+The list endpoint of the registration rule items API now returns a
+`PaginatedRepresentation` instead of the removed `ListRepresentation`. The
+`_embedded.registration_rule_items` array, `page`, `limit` and `total` fields
+are unchanged. The `_links` section no longer exposes the request route and
+query parameters.
+
+### MailFactory no longer supports SwiftMailer
+
+`Sulu\Bundle\CommunityBundle\Mail\MailFactory::__construct()` now requires a
+`Symfony\Component\Mailer\MailerInterface` and dropped the SwiftMailer code
+path. Remove SwiftMailer from your project to use `symfony/mailer` instead.
+
+### Strict-typed form fields
+
+Some Sulu entity setters now require a non-null `string`
+(`User::setUsername`, `Contact::setFirstName`, `Contact::setLastName`). If
+you extend `RegistrationType`, `ProfileType`, `CompletionType` or
+`CompletionContactType`, add `'empty_data' => ''` to any field that maps to
+one of these setters.
+
+### LastLoginListener constructor changed
+
+`LastLoginListener::__construct()` now requires
+`Doctrine\ORM\EntityManagerInterface` (was the concrete `EntityManager`).
+
+
 ## 2.0.0 (unreleased)
 
 ### Dropped support for older PHP and dependency versions

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Sulu.
  *
@@ -11,9 +13,9 @@
 
 namespace Sulu\Bundle\CommunityBundle\EventListener;
 
-use Doctrine\ORM\EntityManager;
-use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Sulu\Bundle\SecurityBundle\Entity\User;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -23,47 +25,23 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class LastLoginListener implements EventSubscriberInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var int
-     */
-    protected $interval;
-
-    /**
-     * LastLoginListener constructor.
-     */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        EntityManager $entityManager,
-        int $interval = 0
+        protected TokenStorageInterface $tokenStorage,
+        protected EntityManagerInterface $entityManager,
+        protected int $interval = 0,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->entityManager = $entityManager;
-        $this->interval = $interval;
     }
 
     /**
      * @return array<string, mixed>
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => 'onRequest',
         ];
     }
 
-    /**
-     * Update the last login in specific interval.
-     */
     public function onRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
@@ -76,7 +54,6 @@ class LastLoginListener implements EventSubscriberInterface
 
         $token = $this->tokenStorage->getToken();
 
-        // Check token authentication availability
         if (!$token) {
             return;
         }
@@ -88,14 +65,15 @@ class LastLoginListener implements EventSubscriberInterface
         }
 
         $user->setLastLogin(new \DateTime());
-        $this->entityManager->flush($user);
+        $this->entityManager->flush();
     }
 
-    /**
-     * Check if user was active shortly.
-     */
     private function isActiveNow(User $user): bool
     {
+        if (null === $user->getLastLogin()) {
+            return false;
+        }
+
         $delay = new \DateTime($this->interval . ' seconds ago');
 
         return $user->getLastLogin() > $delay;

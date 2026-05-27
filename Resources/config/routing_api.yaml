@@ -1,3 +1,72 @@
-sulu_community.registration_rule_item:
-    type: rest
-    resource: sulu_community.controller.registration_rule_item
+sulu_community.get_registration-rule-items:
+    path: /registration-rule-items.{_format}
+    controller: sulu_community.controller.registration_rule_item::cgetAction
+    methods: GET
+    format: json
+    requirements:
+        _format: json|csv
+    options:
+        expose: true
+
+sulu_community.get_registration-rule-items_fields:
+    path: /registration-rule-items/fields.{_format}
+    controller: sulu_community.controller.registration_rule_item::fieldsAction
+    methods: GET
+    format: json
+    requirements:
+        _format: json|csv
+    options:
+        expose: true
+
+sulu_community.get_registration-rule-item:
+    path: /registration-rule-items/{id}.{_format}
+    controller: sulu_community.controller.registration_rule_item::getAction
+    methods: GET
+    format: json
+    requirements:
+        id: \d+
+        _format: json|csv
+    options:
+        expose: true
+
+sulu_community.post_registration-rule-item:
+    path: /registration-rule-items.{_format}
+    controller: sulu_community.controller.registration_rule_item::postAction
+    methods: POST
+    format: json
+    requirements:
+        _format: json|csv
+    options:
+        expose: true
+
+sulu_community.put_registration-rule-item:
+    path: /registration-rule-items/{id}.{_format}
+    controller: sulu_community.controller.registration_rule_item::putAction
+    methods: PUT
+    format: json
+    requirements:
+        id: \d+
+        _format: json|csv
+    options:
+        expose: true
+
+sulu_community.delete_registration-rule-item:
+    path: /registration-rule-items/{id}.{_format}
+    controller: sulu_community.controller.registration_rule_item::deleteAction
+    methods: DELETE
+    format: json
+    requirements:
+        id: \d+
+        _format: json|csv
+    options:
+        expose: true
+
+sulu_community.delete_registration-rule-items:
+    path: /registration-rule-items.{_format}
+    controller: sulu_community.controller.registration_rule_item::cdeleteAction
+    methods: DELETE
+    format: json
+    requirements:
+        _format: json|csv
+    options:
+        expose: true

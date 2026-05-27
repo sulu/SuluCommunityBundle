@@ -6,14 +6,21 @@ on:
         branches:
             - '[0-9]+.x'
             - '[0-9]+.[0-9]+'
+    workflow_dispatch:
+
+# automatically cancel previously started workflows when pushing a new commit to a branch
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-    test:
+    php:
         name: 'PHP ${{ matrix.php-version }} (${{ matrix.dependency-versions }})'
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-22.04
+        timeout-minutes: 30
 
         env:
-            DATABASE_URL: 'mysql://root:root@127.0.0.1/sulu_community_test?serverVersion=5.7'
+            COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         strategy:
             fail-fast: false
@@ -21,44 +28,55 @@ jobs:
                 include:
                     - php-version: '8.2'
                       dependency-versions: 'lowest'
+                      php-extensions: 'ctype, iconv, mysql, gd'
                       tools: 'composer:v2'
                       env:
-                          SYMFONY_DEPRECATIONS_HELPER: weak
+                          SYMFONY_DEPRECATIONS_HELPER: disabled
+                          DATABASE_URL: 'mysql://root:root@127.0.0.1:3306/su_community_test?serverVersion=8.0&charset=utf8mb4'
 
                     - php-version: '8.2'
                       dependency-versions: 'highest'
+                      php-extensions: 'ctype, iconv, mysql, imagick'
                       tools: 'composer:v2'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
+                          DATABASE_URL: 'mysql://root:root@127.0.0.1:3306/su_community_test?serverVersion=8.0&charset=utf8mb4'
 
                     - php-version: '8.3'
                       dependency-versions: 'highest'
+                      php-extensions: 'ctype, iconv, mysql, imagick'
                       tools: 'composer:v2'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
+                          DATABASE_URL: 'mysql://root:root@127.0.0.1:3306/su_community_test?serverVersion=8.0&charset=utf8mb4'
 
                     - php-version: '8.4'
                       dependency-versions: 'highest'
-                      tools: 'composer:v2'
+                      php-extensions: 'ctype, iconv, mysql, imagick'
+                      tools: 'composer'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
+                          DATABASE_URL: 'mysql://root:root@127.0.0.1:3306/su_community_test?serverVersion=8.0&charset=utf8mb4'
 
                     - php-version: '8.5'
                       dependency-versions: 'highest'
-                      tools: 'composer:v2'
-                      composer-options: '--ignore-platform-reqs'
+                      php-extensions: 'ctype, iconv, mysql, imagick'
+                      tools: 'composer:snapshot'
+                      composer-stability: 'dev'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
+                          DATABASE_URL: 'mysql://root:root@127.0.0.1:3306/su_community_test?serverVersion=8.0&charset=utf8mb4'
 
         services:
             mysql:
-                image: mysql:5.7
+                image: 'mysql:8.0'
                 env:
                     MYSQL_ROOT_PASSWORD: root
                 ports:
-                    - 3306:3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
-
+                    - '3306:3306'
+                options: >-
+                    --health-cmd="mysqladmin ping" --health-interval=10s
+                    --health-timeout=5s --health-retries=5
         steps:
             - name: Checkout project
               uses: actions/checkout@v4
@@ -67,8 +85,9 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
-                  extensions: 'mysql, gd'
+                  extensions: ${{ matrix.php-extensions }}
                   tools: ${{ matrix.tools }}
+                  ini-values: memory_limit=-1
                   coverage: none
 
             - name: Remove Lint Tools
@@ -76,11 +95,26 @@ jobs:
               # testing lowest versions.
               run: composer remove "*php-cs-fixer*" "*phpstan*" "*rector*" --dev --no-update
 
+            - name: Set composer stability
+              if: ${{ matrix.composer-stability }}
+              run: composer config minimum-stability ${{ matrix.composer-stability }}
+
             - name: Install composer dependencies
-              uses: ramsey/composer-install@v2
+              uses: ramsey/composer-install@v3
               with:
                   dependency-versions: ${{ matrix.dependency-versions }}
                   composer-options: ${{ matrix.composer-options }}
+
+            - name: Output versions and installed dependencies
+              run: |
+                  echo 'PHP Version:'
+                  php --version
+                  echo ''
+                  echo 'PHP Modules:'
+                  php -m
+                  echo ''
+                  echo 'Composer Info:'
+                  composer info
 
             - name: Bootstrap test environment
               run: composer bootstrap-test-environment
@@ -90,21 +124,13 @@ jobs:
               run: time composer test
               env: ${{ matrix.env }}
 
-    lint:
+    php-lint:
         name: 'PHP Lint'
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-22.04
+        timeout-minutes: 30
 
         env:
-            DATABASE_URL: 'mysql://root:root@127.0.0.1/sulu_community_test?serverVersion=5.7'
-
-        services:
-            mysql:
-                image: mysql:5.7
-                env:
-                    MYSQL_ROOT_PASSWORD: root
-                ports:
-                    - 3306:3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+            COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         steps:
             - name: Checkout project
@@ -114,20 +140,26 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.3'
-                  extensions: 'mysql, gd'
+                  extensions: 'ctype, iconv, mysql, imagick'
                   tools: 'composer:v2'
+                  ini-values: memory_limit=-1
                   coverage: none
 
             - name: Install composer dependencies
-              uses: ramsey/composer-install@v2
+              uses: ramsey/composer-install@v3
               with:
                   dependency-versions: highest
 
-            - name: Bootstrap test environment
-              run: composer bootstrap-test-environment
-
-            - name: Initialize community roles
-              run: Tests/Application/bin/adminconsole sulu:community:init -vvv --env test
+            - name: Output versions and installed dependencies
+              run: |
+                  echo 'PHP Version:'
+                  php --version
+                  echo ''
+                  echo 'PHP Modules:'
+                  php -m
+                  echo ''
+                  echo 'Composer Info:'
+                  composer info
 
             - name: Lint code
               run: composer lint

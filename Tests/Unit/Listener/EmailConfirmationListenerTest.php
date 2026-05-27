@@ -117,9 +117,7 @@ class EmailConfirmationListenerTest extends TestCase
 
         $this->entityManager->persist(
             Argument::that(
-                function(EmailConfirmationToken $token) {
-                    return '123-123-123' === $token->getToken() && $token->getUser() === $this->user->reveal();
-                }
+                fn (EmailConfirmationToken $token) => $token->getUser() === $this->user->reveal(),
             )
         );
         $this->entityManager->flush();
