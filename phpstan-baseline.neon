@@ -97,7 +97,7 @@ parameters:
 			path: Controller/AbstractController.php
 
 		-
-			message: '#^Parameter \#1 \$type of method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManagerInterface\:\:getConfigTypeProperty\(\) expects ''blacklist_confirmed''\|''blacklist_denied''\|''blacklisted''\|''completion''\|''confirmation''\|''email_confirmation''\|''firewall''\|''from''\|''login''\|''maintenance''\|''password_forget''\|''password_reset''\|''profile''\|''registration''\|''role''\|''to''\|''webspace_key'', string given\.$#'
+			message: '#^Parameter \#1 \$type of method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManagerInterface\:\:getConfigTypeProperty\(\) expects ''completion''\|''confirmation''\|''email_confirmation''\|''firewall''\|''from''\|''login''\|''maintenance''\|''password_forget''\|''password_reset''\|''profile''\|''registration''\|''registration_rule''\|''registration_rule…''\|''role''\|''to''\|''webspace_key'', string given\.$#'
 			identifier: argument.type
 			count: 2
 			path: Controller/AbstractController.php
@@ -107,30 +107,6 @@ parameters:
 			identifier: argument.templateType
 			count: 2
 			path: Controller/AbstractController.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\BlacklistConfirmationController\:\:getBlacklistItemManager\(\) should return Sulu\\Bundle\\CommunityBundle\\Manager\\BlacklistItemManager but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: Controller/BlacklistConfirmationController.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\BlacklistConfirmationController\:\:getBlacklistItemRepository\(\) should return Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistItemRepository but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: Controller/BlacklistConfirmationController.php
-
-		-
-			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\BlacklistConfirmationController\:\:getBlacklistUserRepository\(\) should return Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistUserRepository but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: Controller/BlacklistConfirmationController.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between null and string will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 2
-			path: Controller/BlacklistItemController.php
 
 		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Controller\\CompletionController\:\:saveAvatar\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
@@ -313,6 +289,12 @@ parameters:
 			path: Controller/RegistrationController.php
 
 		-
+			message: '#^Strict comparison using \!\=\= between null and string will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: Controller/RegistrationRuleItemController.php
+
+		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 1
@@ -325,7 +307,7 @@ parameters:
 			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
 
 		-
-			message: '#^Method Sulu\\Bundle\\CommunityBundle\\DependencyInjection\\CompilerPass\\CommunityManagerCompilerPass\:\:updateWebspaceConfig\(\) should return array\{from\: array\<string\>\|string, to\: array\<string\>\|string, webspace_key\: string, role\: string, firewall\: string, maintenance\: array\{enabled\: bool, template\: string\}, login\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, registration\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, \.\.\.\} but returns non\-empty\-array\.$#'
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\DependencyInjection\\CompilerPass\\CommunityManagerCompilerPass\:\:updateWebspaceConfig\(\) should return array\{from\: array\<string\>\|string, to\: array\<string\>\|string, webspace_key\: string, role\: string, firewall\: string, maintenance\: array\{enabled\: bool, template\: string\}, login\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, registration\: array\{enabled\: bool, template\: string, service\: string\|null, embed_template\: string, type\: string, options\: array\<mixed\>, activate_user\: bool, auto_login\: bool, \.\.\.\}, \.\.\.\} but returns non\-empty\-array\<mixed\>\.$#'
 			identifier: return.type
 			count: 1
 			path: DependencyInjection/CompilerPass/CommunityManagerCompilerPass.php
@@ -409,22 +391,22 @@ parameters:
 			path: DependencyInjection/SuluCommunityExtension.php
 
 		-
-			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistItemRepository extends generic class Sulu\\Component\\Persistence\\Repository\\ORM\\EntityRepository but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: Entity/BlacklistItemRepository.php
-
-		-
-			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistUserRepository extends generic class Sulu\\Component\\Persistence\\Repository\\ORM\\EntityRepository but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: Entity/BlacklistUserRepository.php
-
-		-
 			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Entity\\EmailConfirmationTokenRepository extends generic class Sulu\\Component\\Persistence\\Repository\\ORM\\EntityRepository but does not specify its types\: T$#'
 			identifier: missingType.generics
 			count: 1
 			path: Entity/EmailConfirmationTokenRepository.php
+
+		-
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Entity\\RegistrationRuleItemRepository extends generic class Sulu\\Component\\Persistence\\Repository\\ORM\\EntityRepository but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: Entity/RegistrationRuleItemRepository.php
+
+		-
+			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Entity\\RegistrationRuleUserRepository extends generic class Sulu\\Component\\Persistence\\Repository\\ORM\\EntityRepository but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: Entity/RegistrationRuleUserRepository.php
 
 		-
 			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Event\\AbstractCommunityEvent\:\:getConfigProperty\(\) has no return type specified\.$#'
@@ -443,24 +425,6 @@ parameters:
 			identifier: return.unresolvableType
 			count: 1
 			path: Event/AbstractCommunityEvent.php
-
-		-
-			message: '#^Parameter \#1 \$from of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: EventListener/BlacklistListener.php
-
-		-
-			message: '#^Parameter \#2 \$to of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: EventListener/BlacklistListener.php
-
-		-
-			message: '#^Parameter \#2 \$webspaceKey of class Sulu\\Bundle\\CommunityBundle\\Entity\\BlacklistUser constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: EventListener/BlacklistListener.php
 
 		-
 			message: '#^Instanceof between Sulu\\Bundle\\SecurityBundle\\Entity\\User and Sulu\\Bundle\\SecurityBundle\\Entity\\User will always evaluate to true\.$#'
@@ -503,6 +467,24 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: EventListener/MailListener.php
+
+		-
+			message: '#^Parameter \#1 \$from of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: EventListener/RegistrationRuleListener.php
+
+		-
+			message: '#^Parameter \#2 \$to of static method Sulu\\Bundle\\CommunityBundle\\Mail\\Mail\:\:create\(\) expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: EventListener/RegistrationRuleListener.php
+
+		-
+			message: '#^Parameter \#2 \$webspaceKey of class Sulu\\Bundle\\CommunityBundle\\Entity\\RegistrationRuleUser constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: EventListener/RegistrationRuleListener.php
 
 		-
 			message: '#^Class Sulu\\Bundle\\CommunityBundle\\Form\\Type\\CompletionContactType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
@@ -649,7 +631,7 @@ parameters:
 			path: Manager/CommunityManager.php
 
 		-
-			message: '#^Parameter \#1 \$type of method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManager\:\:getConfigTypeProperty\(\) expects TConfig of ''blacklist_confirmed''\|''blacklist_denied''\|''blacklisted''\|''completion''\|''confirmation''\|''email_confirmation''\|''firewall''\|''from''\|''login''\|''maintenance''\|''password_forget''\|''password_reset''\|''profile''\|''registration''\|''role''\|''to''\|''webspace_key'', string given\.$#'
+			message: '#^Parameter \#1 \$type of method Sulu\\Bundle\\CommunityBundle\\Manager\\CommunityManager\:\:getConfigTypeProperty\(\) expects TConfig of ''completion''\|''confirmation''\|''email_confirmation''\|''firewall''\|''from''\|''login''\|''maintenance''\|''password_forget''\|''password_reset''\|''profile''\|''registration''\|''registration_rule''\|''registration_rule…''\|''role''\|''to''\|''webspace_key'', string given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
@@ -730,43 +712,49 @@ parameters:
 			message: '#^Binary operation "\." between ''/admin/api…'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 4
-			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
-
-		-
-			message: '#^Cannot access offset ''blacklist_items'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 7
-			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+			path: Tests/Functional/Controller/RegistrationRuleItemControllerTest.php
 
 		-
 			message: '#^Cannot access offset ''id'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+			path: Tests/Functional/Controller/RegistrationRuleItemControllerTest.php
 
 		-
 			message: '#^Cannot access offset ''pattern'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+			path: Tests/Functional/Controller/RegistrationRuleItemControllerTest.php
+
+		-
+			message: '#^Cannot access offset ''registration_rule_items'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 7
+			path: Tests/Functional/Controller/RegistrationRuleItemControllerTest.php
 
 		-
 			message: '#^Cannot access offset ''type'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+			path: Tests/Functional/Controller/RegistrationRuleItemControllerTest.php
 
 		-
 			message: '#^Cannot access offset 0 on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 3
-			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+			path: Tests/Functional/Controller/RegistrationRuleItemControllerTest.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Tests/Functional/Controller/RegistrationRuleItemControllerTest.php
 
 		-
 			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
 			identifier: argument.type
 			count: 4
-			path: Tests/Functional/Controller/BlacklistItemControllerTest.php
+			path: Tests/Functional/Controller/RegistrationRuleItemControllerTest.php
 
 		-
 			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotFalse\(\) with Symfony\\Component\\HttpKernel\\Profiler\\Profile and ''Could not found…'' will always evaluate to true\.$#'
@@ -883,6 +871,66 @@ parameters:
 			path: Tests/Unit/Controller/SaveMediaTraitTest.php
 
 		-
+			message: '#^Method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\DependencyInjection\\ConfigurationTest\:\:processConfiguration\(\) should return array\<string, mixed\> but returns array\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: Tests/Unit/DependencyInjection/ConfigurationTest.php
+
+		-
+			message: '#^Call to an undefined method Sulu\\Bundle\\CommunityBundle\\Tests\\Unit\\Validator\\BlockedValidatorTest\:\:prophesize\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
+			message: '#^Cannot call method addViolation\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
+			message: '#^Cannot call method findBySender\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
+			message: '#^Cannot call method reveal\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 6
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
+			message: '#^Cannot call method shouldBeCalled\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
+			message: '#^Cannot call method shouldNotBeCalled\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
+			message: '#^Cannot call method willReturn\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
+			message: '#^Parameter \#1 \$context of method Symfony\\Component\\Validator\\ConstraintValidator\:\:initialize\(\) expects Symfony\\Component\\Validator\\Context\\ExecutionContextInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
+			message: '#^Parameter \#1 \$registrationRuleItemRepository of class Sulu\\Bundle\\CommunityBundle\\Validator\\Constraints\\BlockedValidator constructor expects Sulu\\Bundle\\CommunityBundle\\Entity\\RegistrationRuleItemRepository, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: Tests/Unit/Validator/BlockedValidatorTest.php
+
+		-
 			message: '#^Parameter \#1 \$environment of class Sulu\\Bundle\\CommunityBundle\\Tests\\Application\\Kernel constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -895,7 +943,7 @@ parameters:
 			path: Tests/phpstan/object-manager.php
 
 		-
-			message: '#^PHPDoc tag @var for variable \$repository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: TEntityClass$#'
+			message: '#^PHPDoc tag @var for variable \$repository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: T$#'
 			identifier: missingType.generics
 			count: 1
 			path: Validator/Constraints/ExistValidator.php
