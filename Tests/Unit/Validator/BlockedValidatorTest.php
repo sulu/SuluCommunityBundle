@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Validator;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
 use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
 use Sulu\Bundle\CommunityBundle\Validator\Constraints\Blocked;
@@ -20,6 +21,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class BlockedValidatorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testValidate(): void
     {
         $context = $this->prophesize(ExecutionContextInterface::class);
