@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
 use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItemRepository;
@@ -20,6 +21,8 @@ use Sulu\Bundle\CommunityBundle\Manager\RegistrationRuleItemManager;
 
 class RegistrationRuleItemManagerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy<RegistrationRuleItemRepository>
      */

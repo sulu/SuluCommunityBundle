@@ -12,11 +12,14 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Manager;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManager;
 use Sulu\Bundle\CommunityBundle\Manager\CommunityManagerRegistry;
 
 class CommunityManagerRegistryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testGet(): void
     {
         $manager = $this->prophesize(CommunityManager::class);

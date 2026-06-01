@@ -2,6 +2,22 @@
 
 ## 2.0.0 (unreleased)
 
+### Dropped support for older PHP and dependency versions
+
+Minimum requirements have been raised to align with Sulu 2.6. Consumers on PHP 7
+or older Sulu versions need to upgrade their environment before pulling in this
+release.
+
+```
+php:                      ^7.2 || ^8.0          -> ^8.2 || ^8.3 || ^8.4 || ^8.5
+doctrine/orm:             ^2.5.3                -> ^2.13
+doctrine/persistence:     ^1.3 || ^2.0 || ^3.0  -> ^2.0 || ^3.0
+doctrine/phpcr-bundle:    ^2 || ^3.0            -> ^2.2 || ^3.0
+jms/serializer-bundle:    ^3.3 || ^4.0 || ^5.4  -> ^4.0 || ^5.4
+massive/build-bundle:     ^0.3 || ^0.4 || ^0.5  -> ^0.5.7 || ^0.6.0
+sulu/sulu:                ^2.4.0 || ^2.6@dev    -> ^2.6@dev
+```
+
 ### Blacklist replaced with registration rules
 
 For clearer naming all occurrences of "blacklist" have been replaced with "registration rule".
@@ -17,6 +33,24 @@ This also includes the renames of the following entities and tables in the datab
 * BlacklistListener -> RegistrationRuleListener
 * BlacklistItemManager -> RegistrationRuleItemManager
 * BlacklistItemManagerInterface -> RegistrationRuleItemManagerInterface
+
+Public constants on `CommunityAdmin`:
+
+```
+CommunityAdmin::BLACKLIST_ITEM_SECURITY_CONTEXT  -> CommunityAdmin::REGISTRATION_RULE_ITEM_SECURITY_CONTEXT
+CommunityAdmin::BLACKLIST_ITEM_LIST_VIEW         -> CommunityAdmin::REGISTRATION_RULE_ITEM_LIST_VIEW
+CommunityAdmin::BLACKLIST_ITEM_ADD_FORM_VIEW     -> CommunityAdmin::REGISTRATION_RULE_ITEM_ADD_FORM_VIEW
+CommunityAdmin::BLACKLIST_ITEM_EDIT_FORM_VIEW    -> CommunityAdmin::REGISTRATION_RULE_ITEM_EDIT_FORM_VIEW
+```
+
+Public constants on `Configuration` (passed to `CommunityManager::sendEmails()`
+and consumed by custom listeners):
+
+```
+Configuration::TYPE_BLACKLIST           -> Configuration::TYPE_REGISTRATION_RULE
+Configuration::TYPE_BLACKLIST_CONFIRMED -> Configuration::TYPE_REGISTRATION_RULE_CONFIRMED
+Configuration::TYPE_BLACKLIST_DENIED    -> Configuration::TYPE_REGISTRATION_RULE_DENIED
+```
 
 ```sql
 RENAME TABLE
@@ -112,6 +146,27 @@ Template names:
 @SuluCommunity/blacklist-email.html.twig -> @SuluCommunity/registration-rule-email.html.twig
 @SuluCommunity/blacklist-denied.html.twig -> @SuluCommunity/registration-rule-denied.html.twig
 @SuluCommunity/blacklist-confirmed.html.twig -> @SuluCommunity/registration-rule-confirmed.html.twig
+```
+
+Admin URL paths (impacts bookmarks, deep-links and any custom view overrides):
+
+```
+/blacklist      -> /registration-rule
+/blacklist/add  -> /registration-rule/add
+/blacklist/:id  -> /registration-rule/:id
+```
+
+Admin navigation item key (used in translations and when adding sub-items):
+
+```
+sulu_community.blacklist -> sulu_community.registration_rule
+```
+
+Edit-view title binding changed from the (removed) `name` property to `pattern`,
+since registration rule items are identified by their pattern:
+
+```
+setTitleProperty('name') -> setTitleProperty('pattern')
 ```
 
 ### ListRepresentation relation name changed

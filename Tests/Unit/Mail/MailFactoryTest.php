@@ -13,6 +13,7 @@ namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Mail;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\Mail\Mail;
 use Sulu\Bundle\CommunityBundle\Mail\MailFactory;
@@ -24,6 +25,8 @@ use Twig\Environment;
 
 class MailFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy<MailerInterface>
      */

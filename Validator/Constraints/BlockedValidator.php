@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * A validator to check if the given email is blocked via blacklist.
+ * A validator to check if the given email is blocked via a registration rule.
  */
 class BlockedValidator extends ConstraintValidator
 {

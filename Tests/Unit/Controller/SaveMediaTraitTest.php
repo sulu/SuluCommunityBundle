@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Tests\Unit\Controller;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sulu\Bundle\CommunityBundle\Controller\SaveMediaTrait;
 use Sulu\Bundle\ContactBundle\Entity\Contact;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SaveMediaTraitTest extends TestCase
 {
+    use ProphecyTrait;
     use SaveMediaTrait {
         getMediaManager as mockedGetMediaManager;
         getSystemCollectionManager as mockedGetSystemCollectionManager;
