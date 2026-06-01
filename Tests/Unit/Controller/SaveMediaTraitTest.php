@@ -109,7 +109,6 @@ class SaveMediaTraitTest extends TestCase
         foreach ($this->tempFilePaths as $tempFilePath) {
             \unlink($tempFilePath);
         }
-        parent::tearDown();
     }
 
     public function testNoAvatarAndNoMedias(): void
