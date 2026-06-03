@@ -26,7 +26,7 @@ To avoid the:
 
 Register the website routes:
 
-```yml
+```yaml
 # config/routes/sulu_community_website.yaml
 
 sulu_community:
@@ -36,44 +36,43 @@ sulu_community:
 
 Register the admin routes:
 
-```yml
+```yaml
 # config/routes/sulu_community_admin.yaml
 
 sulu_community_api:
-    type: rest
     resource: "@SuluCommunityBundle/Resources/config/routing_api.yaml"
     prefix: /admin/api
 ```
 
 ## Configure security
 
-Enable and configure the security for the website in the `security_website.yaml`:
+Enable and configure the security for the website in the `security.yaml`:
 
-```yml
-# config/packages/security_website.yml
+```yaml
+# config/packages/security.yaml
 
 security:
-    encoders:
-        Sulu\Bundle\SecurityBundle\Entity\User: bcrypt
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     providers:
         sulu:
             id: sulu_security.user_provider
 
     access_control:
-        # needed when firewall on ^/ is not anonymous
-        # - { path: '/login', roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: '/registration', roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: '/password-reset', roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: '/password-forget', roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: '/_fragment', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # needed when firewall on ^/ is not lazy
+        # - { path: '/login', roles: PUBLIC_ACCESS }
+        # - { path: '/registration', roles: PUBLIC_ACCESS }
+        # - { path: '/password-reset', roles: PUBLIC_ACCESS }
+        # - { path: '/password-forget', roles: PUBLIC_ACCESS }
+        # - { path: '/_fragment', roles: PUBLIC_ACCESS }
         - { path: '/profile', roles: ROLE_USER }
         - { path: '/completion', roles: ROLE_USER }
 
     firewalls:
         <webspace_key>: # Replace <webspace_key> with the key of your webspace
             pattern: ^/
-            anonymous: lazy
+            lazy: true
             form_login:
                 login_path: sulu_community.login
                 check_path: sulu_community.login
@@ -93,7 +92,7 @@ sulu_security:
 When implementing functional tests, website security needs to enabled in the test environment:
 
 ```yaml
-# config/packages/test/security_website.yml
+# config/packages/test/security.yaml
 
 security:
     providers:
