@@ -191,24 +191,16 @@ The name of the relation inside of the `_embedded` field has been changed from `
 
 ### User registration resolves the role by its key
 
-`UserManager::createUser()` and the protected `createUserRole()` now look the
-configured role up by its `key` instead of its `name`. The role `name` is a
-human-readable, editable label, so relying on it caused registrations to fail
-once the name was changed in the administration interface.
+`UserManager::createUser()` now resolves the configured role by its `key`
+instead of its (editable) `name`, and throws an `\InvalidArgumentException` when
+no matching role exists. Make sure the per-webspace `role` configuration matches
+the **key** of an existing role (`sulu:community:init` creates roles by key).
 
-Make sure the `role` configured per webspace matches the **key** of an existing
-role (the `sulu:community:init` command already creates roles by key). If no role
-matches the configured key an `\InvalidArgumentException` is now thrown instead
-of failing later with an opaque database error.
-
-The corresponding parameter of `UserManagerInterface::createUser()` was renamed
-from `$roleName` to `$roleKey`. This only affects callers using named arguments
-and classes implementing the interface:
+The `createUser()` parameter was renamed accordingly, affecting named-argument
+callers and implementations of `UserManagerInterface`:
 
 ```
-createUser(User $user, string $webspaceKey, string $roleName): User
-->
-createUser(User $user, string $webspaceKey, string $roleKey): User
+createUser(..., string $roleName) -> createUser(..., string $roleKey)
 ```
 
 ### Typehints added to the codebase
