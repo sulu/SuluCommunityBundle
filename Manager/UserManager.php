@@ -87,7 +87,7 @@ class UserManager implements UserManagerInterface
         $this->contactManager = $contactManager;
     }
 
-    public function createUser(User $user, string $webspaceKey, string $roleName): User
+    public function createUser(User $user, string $webspaceKey, string $roleKey): User
     {
         // User needs contact
         /** @var ContactInterface|null $contact */
@@ -102,7 +102,7 @@ class UserManager implements UserManagerInterface
         $user = $this->updateUser($user);
 
         // Create and Add User Role
-        $userRole = $this->createUserRole($user, $webspaceKey, $roleName);
+        $userRole = $this->createUserRole($user, $webspaceKey, $roleKey);
         $user->addUserRole($userRole);
 
         // Save Entity
@@ -161,10 +161,14 @@ class UserManager implements UserManagerInterface
     /**
      * Create a user roles add permissions for all webspace locales.
      */
-    protected function createUserRole(User $user, string $webspaceKey, string $roleName): UserRole
+    protected function createUserRole(User $user, string $webspaceKey, string $roleKey): UserRole
     {
-        /** @var RoleInterface $role */
-        $role = $this->roleRepository->findOneBy(['name' => $roleName]);
+        $role = $this->roleRepository->findOneBy(['key' => $roleKey]);
+
+        if (!$role instanceof RoleInterface) {
+            throw new \InvalidArgumentException(\sprintf('Role with key "%s" could not be found.', $roleKey));
+        }
+
         $userRole = new UserRole();
 
         $locales = [];

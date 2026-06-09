@@ -661,7 +661,7 @@ parameters:
 			path: Manager/CommunityManager.php
 
 		-
-			message: '#^Parameter \#3 \$roleName of method Sulu\\Bundle\\CommunityBundle\\Manager\\UserManagerInterface\:\:createUser\(\) expects string, mixed given\.$#'
+			message: '#^Parameter \#3 \$roleKey of method Sulu\\Bundle\\CommunityBundle\\Manager\\UserManagerInterface\:\:createUser\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Manager/CommunityManager.php
