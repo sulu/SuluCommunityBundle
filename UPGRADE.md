@@ -189,6 +189,28 @@ The name of the relation inside of the `_embedded` field has been changed from `
 
  - The model parameters have been changed from `sulu.model.blacklist_user.class` and `sulu.model.blacklist_item.class` to `sulu.model.registration_rule_user.class` and `sulu.model.registration_rule_item.class`.
 
+### User registration resolves the role by its key
+
+`UserManager::createUser()` and the protected `createUserRole()` now look the
+configured role up by its `key` instead of its `name`. The role `name` is a
+human-readable, editable label, so relying on it caused registrations to fail
+once the name was changed in the administration interface.
+
+Make sure the `role` configured per webspace matches the **key** of an existing
+role (the `sulu:community:init` command already creates roles by key). If no role
+matches the configured key an `\InvalidArgumentException` is now thrown instead
+of failing later with an opaque database error.
+
+The corresponding parameter of `UserManagerInterface::createUser()` was renamed
+from `$roleName` to `$roleKey`. This only affects callers using named arguments
+and classes implementing the interface:
+
+```
+createUser(User $user, string $webspaceKey, string $roleName): User
+->
+createUser(User $user, string $webspaceKey, string $roleKey): User
+```
+
 ### Typehints added to the codebase
 
 Everywhere were possible typehints were added to the classes and interfaces.
