@@ -30,7 +30,7 @@ class CompletionType extends AbstractType
         $user = $builder->getData();
 
         if (!$user->getUsername()) {
-            $builder->add('username', TextType::class);
+            $builder->add('username', TextType::class, ['empty_data' => '']);
         }
 
         if (!$user->getEmail()) {
@@ -40,12 +40,14 @@ class CompletionType extends AbstractType
         if (!$user->getContact()->getFirstName()) {
             $builder->add('firstName', TextType::class, [
                 'property_path' => 'contact.firstName',
+                'empty_data' => '',
             ]);
         }
 
         if (!$user->getContact()->getLastName()) {
             $builder->add('lastName', TextType::class, [
                 'property_path' => 'contact.lastName',
+                'empty_data' => '',
             ]);
         }
 

@@ -83,16 +83,10 @@ abstract class AbstractController extends SymfonyAbstractController
 
     protected function encodePassword(User $user, string $plainPassword): string
     {
-        if ($this->container->has('?security.password_hasher')) {
-            /** @var UserPasswordHasherInterface $hasher */
-            $hasher = $this->container->get('?security.password_hasher');
+        /** @var UserPasswordHasherInterface $hasher */
+        $hasher = $this->container->get('security.password_hasher');
 
-            return $hasher->hashPassword($user, $plainPassword);
-        }
-        /** @var \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $encoder */
-        $encoder = $this->container->get('?security.password_encoder');
-
-        return $encoder->encodePassword($user, $plainPassword);
+        return $hasher->hashPassword($user, $plainPassword);
     }
 
     /**
@@ -256,11 +250,7 @@ abstract class AbstractController extends SymfonyAbstractController
         $subscribedServices['sulu_security.salt_generator'] = SaltGenerator::class;
         $subscribedServices['sulu_website.resolver.template_attribute'] = TemplateAttributeResolverInterface::class;
         $subscribedServices['doctrine.orm.entity_manager'] = EntityManagerInterface::class;
-        $subscribedServices['?security.password_hasher'] = UserPasswordHasherInterface::class;
-
-        if (\class_exists('Symfony\\Component\\Security\\Core\\Encoder\\UserPasswordEncoderInterface')) {
-            $subscribedServices['?security.password_encoder'] = 'Symfony\\Component\\Security\\Core\\Encoder\\UserPasswordEncoderInterface';
-        }
+        $subscribedServices['security.password_hasher'] = UserPasswordHasherInterface::class;
 
         return $subscribedServices;
     }

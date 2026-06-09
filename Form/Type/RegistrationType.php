@@ -31,7 +31,7 @@ class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('username', TextType::class);
+        $builder->add('username', TextType::class, ['empty_data' => '']);
         $builder->add('email', EmailType::class);
         $builder->add(
             'plainPassword',
@@ -46,10 +46,12 @@ class RegistrationType extends AbstractType
 
         $builder->add('firstName', TextType::class, [
             'property_path' => 'contact.firstName',
+            'empty_data' => '',
         ]);
 
         $builder->add('lastName', TextType::class, [
             'property_path' => 'contact.lastName',
+            'empty_data' => '',
         ]);
 
         $builder->add(

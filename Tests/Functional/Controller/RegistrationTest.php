@@ -201,10 +201,6 @@ class RegistrationTest extends SuluTestCase
 
     public function testRegistrationRuleRequested(): ?RawMessage
     {
-        if (\class_exists(\Swift_Mailer::class)) {
-            $this->markTestSkipped('Skip test for swift mailer.');
-        }
-
         $this->createRegistrationRuleItem($this->getEntityManager(), '*@sulu.io', RegistrationRuleItem::TYPE_REQUEST);
 
         $crawler = $this->client->request('GET', '/registration');
@@ -296,10 +292,6 @@ class RegistrationTest extends SuluTestCase
 
     public function testPasswordForget(): void
     {
-        if (\class_exists(\Swift_Mailer::class)) {
-            $this->markTestSkipped('Skip test for swift mailer.');
-        }
-
         $user = $this->testConfirmation();
 
         $crawler = $this->client->request('GET', '/password-forget');

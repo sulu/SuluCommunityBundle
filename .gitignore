@@ -1,6 +1,7 @@
 # PHPUnit
 /phpunit.xml
 .phpunit.result.cache
+.phpunit.cache/
 
 # PHPCS
 .php_cs.cache
@@ -30,5 +31,5 @@ package-lock.json
 npm-debug.log
 
 # tests
-Tests/Application/var
-Tests/Application/.env.test.local
+Tests/Application/var/
+Tests/Application/*.local

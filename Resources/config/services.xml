@@ -156,6 +156,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="sulu_core.doctrine_rest_helper"/>
             <argument type="service" id="sulu_core.doctrine_list_builder_factory"/>
+            <argument type="service" id="sulu_core.list_builder.field_descriptor_factory"/>
             <argument type="service" id="sulu_community.registration_rule.item_manager"/>
             <argument type="service" id="fos_rest.view_handler.default"/>
             <argument type="service" id="security.token_storage"/>
@@ -236,6 +237,5 @@
 
         <!-- Should be in sulu/sulu (see https://github.com/sulu/sulu/pull/5195) -->
         <service id="Sulu\Component\Media\SystemCollections\SystemCollectionManagerInterface" alias="sulu_media.system_collections.manager"/>
-        <service id="%sulu_security.salt_generator.class%" alias="sulu_security.salt_generator"/>
     </services>
 </container>

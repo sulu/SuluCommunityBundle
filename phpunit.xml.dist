@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="Tests/test-bootstrap.php">
-   <testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         colors="true"
+         bootstrap="Tests/test-bootstrap.php"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         cacheDirectory=".phpunit.cache">
+    <testsuites>
         <testsuite name="Sulu Community Bundle">
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory>.</directory>
-            <exclude>
-                <directory>Resources/</directory>
-                <directory>Tests/</directory>
-                <directory>vendor/</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 
     <php>
         <env name="KERNEL_CLASS" value="Sulu\Bundle\CommunityBundle\Tests\Application\Kernel"/>
         <env name="APP_ENV" value="test" force="true"/>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
     </php>
+
+    <source>
+        <include>
+            <directory>./</directory>
+        </include>
+        <exclude>
+            <directory>Resources/</directory>
+            <directory>Tests/</directory>
+            <directory>vendor/</directory>
+        </exclude>
+    </source>
 </phpunit>

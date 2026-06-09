@@ -49,10 +49,12 @@ class ProfileType extends AbstractType
 
         $builder->add('firstName', TextType::class, [
             'property_path' => 'contact.firstName',
+            'empty_data' => '',
         ]);
 
         $builder->add('lastName', TextType::class, [
             'property_path' => 'contact.lastName',
+            'empty_data' => '',
         ]);
 
         $builder->add('mainEmail', EmailType::class, [

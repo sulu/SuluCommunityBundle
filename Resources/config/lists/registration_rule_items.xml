@@ -17,20 +17,24 @@
             name="pattern"
             visibility="always"
             searchability="yes"
+            sortable="true"
             translation="sulu_community.pattern"
         >
             <field-name>pattern</field-name>
             <entity-name>%sulu.model.registration_rule_item.class%</entity-name>
+            <transformer type="string"/>
         </property>
 
         <property
             name="type"
             visibility="always"
             searchability="yes"
+            sortable="true"
             translation="sulu_community.type"
         >
             <field-name>type</field-name>
             <entity-name>%sulu.model.registration_rule_item.class%</entity-name>
+            <transformer type="select"/>
         </property>
     </properties>
 </list>
