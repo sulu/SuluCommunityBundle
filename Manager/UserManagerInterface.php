@@ -21,7 +21,7 @@ interface UserManagerInterface
     /**
      * Create a new User entity.
      */
-    public function createUser(User $user, string $webspaceKey, string $roleName): User;
+    public function createUser(User $user, string $webspaceKey, string $roleKey): User;
 
     /**
      * Update User entity.
