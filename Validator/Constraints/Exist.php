@@ -33,6 +33,27 @@ class Exist extends Constraint
      */
     public $entity = '';
 
+    /**
+     * Symfony 8 removed the array of options accepted by Constraint::__construct(),
+     * so the options have to be declared as named arguments.
+     *
+     * @param string[]|null $columns
+     * @param string[]|string|null $groups
+     */
+    public function __construct(
+        ?array $columns = null,
+        ?string $entity = null,
+        ?string $message = null,
+        array|string|null $groups = null,
+        mixed $payload = null,
+    ) {
+        parent::__construct(null, null === $groups ? null : (array) $groups, $payload);
+
+        $this->columns = $columns ?? $this->columns;
+        $this->entity = $entity ?? $this->entity;
+        $this->message = $message ?? $this->message;
+    }
+
     public function validatedBy(): string
     {
         return 'exist_validator';
