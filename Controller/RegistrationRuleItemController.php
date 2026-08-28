@@ -19,6 +19,7 @@ use Sulu\Bundle\CommunityBundle\Admin\CommunityAdmin;
 use Sulu\Bundle\CommunityBundle\Entity\RegistrationRuleItem;
 use Sulu\Bundle\CommunityBundle\Manager\RegistrationRuleItemManagerInterface;
 use Sulu\Component\Rest\AbstractRestController;
+use Sulu\Component\Rest\Exception\MissingParameterException;
 use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilderFactoryInterface;
 use Sulu\Component\Rest\ListBuilder\ListBuilderInterface;
 use Sulu\Component\Rest\ListBuilder\Metadata\FieldDescriptorFactoryInterface;
@@ -84,9 +85,12 @@ class RegistrationRuleItemController extends AbstractRestController implements S
 
     public function postAction(Request $request): Response
     {
+        $pattern = $request->request->get('pattern') ?? throw new MissingParameterException(self::class, 'pattern');
+        $type = $request->request->get('type') ?? throw new MissingParameterException(self::class, 'type');
+
         $item = $this->registrationRuleItemManager->create()
-            ->setPattern($this->getRequestParameter($request, 'pattern', true))
-            ->setType($this->getRequestParameter($request, 'type', true));
+            ->setPattern((string) $pattern)
+            ->setType((string) $type);
 
         $this->entityManager->flush();
 
@@ -121,8 +125,11 @@ class RegistrationRuleItemController extends AbstractRestController implements S
             return $this->handleView($this->view(null, Response::HTTP_NOT_FOUND));
         }
 
-        $item->setPattern($this->getRequestParameter($request, 'pattern', true))
-            ->setType($this->getRequestParameter($request, 'type', true));
+        $pattern = $request->request->get('pattern') ?? throw new MissingParameterException(self::class, 'pattern');
+        $type = $request->request->get('type') ?? throw new MissingParameterException(self::class, 'type');
+
+        $item->setPattern((string) $pattern)
+            ->setType((string) $type);
 
         $this->entityManager->flush();
 
