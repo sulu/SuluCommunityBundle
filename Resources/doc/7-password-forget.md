@@ -53,7 +53,7 @@ The password forget template.
 {% block content %}
     <h1>Password_forget</h1>
 
-    {% if app.request.get('send') == 'true' %}
+    {% if app.request.query.get('send') == 'true' %}
         <p>
             Click on the link in your email to reset your password.
         </p>
@@ -90,11 +90,11 @@ class PasswordForgetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('email_username', TextType::class, [
-            'constraints' => new Exist([
-                'columns' => ['email', 'username'],
-                'entity' => $options['user_class'],
-                'groups' => 'password_forget',
-            ]),
+            'constraints' => new Exist(
+                columns: ['email', 'username'],
+                entity: $options['user_class'],
+                groups: 'password_forget',
+            ),
         ]);
 
         $builder->add('submit', SubmitType::class);

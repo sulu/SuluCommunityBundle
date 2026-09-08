@@ -12,6 +12,7 @@
 namespace Sulu\Bundle\CommunityBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
  * Constraint for the ExistValidator.
@@ -34,19 +35,27 @@ class Exist extends Constraint
     public $entity = '';
 
     /**
-     * Symfony 8 removed the array of options accepted by Constraint::__construct(),
-     * so the options have to be declared as named arguments.
+     * Symfony 8 no longer applies the array of options passed to
+     * Constraint::__construct(), so the options are declared as named arguments.
+     * The options slot is kept in first position, as Symfony does for its own
+     * constraints, so that the legacy call fails loudly instead of silently
+     * losing every option.
      *
      * @param string[]|null $columns
      * @param string[]|string|null $groups
      */
     public function __construct(
+        ?array $options = null,
         ?array $columns = null,
         ?string $entity = null,
         ?string $message = null,
         array|string|null $groups = null,
         mixed $payload = null,
     ) {
+        if (null !== $options) {
+            throw new InvalidArgumentException(\sprintf('Passing an array of options to configure the "%s" constraint is no longer supported.', static::class));
+        }
+
         parent::__construct(null, null === $groups ? null : (array) $groups, $payload);
 
         $this->columns = $columns ?? $this->columns;

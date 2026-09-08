@@ -52,7 +52,7 @@ The template contains the form and the success message.
 {% block content %}
     <h1>Registration</h1>
 
-    {% if app.request.get('send') == 'true' %}
+    {% if app.request.query.get('send') == 'true' %}
         <p>
             To complete the registration click on the link in the received email.
         </p>
