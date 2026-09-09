@@ -11,8 +11,8 @@
 
 namespace Sulu\Bundle\CommunityBundle\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
  * Constraint for the BlockedValidator.
@@ -27,19 +27,25 @@ class Blocked extends Constraint
     /**
      * @see Exist::__construct()
      *
-     * @param string[]|null $groups
+     * @param array<string, mixed>|null $options
+     * @param string[]|string|null $groups
      */
+    #[HasNamedArguments]
     public function __construct(
         ?array $options = null,
         ?string $message = null,
-        ?array $groups = null,
+        array|string|null $groups = null,
         mixed $payload = null,
     ) {
+        // Symfony 7.2 and older hand the options of a mapping to the constructor as an
+        // array; 7.3 and later spread them as named arguments, thanks to the attribute above
         if (null !== $options) {
-            throw new InvalidArgumentException(\sprintf('Passing an array of options to configure the "%s" constraint is no longer supported.', static::class));
+            $message ??= $options['message'] ?? null;
+            $groups ??= $options['groups'] ?? null;
+            $payload ??= $options['payload'] ?? null;
         }
 
-        parent::__construct(null, $groups, $payload);
+        parent::__construct(null, null === $groups ? null : (array) $groups, $payload);
 
         $this->message = $message ?? $this->message;
     }

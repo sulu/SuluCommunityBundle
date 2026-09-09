@@ -11,8 +11,8 @@
 
 namespace Sulu\Bundle\CommunityBundle\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
  * Constraint for the ExistValidator.
@@ -35,15 +35,16 @@ class Exist extends Constraint
     public $entity = '';
 
     /**
-     * Symfony 8 no longer applies the array of options passed to
-     * Constraint::__construct(), so the options are declared as named arguments.
-     * The options slot is kept in first position, as Symfony does for its own
-     * constraints, so that the legacy call fails loudly instead of silently
-     * losing every option.
+     * Symfony 8 no longer applies the array of options passed to Constraint::__construct(),
+     * so the options are declared as named arguments. The options slot is kept in first
+     * position because the mapping loaders of Symfony 7.2 and older hand them over as an
+     * array; 7.3 and later spread them as named arguments, thanks to the attribute below.
      *
+     * @param array<string, mixed>|null $options
      * @param string[]|null $columns
      * @param string[]|string|null $groups
      */
+    #[HasNamedArguments]
     public function __construct(
         ?array $options = null,
         ?array $columns = null,
@@ -53,7 +54,11 @@ class Exist extends Constraint
         mixed $payload = null,
     ) {
         if (null !== $options) {
-            throw new InvalidArgumentException(\sprintf('Passing an array of options to configure the "%s" constraint is no longer supported.', static::class));
+            $columns ??= $options['columns'] ?? null;
+            $entity ??= $options['entity'] ?? null;
+            $message ??= $options['message'] ?? null;
+            $groups ??= $options['groups'] ?? null;
+            $payload ??= $options['payload'] ?? null;
         }
 
         parent::__construct(null, null === $groups ? null : (array) $groups, $payload);
