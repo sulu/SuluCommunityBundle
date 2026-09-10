@@ -34,7 +34,7 @@ class RegistrationRuleConfirmationController extends AbstractController
     public function confirmAction(Request $request): Response
     {
         /** @var string $token */
-        $token = $request->get('token');
+        $token = $request->query->get('token');
 
         /** @var RegistrationRuleUser|null $registrationRuleUser */
         $registrationRuleUser = $this->getRegistrationRuleUserRepository()->findByToken($token);
@@ -66,7 +66,7 @@ class RegistrationRuleConfirmationController extends AbstractController
         $entityManager = $this->getEntityManager();
 
         /** @var string $token */
-        $token = $request->get('token');
+        $token = $request->query->get('token');
 
         /** @var RegistrationRuleUser|null $registrationRuleUser */
         $registrationRuleUser = $this->getRegistrationRuleUserRepository()->findByToken($token);

@@ -40,9 +40,9 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
 
         $lastLoginEnabled = $config[Configuration::LAST_LOGIN]['enabled'];
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.xml');
-        $loader->load('validator.xml');
+        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.php');
+        $loader->load('validator.php');
 
         if ($lastLoginEnabled) {
             $lastLoginRefreshInterval = $config[Configuration::LAST_LOGIN][Configuration::REFRESH_INTERVAL];
@@ -52,7 +52,7 @@ class SuluCommunityExtension extends Extension implements PrependExtensionInterf
                 (int) $lastLoginRefreshInterval
             );
 
-            $loader->load('last-login.xml');
+            $loader->load('last-login.php');
         }
     }
 

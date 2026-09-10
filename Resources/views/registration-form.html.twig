@@ -3,7 +3,7 @@
 {% block content %}
     <h1>{{ 'Registration'|trans }}</h1>
 
-    {% if app.request.get('send') == 'true' %}
+    {% if app.request.query.get('send') == 'true' %}
         <p>
             {{ 'registration_finished'|trans }}
         </p>
