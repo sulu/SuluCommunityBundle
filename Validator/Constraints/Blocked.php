@@ -27,7 +27,7 @@ class Blocked extends Constraint
     /**
      * @see Exist::__construct()
      *
-     * @param array<string, mixed>|null $options
+     * @param array{message?: string, groups?: string[]|string, payload?: mixed}|null $options
      * @param string[]|string|null $groups
      */
     #[HasNamedArguments]
@@ -37,15 +37,15 @@ class Blocked extends Constraint
         array|string|null $groups = null,
         mixed $payload = null,
     ) {
-        // Symfony 7.2 and older hand the options of a mapping to the constructor as an
-        // array; 7.3 and later spread them as named arguments, thanks to the attribute above
+        // a mapping loader without HasNamedArguments support hands the options over as an
+        // array; with the attribute above it spreads them as named arguments instead
         if (null !== $options) {
             $message ??= $options['message'] ?? null;
             $groups ??= $options['groups'] ?? null;
             $payload ??= $options['payload'] ?? null;
         }
 
-        parent::__construct(null, null === $groups ? null : (array) $groups, $payload);
+        parent::__construct(null, null === $groups ? null : \array_values((array) $groups), $payload);
 
         $this->message = $message ?? $this->message;
     }
