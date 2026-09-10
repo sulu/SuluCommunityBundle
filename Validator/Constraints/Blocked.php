@@ -37,8 +37,9 @@ class Blocked extends Constraint
         array|string|null $groups = null,
         mixed $payload = null,
     ) {
-        // a mapping loader without HasNamedArguments support hands the options over as an
-        // array; with the attribute above it spreads them as named arguments instead
+        // The mapping loaders spread the options as named arguments, thanks to the attribute
+        // above. The array slot is only reached by code building the constraint by hand, the
+        // way Constraint::__construct() accepted before Symfony 8.
         if (null !== $options) {
             $message ??= $options['message'] ?? null;
             $groups ??= $options['groups'] ?? null;

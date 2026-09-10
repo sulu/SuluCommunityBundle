@@ -36,9 +36,9 @@ class Exist extends Constraint
 
     /**
      * Symfony 8 no longer applies the array of options passed to Constraint::__construct(),
-     * so the options are declared as named arguments. The options slot is kept in first
-     * position for the mapping loaders that hand them over as an array; with the attribute
-     * below they spread them as named arguments instead.
+     * so the options are declared as named arguments, which the mapping loaders pass thanks
+     * to the attribute below. The array slot is kept in first position for code building the
+     * constraint by hand, the way Constraint::__construct() accepted before Symfony 8.
      *
      * @param array{columns?: string[], entity?: string, message?: string, groups?: string[]|string, payload?: mixed}|null $options
      * @param string[]|null $columns

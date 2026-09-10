@@ -14,7 +14,7 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
         - %currentWorkingDirectory%/Tests/Application/var/*
-        - '%currentWorkingDirectory%/Tests/Application/config/reference.php (?)'
+        - %currentWorkingDirectory%/Tests/Application/config/reference.php
         - %currentWorkingDirectory%/vendor/*
     symfony:
         containerXmlPath: %currentWorkingDirectory%/Tests/Application/var/cache/admin/dev/Sulu_Bundle_CommunityBundle_Tests_Application_KernelDevDebugContainer.xml
