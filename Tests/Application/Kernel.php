@@ -43,7 +43,6 @@ class Kernel extends SuluTestKernel
      */
     protected function getKernelParameters(): array
     {
-        // Symfony 8 dropped the @return annotation on the parent method.
         /** @var array<string, mixed> $parameters */
         $parameters = parent::getKernelParameters();
 
