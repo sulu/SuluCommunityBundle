@@ -38,9 +38,7 @@ class RegistrationType extends AbstractType
             PasswordType::class,
             [
                 'mapped' => false,
-                'constraints' => new NotBlank([
-                    'groups' => ['registration'],
-                ]),
+                'constraints' => new NotBlank(groups: ['registration']),
             ]
         );
 
@@ -60,9 +58,7 @@ class RegistrationType extends AbstractType
             [
                 'mapped' => false,
                 'required' => true,
-                'constraints' => new NotBlank([
-                    'groups' => ['registration'],
-                ]),
+                'constraints' => new NotBlank(groups: ['registration']),
             ]
         );
 

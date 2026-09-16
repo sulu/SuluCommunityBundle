@@ -49,7 +49,7 @@ The password reset template.
 {% block content %}
     <h1>Password reset</h1>
 
-    {% if app.request.get('send') == 'true' %}
+    {% if app.request.query.get('send') == 'true' %}
         <p>
             Password successfully changed.
         </p>

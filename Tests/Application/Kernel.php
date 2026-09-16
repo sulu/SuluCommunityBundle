@@ -43,6 +43,7 @@ class Kernel extends SuluTestKernel
      */
     protected function getKernelParameters(): array
     {
+        /** @var array<string, mixed> $parameters */
         $parameters = parent::getKernelParameters();
 
         $gedmoReflection = new \ReflectionClass(\Gedmo\Exception::class);

@@ -36,7 +36,7 @@ class EmailConfirmationController extends AbstractController
 
         $success = false;
         /** @var string $token */
-        $token = $request->get('token');
+        $token = $request->query->get('token');
         $token = $repository->findByToken($token);
 
         if (null !== $token) {

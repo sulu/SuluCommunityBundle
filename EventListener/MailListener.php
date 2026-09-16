@@ -41,7 +41,7 @@ class MailListener implements EventSubscriberInterface
     /**
      * @return array<string, mixed>
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserRegisteredEvent::class => ['sendRegistrationEmails', 50],

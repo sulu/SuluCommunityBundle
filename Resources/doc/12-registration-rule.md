@@ -85,7 +85,7 @@ If the user is confirmed he will receive an email with the confirmation link:
 {% block content %}
     <h1>Registration</h1>
 
-    {% if app.request.get('send') == 'true' %}
+    {% if app.request.query.get('send') == 'true' %}
         <p>
             To complete the registration click on the link in the received email.
         </p>

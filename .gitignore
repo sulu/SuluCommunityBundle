@@ -2,6 +2,7 @@
 /phpunit.xml
 .phpunit.result.cache
 .phpunit.cache/
+Tests/Application/config/reference.php
 
 # PHPCS
 .php_cs.cache
